@@ -1,17 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { SkeletonTheme } from 'react-loading-skeleton';
+import { ConfigProvider } from 'antd';
+
+import 'react-loading-skeleton/dist/skeleton.css';
+
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import Notifies from './components/Notifies';
+import InitialWrapper from "./components/Wrapper/InitialWrapper";
+
+import {store} from './redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const themeColor = window.getComputedStyle(document.querySelector("html")).getPropertyValue('--main');
+
+root.render(
+    <Provider store={store}>
+        <BrowserRouter>
+            <InitialWrapper>
+                <SkeletonTheme baseColor="#eaeaea" highlightColor="#d8d8d8">
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorPrimary: themeColor,
+                                fontFamily: "Nunito"
+                            }
+                        }}
+                    >
+                        <App />
+                    </ConfigProvider>
+                </SkeletonTheme>
+            </InitialWrapper>
+
+            <Notifies />
+        </BrowserRouter>
+    </Provider>
+);
