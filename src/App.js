@@ -1,16 +1,38 @@
-import React from 'react';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import "./App.css";
-import { Button } from 'antd';
+
+import { withSuspense } from "./hoc/withSuspense";
+
+import DefaultWrapper from "./components/Wrapper/DefaultWrapper";
+import EmptyWrapper from "./components/Wrapper/EmptyWrapper";
+
+const Main = React.lazy(() => import("./pages/Main"));
+
+const Register = React.lazy(() => import("./pages/Register"));
+const Login = React.lazy(() => import("./pages/Login"));
+const Recovery = React.lazy(() => import("./pages/Recovery"));
+const ConfirmCode = React.lazy(() => import("./pages/ConfirmCode"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 const App = () => {
-    return(
-        <div>
-            <Button>
-                Привет
-            </Button>
-        </div>
-    )
-}
+    return (
+        <Routes>
+            <Route path="/" element={<DefaultWrapper />}>
+                <Route index element={withSuspense(Main)} />
+                <Route path="*" element={<Navigate to={"/404"} />} />
+            </Route>
+
+            <Route path="/" element={<EmptyWrapper />}>
+                <Route path="register" element={withSuspense(Register)} />
+                <Route path="login" element={withSuspense(Login)} />
+                <Route path="recovery" element={withSuspense(Recovery)} />
+                <Route path="confirm" element={withSuspense(ConfirmCode)} />
+                <Route path="404" element={withSuspense(NotFound)} />
+            </Route>
+        </Routes>
+    );
+};
 
 export default App;

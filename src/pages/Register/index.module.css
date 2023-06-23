@@ -1,0 +1,9 @@
+.agreeLabel{
+    width: 100%;
+    margin-top: 2.4rem;
+}
+
+.agreeLabel a{
+    font-size: inherit;
+    color: var(--main);
+}

@@ -1,0 +1,185 @@
+.header{
+    width: 100%;
+    padding: 1.2rem 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--input);
+    min-height: 65px;
+}
+
+.headerLogoInner{
+    width: 89px;
+    display: flex;
+    flex-shrink: 0;
+}
+
+.headerLogo{
+    width: 100%;
+}
+
+.headerProfileInner{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.headerProfileInner:hover .headerProfileArrow{
+    transform: rotate(180deg);
+}
+
+.headerProfileImgInner, .headerProfileMenuImgInner{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: var(--input);
+    flex-shrink: 0;
+}
+
+.headerProfileMenuImgInner{
+    width: 44px;
+    height: 44px;
+}
+
+.headerProfileImg, .headerProfileMenuImg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.headerProfileNick{
+    font-weight: 600;
+}
+
+.headerProfileArrow{
+    width: 16px;
+    flex-shrink: 0;
+    transition: .2s ease-in-out;
+}
+
+.headerLogin{
+    background: var(--main);
+    color: var(--white);
+    border-radius: 4px;
+    padding: 0.8rem 1.6rem;
+}
+
+.headerProfileMenuInner{
+    width: 280px;
+    padding-top: 6px;
+    flex-shrink: 0;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 100;
+    opacity: 0;
+    transition: .2s ease-in-out;
+    pointer-events: none;
+    cursor: default;
+}
+
+.headerProfileInner:hover .headerProfileMenuInner{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.headerProfileMenu{
+    width: 100%;
+    padding: 1.6rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: var(--white);
+}
+
+.headerProfileMenuInfo{
+    width: calc(100% - 2.4rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0rem 1.2rem .8rem 1.2rem;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.headerProfileLvl{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--main);
+    color: var(--white);
+}
+
+.headerProfileMenuData{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.headerProfileMenuNameInner{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.headerProfileMenuName{
+    font-weight: 600;
+}
+
+.headerProfileMenuStatus{
+    color: var(--grey);
+}
+
+.headerProfileMenuLink{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 0.8rem 1.2rem;
+    transition: .2s linear;
+}
+
+.headerProfileMenuLink:hover{
+    background: var(--infoB);
+    color: var(--main);
+}
+
+.delete:hover{
+    background: var(--errorB);
+    color: var(--error);
+}
+
+.headerProfileMenuLink svg{
+    width: 24px;
+}
+
+.headerProfileMenuLink:hover svg path{
+    stroke: var(--main);
+}
+
+.delete:hover svg path{
+    stroke: var(--error);
+}
+
+.headerThemeCheckbox{
+    display: none;
+}
+
+.headerThemeLabel{
+    margin-left: auto;
+    pointer-events: none;
+}

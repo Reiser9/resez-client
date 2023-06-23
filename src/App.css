@@ -5,6 +5,11 @@
 html{
     /* Colors */
     --main: #007CEE;
+    --input: #F5F7FA;
+    --white: #fff;
+    --line: #eeedf0;
+    --grey: #898794;
+    --text: #333;
 
     /* Notify */
     --info: #007CEE;
@@ -13,10 +18,10 @@ html{
     --error: #EF3B3B;
 
     /* Notify backgrounds */
-    --infoB: rgba(0, 124, 238, 0.1);
-    --successB: rgba(16, 185, 123, 0.1);
-    --warnB: rgba(250, 189, 72, 0.1);
-    --errorB: rgba(239, 59, 59, 0.1);
+    --infoB: #E6F2FE;
+    --successB: #E8F8F2;
+    --warnB: #FFF9ED;
+    --errorB: #FEECEC;
 }
 
 @font-face{
@@ -67,7 +72,7 @@ body{
 	overflow-x: hidden;
 	font-size: 1.6rem;
     font-family: 'Nunito', sans-serif;
-    color: #333;
+    color: var(--text);
 }
 
 *,
@@ -77,10 +82,13 @@ body{
 }
 
 a, button, input, textarea, select{
-	transition: .2s linear;
 	font-size: 1.6rem;
     font-family: 'Nunito', sans-serif;
-    color: #333;
+    color: var(--text);
+}
+
+a, button, input, textarea, select, path{
+    transition: .2s ease-in-out;
 }
 
 a{
@@ -118,9 +126,17 @@ input::-webkit-inner-spin-button{
 }
 
 .input::placeholder{
-    color: #989898;
+    color: var(--grey);
 }
 
-.input:focus::placeholder{
-	opacity: 0;	
+::-webkit-scrollbar{
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb{
+    background: var(--main);
+}
+
+::-webkit-scrollbar-track{
+    background: var(--white);
 }

@@ -21,7 +21,7 @@ root.render(
     <Provider store={store}>
         <BrowserRouter>
             <InitialWrapper>
-                <SkeletonTheme baseColor="#eaeaea" highlightColor="#d8d8d8">
+                <SkeletonTheme baseColor="#ededed" highlightColor="#d8d8d8">
                     <ConfigProvider
                         theme={{
                             token: {

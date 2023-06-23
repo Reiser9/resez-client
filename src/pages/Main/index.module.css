@@ -1,0 +1,107 @@
+.wrapper{
+    width: 100%;
+    display: flex;
+    height: calc(100vh - 65px);
+}
+
+.sidebar{
+    width: 100%;
+    max-width: 280px;
+    flex-shrink: 0;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.6rem 0;
+}
+
+.content{
+    width: 100%;
+    padding: 2.4rem;
+    background: var(--input);
+}
+
+.sidebarLink{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.8rem 2.4rem;
+}
+
+.sidebarLink:hover{
+    background: var(--infoB);
+    color: var(--main);
+}
+
+.sidebarLink:hover svg path{
+    stroke: var(--main);
+}
+
+.sidebarLink svg{
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.mainBlocks{
+    width: 100%;
+    display: flex;
+    gap: 16px;
+}
+
+.mainBlock{
+    width: calc(100% / 2 - 16px / 2);
+    padding: 2.4rem;
+    border-radius: 8px;
+    background: var(--white);
+    display: flex;
+    gap: 32px;
+}
+
+.mainBlockContent{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.mainBlockImgInner, .mainBlockImg{
+    max-width: 210px;
+    max-height: 210px;
+}
+
+.mainBlockImgInner{
+    flex-shrink: 0;
+}
+
+.mainTitle span, .mainSubtitle span{
+    color: var(--main);
+}
+
+.mainSubtitle span{
+    font-weight: 700;
+}
+
+.mainBlockLink{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+    color: var(--main);
+    font-weight: 500;
+}
+
+.mainBlockLink:hover svg{
+    transform: translateX(4px);
+}
+
+.mainBlockLink svg{
+    width: 20px;
+    flex-shrink: 0;
+    transition: .2s linear;
+}
+
+.mainBlockLink svg path{
+    stroke: var(--main)
+}
