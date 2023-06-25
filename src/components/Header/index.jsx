@@ -8,10 +8,11 @@ import styles from './index.module.css';
 
 import { ArrowBottom, Exit, Moon, Notify, User } from '../Icons';
 
-const Header = ({empty = false}) => {
-    const [theme, setTheme] = React.useState(false);
+import useTheme from '../../hooks/useTheme';
 
+const Header = ({empty = false}) => {
     const {isAuth} = useSelector(state => state.auth);
+    const {theme, changeTheme} = useTheme();
 
     return (
         <header className={styles.header}>
@@ -63,12 +64,12 @@ const Header = ({empty = false}) => {
                                 Уведомления
                             </Link>
 
-                            <div className={styles.headerProfileMenuLink} onClick={() => setTheme(prev => !prev)}>
+                            <div className={styles.headerProfileMenuLink} onClick={changeTheme}>
                                 <Moon />
 
                                 Темная тема
 
-                                <Switch size="small" checked={theme} className={styles.headerThemeLabel} />
+                                <Switch size="small" checked={theme === "dark"} className={styles.headerThemeLabel} />
                             </div>
 
                             <Link to="exit" className={`${styles.headerProfileMenuLink} ${styles.delete}`}>

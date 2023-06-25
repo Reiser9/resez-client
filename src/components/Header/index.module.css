@@ -6,6 +6,7 @@
     justify-content: space-between;
     border-bottom: 1px solid var(--input);
     min-height: 65px;
+    background: var(--white);
 }
 
 .headerLogoInner{
@@ -67,9 +68,13 @@
 
 .headerLogin{
     background: var(--main);
-    color: var(--white);
+    color: #fff;
     border-radius: 4px;
     padding: 0.8rem 1.6rem;
+}
+
+.headerLogin:hover{
+    opacity: 0.8;
 }
 
 .headerProfileMenuInner{
@@ -120,7 +125,7 @@
     align-items: center;
     justify-content: center;
     background: var(--main);
-    color: var(--white);
+    color: #fff;
 }
 
 .headerProfileMenuData{
@@ -140,7 +145,7 @@
 }
 
 .headerProfileMenuStatus{
-    color: var(--grey);
+    color: var(--textGrey);
 }
 
 .headerProfileMenuLink{

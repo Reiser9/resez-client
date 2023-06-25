@@ -10,6 +10,12 @@ html{
     --line: #eeedf0;
     --grey: #898794;
     --text: #333;
+    --textGrey: rgb(137 135 148);
+    --hover: rgba(0, 0, 0, .06);
+
+    /* Icons */
+    --iconLightGrey: #fff;
+    --iconGrey: #ccc;
 
     /* Notify */
     --info: #007CEE;
@@ -73,6 +79,25 @@ body{
 	font-size: 1.6rem;
     font-family: 'Nunito', sans-serif;
     color: var(--text);
+}
+
+body.dark{
+    --white: #2d2c36;
+    --input: #232229;
+    --text: #E5E8EB;
+    --infoB: #25252b;
+    --successB: #25252b;
+    --warnB: #25252b;
+    --errorB: #25252b;
+    --textGrey: rgb(127 126 143);
+    --line: #474747;
+    --hover: rgba(255, 255, 255, .06);
+
+    /* Icons */
+    --iconLightGrey: rgb(127 126 143);
+    --iconGrey: rgb(127 126 143);
+
+    background: var(--input);
 }
 
 *,
@@ -139,4 +164,12 @@ input::-webkit-inner-spin-button{
 
 ::-webkit-scrollbar-track{
     background: var(--white);
+}
+
+#root{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }

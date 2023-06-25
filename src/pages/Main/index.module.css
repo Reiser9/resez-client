@@ -1,7 +1,7 @@
 .wrapper{
     width: 100%;
     display: flex;
-    height: calc(100vh - 65px);
+    min-height: calc(100vh - 65px);
 }
 
 .sidebar{
@@ -19,6 +19,9 @@
     width: 100%;
     padding: 2.4rem;
     background: var(--input);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .sidebarLink{
@@ -67,6 +70,7 @@
 }
 
 .mainBlockImgInner, .mainBlockImg{
+    width: 100%;
     max-width: 210px;
     max-height: 210px;
 }
@@ -104,4 +108,45 @@
 
 .mainBlockLink svg path{
     stroke: var(--main)
+}
+
+.benefits{
+    width: 100%;
+    margin-top: 4.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.benefitsTitle{
+    text-align: center;
+}
+
+.benefitsContent{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.benefitsItem{
+    width: calc(100% / 2 - 16px / 2);
+    padding: 1.6rem;
+    border-radius: 8px;
+    background: var(--white);
+    display: flex;
+    gap: 30px;
+}
+
+.benefitsItem.small{
+    width: calc(100% / 3 - 32px / 3);
+}
+
+.benefitsItemTextInner{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
 }

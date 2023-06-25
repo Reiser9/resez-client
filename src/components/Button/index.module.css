@@ -10,12 +10,23 @@
     background: var(--main);
     cursor: pointer;
     border: 1px solid var(--main);
-    color: var(--white);
+    color: #fff;
     min-height: 44px;
+    outline: none;
 }
 
 .button:hover{
     opacity: 0.8;
+}
+
+.outline{
+    background: none;
+    color: var(--main);
+    border: 1px transparent;
+}
+
+.outline:hover{
+    background: var(--hover);
 }
 
 .auto{

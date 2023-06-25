@@ -1,10 +1,12 @@
 import React from 'react';
 import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
-import { setIsAuth } from '../redux/slices/auth';
-import { initUser } from '../redux/slices/user';
+import { setDataAuth, setIsAuth, setVerified } from '../redux/slices/auth';
+import { initUser, setDataUser } from '../redux/slices/user';
+import { setAppIsLoading, setDataApp } from '../redux/slices/app';
 
 import {unmaskPhone} from '../utils/formatPhone';
 
@@ -18,9 +20,56 @@ const useAuth = () => {
     const dispatch = useDispatch();
     const {request} = useRequest();
     const {alertNotify} = useNotify();
+    const navigate = useNavigate();
+
+    const checkUserVerified = (user) => {
+        if(user?.isVerified){
+            dispatch(setVerified(true));
+        }
+        else{
+            dispatch(setVerified(false));
+        }
+    }
 
     const clearLocalData = () => {
+        localStorage.removeItem("accessToken");
 
+        dispatch(setDataUser());
+        dispatch(setDataAuth());
+        dispatch(setDataApp());
+
+        dispatch(setIsAuth(false));
+    }
+
+    const checkAuth = async () => {
+        setError(false);
+
+        const accessToken = localStorage.getItem("accessToken");
+
+        if(!accessToken){
+            return clearLocalData();
+        }
+
+        dispatch(setAppIsLoading(true));
+
+        const response = await request(REQUEST_TYPE.AUTH, "/check-auth", HTTP_METHODS.GET, true);
+
+        dispatch(setAppIsLoading(false));
+
+        if(response?.data?.error){
+            const tokens = await newTokens();
+
+            if(!tokens){
+                return clearLocalData()
+            }
+
+            checkAuth();
+        }
+
+        // Запрос инфы о пользователе
+
+        dispatch(setIsAuth(true));
+        dispatch(initUser(response?.user));
     }
 
     const register = async (nickname, phoneNumber, password, successCallback = () => {}) => {
@@ -57,18 +106,71 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response.error){
+        if(response?.data?.error){
             setError(true);
             return alertNotify("Ошибка", response.message, "error");
         }
 
-        console.log(response);
+        dispatch(setIsAuth(true));
+        dispatch(initUser(response?.user));
+
+        localStorage.setItem("accessToken", response?.accessToken);
 
         successCallback();
     }
 
-    const sendCodeRegister = async () => {
+    const sendCodeRegister = async (successCallback = () => {}) => {
+        setError(false);
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/send-register-code", HTTP_METHODS.GET, true);
+
+        setIsLoading(false);
+
+        if(response?.data?.error){
+            setError(true);
+
+            switch(response?.status){
+                case 401:
+                    navigate("/login");
+                    clearLocalData();
+                    return alertNotify("Ошибка", "Пожалуйста, авторизуйтесь повторно и повторите попытку", "error");
+                default:
+                    return alertNotify("Ошибка", response.data.message, "error");
+            }
+        }
+
+        successCallback();
+    }
+
+    const verifyCodeRegister = async (code, successCallback = () => {}) => {
+        setError(false);
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/verify-register", HTTP_METHODS.POST, true, {
+            code
+        });
+
+        setIsLoading(false);
+
+        if(response?.data?.error){
+            setError(true);
+
+            switch(response?.status){
+                case 401:
+                    navigate("/login");
+                    clearLocalData();
+                    return alertNotify("Ошибка", "Пожалуйста, авторизуйтесь повторно и повторите попытку", "error");
+                default:
+                    return alertNotify("Ошибка", response.data.message, "error");
+            }
+        }
+
+        dispatch(setIsAuth(true));
+        dispatch(initUser(response?.user));
+        checkUserVerified(response?.user);
         
+        successCallback();
     }
 
     const login = async (nickname, password, successCallback = () => {}) => {
@@ -96,13 +198,16 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response.error){
+        if(response?.data?.error){
             setError(true);
             return alertNotify("Ошибка", response.message, "error");
         }
 
         dispatch(setIsAuth(true));
         dispatch(initUser(response?.user));
+        checkUserVerified(response?.user);
+
+        localStorage.setItem("accessToken", response?.accessToken);
 
         alertNotify("Успешно", "Вы авторизовались!", "success");
         successCallback();
@@ -114,17 +219,54 @@ const useAuth = () => {
 
     const newTokens = async () => {
         setError(false);
-
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.AUTH, "/refresh", HTTP_METHODS.GET);
 
         setIsLoading(false);
 
-        console.log(response);
+        if(response?.data?.error){
+            return;
+        }
+
+        return response;
     }
 
-    return {isLoading, error, register, sendCodeRegister, login, recovery, newTokens}
+    const logout = async (successCallback = () => {}) => {
+        setError(false);
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/logout", HTTP_METHODS.GET);
+
+        setIsLoading(false);
+
+        if(response?.data?.error){
+            return alertNotify("Ошибка", response.message, "error");
+        }
+
+        alertNotify("Успешно", "Вы вышли из аккаунта", "success");
+        successCallback();
+        clearLocalData();
+    }
+
+    const localLogout = (successCallback = () => {}) => {
+        clearLocalData();
+        successCallback();
+    }
+
+    return {
+        isLoading,
+        error,
+        checkAuth,
+        register,
+        sendCodeRegister,
+        verifyCodeRegister,
+        login,
+        recovery,
+        newTokens,
+        logout,
+        localLogout
+    }
 }
 
 export default useAuth;

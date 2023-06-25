@@ -1,25 +1,50 @@
 import React from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
-import {BASE_API_URL_USER, BASE_API_URL_AUTH} from '../consts/API_URLS';
+import {BASE_API_URL_USER, BASE_API_URL_AUTH, BASE_API_URL_EMPTY} from '../consts/API_URLS';
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
+
+import {setServerAvailable} from '../redux/slices/server';
 
 const useRequest = () => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
 
+    const dispatch = useDispatch();
+
     const authRequest = axios.create({
-        baseURL: BASE_API_URL_AUTH
+        baseURL: BASE_API_URL_AUTH,
+        withCredentials: true
     });
 
     const userRequest = axios.create({
-        baseURL: BASE_API_URL_USER
+        baseURL: BASE_API_URL_USER,
+        withCredentials: true
+    });
+
+    const emptyRequest = axios.create({
+        baseURL: BASE_API_URL_EMPTY,
+        withCredentials: true
     });
 
     const axiosInstancesMap = new Map([
         [REQUEST_TYPE.AUTH, authRequest],
-        [REQUEST_TYPE.USER, userRequest]
+        [REQUEST_TYPE.USER, userRequest],
+        [REQUEST_TYPE.EMPTY, emptyRequest]
     ]);
+
+    const getHealthServer = async () => {
+        try{
+            await emptyRequest.get("/health", {
+                timeout: 5000
+            });
+
+            return true;
+        }catch(error){
+            return false;
+        }
+    }
 
     const request = async (
         requestType = REQUEST_TYPE.USER,
@@ -33,20 +58,18 @@ const useRequest = () => {
         setIsLoading(true);
 
         const accessToken = localStorage.getItem("accessToken");
-        const typeToken = localStorage.getItem("typeToken");
 
         const axiosInstance = axiosInstancesMap.get(requestType);
 
         let reqHeaders = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Credentials': true,
             ...headers
         }
 
         if(isAuth){
             reqHeaders = {
                 ...reqHeaders,
-                'Authorization': `${typeToken} ${accessToken}`
+                'Authorization': `Bearer ${accessToken}`
             }
         }
 
@@ -66,7 +89,13 @@ const useRequest = () => {
             setError(true);
             setIsLoading(false);
 
-            return err?.response?.data || err;
+            const serverHealth = await getHealthServer();
+
+            if(!serverHealth){
+                return dispatch(setServerAvailable(false));
+            }
+
+            return err?.response || err;
         }
     };
 

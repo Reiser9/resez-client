@@ -10,6 +10,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import App from './App';
 import Notifies from './components/Notifies';
 import InitialWrapper from "./components/Wrapper/InitialWrapper";
+import ThemeWrapper from "./components/Wrapper/ThemeWrapper";
 
 import {store} from './redux/store';
 
@@ -20,22 +21,24 @@ const themeColor = window.getComputedStyle(document.querySelector("html")).getPr
 root.render(
     <Provider store={store}>
         <BrowserRouter>
-            <InitialWrapper>
-                <SkeletonTheme baseColor="#ededed" highlightColor="#d8d8d8">
-                    <ConfigProvider
-                        theme={{
-                            token: {
-                                colorPrimary: themeColor,
-                                fontFamily: "Nunito"
-                            }
-                        }}
-                    >
-                        <App />
-                    </ConfigProvider>
-                </SkeletonTheme>
-            </InitialWrapper>
+            <ThemeWrapper>
+                <InitialWrapper>
+                    <SkeletonTheme baseColor="#ededed" highlightColor="#d8d8d8">
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    colorPrimary: themeColor,
+                                    fontFamily: "Nunito"
+                                }
+                            }}
+                        >
+                            <App />
+                        </ConfigProvider>
+                    </SkeletonTheme>
+                </InitialWrapper>
 
-            <Notifies />
+                <Notifies />
+            </ThemeWrapper>
         </BrowserRouter>
     </Provider>
 );

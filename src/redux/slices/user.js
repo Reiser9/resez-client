@@ -11,13 +11,13 @@ export const userSlice = createSlice({
         initUser: (state, action) => {
             state.user = action.payload || {};
         },
-        setDataAuth: () => initialState
+        setDataUser: () => initialState
     }
 });
 
 export const {
     initUser,
-    setDataAuth
+    setDataUser
 } = userSlice.actions;
 
 export default userSlice.reducer;

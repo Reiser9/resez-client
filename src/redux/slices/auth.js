@@ -2,7 +2,8 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
     isAuth: false,
-    authIsLoading: false
+    authIsLoading: false,
+    verified: false
 };
 
 export const authSlice = createSlice({
@@ -15,6 +16,9 @@ export const authSlice = createSlice({
         setAuthIsLoading: (state, action) => {
             state.authIsLoading = action.payload;
         },
+        setVerified: (state, action) => {
+            state.verified = action.payload;
+        },
         setDataAuth: () => initialState
     }
 });
@@ -22,6 +26,7 @@ export const authSlice = createSlice({
 export const {
     setIsAuth,
     setAuthIsLoading,
+    setVerified,
     setDataAuth
 } = authSlice.actions;
 

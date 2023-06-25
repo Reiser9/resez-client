@@ -8,5 +8,6 @@ export const HTTP_METHODS = {
 
 export const REQUEST_TYPE = {
     AUTH: 'auth',
-    USER: 'user'
+    USER: 'user',
+    EMPTY: 'empty'
 };
