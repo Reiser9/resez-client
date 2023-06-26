@@ -168,6 +168,11 @@ const useAuth = () => {
 
     const verifyCodeRegister = async (code, successCallback = () => {}) => {
         setError(false);
+
+        if(!code || code.length !== 6){
+            return alertNotify("Предупреждение", "Введите корректный код", "warn");
+        }
+
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.AUTH, "/verify-register", HTTP_METHODS.POST, true, {
@@ -179,7 +184,7 @@ const useAuth = () => {
         if(response?.data?.error){
             setError(true);
 
-            switch(response?.status){
+            switch(response?.data?.status){
                 case 401:
                     navigate("/login");
                     clearLocalData();
@@ -190,8 +195,8 @@ const useAuth = () => {
         }
 
         dispatch(setIsAuth(true));
-        dispatch(initUser(response?.user));
-        checkUserVerified(response?.user);
+        dispatch(initUser(response?.data?.user));
+        checkUserVerified(response?.data?.user);
         
         successCallback();
     }
