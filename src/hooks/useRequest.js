@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import {BASE_API_URL_USER, BASE_API_URL_AUTH, BASE_API_URL_EMPTY} from '../consts/API_URLS';
-import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
+import {HTTP_METHODS, REQUEST_TYPE} from '../consts/HTTP';
+import {APP_STATUSES} from '../consts/APP_STATUSES';
 
 import {setServerAvailable} from '../redux/slices/server';
 
@@ -42,6 +43,7 @@ const useRequest = () => {
 
             return true;
         }catch(error){
+            dispatch(setServerAvailable(false));
             return false;
         }
     }
@@ -92,14 +94,18 @@ const useRequest = () => {
             const serverHealth = await getHealthServer();
 
             if(!serverHealth){
-                return dispatch(setServerAvailable(false));
+                return APP_STATUSES.SERVER_NOT_AVAILABLE;
             }
+
+            // if(){
+            //     return APP_STATUSES.YOUR_BLOCKED;
+            // }
 
             return err?.response || err;
         }
     };
 
-    return {isLoading, error, request};
+    return {isLoading, error, request, getHealthServer};
 }
 
 export default useRequest;

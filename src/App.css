@@ -5,6 +5,7 @@
 html{
     /* Colors */
     --main: #007CEE;
+    --lighten: #E6F2FE;
     --input: #F5F7FA;
     --white: #fff;
     --line: #eeedf0;
@@ -92,6 +93,7 @@ body.dark{
     --textGrey: rgb(127 126 143);
     --line: #474747;
     --hover: rgba(255, 255, 255, .06);
+    --lighten: #33333b;
 
     /* Icons */
     --iconLightGrey: rgb(127 126 143);

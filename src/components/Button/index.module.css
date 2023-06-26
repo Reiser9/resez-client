@@ -7,25 +7,38 @@
     width: 100%;
     padding: 1rem 2.4rem;
     border-radius: 4px;
-    background: var(--main);
     cursor: pointer;
-    border: 1px solid var(--main);
     color: #fff;
     min-height: 44px;
     outline: none;
 }
 
-.button:hover{
+.fill{
+    background: var(--main);
+    border: 1px solid var(--main);
+}
+
+.fill:hover{
     opacity: 0.8;
 }
 
 .outline{
     background: none;
     color: var(--main);
-    border: 1px transparent;
+    border: 1px solid var(--main);
 }
 
 .outline:hover{
+    background: var(--lighten);
+}
+
+.empty{
+    background: none;
+    color: var(--main);
+    border: 1px transparent;
+}
+
+.empty:hover{
     background: var(--hover);
 }
 

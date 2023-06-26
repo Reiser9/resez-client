@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import { Switch } from 'antd';
 
@@ -9,10 +9,18 @@ import styles from './index.module.css';
 import { ArrowBottom, Exit, Moon, Notify, User } from '../Icons';
 
 import useTheme from '../../hooks/useTheme';
+import useAuth from '../../hooks/useAuth';
 
 const Header = ({empty = false}) => {
     const {isAuth} = useSelector(state => state.auth);
+    const {user} = useSelector(state => state.user);
     const {theme, changeTheme} = useTheme();
+    const {logout} = useAuth();
+    const navigate = useNavigate();
+
+    const logoutHandler = () => {
+        logout(() => navigate("/"));
+    }
 
     return (
         <header className={styles.header}>
@@ -23,11 +31,11 @@ const Header = ({empty = false}) => {
             {!empty && (isAuth
                 ? <div className={styles.headerProfileInner}>
                     <div className={styles.headerProfileImgInner}>
-                        {/* <img src="/assets/img/test.svg" alt="test" className={styles.headerProfileImg} /> */}
+                        {user.avatar && <img src={user.avatar} alt="avatar" className={styles.headerProfileImg} />}
                     </div>
 
                     <p className={`${typography.text} ${styles.headerProfileNick}`}>
-                        Reiser95
+                        {user.nickname}
                     </p>
 
                     <ArrowBottom className={styles.headerProfileArrow} />
@@ -37,18 +45,18 @@ const Header = ({empty = false}) => {
                             <div className={styles.headerProfileMenuInfo}>
                                 <div className={styles.headerProfileMenuData}>
                                     <div className={styles.headerProfileMenuImgInner}>
-                                        {/* <img src="/assets/img/test.svg" alt="test" className={styles.headerProfileMenuImg} /> */}
+                                        {user.avatar && <img src={user.avatar} alt="avatar" className={styles.headerProfileMenuImg} />}
                                     </div>
 
                                     <div className={styles.headerProfileMenuNameInner}>
-                                        <p className={`${typography.text} ${styles.headerProfileMenuName}`}>Reiser95</p>
+                                        <p className={`${typography.text} ${styles.headerProfileMenuName}`}>{user.nickname}</p>
 
-                                        <p className={`${typography.text2} ${styles.headerProfileMenuStatus}`}>Новичок</p>
+                                        <p className={`${typography.text2} ${styles.headerProfileMenuStatus}`}>{user.status}</p>
                                     </div>
                                 </div>
 
                                 <div className={`${typography.text2} ${styles.headerProfileLvl}`}>
-                                    1
+                                    {user.level}
                                 </div>
                             </div>
 
@@ -72,11 +80,11 @@ const Header = ({empty = false}) => {
                                 <Switch size="small" checked={theme === "dark"} className={styles.headerThemeLabel} />
                             </div>
 
-                            <Link to="exit" className={`${styles.headerProfileMenuLink} ${styles.delete}`}>
+                            <div className={`${styles.headerProfileMenuLink} ${styles.delete}`} onClick={logoutHandler}>
                                 <Exit />
 
                                 Выход
-                            </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

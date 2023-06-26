@@ -12,14 +12,14 @@ import ConfirmCode from '../../../pages/ConfirmCode';
 const InitialWrapper = ({children}) => {
     const {appIsLoading, blocked} = useSelector(state => state.app);
     const {serverAvailable} = useSelector(state => state.server);
-    const {isAuth, verified} = useSelector(state => state.auth);
+    const {isAuth, verified, authIsLoading} = useSelector(state => state.auth);
     const {checkAuth} = useAuth();
 
     React.useEffect(() => {
         checkAuth();
     }, []);
 
-    if(appIsLoading){
+    if(appIsLoading || authIsLoading){
         return <Preloader />
     }
 

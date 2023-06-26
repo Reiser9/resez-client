@@ -4,22 +4,26 @@ import { useNavigate } from 'react-router-dom';
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
-import { setDataAuth, setIsAuth, setVerified } from '../redux/slices/auth';
+import { setAuthIsLoading, setDataAuth, setIsAuth, setVerified } from '../redux/slices/auth';
 import { initUser, setDataUser } from '../redux/slices/user';
 import { setAppIsLoading, setDataApp } from '../redux/slices/app';
+import { setServerAvailable } from '../redux/slices/server';
 
 import {unmaskPhone} from '../utils/formatPhone';
 
 import useRequest from './useRequest';
 import useNotify from './useNotify';
+import useUser from './useUser';
+import { APP_STATUSES } from '../consts/APP_STATUSES';
 
 const useAuth = () => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
-    const {request} = useRequest();
+    const {request, getHealthServer} = useRequest();
     const {alertNotify} = useNotify();
+    const {getShortInfo} = useUser();
     const navigate = useNavigate();
 
     const checkUserVerified = (user) => {
@@ -41,6 +45,19 @@ const useAuth = () => {
         dispatch(setIsAuth(false));
     }
 
+    const reload = async () => {
+        dispatch(setAppIsLoading(true));
+        dispatch(setServerAvailable(true));
+
+        const response = await getHealthServer();
+
+        if(response){
+            checkAuth();
+        }
+
+        dispatch(setAppIsLoading(false));
+    }
+
     const checkAuth = async () => {
         setError(false);
 
@@ -50,6 +67,7 @@ const useAuth = () => {
             return clearLocalData();
         }
 
+        dispatch(setAuthIsLoading(true));
         dispatch(setAppIsLoading(true));
 
         const response = await request(REQUEST_TYPE.AUTH, "/check-auth", HTTP_METHODS.GET, true);
@@ -58,18 +76,23 @@ const useAuth = () => {
 
         if(response?.data?.error){
             const tokens = await newTokens();
+            dispatch(setAuthIsLoading(false));
 
             if(!tokens){
                 return clearLocalData()
             }
 
-            checkAuth();
+            return checkAuth();
         }
 
-        // Запрос инфы о пользователе
+        const data = await getShortInfo();
 
-        dispatch(setIsAuth(true));
-        dispatch(initUser(response?.user));
+        if(!data){
+            return;
+        }
+
+        dispatch(setVerified(data.isVerified));
+        dispatch(setAuthIsLoading(false));
     }
 
     const register = async (nickname, phoneNumber, password, successCallback = () => {}) => {
@@ -108,7 +131,7 @@ const useAuth = () => {
 
         if(response?.data?.error){
             setError(true);
-            return alertNotify("Ошибка", response.message, "error");
+            return alertNotify("Ошибка", response.data.message, "error");
         }
 
         dispatch(setIsAuth(true));
@@ -198,9 +221,9 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response?.data?.error){
+        if(response?.data?.error || response === APP_STATUSES.SERVER_NOT_AVAILABLE){
             setError(true);
-            return alertNotify("Ошибка", response.message, "error");
+            return alertNotify("Ошибка", response?.data?.message, "error");
         }
 
         dispatch(setIsAuth(true));
@@ -241,7 +264,7 @@ const useAuth = () => {
         setIsLoading(false);
 
         if(response?.data?.error){
-            return alertNotify("Ошибка", response.message, "error");
+            return alertNotify("Ошибка", response.data.message, "error");
         }
 
         alertNotify("Успешно", "Вы вышли из аккаунта", "success");
@@ -257,6 +280,7 @@ const useAuth = () => {
     return {
         isLoading,
         error,
+        reload,
         checkAuth,
         register,
         sendCodeRegister,
