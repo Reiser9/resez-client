@@ -16,7 +16,7 @@ const ConfirmCode = () => {
     const [code, setCode] = React.useState("");
     const [step, setStep] = React.useState(1);
 
-    const {isLoading, localLogout, sendCodeRegister, verifyCodeRegister} = useAuth();
+    const {isLoading, logout, sendCodeRegister, verifyCodeRegister} = useAuth();
     const navigate = useNavigate();
 
     const sendCode = () => {
@@ -54,7 +54,7 @@ const ConfirmCode = () => {
                     {step === 1 && <Button loading={isLoading} className={auth.contentButton} onClick={sendCode}>Выслать код</Button>}
                     {step === 2 && <Button loading={isLoading} className={auth.contentButton} onClick={verifyCode}>Отправить</Button>}
 
-                    <Button type="empty" className={auth.contentButton} onClick={() => localLogout()}>Выйти</Button>
+                    <Button loading={isLoading} type="empty" className={auth.contentButton} onClick={() => logout()}>Выйти</Button>
                 </div>
             </AuthFormsWrapper>
         </TitleWrpapper>

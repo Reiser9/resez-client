@@ -16,7 +16,10 @@
 }
 
 .headerLogo{
-    width: 100%;
+    font-weight: 700;
+    font-size: 3.2rem;
+    color: var(--main);
+    line-height: 1.2;
 }
 
 .headerProfileInner{

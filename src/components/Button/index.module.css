@@ -11,6 +11,8 @@
     color: #fff;
     min-height: 44px;
     outline: none;
+    display: inline-block;
+    text-align: center;
 }
 
 .fill{

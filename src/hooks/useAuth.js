@@ -26,15 +26,6 @@ const useAuth = () => {
     const {getShortInfo} = useUser();
     const navigate = useNavigate();
 
-    const checkUserVerified = (user) => {
-        if(user?.isVerified){
-            dispatch(setVerified(true));
-        }
-        else{
-            dispatch(setVerified(false));
-        }
-    }
-
     const clearLocalData = () => {
         localStorage.removeItem("accessToken");
 
@@ -43,6 +34,15 @@ const useAuth = () => {
         dispatch(setDataApp());
 
         dispatch(setIsAuth(false));
+    }
+
+    const checkUserVerified = (user) => {
+        if(user?.isVerified){
+            dispatch(setVerified(true));
+        }
+        else{
+            dispatch(setVerified(false));
+        }
     }
 
     const reload = async () => {
@@ -93,6 +93,83 @@ const useAuth = () => {
 
         dispatch(setVerified(data.isVerified));
         dispatch(setAuthIsLoading(false));
+    }
+
+    const newTokens = async () => {
+        setError(false);
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/refresh", HTTP_METHODS.GET);
+
+        setIsLoading(false);
+
+        if(response?.data?.error){
+            return;
+        }
+
+        return response;
+    }
+
+    const logout = async (successCallback = () => {}) => {
+        setError(false);
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/logout", HTTP_METHODS.GET);
+
+        setIsLoading(false);
+
+        if(response?.data?.error){
+            return alertNotify("Ошибка", response.data.message, "error");
+        }
+
+        alertNotify("Успешно", "Вы вышли из аккаунта", "success");
+        successCallback();
+        clearLocalData();
+    }
+
+    const localLogout = (successCallback = () => {}) => {
+        clearLocalData();
+        successCallback();
+    }
+
+    const login = async (nickname, password, successCallback = () => {}) => {
+        setError(false);
+
+        if(!nickname){
+            return alertNotify("Предупреждение", "Имя пользователя не может быть пустым", "warn");
+        }
+        else if(nickname?.length < 3){
+            return alertNotify("Предупреждение", "Имя пользователя не может быть меньше 3-х символов", "warn");
+        }
+        else if(!password){
+            return alertNotify("Предупреждение", "Пароль не может быть пустым", "warn");
+        }
+        else if(password.length < 8){
+            return alertNotify("Предупреждение", "Пароль должен быть больше 8 символов", "warn");
+        }
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/login", HTTP_METHODS.POST, false, {
+            nickname,
+            password
+        });
+
+        setIsLoading(false);
+
+        if(response?.data?.error || response === APP_STATUSES.SERVER_NOT_AVAILABLE){
+            setError(true);
+            return alertNotify("Ошибка", response?.data?.message, "error");
+        }
+
+        dispatch(setIsAuth(true));
+        dispatch(initUser(response?.user));
+        checkUserVerified(response?.user);
+
+        localStorage.setItem("accessToken", response?.accessToken);
+
+        alertNotify("Успешно", "Вы авторизовались!", "success");
+        successCallback();
     }
 
     const register = async (nickname, phoneNumber, password, successCallback = () => {}) => {
@@ -195,90 +272,95 @@ const useAuth = () => {
         }
 
         dispatch(setIsAuth(true));
-        dispatch(initUser(response?.data?.user));
-        checkUserVerified(response?.data?.user);
+        dispatch(initUser(response?.user));
+        checkUserVerified(response?.user);
         
         successCallback();
     }
 
-    const login = async (nickname, password, successCallback = () => {}) => {
+    const sendRecoveryPasswordCode = async (phoneNumber, successCallback = () => {}) => {
         setError(false);
 
-        if(!nickname){
-            return alertNotify("Предупреждение", "Имя пользователя не может быть пустым", "warn");
+        const formatPhoneNumber = unmaskPhone(phoneNumber);
+
+        if(!formatPhoneNumber){
+            return alertNotify("Предупреждение", "Номер телефона не может быть пустым", "warn");
         }
-        else if(nickname?.length < 3){
-            return alertNotify("Предупреждение", "Имя пользователя не может быть меньше 3-х символов", "warn");
+        else if(formatPhoneNumber.length < 12){
+            return alertNotify("Предупреждение", "Введите корректный номер телефона", "warn");
         }
-        else if(!password){
-            return alertNotify("Предупреждение", "Пароль не может быть пустым", "warn");
+        
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/send-recovery-password-code", HTTP_METHODS.POST, false, {
+            phoneNumber: formatPhoneNumber
+        });
+
+        setIsLoading(false);
+
+        if(response?.data?.error){
+            setError(true);
+
+            return alertNotify("Ошибка", response.data.message, "error");
         }
-        else if(password.length < 8){
-            return alertNotify("Предупреждение", "Пароль должен быть больше 8 символов", "warn");
+
+        successCallback();
+    }
+
+    const verifyRecoveryCode = async (phoneNumber, code, successCallback = () => {}) => {
+        setError(false);
+
+        const formatPhoneNumber = unmaskPhone(phoneNumber);
+
+        if(!code || code.length !== 6){
+            return alertNotify("Предупреждение", "Введите корретный код", "warn");
+        }
+        
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/verify-recovery-password-code", HTTP_METHODS.POST, false, {
+            phoneNumber: formatPhoneNumber,
+            code
+        });
+
+        setIsLoading(false);
+
+        if(response?.data?.error){
+            setError(true);
+
+            return alertNotify("Ошибка", response.data.message, "error");
+        }
+
+        successCallback();
+    }
+
+    const recoveryPassword = async (phoneNumber, code, password, passwordAgain, successCallback = () => {}) => {
+        setError(false);
+
+        if(!password){
+            return alertNotify("Предупреждение", "Введите пароль", "warn");
+        }
+        else if(password.length < 8 || password.length > 32){
+            return alertNotify("Предупреждение", "Пароль не может быть меньше 8 и больше 32 символов", "warn");
+        }
+        else if(password !== passwordAgain){
+            return alertNotify("Предупреждение", "Пароли не совпадают", "warn");
         }
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.AUTH, "/login", HTTP_METHODS.POST, false, {
-            nickname,
+        const response = await request(REQUEST_TYPE.AUTH, "/recovery-password", HTTP_METHODS.PUT, true, {
             password
         });
 
         setIsLoading(false);
 
-        if(response?.data?.error || response === APP_STATUSES.SERVER_NOT_AVAILABLE){
+        if(response?.data?.error){
             setError(true);
-            return alertNotify("Ошибка", response?.data?.message, "error");
-        }
 
-        dispatch(setIsAuth(true));
-        dispatch(initUser(response?.user));
-        checkUserVerified(response?.user);
-
-        localStorage.setItem("accessToken", response?.accessToken);
-
-        alertNotify("Успешно", "Вы авторизовались!", "success");
-        successCallback();
-    }
-
-    const recovery = async () => {
-
-    }
-
-    const newTokens = async () => {
-        setError(false);
-        setIsLoading(true);
-
-        const response = await request(REQUEST_TYPE.AUTH, "/refresh", HTTP_METHODS.GET);
-
-        setIsLoading(false);
-
-        if(response?.data?.error){
-            return;
-        }
-
-        return response;
-    }
-
-    const logout = async (successCallback = () => {}) => {
-        setError(false);
-        setIsLoading(true);
-
-        const response = await request(REQUEST_TYPE.AUTH, "/logout", HTTP_METHODS.GET);
-
-        setIsLoading(false);
-
-        if(response?.data?.error){
             return alertNotify("Ошибка", response.data.message, "error");
         }
 
-        alertNotify("Успешно", "Вы вышли из аккаунта", "success");
-        successCallback();
-        clearLocalData();
-    }
-
-    const localLogout = (successCallback = () => {}) => {
-        clearLocalData();
         successCallback();
     }
 
@@ -291,7 +373,9 @@ const useAuth = () => {
         sendCodeRegister,
         verifyCodeRegister,
         login,
-        recovery,
+        sendRecoveryPasswordCode,
+        verifyRecoveryCode,
+        recoveryPassword,
         newTokens,
         logout,
         localLogout

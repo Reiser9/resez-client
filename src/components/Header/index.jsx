@@ -25,7 +25,7 @@ const Header = ({empty = false}) => {
     return (
         <header className={styles.header}>
             <Link to="/" className={styles.headerLogoInner}>
-                <img src="/assets/img/logo.svg" alt="logo" className={styles.headerLogo} />
+                <p className={styles.headerLogo}>ResEz</p>
             </Link>
 
             {!empty && (isAuth
