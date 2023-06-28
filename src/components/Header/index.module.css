@@ -9,6 +9,12 @@
     background: var(--white);
 }
 
+@media (max-width: 1500px) {
+    .header{
+        padding: 1.2rem 1.6rem;
+    }
+}
+
 .headerLogoInner{
     width: 89px;
     display: flex;
@@ -106,7 +112,7 @@
     flex-direction: column;
     align-items: flex-start;
     border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--lightLine);
     background: var(--white);
 }
 
@@ -161,6 +167,12 @@
     transition: .2s linear;
 }
 
+@media (max-width: 440px) {
+    .headerProfileMenuLink{
+        font-size: 1.4rem;
+    }
+}
+
 .headerProfileMenuLink:hover{
     background: var(--infoB);
     color: var(--main);
@@ -173,6 +185,12 @@
 
 .headerProfileMenuLink svg{
     width: 24px;
+}
+
+@media (max-width: 440px) {
+    .headerProfileMenuLink svg{
+        width: 20px;
+    }
 }
 
 .headerProfileMenuLink:hover svg path{

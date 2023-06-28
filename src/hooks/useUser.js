@@ -2,11 +2,12 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
-
-import { initUser } from '../redux/slices/user';
+import { APP_STATUSES } from '../consts/APP_STATUSES';
 
 import useRequest from './useRequest';
-import { setIsAuth } from '../redux/slices/auth';
+import useNotify from './useNotify';
+
+import { requestDataIsError } from '../utils/requestDataIsError';
 
 const useUser = () => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -14,6 +15,7 @@ const useUser = () => {
 
     const dispatch = useDispatch();
     const {request} = useRequest();
+    const {alertNotify} = useNotify();
 
     const getShortInfo = async () => {
         setError(false);
@@ -23,12 +25,18 @@ const useUser = () => {
 
         setIsLoading(false);
 
-        if(response?.data?.error){
-            return setError(true);
-        }
+        if(requestDataIsError(response)){
+            setError(true);
 
-        dispatch(setIsAuth(true));
-        dispatch(initUser(response));
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                case APP_STATUSES.NOT_AUTH:
+                    return;
+                default:
+                    return alertNotify("Ошибка", response.data.message, "error");
+            }
+        }
 
         return response;
     }

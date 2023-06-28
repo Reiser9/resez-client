@@ -85,7 +85,7 @@ const useRequest = () => {
 
             setIsLoading(false);
 
-            return response?.data || response;
+            return response;
         }
         catch(err){
             setError(true);
@@ -97,11 +97,15 @@ const useRequest = () => {
                 return APP_STATUSES.SERVER_NOT_AVAILABLE;
             }
 
+            if(err.response.status === 401){
+                return APP_STATUSES.NOT_AUTH;
+            }
+
             // if(){
             //     return APP_STATUSES.YOUR_BLOCKED;
             // }
 
-            return err?.response || err;
+            return err.response;
         }
     };
 

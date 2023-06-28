@@ -13,6 +13,7 @@ html{
     --text: #333;
     --textGrey: rgb(137 135 148);
     --hover: rgba(0, 0, 0, .06);
+    --lightLine: rgba(0, 0, 0, 0.05);
 
     /* Icons */
     --iconLightGrey: #fff;
@@ -94,6 +95,7 @@ body.dark{
     --line: #474747;
     --hover: rgba(255, 255, 255, .06);
     --lighten: #33333b;
+    --lightLine: rgba(255, 255, 255, 0.05);
 
     /* Icons */
     --iconLightGrey: rgb(127 126 143);
@@ -157,21 +159,15 @@ input::-webkit-inner-spin-button{
 }
 
 ::-webkit-scrollbar{
-    width: 4px;
-}
-
-::-webkit-scrollbar-thumb{
-    background: var(--main);
-}
-
-::-webkit-scrollbar-track{
-    background: var(--white);
+    width: 0;
+    height: 0;
 }
 
 #root{
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    overflow: hidden;
 }

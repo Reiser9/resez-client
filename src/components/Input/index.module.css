@@ -21,6 +21,13 @@
     min-height: 44px;
 }
 
+@media (max-width: 440px) {
+    .input{
+        min-height: 40px;
+        font-size: 1.5rem;
+    }
+}
+
 .disabled{
     opacity: 0.6;
     pointer-events: none;

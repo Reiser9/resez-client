@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from "react-redux";
-import { useNavigate } from 'react-router-dom';
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
+import { APP_STATUSES } from '../consts/APP_STATUSES';
 
 import { setAuthIsLoading, setDataAuth, setIsAuth, setVerified } from '../redux/slices/auth';
 import { initUser, setDataUser } from '../redux/slices/user';
@@ -10,11 +10,11 @@ import { setAppIsLoading, setDataApp } from '../redux/slices/app';
 import { setServerAvailable } from '../redux/slices/server';
 
 import {unmaskPhone} from '../utils/formatPhone';
+import { requestDataIsError } from '../utils/requestDataIsError';
 
 import useRequest from './useRequest';
 import useNotify from './useNotify';
 import useUser from './useUser';
-import { APP_STATUSES } from '../consts/APP_STATUSES';
 
 const useAuth = () => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -24,7 +24,6 @@ const useAuth = () => {
     const {request, getHealthServer} = useRequest();
     const {alertNotify} = useNotify();
     const {getShortInfo} = useUser();
-    const navigate = useNavigate();
 
     const clearLocalData = () => {
         localStorage.removeItem("accessToken");
@@ -74,23 +73,35 @@ const useAuth = () => {
 
         dispatch(setAppIsLoading(false));
 
-        if(response?.data?.error){
-            const tokens = await newTokens();
-            dispatch(setAuthIsLoading(false));
+        if(requestDataIsError(response)){
+            setError(true);
 
-            if(!tokens){
-                return clearLocalData()
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                case APP_STATUSES.NOT_AUTH:
+                    const tokens = await newTokens();
+                    dispatch(setAuthIsLoading(false));
+
+                    if(!tokens){
+                        return clearLocalData()
+                    }
+
+                    return checkAuth();
+                default:
+                    return alertNotify("Информация", response.data.message, "info");
             }
-
-            return checkAuth();
         }
 
-        const data = await getShortInfo();
+        const {data} = await getShortInfo();
+        dispatch(setAuthIsLoading(false));
 
         if(!data){
             return;
         }
 
+        dispatch(setIsAuth(true));
+        dispatch(initUser(data));
         dispatch(setVerified(data.isVerified));
         dispatch(setAuthIsLoading(false));
     }
@@ -103,11 +114,11 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response?.data?.error){
-            return;
+        if(requestDataIsError(response)){
+            return setError(true);
         }
 
-        return response;
+        return response.data;
     }
 
     const logout = async (successCallback = () => {}) => {
@@ -118,8 +129,13 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response?.data?.error){
-            return alertNotify("Ошибка", response.data.message, "error");
+        if(requestDataIsError(response)){
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                default:
+                    return alertNotify("Ошибка", "Попробуйте еще раз", "error")
+            }
         }
 
         alertNotify("Успешно", "Вы вышли из аккаунта", "success");
@@ -157,16 +173,24 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response?.data?.error || response === APP_STATUSES.SERVER_NOT_AVAILABLE){
+        if(requestDataIsError(response)){
             setError(true);
-            return alertNotify("Ошибка", response?.data?.message, "error");
+
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                default:
+                    return alertNotify("Ошибка", "Неверный логин или пароль", "error");
+            }
         }
 
-        dispatch(setIsAuth(true));
-        dispatch(initUser(response?.user));
-        checkUserVerified(response?.user);
+        const {data} = response;
 
-        localStorage.setItem("accessToken", response?.accessToken);
+        dispatch(setIsAuth(true));
+        dispatch(initUser(data.user));
+        checkUserVerified(data.user);
+
+        localStorage.setItem("accessToken", data.accessToken);
 
         alertNotify("Успешно", "Вы авторизовались!", "success");
         successCallback();
@@ -206,15 +230,23 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response?.data?.error){
+        if(requestDataIsError(response)){
             setError(true);
-            return alertNotify("Ошибка", response.data.message, "error");
+
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                default:
+                    return alertNotify("Ошибка", response.data.message, "error");
+            }
         }
 
-        dispatch(setIsAuth(true));
-        dispatch(initUser(response?.user));
+        const {data} = response;
 
-        localStorage.setItem("accessToken", response?.accessToken);
+        dispatch(setIsAuth(true));
+        dispatch(initUser(data.user));
+
+        localStorage.setItem("accessToken", data.accessToken);
 
         successCallback();
     }
@@ -227,14 +259,14 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response?.data?.error){
+        if(requestDataIsError(response)){
             setError(true);
 
-            switch(response?.status){
-                case 401:
-                    navigate("/login");
-                    clearLocalData();
-                    return alertNotify("Ошибка", "Пожалуйста, авторизуйтесь повторно и повторите попытку", "error");
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                case APP_STATUSES.NOT_AUTH:
+                    return; // Получение нового токена и вызов этой же функции
                 default:
                     return alertNotify("Ошибка", response.data.message, "error");
             }
@@ -258,22 +290,24 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response?.data?.error){
+        if(requestDataIsError(response)){
             setError(true);
 
-            switch(response?.data?.status){
-                case 401:
-                    navigate("/login");
-                    clearLocalData();
-                    return alertNotify("Ошибка", "Пожалуйста, авторизуйтесь повторно и повторите попытку", "error");
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                case APP_STATUSES.NOT_AUTH:
+                    return;
                 default:
                     return alertNotify("Ошибка", response.data.message, "error");
             }
         }
 
+        const {data} = response;
+
         dispatch(setIsAuth(true));
-        dispatch(initUser(response?.user));
-        checkUserVerified(response?.user);
+        dispatch(initUser(data.user));
+        checkUserVerified(data.user);
         
         successCallback();
     }
@@ -298,10 +332,15 @@ const useAuth = () => {
 
         setIsLoading(false);
 
-        if(response?.data?.error){
+        if(requestDataIsError(response)){
             setError(true);
 
-            return alertNotify("Ошибка", response.data.message, "error");
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                default:
+                    return alertNotify("Ошибка", response.data.message, "error");
+            }
         }
 
         successCallback();
@@ -324,23 +363,30 @@ const useAuth = () => {
         });
 
         setIsLoading(false);
-
-        if(response?.data?.error){
+        
+        if(requestDataIsError(response)){
             setError(true);
 
-            return alertNotify("Ошибка", response.data.message, "error");
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                default:
+                    return alertNotify("Ошибка", response.data.message, "error");
+            }
         }
 
         successCallback();
     }
 
-    const recoveryPassword = async (phoneNumber, code, password, passwordAgain, successCallback = () => {}) => {
+    const recoveryPassword = async (phoneNumber, code, password, passwordAgain, successCallback = () => {}, rejectCallback = () => {}) => {
         setError(false);
+
+        const formatPhoneNumber = unmaskPhone(phoneNumber);
 
         if(!password){
             return alertNotify("Предупреждение", "Введите пароль", "warn");
         }
-        else if(password.length < 8 || password.length > 32){
+        else if(password.length < 8 && password.length > 32){
             return alertNotify("Предупреждение", "Пароль не может быть меньше 8 и больше 32 символов", "warn");
         }
         else if(password !== passwordAgain){
@@ -349,16 +395,24 @@ const useAuth = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.AUTH, "/recovery-password", HTTP_METHODS.PUT, true, {
+        const response = await request(REQUEST_TYPE.AUTH, "/recovery-password", HTTP_METHODS.PUT, false, {
+            phoneNumber: formatPhoneNumber,
+            code,
             password
         });
 
         setIsLoading(false);
 
-        if(response?.data?.error){
+        if(requestDataIsError(response)){
             setError(true);
 
-            return alertNotify("Ошибка", response.data.message, "error");
+            switch(response){
+                case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                    return;
+                default:
+                    rejectCallback();
+                    return alertNotify("Ошибка", response.data.message, "error");
+            }
         }
 
         successCallback();

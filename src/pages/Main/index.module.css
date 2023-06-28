@@ -2,6 +2,7 @@
     width: 100%;
     display: flex;
     min-height: calc(100vh - 65px);
+    position: relative;
 }
 
 .sidebar{
@@ -13,6 +14,37 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 1.6rem 0;
+    -webkit-transition: .2s ease-in-out;
+    transition: max-width .2s ease-in-out;
+    transition-delay: .1s;
+    overflow-y: auto;
+}
+
+@media (max-width: 1500px) {
+    .sidebar{
+        max-width: 56px;
+        position: absolute;
+        height: 100%;
+        z-index: 5;
+        overflow-x: hidden;
+    }
+
+    .sidebar:hover{
+        max-width: 250px;
+    }
+}
+@media (max-width: 480px) {
+    .sidebar, .sidebar:hover{
+        max-width: 100%;
+    }
+
+    .sidebar{
+        transform: translateX(-110%);
+    }
+
+    .sidebar.active{
+        transform: translateX(0);
+    }
 }
 
 .content{
@@ -22,6 +54,23 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    overflow-y: auto;
+}
+
+@media (max-width: 1500px) {
+    .content{
+        margin-left: 5.6rem;
+    }
+}
+@media (max-width: 500px) {
+    .content{
+        padding: 1.2rem;
+    }
+}
+@media (max-width: 480px) {
+    .content{
+        margin-left: 0;
+    }
 }
 
 .sidebarLink{
@@ -30,6 +79,23 @@
     align-items: center;
     gap: 8px;
     padding: 0.8rem 2.4rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 1500px) {
+    .sidebarLink{
+        padding: .8rem 1.6rem;
+        gap: 16px;
+    }
+
+    .sidebar:hover .sidebarLink{
+        gap: 8px;
+    }
+}
+@media (max-width: 480px) {
+    .sidebar:hover .sidebarLink, .sidebarLink{
+        gap: 12px;
+    }
 }
 
 .sidebarLink:hover{
@@ -49,6 +115,7 @@
 .mainBlocks{
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
 }
 
@@ -61,6 +128,24 @@
     gap: 32px;
 }
 
+@media (max-width: 1100px) {
+    .mainBlock{
+        width: 100%;
+    }
+}
+@media (max-width: 600px) {
+    .mainBlock{
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 24px;
+    }
+}
+@media (max-width: 440px) {
+    .mainBlock{
+        padding: 1.6rem;
+    }
+}
+
 .mainBlockContent{
     width: 100%;
     display: flex;
@@ -69,10 +154,29 @@
     gap: 20px;
 }
 
+@media (max-width: 768px) {
+    .mainBlockContent{
+        gap: 8px;
+    }
+}
+
+.mainBlockContent p{
+    margin-bottom: 1.2rem;
+}
+
 .mainBlockImgInner, .mainBlockImg{
     width: 100%;
     max-width: 210px;
     max-height: 210px;
+    display: flex;
+    margin: auto 0;
+}
+
+@media (max-width: 1300px) {
+    .mainBlockImgInner, .mainBlockImg{
+        max-width: 150px;
+        max-height: 150px;
+    }
 }
 
 .mainBlockImgInner{
@@ -119,6 +223,12 @@
     gap: 24px;
 }
 
+@media (max-width: 500px) {
+    .benefits{
+        gap: 20px;
+    }
+}
+
 .benefitsTitle{
     text-align: center;
 }
@@ -143,10 +253,36 @@
     width: calc(100% / 3 - 32px / 3);
 }
 
+@media (max-width: 1100px) {
+    .benefitsItem, .benefitsItem.small{
+        width: 100%;
+    }
+
+    .benefitsItem.small:first-child, .benefitsItem.small:nth-child(2){
+        width: calc(100% / 2 - 16px / 2);
+    }
+}
+@media (max-width: 768px) {
+    .benefitsItem.small:first-child, .benefitsItem.small:nth-child(2){
+        width: 100%;
+    }
+}
+@media (max-width: 600px) {
+    .benefitsItem{
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 24px;
+    }
+}
+
 .benefitsItemTextInner{
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+}
+
+.benefitsItemTextInner p{
+    margin-bottom: 1.2rem;
 }

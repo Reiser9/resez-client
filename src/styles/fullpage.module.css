@@ -3,9 +3,16 @@
     flex-grow: 1;
     background: var(--input);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 3.2rem 2.4rem;
+    overflow-y: auto;
+}
+
+@media (max-width: 440px) {
+    .fullPage{
+        padding: 2rem 1.2rem;
+    }
 }
 
 .fullPageContent{
@@ -14,6 +21,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: auto 0;
 }
 
 .fullPageImg{
