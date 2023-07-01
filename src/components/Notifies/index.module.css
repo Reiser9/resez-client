@@ -39,6 +39,10 @@
     flex-shrink: 0;
 }
 
+.notifyItemIconWrapper svg{
+    width: 100%;
+}
+
 .notifyItemWrapper{
     width: 100%;
     display: flex;

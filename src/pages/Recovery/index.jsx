@@ -20,7 +20,7 @@ const Recovery = () => {
     const [password, setPassword] = React.useState("");
     const [passwordAgain, setPasswordAgain] = React.useState("");
 
-    const {sendRecoveryPasswordCode, verifyRecoveryCode, recoveryPassword} = useAuth();
+    const {isLoading, sendRecoveryPasswordCode, verifyRecoveryCode, recoveryPassword} = useAuth();
     const navigate = useNavigate();
 
     const getCode = () => {
@@ -32,7 +32,7 @@ const Recovery = () => {
     }
 
     const verifyPassword = () => {
-        recoveryPassword(phoneNumber, code, password, passwordAgain, () => navigate("/"));
+        recoveryPassword(phoneNumber, code, password, passwordAgain, () => navigate("/"), () => setStep(2));
     }
 
     return (
@@ -55,9 +55,9 @@ const Recovery = () => {
                     </div>}
 
                     <div className={auth.contentBottomInner}>
-                        {step === 1 && <Button className={auth.contentButton} onClick={getCode}>Восстановить</Button>}
-                        {step === 2 && <Button className={auth.contentButton} onClick={sendCode}>Отправить</Button>}
-                        {step === 3 && <Button className={auth.contentButton} onClick={verifyPassword}>Изменить пароль</Button>}
+                        {step === 1 && <Button loading={isLoading} className={auth.contentButton} onClick={getCode}>Восстановить</Button>}
+                        {step === 2 && <Button loading={isLoading} className={auth.contentButton} onClick={sendCode}>Отправить</Button>}
+                        {step === 3 && <Button loading={isLoading} className={auth.contentButton} onClick={verifyPassword}>Изменить пароль</Button>}
 
                         {step < 3 && <div className={auth.contentBottom}>
                             <p className={`${typography.text} ${auth.contentBottomText}`}>

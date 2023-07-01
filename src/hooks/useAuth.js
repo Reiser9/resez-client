@@ -84,8 +84,10 @@ const useAuth = () => {
                     dispatch(setAuthIsLoading(false));
 
                     if(!tokens){
-                        return clearLocalData()
+                        return clearLocalData();
                     }
+
+                    localStorage.setItem("accessToken", tokens.accessToken);
 
                     return checkAuth();
                 default:
@@ -386,7 +388,7 @@ const useAuth = () => {
         if(!password){
             return alertNotify("Предупреждение", "Введите пароль", "warn");
         }
-        else if(password.length < 8 && password.length > 32){
+        else if(password.length >= 8 && password.length <= 32){
             return alertNotify("Предупреждение", "Пароль не может быть меньше 8 и больше 32 символов", "warn");
         }
         else if(password !== passwordAgain){
@@ -423,16 +425,15 @@ const useAuth = () => {
         error,
         reload,
         checkAuth,
+        newTokens,
+        logout,
+        login,
         register,
         sendCodeRegister,
         verifyCodeRegister,
-        login,
         sendRecoveryPasswordCode,
         verifyRecoveryCode,
-        recoveryPassword,
-        newTokens,
-        logout,
-        localLogout
+        recoveryPassword
     }
 }
 
