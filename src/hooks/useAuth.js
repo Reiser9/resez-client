@@ -388,7 +388,7 @@ const useAuth = () => {
         if(!password){
             return alertNotify("Предупреждение", "Введите пароль", "warn");
         }
-        else if(password.length >= 8 && password.length <= 32){
+        else if(password.length < 8 && password.length > 32){
             return alertNotify("Предупреждение", "Пароль не может быть меньше 8 и больше 32 символов", "warn");
         }
         else if(password !== passwordAgain){

@@ -74,7 +74,7 @@ const Main = () => {
 
                         <div className={styles.mainBlock}>
                             <div className={styles.mainBlockContent}>
-                                <h1 className={`${typography.h2} ${styles.mainTitle}`}>Практикуйтесь <span>каждый день</span></h1>
+                                <h2 className={`${typography.h2} ${styles.mainTitle}`}>Практикуйтесь <span>каждый день</span></h2>
 
                                 <p className={`${typography.text} ${styles.mainSubtitle}`}>
                                     Добавляй предмет для подготовки в <span>тренинг</span> и при каждом заходе на сайт ты будешь видеть быструю задачу на повторение
@@ -94,12 +94,12 @@ const Main = () => {
                     </div>
 
                     <div className={styles.benefits}>
-                        <h3 className={`${typography.h2} ${styles.benefitsTitle}`}>Что крутого у нас есть?</h3>
+                        <h3 className={`${typography.h1} ${styles.benefitsTitle}`}>Что крутого у нас есть?</h3>
 
                         <div className={styles.benefitsContent}>
                             <div className={`${styles.benefitsItem} ${styles.small}`}>
                                 <div className={styles.benefitsItemTextInner}>
-                                    <p className={typography.h3}>Достижения</p>
+                                    <h4 className={typography.h3}>Достижения</h4>
 
                                     <p className={typography.text}>
                                         Выполняй задания и получай эксклюзивные награды, которые никак больше не получить.
@@ -109,7 +109,7 @@ const Main = () => {
 
                             <div className={`${styles.benefitsItem} ${styles.small}`}>
                                 <div className={styles.benefitsItemTextInner}>
-                                    <p className={typography.h3}>Система уровней</p>
+                                    <h4 className={typography.h3}>Система уровней</h4>
 
                                     <p className={typography.text}>
                                     Соревнуйтесь с друзьями и с другими людьми, с которыми познакомитесь на нашем проекте. Покажите всем, кто тут батя с наивысшим уровнем знаний.
@@ -119,7 +119,7 @@ const Main = () => {
 
                             <div className={`${styles.benefitsItem} ${styles.small}`}>
                                 <div className={styles.benefitsItemTextInner}>
-                                    <p className={typography.h3}>Техническая поддержка</p>
+                                    <h4 className={typography.h3}>Техническая поддержка</h4>
 
                                     <p className={typography.text}>
                                         Что бы у вас не случилось - мы всегда на связи и поможем решить любой ваш вопрос. Также, если вы нашли ошибку или же у вас есть предложение по улучшению нашего проекта - милости прошу.
@@ -129,7 +129,7 @@ const Main = () => {
 
                             <div className={styles.benefitsItem}>
                                 <div className={styles.benefitsItemTextInner}>
-                                    <p className={typography.h3}>Цветовая палитра сайта</p>
+                                    <h4 className={typography.h3}>Цветовая палитра сайта</h4>
 
                                     <p className={typography.text}>
                                         Надоел цвет сайта? Не беда! Меняй его на тот, который тебе по душе. Также в профиле ты найдешь много разных настроек, которые помогут сделать наш сайт для тебя комфортным и удобным, в общем, веселись в свое удовольствие!
@@ -149,7 +149,7 @@ const Main = () => {
 
                             <div className={styles.benefitsItem}>
                                 <div className={styles.benefitsItemTextInner}>
-                                    <p className={typography.h3}>Мессенджер</p>
+                                    <h4 className={typography.h3}>Мессенджер</h4>
 
                                     <p className={typography.text}>
                                         Добавляй в друзья, общайся с утра до ночи, весело проводи время, готовься к экзаменам, задавай вопросы и весело проводи время, все это в одном месте.
