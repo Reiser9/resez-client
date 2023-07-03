@@ -1,0 +1,8 @@
+.containerFull, .container{
+    width: 100%;
+    max-width: 1600px;
+}
+
+.container{
+    max-width: 1200px;
+}

@@ -1,14 +1,19 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import typography from '../../styles/typography.module.css';
+import base from '../../styles/base.module.css';
 import styles from "./index.module.css";
 
-import { ArrowRight, Code, Fire, Message, Practice, Study, Tests, Theme, Training, Trophy, Messager } from "../../components/Icons";
+import { Code, Fire, Message, Practice, Study, Tests, Theme, Training, Trophy, Messager } from "../../components/Icons";
 
 import TitleWrpapper from "../../components/Wrapper/TitleWrapper";
+import Block from "./Block";
+import useSession from "../../hooks/useSession";
 
 const Main = () => {
+    const {getAllSessions} = useSession();
+
     return (
         <TitleWrpapper pageTitle="ResEz">
             <div className={styles.wrapper}>
@@ -50,121 +55,70 @@ const Main = () => {
                     </NavLink>
                 </aside>
 
-                <div className={styles.content}>
-                    <div className={styles.mainBlocks}>
-                        <div className={styles.mainBlock}>
-                            <div className={styles.mainBlockContent}>
-                                <h1 className={`${typography.h1} ${styles.mainTitle}`}>Подготовиться к ЕГЭ? <span>Легко!</span></h1>
+                <div className={styles.contentBackground}>
+                    <div className={`${styles.content} ${base.containerFull}`}>
+                        <div className={styles.mainBlocks}>
+                            <Block
+                                title="Подготовиться к ЕГЭ? <span>Легко!</span>"
+                                text="<span>ResEz</span> создан для вашей комфортной подготовки, расскажем все, что вас будет ждать на действующем экзамене"
+                                buttonText="Подробнее"
+                                to="/info"
+                                icon={<Study />}
+                                titleTag="h1"
+                            />
 
-                                <p className={`${typography.text} ${styles.mainSubtitle}`}>
-                                    <span>ResEz</span> создан для вашей комфортной подготовки, расскажем все, что вас будет ждать на действующем экзамене
-                                </p>
-
-                                <Link to="/info" className={styles.mainBlockLink}>
-                                    Подробнее
-
-                                    <ArrowRight />
-                                </Link>
-                            </div>
-
-                            <div className={styles.mainBlockImgInner}>
-                                <Study className={styles.mainBlockImg} />
-                            </div>
+                            <Block
+                                title="Практикуйтесь <span>каждый день</span>"
+                                text="Добавляй предмет для подготовки в <span>тренинг</span> и при каждом заходе на сайт ты будешь видеть быструю задачу на повторение"
+                                buttonText="Подробнее"
+                                to="/info"
+                                icon={<Practice />}
+                                titleTag="h2"
+                            />
                         </div>
 
-                        <div className={styles.mainBlock}>
-                            <div className={styles.mainBlockContent}>
-                                <h2 className={`${typography.h2} ${styles.mainTitle}`}>Практикуйтесь <span>каждый день</span></h2>
+                        <div className={styles.benefits}>
+                            <h3 className={`${typography.h1} ${styles.benefitsTitle}`} onClick={getAllSessions}>Что крутого у нас есть?</h3>
 
-                                <p className={`${typography.text} ${styles.mainSubtitle}`}>
-                                    Добавляй предмет для подготовки в <span>тренинг</span> и при каждом заходе на сайт ты будешь видеть быструю задачу на повторение
-                                </p>
+                            <div className={styles.benefitsContent}>
+                                <Block
+                                    title="Достижения"
+                                    text="Выполняй задания и получай эксклюзивные награды, которые никак больше не получить."
+                                    type="small"
+                                    smallPadding
+                                />
 
-                                <Link to="/info" className={styles.mainBlockLink}>
-                                    Подробнее
+                                <Block
+                                    title="Система уровней"
+                                    text="Соревнуйтесь с друзьями и с другими людьми, с которыми познакомитесь на нашем проекте. Покажите всем, кто тут батя с наивысшим уровнем знаний."
+                                    type="small"
+                                    smallPadding
+                                />
 
-                                    <ArrowRight />
-                                </Link>
-                            </div>
+                                <Block
+                                    title="Техническая поддержка"
+                                    text="Что бы у вас не случилось - мы всегда на связи и поможем решить любой ваш вопрос. Также, если вы нашли ошибку или же у вас есть предложение по улучшению нашего проекта - милости прошу."
+                                    type="small"
+                                    smallPadding
+                                />
 
-                            <div className={styles.mainBlockImgInner}>
-                                <Practice className={styles.mainBlockImg} />
-                            </div>
-                        </div>
-                    </div>
+                                <Block
+                                    title="Цветовая палитра сайта"
+                                    text="Надоел цвет сайта? Не беда! Меняй его на тот, который тебе по душе. Также в профиле ты найдешь много разных настроек, которые помогут сделать наш сайт для тебя комфортным и удобным, в общем, веселись в свое удовольствие!"
+                                    smallPadding
+                                    to="/info"
+                                    buttonText="В профиль"
+                                    icon={<Theme />}
+                                />
 
-                    <div className={styles.benefits}>
-                        <h3 className={`${typography.h1} ${styles.benefitsTitle}`}>Что крутого у нас есть?</h3>
-
-                        <div className={styles.benefitsContent}>
-                            <div className={`${styles.benefitsItem} ${styles.small}`}>
-                                <div className={styles.benefitsItemTextInner}>
-                                    <h4 className={typography.h3}>Достижения</h4>
-
-                                    <p className={typography.text}>
-                                        Выполняй задания и получай эксклюзивные награды, которые никак больше не получить.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className={`${styles.benefitsItem} ${styles.small}`}>
-                                <div className={styles.benefitsItemTextInner}>
-                                    <h4 className={typography.h3}>Система уровней</h4>
-
-                                    <p className={typography.text}>
-                                    Соревнуйтесь с друзьями и с другими людьми, с которыми познакомитесь на нашем проекте. Покажите всем, кто тут батя с наивысшим уровнем знаний.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className={`${styles.benefitsItem} ${styles.small}`}>
-                                <div className={styles.benefitsItemTextInner}>
-                                    <h4 className={typography.h3}>Техническая поддержка</h4>
-
-                                    <p className={typography.text}>
-                                        Что бы у вас не случилось - мы всегда на связи и поможем решить любой ваш вопрос. Также, если вы нашли ошибку или же у вас есть предложение по улучшению нашего проекта - милости прошу.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className={styles.benefitsItem}>
-                                <div className={styles.benefitsItemTextInner}>
-                                    <h4 className={typography.h3}>Цветовая палитра сайта</h4>
-
-                                    <p className={typography.text}>
-                                        Надоел цвет сайта? Не беда! Меняй его на тот, который тебе по душе. Также в профиле ты найдешь много разных настроек, которые помогут сделать наш сайт для тебя комфортным и удобным, в общем, веселись в свое удовольствие!
-                                    </p>
-
-                                    <Link to="/info" className={styles.mainBlockLink}>
-                                        В профиль
-
-                                        <ArrowRight />
-                                    </Link>
-                                </div>
-
-                                <div className={styles.mainBlockImgInner}>
-                                    <Theme className={styles.mainBlockImg} />
-                                </div>
-                            </div>
-
-                            <div className={styles.benefitsItem}>
-                                <div className={styles.benefitsItemTextInner}>
-                                    <h4 className={typography.h3}>Мессенджер</h4>
-
-                                    <p className={typography.text}>
-                                        Добавляй в друзья, общайся с утра до ночи, весело проводи время, готовься к экзаменам, задавай вопросы и весело проводи время, все это в одном месте.
-                                    </p>
-
-                                    <Link to="/info" className={styles.mainBlockLink}>
-                                        Общаться
-
-                                        <ArrowRight />
-                                    </Link>
-                                </div>
-
-                                <div className={styles.mainBlockImgInner}>
-                                    <Messager className={styles.mainBlockImg} />
-                                </div>
+                                <Block
+                                    title="Мессенджер"
+                                    text="Добавляй в друзья, общайся с утра до ночи, весело проводи время, готовься к экзаменам, задавай вопросы и весело проводи время, все это в одном месте."
+                                    smallPadding
+                                    to="/info"
+                                    buttonText="Общаться"
+                                    icon={<Messager />}
+                                />
                             </div>
                         </div>
                     </div>

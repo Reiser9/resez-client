@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
 
-import {BASE_API_URL_USER, BASE_API_URL_AUTH, BASE_API_URL_EMPTY} from '../consts/API_URLS';
+import {BASE_API_URL_USER, BASE_API_URL_AUTH, BASE_API_URL_EMPTY, BASE_API_URL_SESSION} from '../consts/API_URLS';
 import {HTTP_METHODS, REQUEST_TYPE} from '../consts/HTTP';
 import {APP_STATUSES} from '../consts/APP_STATUSES';
 
@@ -24,6 +24,11 @@ const useRequest = () => {
         withCredentials: true
     });
 
+    const sessionRequest = axios.create({
+        baseURL: BASE_API_URL_SESSION,
+        withCredentials: true
+    });
+
     const emptyRequest = axios.create({
         baseURL: BASE_API_URL_EMPTY,
         withCredentials: true
@@ -32,6 +37,7 @@ const useRequest = () => {
     const axiosInstancesMap = new Map([
         [REQUEST_TYPE.AUTH, authRequest],
         [REQUEST_TYPE.USER, userRequest],
+        [REQUEST_TYPE.SESSION, sessionRequest],
         [REQUEST_TYPE.EMPTY, emptyRequest]
     ]);
 

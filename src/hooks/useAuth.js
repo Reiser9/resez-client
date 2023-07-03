@@ -75,12 +75,16 @@ const useAuth = () => {
 
         if(requestDataIsError(response)){
             setError(true);
+            dispatch(setAuthIsLoading(false));
 
             switch(response){
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 case APP_STATUSES.NOT_AUTH:
+                    dispatch(setAuthIsLoading(true));
+
                     const tokens = await newTokens();
+                    
                     dispatch(setAuthIsLoading(false));
 
                     if(!tokens){

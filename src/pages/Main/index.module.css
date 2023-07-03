@@ -47,10 +47,16 @@
     }
 }
 
+.contentBackground{
+    width: 100%;
+    background: var(--input);
+    display: flex;
+    justify-content: center;
+}
+
 .content{
     width: 100%;
-    padding: 2.4rem 2.4rem 20rem 2.4rem;
-    background: var(--input);
+    padding: 2.4rem 2.4rem 15rem 2.4rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -62,14 +68,9 @@
         margin-left: 5.6rem;
     }
 }
-@media (max-width: 768px) {
-    .content{
-        padding: 2.4rem 2.4rem 10rem 2.4rem;
-    }
-}
 @media (max-width: 500px) {
     .content{
-        padding: 1.2rem 1.2rem 10rem 1.2rem;
+        padding: 1.2rem 1.2rem 15rem 1.2rem;
     }
 }
 @media (max-width: 480px) {
@@ -125,7 +126,6 @@
 }
 
 .mainBlock{
-    width: calc(100% / 2 - 16px / 2);
     padding: 2.4rem;
     border-radius: 8px;
     background: var(--white);
@@ -133,11 +133,34 @@
     gap: 32px;
 }
 
+.mainBlock.p16{
+    padding: 1.6rem;
+}
+
+.mainBlock.big{
+    width: calc(100% / 2 - 16px / 2);
+}
+
+.mainBlock.small{
+    width: calc(100% / 3 - 32px / 3);
+}
+
 @media (max-width: 1100px) {
-    .mainBlock{
+    .mainBlock.big, .mainBlock.small{
+        width: 100%;
+    }
+
+    .mainBlock.small:first-child, .mainBlock.small:nth-child(2){
+        width: calc(100% / 2 - 16px / 2);
+    }
+}
+
+@media (max-width: 768px) {
+    .mainBlock.small:first-child, .mainBlock.small:nth-child(2){
         width: 100%;
     }
 }
+
 @media (max-width: 600px) {
     .mainBlock{
         flex-direction: column-reverse;
@@ -145,6 +168,7 @@
         gap: 24px;
     }
 }
+
 @media (max-width: 440px) {
     .mainBlock{
         padding: 1.6rem;
@@ -159,17 +183,21 @@
     gap: 20px;
 }
 
+.p16 .mainBlockContent{
+    gap: 8px;
+}
+
 @media (max-width: 768px) {
     .mainBlockContent{
         gap: 8px;
     }
 }
 
-.mainBlockContent p{
+.mainBlockContent p:not(:last-child){
     margin-bottom: 1.2rem;
 }
 
-.mainBlockImgInner, .mainBlockImg{
+.mainBlockImgInner, .mainBlockImgInner svg{
     width: 100%;
     max-width: 210px;
     max-height: 210px;
@@ -178,7 +206,7 @@
 }
 
 @media (max-width: 1300px) {
-    .mainBlockImgInner, .mainBlockImg{
+    .mainBlockImgInner, .mainBlockImgInner svg{
         max-width: 150px;
         max-height: 150px;
     }
@@ -243,41 +271,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
-}
-
-.benefitsItem{
-    width: calc(100% / 2 - 16px / 2);
-    padding: 1.6rem;
-    border-radius: 8px;
-    background: var(--white);
-    display: flex;
-    gap: 30px;
-}
-
-.benefitsItem.small{
-    width: calc(100% / 3 - 32px / 3);
-}
-
-@media (max-width: 1100px) {
-    .benefitsItem, .benefitsItem.small{
-        width: 100%;
-    }
-
-    .benefitsItem.small:first-child, .benefitsItem.small:nth-child(2){
-        width: calc(100% / 2 - 16px / 2);
-    }
-}
-@media (max-width: 768px) {
-    .benefitsItem.small:first-child, .benefitsItem.small:nth-child(2){
-        width: 100%;
-    }
-}
-@media (max-width: 600px) {
-    .benefitsItem{
-        flex-direction: column-reverse;
-        align-items: center;
-        gap: 24px;
-    }
 }
 
 .benefitsItemTextInner{
