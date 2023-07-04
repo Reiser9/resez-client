@@ -23,7 +23,7 @@ root.render(
         <BrowserRouter>
             <ThemeWrapper>
                 <InitialWrapper>
-                    <SkeletonTheme baseColor="#ededed" highlightColor="#d8d8d8">
+                    <SkeletonTheme baseColor="var(--inputDarken)" highlightColor="var(--input)">
                         <ConfigProvider
                             theme={{
                                 token: {

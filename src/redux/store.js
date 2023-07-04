@@ -5,6 +5,7 @@ import notifySlice from "./slices/notify";
 import userSlice from "./slices/user";
 import serverSlice from "./slices/server";
 import appSlice from "./slices/app";
+import sessionSlice from "./slices/session";
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         notify: notifySlice,
         user: userSlice,
         server: serverSlice,
-        app: appSlice
+        app: appSlice,
+        session: sessionSlice
     },
 });

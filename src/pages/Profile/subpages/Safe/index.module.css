@@ -1,0 +1,127 @@
+.sessions{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.sessionContent{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.sessionItem{
+    width: calc(100% / 3 - 40px / 3);
+    padding: 2rem;
+    border-radius: 4px;
+    background: var(--input);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+@media (max-width: 1130px) {
+    .sessionItem{
+        width: calc(100% / 2 - 20px / 2);
+    }
+}
+@media (max-width: 900px) {
+    .sessionItem{
+        width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .sessionItem{
+        width: calc(100% / 2 - 20px / 2);
+    }
+}
+@media (max-width: 640px) {
+    .sessionItem{
+        width: 100%;
+    }
+}
+
+.sessionItem.disabled{
+    filter: grayscale(1);
+    opacity: 0.6;
+}
+
+.sessionItemIcon{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lighten);
+}
+
+.sessionItemIcon svg{
+    width: 28px;
+    flex-shrink: 0;
+}
+
+.sessionItemIcon svg path{
+    stroke: var(--main);
+}
+
+.sessionItemPoints{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 2.4rem;
+}
+
+.sessionItemPoint{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.sessionItemPointTitle{
+    color: var(--textGrey);
+}
+
+.currentSession{
+    position: relative;
+    color: var(--success);
+}
+
+.currentSession:before{
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(100% + 8px);
+    background: var(--success);
+}
+
+.sessionItemButton, .sessionItemEnded{
+    margin-top: auto;
+}
+
+.sessionItemEnded{
+    width: 100%;
+    text-align: center;
+    padding: 1rem 2.4rem;
+    min-height: 44px;
+}
+
+@media (max-width: 440px) {
+    .sessionItemEnded{
+        min-height: 40px;
+        font-size: 1.5rem;
+    }
+}

@@ -11,16 +11,36 @@ const typesButton = {
     "empty": styles.empty
 }
 
-const Button = ({text, auto = false, loading = false, type = "fill", to = "", className, children, ...props}) => {
+const themesButton = {
+    "primary": styles.primary,
+    "danger": styles.danger,
+}
+
+const Button = ({
+    text,
+    auto = false,
+    loading = false,
+    disabled = false,
+    type = "fill",
+    theme = "primary",
+    to = "",
+    className,
+    children,
+    ...props
+}) => {
     return (
         <div className={`${styles.buttonInner}${className ? ` ${className}` : ""}${auto ? ` ${styles.auto}` : ""}`}>
-            {to ? <Link to={to} className={`${styles.button} ${typesButton[type]}`} {...props}>
+            {disabled ? <button className={`${styles.button} ${styles.disabled} ${typesButton[type]} ${themesButton[theme]}`}>
+                {text}
+                {children}
+            </button>
+            : to ? <Link to={to} className={`${styles.button} ${typesButton[type]} ${themesButton[theme]}`} {...props}>
                 {text}
                 {children}
             </Link>
             : (loading
-                ? <button className={`${styles.button} ${styles.disabled} ${typesButton[type]}`}></button>
-                : <button className={`${styles.button} ${typesButton[type]}`} {...props}>
+                ? <button className={`${styles.button} ${styles.disabled} ${typesButton[type]} ${themesButton[theme]}`}></button>
+                : <button className={`${styles.button} ${typesButton[type]} ${themesButton[theme]}`} {...props}>
                     {text}
                     {children}
                 </button>)}

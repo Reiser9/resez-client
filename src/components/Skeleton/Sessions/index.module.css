@@ -1,0 +1,25 @@
+.sessionItem{
+    width: 100%;
+    height: 61px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (max-width: 480px) {
+    .sessionItem{
+        height: 59px;
+    }
+}
+
+@media (max-width: 375px) {
+    .sessionItem{
+        height: 138px;
+    }
+}
+
+.sessionSubtitle{
+    width: 100%;
+    max-width: 115px;
+    height: 22px;
+}

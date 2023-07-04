@@ -22,9 +22,14 @@
     }
 }
 
-.fill{
+.fill.primary{
     background: var(--main);
     border: 1px solid var(--main);
+}
+
+.fill.danger{
+    background: var(--error);
+    border: 1px solid var(--error);
 }
 
 .fill:hover{
@@ -33,22 +38,45 @@
 
 .outline{
     background: none;
+}
+
+.outline.primary{
     color: var(--main);
     border: 1px solid var(--main);
+}
+
+.outline.danger{
+    color: var(--error);
+    border: 1px solid var(--error);
 }
 
 .outline:hover{
     background: var(--lighten);
 }
 
+.outline.danger:hover{
+    background: var(--errorB);
+}
+
 .empty{
     background: none;
-    color: var(--main);
     border: 1px transparent;
+}
+
+.empty.primary{
+    color: var(--main);
+}
+
+.empty.danger{
+    color: var(--error);
 }
 
 .empty:hover{
     background: var(--hover);
+}
+
+.empty.danger:hover{
+    background: var(--errorB);
 }
 
 .auto{
@@ -57,7 +85,7 @@
 
 .disabled{
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 .buttonPreloader{

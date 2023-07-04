@@ -7,6 +7,7 @@ html{
     --main: #007CEE;
     --lighten: #E6F2FE;
     --input: #F5F7FA;
+    --inputDarken: #eaedf0;
     --white: #fff;
     --line: #eeedf0;
     --grey: #898794;
@@ -86,6 +87,7 @@ body{
 body.dark{
     --white: #2d2c36;
     --input: #232229;
+    --inputDarken: #131316;
     --text: #E5E8EB;
     --infoB: #25252b;
     --successB: #25252b;

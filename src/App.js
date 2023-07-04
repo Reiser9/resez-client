@@ -22,7 +22,7 @@ const App = () => {
         <Routes>
             <Route path="/" element={<DefaultWrapper />}>
                 <Route index element={withSuspense(Main)} />
-                <Route path="profile" element={withSuspense(Profile)} />
+                <Route path="profile/*" element={withSuspense(Profile)} />
                 <Route path="*" element={<Navigate to={"/404"} />} />
             </Route>
 
