@@ -6,7 +6,13 @@ import {BASE_API_URL_USER, BASE_API_URL_AUTH, BASE_API_URL_EMPTY, BASE_API_URL_S
 import {HTTP_METHODS, REQUEST_TYPE} from '../consts/HTTP';
 import {APP_STATUSES} from '../consts/APP_STATUSES';
 
-import {setServerAvailable} from '../redux/slices/server';
+import { setDataUser } from '../redux/slices/user';
+import { setAuthIsLoading, setDataAuth, setIsAuth } from '../redux/slices/auth';
+import { setDataApp } from '../redux/slices/app';
+import { setServerAvailable } from '../redux/slices/server';
+import { setDataSession } from '../redux/slices/session';
+
+import { requestDataIsError } from '../utils/requestDataIsError';
 
 const useRequest = () => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -40,6 +46,48 @@ const useRequest = () => {
         [REQUEST_TYPE.SESSION, sessionRequest],
         [REQUEST_TYPE.EMPTY, emptyRequest]
     ]);
+
+    const clearLocalData = () => {
+        localStorage.removeItem("accessToken");
+
+        dispatch(setDataUser());
+        dispatch(setDataAuth());
+        dispatch(setDataApp());
+        dispatch(setDataSession());
+
+        dispatch(setIsAuth(false));
+    }
+
+    const newTokens = async () => {
+        setError(false);
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/refresh", HTTP_METHODS.GET);
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return setError(true);
+        }
+
+        return response.data;
+    }
+
+    const noAuthController = async (callback = () => {}) => {
+        setIsLoading(true);
+
+        const tokens = await newTokens();
+
+        setIsLoading(false);
+
+        if(!tokens){
+            return clearLocalData();
+        }
+
+        localStorage.setItem("accessToken", tokens.accessToken);
+
+        return callback();
+    }
 
     const getHealthServer = async () => {
         try{
@@ -118,7 +166,14 @@ const useRequest = () => {
         }
     };
 
-    return {isLoading, error, request, getHealthServer};
+    return {
+        isLoading,
+        error,
+        request,
+        getHealthServer,
+        noAuthController,
+        clearLocalData
+    };
 }
 
 export default useRequest;

@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 import { APP_STATUSES } from '../consts/APP_STATUSES';
 
-import { setAuthIsLoading, setDataAuth, setIsAuth, setVerified } from '../redux/slices/auth';
-import { initUser, setDataUser } from '../redux/slices/user';
-import { setAppIsLoading, setDataApp } from '../redux/slices/app';
+import { setAuthIsLoading, setIsAuth, setVerified } from '../redux/slices/auth';
+import { initUser } from '../redux/slices/user';
+import { setAppIsLoading } from '../redux/slices/app';
 
 import {unmaskPhone} from '../utils/formatPhone';
 import { requestDataIsError } from '../utils/requestDataIsError';
@@ -20,19 +20,9 @@ const useAuth = () => {
     const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
-    const {request, getHealthServer} = useRequest();
+    const {request, getHealthServer, clearLocalData, noAuthController} = useRequest();
     const {alertNotify} = useNotify();
     const {getShortInfo} = useUser();
-
-    const clearLocalData = () => {
-        localStorage.removeItem("accessToken");
-
-        dispatch(setDataUser());
-        dispatch(setDataAuth());
-        dispatch(setDataApp());
-
-        dispatch(setIsAuth(false));
-    }
 
     const checkUserVerified = (user) => {
         if(user?.isVerified){
@@ -53,37 +43,6 @@ const useAuth = () => {
         }
 
         dispatch(setAppIsLoading(false));
-    }
-
-    const newTokens = async () => {
-        setError(false);
-        setIsLoading(true);
-
-        const response = await request(REQUEST_TYPE.AUTH, "/refresh", HTTP_METHODS.GET);
-
-        setIsLoading(false);
-
-        if(requestDataIsError(response)){
-            return setError(true);
-        }
-
-        return response.data;
-    }
-
-    const noAuthController = async (callback = () => {}) => {
-        dispatch(setAuthIsLoading(true));
-
-        const tokens = await newTokens();
-        
-        dispatch(setAuthIsLoading(false));
-
-        if(!tokens){
-            return clearLocalData();
-        }
-
-        localStorage.setItem("accessToken", tokens.accessToken);
-
-        return callback();
     }
 
     const checkAuth = async () => {
@@ -110,7 +69,10 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(checkAuth);
+                    dispatch(setAuthIsLoading(true));
+                    await noAuthController(checkAuth);
+                    return dispatch(setAuthIsLoading(false));
+                    // Попробовать улучшить код
                 default:
                     return alertNotify("Информация", response.data.message, "info");
             }
@@ -142,7 +104,7 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(checkAuth);
+                    return noAuthController(() => logout(successCallback));
                 default:
                     return alertNotify("Ошибка", "Попробуйте еще раз", "error");
             }
@@ -271,7 +233,7 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(sendCodeRegister);
+                    return noAuthController(() => sendCodeRegister(successCallback));
                 default:
                     return alertNotify("Ошибка", response.data.message, "error");
             }
@@ -302,7 +264,7 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => verifyCodeRegister(code));
+                    return noAuthController(() => verifyCodeRegister(code, successCallback));
                 default:
                     return alertNotify("Ошибка", response.data.message, "error");
             }
@@ -314,6 +276,7 @@ const useAuth = () => {
         dispatch(initUser(data.user));
         checkUserVerified(data.user);
         
+        alertNotify("Успешно", "Вы зарегистрировались", "success");
         successCallback();
     }
 
@@ -427,9 +390,7 @@ const useAuth = () => {
         isLoading,
         error,
         reload,
-        noAuthController,
         checkAuth,
-        newTokens,
         logout,
         login,
         register,

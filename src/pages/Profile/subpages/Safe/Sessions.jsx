@@ -6,18 +6,21 @@ import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
 import useSession from '../../../../hooks/useSession';
+import useAuth from '../../../../hooks/useAuth';
 
 import SessionItem from '../../SessionItem';
 import BackButton from '../../../../components/BackButton';
 import Button from '../../../../components/Button';
 
 const Sessions = () => {
-    const {isLoading, getAllSessions} = useSession();
+    const {isLoading, getAllSessions, endSession} = useSession();
     const {sessions} = useSelector(state => state.session);
     const location = useLocation();
 
+    const {logout} = useAuth();
+
     React.useEffect(() => {
-        getAllSessions(1, 5);
+        getAllSessions();
     }, []);
 
     return (
@@ -30,14 +33,14 @@ const Sessions = () => {
             </div>
 
             <div className={styles.sessionContent}>
-                <SessionItem current data={sessions?.current || {}} active={location?.state?.id === sessions?.current?.id} />
+                <SessionItem current data={sessions?.current || {}} active={location?.state?.id === sessions?.current?.id} callback={() => logout()} />
 
-                {sessions?.other?.map(data => <SessionItem key={data.id} data={data} active={location?.state?.id === data.id} />)}
+                {sessions?.other?.map(data => <SessionItem key={data.id} data={data} active={location?.state?.id === data.id} callback={() => endSession(data.id)} />)}
             </div>
 
-            <Button type="empty" auto className={styles.sessionsMoreButton}>
+            {!sessions?.isLast && <Button loading={isLoading} type="empty" auto className={styles.sessionsMoreButton} onClick={() => getAllSessions(sessions?.page + 1, 6)}>
                 Показать еще
-            </Button>
+            </Button>}
         </div>
     )
 }

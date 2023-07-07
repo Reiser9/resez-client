@@ -13,14 +13,26 @@ export const sessionSlice = createSlice({
             state.sessionsIsLoading = action.payload;
         },
         initSessions: (state, action) => {
-            state.sessions = action.payload;
-        }
+            if(state.sessions.other){
+                const currentOther = state.sessions.other;
+
+                state.sessions = {
+                    ...action.payload,
+                    other: [...currentOther, ...action.payload?.other]
+                };
+            }
+            else{
+                state.sessions = action.payload;
+            }
+        },
+        setDataSession: () => initialState
     }
 });
 
 export const {
     setSessionsIsLoading,
-    initSessions
+    initSessions,
+    setDataSession
 } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

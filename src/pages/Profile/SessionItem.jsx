@@ -7,8 +7,6 @@ import { Desktop, Mobile } from '../../components/Icons';
 
 import { formatDate } from '../../utils/formatDate';
 
-import useSession from '../../hooks/useSession';
-
 import Button from '../../components/Button';
 
 const devices = {
@@ -16,10 +14,8 @@ const devices = {
     "phone": <Mobile />
 }
 
-const SessionItem = ({current = false, data, active}) => {
-    const {isActive, browser, deviceType, date, ip, country, city, browserVersion, os, platform, id} = data;
-
-    const {endSession} = useSession();
+const SessionItem = ({current = false, data, active, callback = () => {}}) => {
+    const {isActive, browser, deviceType, date, ip, country, city, browserVersion, os, platform} = data;
 
     return (
         <div className={`${styles.sessionItem}${!isActive ? ` ${styles.disabled}` : ""}${active ? ` ${styles.active}` : ""}`}>
@@ -74,7 +70,7 @@ const SessionItem = ({current = false, data, active}) => {
             </div>
             
             {isActive
-            ? <Button type="empty" theme="danger" className={styles.sessionItemButton} onClick={() => endSession(id)}>
+            ? <Button type="empty" theme="danger" className={styles.sessionItemButton} onClick={callback}>
                 Завершить сессию
             </Button>
             : <div className={styles.sessionItemEnded}>

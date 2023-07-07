@@ -9,7 +9,6 @@ import {requestDataIsError} from '../utils/requestDataIsError';
 
 import useRequest from "./useRequest";
 import useNotify from './useNotify';
-import useAuth from './useAuth';
 
 import { setSessionsIsLoading, initSessions } from '../redux/slices/session';
 
@@ -20,14 +19,13 @@ const useSession = () => {
     const {sessions} = useSelector(state => state.session);
 
     const dispatch = useDispatch();
-    const {request} = useRequest();
-    const {noAuthController} = useAuth();
+    const {request, noAuthController} = useRequest();
     const {alertNotify} = useNotify();
 
-    const getAllSessions = async (page = 1, limit = 3) => {
+    const getAllSessions = async (page = 1, limit = 5) => {
         setError(false);
 
-        if(!sessions?.other){
+        if(!sessions?.other || sessions?.other?.length + 1 < page * limit){
             setIsLoading(true);
             dispatch(setSessionsIsLoading(true));
 
@@ -41,7 +39,7 @@ const useSession = () => {
                     case APP_STATUSES.SERVER_NOT_AVAILABLE:
                         return;
                     case APP_STATUSES.NOT_AUTH:
-                        return noAuthController(getAllSessions);
+                        return noAuthController(() => getAllSessions(page, limit));
                     default:
                         return alertNotify("Ошибка", response.data.message, "error");
                 }
@@ -86,7 +84,7 @@ const useSession = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(endSession);
+                    return noAuthController(() => endSession(id));
                 default:
                     return alertNotify("Ошибка", response.data.message, "error");
             }
