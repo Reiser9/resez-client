@@ -4,10 +4,10 @@ import Skeleton from 'react-loading-skeleton';
 import skeleton from '../../../styles/skeleton.module.css';
 import styles from './index.module.css';
 
-const SessionItemCompact = () => {
+const SessionItem = () => {
     return (
-        <Skeleton containerClassName={styles.sessionItemCompact} className={skeleton.skeletonContent} />
+        <Skeleton containerClassName={styles.sessionItem} className={skeleton.skeletonContent} />
     )
 }
 
-export default SessionItemCompact;
+export default SessionItem;

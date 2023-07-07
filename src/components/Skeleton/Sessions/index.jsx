@@ -22,9 +22,7 @@ const Sessions = () => {
             <div className={element.sessionWrapper}>
                 <Skeleton containerClassName={styles.sessionSubtitle} className={skeleton.skeletonContent} />
 
-                <SessionItemCompact />
-                <SessionItemCompact />
-                <SessionItemCompact />
+                {[...Array(3)].map((_, id) => <SessionItemCompact key={id} />)}
 
                 <Button />
             </div>

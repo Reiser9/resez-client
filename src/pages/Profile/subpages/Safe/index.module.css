@@ -6,6 +6,13 @@
     gap: 16px;
 }
 
+.sessionsTitleWrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .sessionContent{
     width: 100%;
     display: flex;
@@ -22,6 +29,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+    border: 1px solid transparent;
 }
 
 @media (max-width: 1130px) {
@@ -42,6 +50,19 @@
 @media (max-width: 640px) {
     .sessionItem{
         width: 100%;
+    }
+}
+
+.sessionItem.active{
+    animation: border 1s ease-in-out forwards;
+}
+
+@keyframes border {
+    0%{
+        border: 1px solid var(--main);
+    }
+    100%{
+        border: 1px solid transparent;
     }
 }
 
@@ -124,4 +145,8 @@
         min-height: 40px;
         font-size: 1.5rem;
     }
+}
+
+.sessionsMoreButton{
+    margin: 0 auto;
 }

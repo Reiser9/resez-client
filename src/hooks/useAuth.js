@@ -7,7 +7,6 @@ import { APP_STATUSES } from '../consts/APP_STATUSES';
 import { setAuthIsLoading, setDataAuth, setIsAuth, setVerified } from '../redux/slices/auth';
 import { initUser, setDataUser } from '../redux/slices/user';
 import { setAppIsLoading, setDataApp } from '../redux/slices/app';
-import { setServerAvailable } from '../redux/slices/server';
 
 import {unmaskPhone} from '../utils/formatPhone';
 import { requestDataIsError } from '../utils/requestDataIsError';
@@ -46,7 +45,6 @@ const useAuth = () => {
 
     const reload = async () => {
         dispatch(setAppIsLoading(true));
-        dispatch(setServerAvailable(true));
 
         const response = await getHealthServer();
 
@@ -55,6 +53,37 @@ const useAuth = () => {
         }
 
         dispatch(setAppIsLoading(false));
+    }
+
+    const newTokens = async () => {
+        setError(false);
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/refresh", HTTP_METHODS.GET);
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return setError(true);
+        }
+
+        return response.data;
+    }
+
+    const noAuthController = async (callback = () => {}) => {
+        dispatch(setAuthIsLoading(true));
+
+        const tokens = await newTokens();
+        
+        dispatch(setAuthIsLoading(false));
+
+        if(!tokens){
+            return clearLocalData();
+        }
+
+        localStorage.setItem("accessToken", tokens.accessToken);
+
+        return callback();
     }
 
     const checkAuth = async () => {
@@ -81,19 +110,7 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 case APP_STATUSES.NOT_AUTH:
-                    dispatch(setAuthIsLoading(true));
-
-                    const tokens = await newTokens();
-                    
-                    dispatch(setAuthIsLoading(false));
-
-                    if(!tokens){
-                        return clearLocalData();
-                    }
-
-                    localStorage.setItem("accessToken", tokens.accessToken);
-
-                    return checkAuth();
+                    return noAuthController(checkAuth);
                 default:
                     return alertNotify("Информация", response.data.message, "info");
             }
@@ -110,21 +127,6 @@ const useAuth = () => {
         dispatch(initUser(data));
         dispatch(setVerified(data.isVerified));
         dispatch(setAuthIsLoading(false));
-    }
-
-    const newTokens = async () => {
-        setError(false);
-        setIsLoading(true);
-
-        const response = await request(REQUEST_TYPE.AUTH, "/refresh", HTTP_METHODS.GET);
-
-        setIsLoading(false);
-
-        if(requestDataIsError(response)){
-            return setError(true);
-        }
-
-        return response.data;
     }
 
     const logout = async (successCallback = () => {}) => {
@@ -147,11 +149,6 @@ const useAuth = () => {
         alertNotify("Успешно", "Вы вышли из аккаунта", "success");
         successCallback();
         clearLocalData();
-    }
-
-    const localLogout = (successCallback = () => {}) => {
-        clearLocalData();
-        successCallback();
     }
 
     const login = async (nickname, password, successCallback = () => {}) => {
@@ -272,7 +269,7 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 case APP_STATUSES.NOT_AUTH:
-                    return; // Получение нового токена и вызов этой же функции
+                    return noAuthController(sendCodeRegister);
                 default:
                     return alertNotify("Ошибка", response.data.message, "error");
             }
@@ -303,7 +300,7 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 case APP_STATUSES.NOT_AUTH:
-                    return;
+                    return noAuthController(() => verifyCodeRegister(code));
                 default:
                     return alertNotify("Ошибка", response.data.message, "error");
             }
@@ -428,6 +425,7 @@ const useAuth = () => {
         isLoading,
         error,
         reload,
+        noAuthController,
         checkAuth,
         newTokens,
         logout,

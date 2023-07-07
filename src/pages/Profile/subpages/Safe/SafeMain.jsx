@@ -1,5 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import typography from '../../../../styles/typography.module.css';
 import styles from '../../index.module.css';
@@ -9,6 +10,7 @@ import useSession from '../../../../hooks/useSession';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import SessionsSkeleton from '../../../../components/Skeleton/Sessions';
+import ReloadButton from '../../../../components/ReloadButton';
 import SessionItemCompact from '../../SessionItemCompact';
 
 const SafeMain = () => {
@@ -17,7 +19,12 @@ const SafeMain = () => {
     const [newPasswordAgain, setNewPasswordAgain] = React.useState("");
 
     const {isLoading, getAllSessions, endAllSessions} = useSession();
-    const {sessions} = useSelector(state => state.session);
+    const {sessionsIsLoading, sessions} = useSelector(state => state.session);
+    const navigate = useNavigate();
+
+    const seeSessionFull = (id) => {
+        navigate("sessions", {state: {id}})
+    }
 
     React.useEffect(() => {
         getAllSessions();
@@ -26,19 +33,23 @@ const SafeMain = () => {
     return (
         <>
             <div className={styles.contentBlock}>
-                <p className={typography.h3}>
-                    Активность
-                </p>
+                <div className={styles.contentBlockTitleInner}>
+                    <p className={typography.h3}>
+                        Активность
+                    </p>
 
-                {isLoading
+                    <ReloadButton />
+                </div>
+
+                {sessionsIsLoading
                 ? <SessionsSkeleton />
                 : <>
                     <div className={styles.sessionWrapper}>
                         <p className={typography.text}>Текущий сеанс</p>
 
-                        <SessionItemCompact current data={sessions?.current || {}} />
+                        <SessionItemCompact current data={sessions?.current || {}} onClick={() => seeSessionFull(sessions?.current?.id)} />
 
-                        {sessions?.totalCount > 0 && <Button type="empty" theme="danger" onClick={endAllSessions}>
+                        {sessions?.totalCount > 0 && <Button loading={isLoading} type="empty" theme="danger" onClick={endAllSessions}>
                             Завершить другие сеансы
                         </Button>}
                     </div>
@@ -46,7 +57,7 @@ const SafeMain = () => {
                     {sessions?.totalCount > 0 && <div className={styles.sessionWrapper}>
                         <p className={typography.text}>Все сеансы ({sessions?.totalCount + 1 || 0})</p>
                         
-                        {sessions?.other?.map(data => <SessionItemCompact key={data.id} data={data} />)}
+                        {sessions?.other?.map(data => <SessionItemCompact key={data.id} data={data} onClick={() => seeSessionFull(data.id)} />)}
 
                         {sessions?.totalCount > 3 && <Button type="empty" to="sessions">
                             Показать все

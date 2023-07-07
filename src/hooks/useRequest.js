@@ -43,13 +43,16 @@ const useRequest = () => {
 
     const getHealthServer = async () => {
         try{
+            dispatch(setServerAvailable(true));
+
             await emptyRequest.get("/health", {
-                timeout: 5000
+                timeout: 3000
             });
 
             return true;
         }catch(error){
             dispatch(setServerAvailable(false));
+
             return false;
         }
     }

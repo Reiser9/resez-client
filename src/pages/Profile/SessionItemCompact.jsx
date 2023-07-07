@@ -11,11 +11,11 @@ const devices = {
     "phone": <Mobile />
 }
 
-const SessionItemCompact = ({current = false, data}) => {
+const SessionItemCompact = ({current = false, data, ...props}) => {
     const {isActive, browser, deviceType, date} = data;
 
     return (
-        <div className={`${styles.sessionItem} ${!isActive ? ` ${styles.disabled}` : ""}`}>
+        <div className={`${styles.sessionItem} ${!isActive ? ` ${styles.disabled}` : ""}`} {...props}>
             <div className={styles.sessionItemContent}>
                 <div className={styles.sessionItemIcon}>
                     {devices[deviceType]}

@@ -1,0 +1,50 @@
+.reload{
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lighten);
+    flex-shrink: 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.reload:hover svg{
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.reload.loading{
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.reload.loading svg{
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0%{
+        transform: translate(-50%, -50%) rotate(0);
+    }
+    100%{
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.reload svg{
+    width: 18px;
+    flex-shrink: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: .2s linear;
+}
+
+.reload svg path{
+    stroke: var(--main);
+}

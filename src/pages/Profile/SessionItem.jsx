@@ -7,6 +7,8 @@ import { Desktop, Mobile } from '../../components/Icons';
 
 import { formatDate } from '../../utils/formatDate';
 
+import useSession from '../../hooks/useSession';
+
 import Button from '../../components/Button';
 
 const devices = {
@@ -14,11 +16,13 @@ const devices = {
     "phone": <Mobile />
 }
 
-const SessionItem = ({current = false, data}) => {
-    const {isActive, browser, deviceType, date, ip, country, city, browserVersion, os, platform} = data;
+const SessionItem = ({current = false, data, active}) => {
+    const {isActive, browser, deviceType, date, ip, country, city, browserVersion, os, platform, id} = data;
+
+    const {endSession} = useSession();
 
     return (
-        <div className={`${styles.sessionItem}${!isActive ? ` ${styles.disabled}` : ""}`}>
+        <div className={`${styles.sessionItem}${!isActive ? ` ${styles.disabled}` : ""}${active ? ` ${styles.active}` : ""}`}>
             <div className={styles.sessionItemIcon}>
                 {devices[deviceType]}
             </div>
@@ -41,25 +45,25 @@ const SessionItem = ({current = false, data}) => {
                 <div className={styles.sessionItemPoint}>
                     <p className={`${typography.text3} ${styles.sessionItemPointTitle}`}>Операционная система</p>
 
-                    <p className={typography.text}>{os}</p>
+                    <p className={typography.text}>{os ? os : "Неопределена"}</p>
                 </div>
 
                 <div className={styles.sessionItemPoint}>
                     <p className={`${typography.text3} ${styles.sessionItemPointTitle}`}>Платформа</p>
 
-                    <p className={typography.text}>{platform}</p>
+                    <p className={typography.text}>{platform ? platform : "Неопределена"}</p>
                 </div>
 
                 <div className={styles.sessionItemPoint}>
                     <p className={`${typography.text3} ${styles.sessionItemPointTitle}`}>IP адрес</p>
 
-                    <p className={typography.text}>{ip}</p>
+                    <p className={typography.text}>{ip ? ip : "Неопределен"}</p>
                 </div>
 
-                {country !== "unknown" && <div className={styles.sessionItemPoint}>
+                {(country || city)  && <div className={styles.sessionItemPoint}>
                     <p className={`${typography.text3} ${styles.sessionItemPointTitle}`}>Местоположение</p>
 
-                    <p className={typography.text}>{country}, {city}</p>
+                    <p className={typography.text}>{city} {country}</p>
                 </div>}
 
                 <div className={styles.sessionItemPoint}>
@@ -70,7 +74,7 @@ const SessionItem = ({current = false, data}) => {
             </div>
             
             {isActive
-            ? <Button type="empty" theme="danger" className={styles.sessionItemButton}>
+            ? <Button type="empty" theme="danger" className={styles.sessionItemButton} onClick={() => endSession(id)}>
                 Завершить сессию
             </Button>
             : <div className={styles.sessionItemEnded}>
