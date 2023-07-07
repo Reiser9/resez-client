@@ -141,8 +141,10 @@ const useAuth = () => {
             switch(response){
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
+                case APP_STATUSES.NOT_AUTH:
+                    return noAuthController(checkAuth);
                 default:
-                    return alertNotify("Ошибка", "Попробуйте еще раз", "error")
+                    return alertNotify("Ошибка", "Попробуйте еще раз", "error");
             }
         }
 
