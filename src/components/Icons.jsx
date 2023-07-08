@@ -708,8 +708,8 @@ export const Blocked = ({...props}) => {
 
 export const Desktop = ({...props}) => {
     return(
-        <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 17.25V18.257C9.00005 18.6511 8.92244 19.0414 8.77162 19.4055C8.6208 19.7696 8.39971 20.1004 8.121 20.379L7.5 21H16.5L15.879 20.379C15.6003 20.1004 15.3792 19.7696 15.2284 19.4055C15.0776 19.0414 15 18.6511 15 18.257V17.25M21 5.25V15C21 15.5967 20.7629 16.169 20.341 16.591C19.919 17.0129 19.3467 17.25 18.75 17.25H12H5.25C4.65326 17.25 4.08097 17.0129 3.65901 16.591C3.23705 16.169 3 15.5967 3 15V5.25M21 5.25C21 4.65326 20.7629 4.08097 20.341 3.65901C19.919 3.23705 19.3467 3 18.75 3H5.25C4.65326 3 4.08097 3.23705 3.65901 3.65901C3.23705 4.08097 3 4.65326 3 5.25M21 5.25V12M3 5.25V12" stroke="var(--main)" strokeLinecap="round" strokeLinejoin="round"/>
+        <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path strokeWidth="1" stroke="var(--main)" strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
         </svg>
     )
 }
@@ -718,6 +718,22 @@ export const Mobile = ({...props}) => {
     return(
         <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.5 3H13.5M10.5 20.25H13.5M10.5 1.5H8.25C7.65326 1.5 7.08097 1.73705 6.65901 2.15901C6.23705 2.58097 6 3.15326 6 3.75V20.25C6 20.8467 6.23705 21.419 6.65901 21.841C7.08097 22.2629 7.65326 22.5 8.25 22.5H15.75C16.3467 22.5 16.919 22.2629 17.341 21.841C17.7629 21.419 18 20.8467 18 20.25V3.75C18 3.15326 17.7629 2.58097 17.341 2.15901C16.919 1.73705 16.3467 1.5 15.75 1.5H13.5H10.5Z" stroke="var(--main)" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
+export const Tablet = ({...props}) => {
+    return(
+        <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" stroke="var(--main)" d="M10.5 19.5h3m-6.75 2.25h10.5a2.25 2.25 0 002.25-2.25v-15a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 4.5v15a2.25 2.25 0 002.25 2.25z" />
+        </svg>
+    )
+}
+
+export const Tv = ({...props}) => {
+    return(
+        <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" stroke="var(--main)" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125z" />
         </svg>
     )
 }

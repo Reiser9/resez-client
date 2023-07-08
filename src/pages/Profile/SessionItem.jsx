@@ -3,24 +3,19 @@ import React from 'react';
 import typography from '../../styles/typography.module.css';
 import styles from './subpages/Safe/index.module.css';
 
-import { Desktop, Mobile } from '../../components/Icons';
+import { DEVICES } from '../../consts/DEVICES';
 
 import { formatDate } from '../../utils/formatDate';
 
 import Button from '../../components/Button';
 
-const devices = {
-    "desktop": <Desktop />,
-    "phone": <Mobile />
-}
-
 const SessionItem = ({current = false, data, active, callback = () => {}}) => {
-    const {isActive, browser, deviceType, date, ip, country, city, browserVersion, os, platform} = data;
+    const {isActive, browser, deviceType, date, ip, country, city, browserVersion, os, platform, id} = data;
 
     return (
-        <div className={`${styles.sessionItem}${!isActive ? ` ${styles.disabled}` : ""}${active ? ` ${styles.active}` : ""}`}>
+        <div data-session={id} className={`${styles.sessionItem}${!isActive ? ` ${styles.disabled}` : ""}${active ? ` ${styles.active}` : ""}`}>
             <div className={styles.sessionItemIcon}>
-                {devices[deviceType]}
+                {DEVICES[deviceType]}
             </div>
 
             <div className={styles.sessionItemPoints}>

@@ -22,13 +22,13 @@ const useSession = () => {
     const {request, noAuthController} = useRequest();
     const {alertNotify} = useNotify();
 
-    const loadSessions = async (page = 1, limit = 5) => {
+    const loadSessions = async (offset = 0, limit = 5, reload = false) => {
         setError(false);
 
-        if(!sessions?.other){
+        if(!sessions?.other || reload){
             dispatch(setSessionsIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.SESSION, `?page=${page}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.SESSION, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             dispatch(setSessionsIsLoading(false));
 
@@ -37,7 +37,7 @@ const useSession = () => {
                     case APP_STATUSES.SERVER_NOT_AVAILABLE:
                         return;
                     case APP_STATUSES.NOT_AUTH:
-                        return noAuthController(() => initSessions(page, limit));
+                        return noAuthController(() => loadSessions(offset, limit, reload));
                     default:
                         return alertNotify("Ошибка", response.data.message, "error");
                 }
@@ -47,13 +47,13 @@ const useSession = () => {
         }
     }
 
-    const getAllSessions = async (page = 1, limit = 5) => {
+    const getAllSessions = async (offset = 0, limit = 5) => {
         setError(false);
 
-        if(!sessions?.other || sessions?.other?.length + 1 < page * limit){
+        if(!sessions?.other || sessions?.other?.length + 1 < offset + limit){
             setIsLoading(true);
 
-            const response = await request(REQUEST_TYPE.SESSION, `?page=${page}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.SESSION, `?offset=${sessions?.other?.length}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             setIsLoading(false);
 
@@ -62,7 +62,7 @@ const useSession = () => {
                     case APP_STATUSES.SERVER_NOT_AVAILABLE:
                         return;
                     case APP_STATUSES.NOT_AUTH:
-                        return noAuthController(() => getAllSessions(page, limit));
+                        return noAuthController(() => getAllSessions(sessions?.other?.length, limit));
                     default:
                         return alertNotify("Ошибка", response.data.message, "error");
                 }

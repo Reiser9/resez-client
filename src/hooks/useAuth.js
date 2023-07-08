@@ -72,7 +72,6 @@ const useAuth = () => {
                     dispatch(setAuthIsLoading(true));
                     await noAuthController(checkAuth);
                     return dispatch(setAuthIsLoading(false));
-                    // Попробовать улучшить код
                 default:
                     return alertNotify("Информация", response.data.message, "info");
             }
@@ -121,7 +120,7 @@ const useAuth = () => {
         if(!nickname){
             return alertNotify("Предупреждение", "Имя пользователя не может быть пустым", "warn");
         }
-        else if(nickname?.length < 3){
+        else if(nickname.length < 3){
             return alertNotify("Предупреждение", "Имя пользователя не может быть меньше 3-х символов", "warn");
         }
         else if(!password){
@@ -134,8 +133,8 @@ const useAuth = () => {
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.AUTH, "/login", HTTP_METHODS.POST, false, {
-            nickname,
-            password
+            nickname: nickname.trim(),
+            password: password.trim()
         });
 
         setIsLoading(false);
@@ -171,7 +170,7 @@ const useAuth = () => {
         if(!nickname){
             return alertNotify("Предупреждение", "Имя пользователя не может быть пустым", "warn");
         }
-        else if(nickname?.length < 3){
+        else if(nickname.length < 3){
             return alertNotify("Предупреждение", "Имя пользователя не может быть меньше 3-х символов", "warn");
         }
         else if(!formatPhoneNumber){
