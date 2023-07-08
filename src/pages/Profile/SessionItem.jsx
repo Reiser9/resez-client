@@ -28,8 +28,8 @@ const SessionItem = ({current = false, data, active, callback = () => {}}) => {
                     <p className={`${typography.text3} ${styles.sessionItemPointTitle}`}>Статус</p>
 
                     {current
-                    ? <p className={`${typography.text} ${styles.currentSession}`}>Текущая сессия</p>
-                    : <p className={typography.text}>{isActive ? "Активная" : "Завершена"}</p>}
+                    ? <p className={`${typography.text} ${styles.currentSession}`}>Текущий сеанс</p>
+                    : <p className={typography.text}>{isActive ? "Активный" : "Завершен"}</p>}
                 </div>
 
                 <div className={styles.sessionItemPoint}>
@@ -71,10 +71,10 @@ const SessionItem = ({current = false, data, active, callback = () => {}}) => {
             
             {isActive
             ? <Button type="empty" theme="danger" className={styles.sessionItemButton} onClick={callback}>
-                Завершить сессию
+                Завершить сеанс
             </Button>
             : <div className={styles.sessionItemEnded}>
-                Сессия завершена
+                Сеанс завершен
             </div>}
         </div>
     )

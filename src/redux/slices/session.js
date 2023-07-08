@@ -13,16 +13,22 @@ export const sessionSlice = createSlice({
             state.sessionsIsLoading = action.payload;
         },
         initSessions: (state, action) => {
-            if(state.sessions.other){
-                const currentOther = state.sessions.other;
+            state.sessions = action.payload;
+        },
+        setSessions: (state, action) => {
+            const currentOther = state.sessions.other;
 
-                state.sessions = {
-                    ...action.payload,
-                    other: [...currentOther, ...action.payload?.other]
-                };
-            }
-            else{
-                state.sessions = action.payload;
+            state.sessions = {
+                ...action.payload,
+                other: [...currentOther, ...action.payload?.other]
+            };
+        },
+        endSessionById: (state, action) => {
+            debugger;
+            const index = state.sessions?.other?.findIndex(obj => obj.id === action.payload.id);
+
+            if(index !== -1){
+                state.sessions?.other?.splice(index, 1, action.payload);
             }
         },
         setDataSession: () => initialState
@@ -32,6 +38,8 @@ export const sessionSlice = createSlice({
 export const {
     setSessionsIsLoading,
     initSessions,
+    setSessions,
+    endSessionById,
     setDataSession
 } = sessionSlice.actions;
 

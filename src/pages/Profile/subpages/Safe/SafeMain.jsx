@@ -23,7 +23,7 @@ const SafeMain = () => {
 
     const [passwordCode, setPasswordCode] = React.useState("");
 
-    const {isLoading, getAllSessions, endAllSessions} = useSession();
+    const {isLoading, loadSessions, endAllSessions} = useSession();
     const {isLoading: userLoading, changePasswordSendCode, changePasswordVerify} = useUser();
     const {sessionsIsLoading, sessions} = useSelector(state => state.session);
     const navigate = useNavigate();
@@ -47,7 +47,7 @@ const SafeMain = () => {
     }
 
     React.useEffect(() => {
-        getAllSessions();
+        loadSessions();
     }, []);
 
     return (

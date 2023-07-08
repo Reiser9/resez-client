@@ -17,7 +17,7 @@
 
 .sessionItem{
     width: calc(100% / 3 - 40px / 3);
-    height: 534px;
+    height: 480px;
 }
 
 @media (max-width: 1130px) {

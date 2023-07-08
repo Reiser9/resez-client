@@ -10,7 +10,7 @@ import {requestDataIsError} from '../utils/requestDataIsError';
 import useRequest from "./useRequest";
 import useNotify from './useNotify';
 
-import { setSessionsIsLoading, initSessions } from '../redux/slices/session';
+import { setSessionsIsLoading, initSessions, setSessions, endSessionById } from '../redux/slices/session';
 
 const useSession = () => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -22,17 +22,40 @@ const useSession = () => {
     const {request, noAuthController} = useRequest();
     const {alertNotify} = useNotify();
 
+    const loadSessions = async (page = 1, limit = 5) => {
+        setError(false);
+
+        if(!sessions?.other){
+            dispatch(setSessionsIsLoading(true));
+
+            const response = await request(REQUEST_TYPE.SESSION, `?page=${page}&limit=${limit}`, HTTP_METHODS.GET, true);
+
+            dispatch(setSessionsIsLoading(false));
+
+            if(requestDataIsError(response)){
+                switch(response){
+                    case APP_STATUSES.SERVER_NOT_AVAILABLE:
+                        return;
+                    case APP_STATUSES.NOT_AUTH:
+                        return noAuthController(() => initSessions(page, limit));
+                    default:
+                        return alertNotify("Ошибка", response.data.message, "error");
+                }
+            }
+            
+            dispatch(initSessions(response.data));
+        }
+    }
+
     const getAllSessions = async (page = 1, limit = 5) => {
         setError(false);
 
         if(!sessions?.other || sessions?.other?.length + 1 < page * limit){
             setIsLoading(true);
-            dispatch(setSessionsIsLoading(true));
 
             const response = await request(REQUEST_TYPE.SESSION, `?page=${page}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             setIsLoading(false);
-            dispatch(setSessionsIsLoading(false));
 
             if(requestDataIsError(response)){
                 switch(response){
@@ -45,7 +68,7 @@ const useSession = () => {
                 }
             }
             
-            dispatch(initSessions(response.data));
+            dispatch(setSessions(response.data));
         }
     }
 
@@ -69,6 +92,7 @@ const useSession = () => {
         }
 
         alertNotify("Успешно", "Все сессии, кроме текущей, завершены", "success");
+        dispatch(initSessions(response.data));
     }
 
     const endSession = async (id) => {
@@ -91,11 +115,13 @@ const useSession = () => {
         }
 
         alertNotify("Успешно", "Сессия завершена", "success");
+        dispatch(endSessionById(response.data.session));
     }
 
     return {
         isLoading,
         error,
+        loadSessions,
         getAllSessions,
         endAllSessions,
         endSession
