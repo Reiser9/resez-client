@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { SkeletonTheme } from 'react-loading-skeleton';
-import { ConfigProvider } from 'antd';
 
 import 'react-loading-skeleton/dist/skeleton.css';
 
@@ -16,24 +15,13 @@ import {store} from './redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const themeColor = window.getComputedStyle(document.querySelector("html")).getPropertyValue('--main');
-
 root.render(
     <Provider store={store}>
         <BrowserRouter>
             <ThemeWrapper>
                 <InitialWrapper>
-                    <SkeletonTheme baseColor="var(--inputDarken)" highlightColor="var(--input)">
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorPrimary: themeColor,
-                                    fontFamily: "Nunito"
-                                }
-                            }}
-                        >
-                            <App />
-                        </ConfigProvider>
+                    <SkeletonTheme baseColor="var(--input)" highlightColor="var(--inputDarken)">
+                        <App />
                     </SkeletonTheme>
                 </InitialWrapper>
 

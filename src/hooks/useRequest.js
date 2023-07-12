@@ -1,18 +1,18 @@
 import React from 'react';
-import axios from 'axios';
 import {useDispatch} from 'react-redux';
 
-import {BASE_API_URL_USER, BASE_API_URL_AUTH, BASE_API_URL_EMPTY, BASE_API_URL_SESSION} from '../consts/API_URLS';
 import {HTTP_METHODS, REQUEST_TYPE} from '../consts/HTTP';
 import {APP_STATUSES} from '../consts/APP_STATUSES';
+import { authRequest, emptyRequest, sessionRequest, themeRequest, userRequest } from '../consts/AXIOS';
 
 import { setDataUser } from '../redux/slices/user';
-import { setAuthIsLoading, setDataAuth, setIsAuth } from '../redux/slices/auth';
+import { setDataAuth, setIsAuth } from '../redux/slices/auth';
 import { setDataApp } from '../redux/slices/app';
 import { setServerAvailable } from '../redux/slices/server';
 import { setDataSession } from '../redux/slices/session';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
+import { setMainColors } from '../utils/setMainColors';
 
 const useRequest = () => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -20,30 +20,11 @@ const useRequest = () => {
 
     const dispatch = useDispatch();
 
-    const authRequest = axios.create({
-        baseURL: BASE_API_URL_AUTH,
-        withCredentials: true
-    });
-
-    const userRequest = axios.create({
-        baseURL: BASE_API_URL_USER,
-        withCredentials: true
-    });
-
-    const sessionRequest = axios.create({
-        baseURL: BASE_API_URL_SESSION,
-        withCredentials: true
-    });
-
-    const emptyRequest = axios.create({
-        baseURL: BASE_API_URL_EMPTY,
-        withCredentials: true
-    });
-
     const axiosInstancesMap = new Map([
         [REQUEST_TYPE.AUTH, authRequest],
         [REQUEST_TYPE.USER, userRequest],
         [REQUEST_TYPE.SESSION, sessionRequest],
+        [REQUEST_TYPE.THEME, themeRequest],
         [REQUEST_TYPE.EMPTY, emptyRequest]
     ]);
 
@@ -54,6 +35,8 @@ const useRequest = () => {
         dispatch(setDataAuth());
         dispatch(setDataApp());
         dispatch(setDataSession());
+
+        setMainColors();
 
         dispatch(setIsAuth(false));
     }

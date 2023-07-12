@@ -11,6 +11,7 @@ import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
 import SidebarLink from '../../components/SidebarLink';
 
 const ProfileMain = React.lazy(() => import("./subpages/ProfileMain"));
+const Theme = React.lazy(() => import("./subpages/Theme"));
 const Safe = React.lazy(() => import("./subpages/Safe"));
 
 const Profile = () => {
@@ -22,6 +23,7 @@ const Profile = () => {
                         <div className={styles.content}>
                             <Routes>
                                 <Route index element={withSuspense(ProfileMain)} />
+                                <Route path="/theme/*" element={withSuspense(Theme)} />
                                 <Route path="/safe/*" element={withSuspense(Safe)} />
                             </Routes>
                         </div>

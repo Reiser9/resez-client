@@ -10,5 +10,6 @@ export const REQUEST_TYPE = {
     AUTH: 'auth',
     USER: 'user',
     SESSION: 'session',
+    THEME: 'theme',
     EMPTY: 'empty'
 };

@@ -6,6 +6,7 @@ import userSlice from "./slices/user";
 import serverSlice from "./slices/server";
 import appSlice from "./slices/app";
 import sessionSlice from "./slices/session";
+import themeSlice from "./slices/theme";
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         user: userSlice,
         server: serverSlice,
         app: appSlice,
-        session: sessionSlice
+        session: sessionSlice,
+        theme: themeSlice
     },
 });

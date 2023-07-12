@@ -1,8 +1,20 @@
 import { Desktop, Mobile, Tablet, Tv } from '../components/Icons';
 
 export const DEVICES = {
-    "desktop": <Desktop />,
-    "phone": <Mobile />,
-    "tablet": <Tablet />,
-    "tv": <Tv />
+    "desktop": {
+        icon: <Desktop />,
+        name: "Компьютер"
+    },
+    "phone": {
+        icon: <Mobile />,
+        name: "Телефон"
+    },
+    "tablet": {
+        icon: <Tablet />,
+        name: "Планшет"
+    },
+    "tv": {
+        icon: <Tv />,
+        name: "Телевизор"
+    }
 }

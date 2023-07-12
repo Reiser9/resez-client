@@ -8,6 +8,7 @@ import { setAuthIsLoading, setIsAuth, setVerified } from '../redux/slices/auth';
 import { initUser } from '../redux/slices/user';
 import { setAppIsLoading } from '../redux/slices/app';
 
+import {setMainColors} from '../utils/setMainColors';
 import {unmaskPhone} from '../utils/formatPhone';
 import { requestDataIsError } from '../utils/requestDataIsError';
 
@@ -84,6 +85,10 @@ const useAuth = () => {
             return;
         }
 
+        // Вынести в функцию
+        const {primary, light} = data.theme;
+        setMainColors(primary, light);
+
         dispatch(setIsAuth(true));
         dispatch(initUser(data));
         dispatch(setVerified(data.isVerified));
@@ -155,6 +160,8 @@ const useAuth = () => {
         dispatch(setIsAuth(true));
         dispatch(initUser(data.user));
         checkUserVerified(data.user);
+        const {primary, light} = data?.user?.theme;
+        setMainColors(primary, light);
 
         localStorage.setItem("accessToken", data.accessToken);
 

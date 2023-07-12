@@ -20,7 +20,7 @@
 }
 
 .sidebarLink:hover, .sidebarLink.active{
-    background: var(--infoB);
+    background: var(--lighten);
     color: var(--main);
 }
 

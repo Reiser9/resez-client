@@ -13,6 +13,7 @@ import useNotify from './useNotify';
 import { setSessionsIsLoading, initSessions, setSessions, endSessionById } from '../redux/slices/session';
 
 const useSession = () => {
+    const [sessionIdLoading, setSessionIdLoading] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
 
@@ -98,9 +99,11 @@ const useSession = () => {
     const endSession = async (id) => {
         setError(false);
         setIsLoading(true);
+        setSessionIdLoading(prev => [...prev, id]);
 
         const response = await request(REQUEST_TYPE.SESSION, `/end/${id}`, HTTP_METHODS.GET, true);
 
+        setSessionIdLoading(prev => prev.filter(item => item !== id));
         setIsLoading(false);
 
         if(requestDataIsError(response)){
@@ -119,6 +122,7 @@ const useSession = () => {
     }
 
     return {
+        sessionIdLoading,
         isLoading,
         error,
         loadSessions,

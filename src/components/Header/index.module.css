@@ -46,13 +46,23 @@
     border-radius: 50%;
     overflow: hidden;
     position: relative;
-    background: var(--input);
+    background: var(--main);
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .headerProfileMenuImgInner{
     width: 44px;
     height: 44px;
+}
+
+.headerProfileName{
+    color: #fff;
+    font-weight: 500;
+    font-size: 2rem;
+    position: relative;
 }
 
 .headerProfileImg, .headerProfileMenuImg{
@@ -174,7 +184,7 @@
 }
 
 .headerProfileMenuLink:hover{
-    background: var(--infoB);
+    background: var(--lighten);
     color: var(--main);
 }
 

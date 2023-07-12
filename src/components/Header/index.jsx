@@ -14,13 +14,16 @@ import useAuth from '../../hooks/useAuth';
 const Header = ({empty = false}) => {
     const {isAuth} = useSelector(state => state.auth);
     const {user} = useSelector(state => state.user);
-    const {theme, changeTheme} = useTheme();
+    const {mode} = useSelector(state => state.theme);
+    const {changeTheme} = useTheme();
     const {logout} = useAuth();
     const navigate = useNavigate();
 
     const logoutHandler = () => {
         logout(() => navigate("/"));
     }
+
+    const {avatar, nickname, status, level} = user;
 
     return (
         <header className={styles.header}>
@@ -31,11 +34,13 @@ const Header = ({empty = false}) => {
             {!empty && (isAuth
                 ? <div className={styles.headerProfileInner}>
                     <div className={styles.headerProfileImgInner}>
-                        {user.avatar && <img src={user.avatar} alt="avatar" className={styles.headerProfileImg} />}
+                        {avatar
+                        ? <img src={avatar} alt="avatar" className={styles.headerProfileImg} />
+                        : <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
                     </div>
 
                     <p className={`${typography.text} ${styles.headerProfileNick}`}>
-                        {user.nickname}
+                        {nickname}
                     </p>
 
                     <ArrowBottom className={styles.headerProfileArrow} />
@@ -45,18 +50,20 @@ const Header = ({empty = false}) => {
                             <div className={styles.headerProfileMenuInfo}>
                                 <div className={styles.headerProfileMenuData}>
                                     <div className={styles.headerProfileMenuImgInner}>
-                                        {user.avatar && <img src={user.avatar} alt="avatar" className={styles.headerProfileMenuImg} />}
+                                        {avatar
+                                        ? <img src={avatar} alt="avatar" className={styles.headerProfileMenuImg} />
+                                        : <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
                                     </div>
 
                                     <div className={styles.headerProfileMenuNameInner}>
-                                        <p className={`${typography.text} ${styles.headerProfileMenuName}`}>{user.nickname}</p>
+                                        <p className={`${typography.text} ${styles.headerProfileMenuName}`}>{nickname}</p>
 
-                                        <p className={`${typography.text2} ${styles.headerProfileMenuStatus}`}>{user.status}</p>
+                                        <p className={`${typography.text2} ${styles.headerProfileMenuStatus}`}>{status}</p>
                                     </div>
                                 </div>
 
                                 <div className={`${typography.text2} ${styles.headerProfileLvl}`}>
-                                    {user.level}
+                                    {level}
                                 </div>
                             </div>
 
@@ -72,12 +79,12 @@ const Header = ({empty = false}) => {
                                 Уведомления
                             </Link>
 
-                            <div className={styles.headerProfileMenuLink} onClick={changeTheme}>
+                            <div className={styles.headerProfileMenuLink} onClick={() => changeTheme()}>
                                 <Moon />
 
                                 Темная тема
 
-                                <Switch size="small" checked={theme === "dark"} className={styles.headerThemeLabel} />
+                                <Switch size="small" checked={mode === "dark"} className={styles.headerThemeLabel} />
                             </div>
 
                             <div className={`${styles.headerProfileMenuLink} ${styles.delete}`} onClick={logoutHandler}>

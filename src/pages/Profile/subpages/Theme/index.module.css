@@ -1,0 +1,39 @@
+.colorsContent, .modeContent{
+    width: 100%;
+    margin-top: 1.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.modeItem{
+    width: calc(100% / 5 - 48px / 5);
+    border-radius: 4px;
+    height: 60px;
+    background: var(--input);
+    border: none;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    padding: 0;
+}
+
+.modeItem{
+    width: calc(100% / 2 - 12px / 2);
+}
+
+.modeItem:hover, .modeItem.active{
+    background: var(--lighten);
+}
+
+.modeItem svg{
+    width: 24px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modeItem svg path{
+    stroke: var(--main);
+}

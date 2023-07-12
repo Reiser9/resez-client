@@ -18,11 +18,11 @@ const Sessions = () => {
     const [isScrollToSession, setIsScrollToSession] = React.useState(false);
     const [sessionMoreLoading, setSessionMoreLoading] = React.useState(false);
 
-    const {loadSessions, getAllSessions, endSession} = useSession();
+    const {sessionIdLoading, loadSessions, getAllSessions, endSession} = useSession();
     const {sessionsIsLoading, sessions} = useSelector(state => state.session);
     const location = useLocation();
 
-    const {logout} = useAuth();
+    const {isLoading: authLoading, logout} = useAuth();
 
     const loadMoreSession = async () => {
         setSessionMoreLoading(true);
@@ -37,12 +37,12 @@ const Sessions = () => {
     React.useEffect(() => {
         if(sessions.other && location?.state?.id && !isScrollToSession){
             const sessionId = location?.state?.id;
-
             const currentElement = document.querySelector(`[data-session="${sessionId}"]`);
             
             currentElement.scrollIntoView({
                 behavior: "smooth",
             });
+
             setIsScrollToSession(true);
         }
     }, [sessions.other]);
@@ -56,16 +56,29 @@ const Sessions = () => {
                     <p className={typography.h3}>Сеансы {!sessionsIsLoading && `(${sessions?.totalCount + 1 || 0})`}</p>
                 </div>
 
-                <ReloadButton onClick={() => loadSessions(0, 5, true)} />
+                <ReloadButton loading={sessionsIsLoading} onClick={() => loadSessions(0, 5, true)} />
             </div>
 
             <div className={styles.sessionContent}>
                 {sessionsIsLoading
                 ? [...Array(3)].map((_, id) => <SessionItemFull key={id} />)
                 : <>
-                    <SessionItem current data={sessions?.current || {}} active={location?.state?.id === sessions?.current?.id} callback={() => logout()} />
+                    <SessionItem
+                        current
+                        data={sessions?.current || {}}
+                        active={location?.state?.id === sessions?.current?.id}
+                        callback={() => logout()}
+                        loading={authLoading}
+                    />
 
-                    {sessions?.other?.map(data => <SessionItem key={data.id} data={data} active={location?.state?.id === data.id} callback={() => endSession(data.id)} />)}
+                    {sessions?.other
+                    ?.map(data => <SessionItem
+                        key={data.id}
+                        data={data}
+                        active={location?.state?.id === data.id}
+                        callback={() => endSession(data.id)}
+                        loading={sessionIdLoading.includes(data.id)}
+                    />)}
                 </>}
 
                 {sessionMoreLoading && [...Array(3)].map((_, id) => <SessionItemFull key={id} />)}

@@ -14,7 +14,7 @@ const SessionItemCompact = ({current = false, data, ...props}) => {
         <div className={`${styles.sessionItem} ${!isActive ? ` ${styles.disabled}` : ""}`} {...props}>
             <div className={styles.sessionItemContent}>
                 <div className={styles.sessionItemIcon}>
-                    {DEVICES[deviceType]}
+                    {DEVICES[deviceType]?.icon}
                 </div>
 
                 <div className={styles.sessionItemWrapper}>

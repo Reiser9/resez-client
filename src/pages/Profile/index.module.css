@@ -19,10 +19,31 @@
     border-radius: 8px;
     display: flex;
     flex-wrap: wrap;
+    min-height: 700px;
     gap: 40px;
     background: var(--white);
 }
 
+@media (max-width: 1100px) {
+    .content{
+        flex-direction: column;
+    }
+}
+@media (max-height: 850px) {
+    .content{
+        min-height: 500px;
+    }
+}
+@media (max-height: 650px) {
+    .content{
+        min-height: unset;
+    }
+}
+@media (max-width: 768px) {
+    .content{
+        min-height: unset;
+    }
+}
 @media (max-width: 440px) {
     .content{
         padding: 1.2rem;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Tooltip } from 'antd';
 
 import typography from '../../styles/typography.module.css';
 import styles from './subpages/Safe/index.module.css';
@@ -9,14 +10,16 @@ import { formatDate } from '../../utils/formatDate';
 
 import Button from '../../components/Button';
 
-const SessionItem = ({current = false, data, active, callback = () => {}}) => {
+const SessionItem = ({current = false, data, active, callback = () => {}, loading = false}) => {
     const {isActive, browser, deviceType, date, ip, country, city, browserVersion, os, platform, id} = data;
 
     return (
         <div data-session={id} className={`${styles.sessionItem}${!isActive ? ` ${styles.disabled}` : ""}${active ? ` ${styles.active}` : ""}`}>
-            <div className={styles.sessionItemIcon}>
-                {DEVICES[deviceType]}
-            </div>
+            <Tooltip title={DEVICES[deviceType]?.name}>
+                <div className={styles.sessionItemIcon}>
+                    {DEVICES[deviceType]?.icon}
+                </div>
+            </Tooltip>
 
             <div className={styles.sessionItemPoints}>
                 <div className={styles.sessionItemPoint}>
@@ -65,7 +68,7 @@ const SessionItem = ({current = false, data, active, callback = () => {}}) => {
             </div>
             
             {isActive
-            ? <Button type="empty" theme="danger" className={styles.sessionItemButton} onClick={callback}>
+            ? <Button loading={loading} type="empty" theme="danger" className={styles.sessionItemButton} onClick={callback}>
                 Завершить сеанс
             </Button>
             : <div className={styles.sessionItemEnded}>

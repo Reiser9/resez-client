@@ -24,7 +24,6 @@ export const sessionSlice = createSlice({
             };
         },
         endSessionById: (state, action) => {
-            debugger;
             const index = state.sessions?.other?.findIndex(obj => obj.id === action.payload.id);
 
             if(index !== -1){
