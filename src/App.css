@@ -145,18 +145,19 @@ input::-webkit-inner-spin-button{
 	appearance: none;
 }
 
-.button, .input{
+button, input{
 	border: none;
 	cursor: pointer;
 	background: none;
 	outline: none;
+    padding: 0;
 }
 
-.input{
+input{
 	cursor: text;
 }
 
-.input::placeholder{
+input::placeholder{
     color: var(--grey);
 }
 

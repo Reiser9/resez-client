@@ -5,12 +5,11 @@
 
 .button{
     width: 100%;
-    padding: 1rem 2.4rem;
+    padding: .8rem 2.4rem;
     border-radius: 4px;
     cursor: pointer;
     color: #fff;
     min-height: 44px;
-    outline: none;
     display: inline-block;
     text-align: center;
 }
@@ -76,6 +75,23 @@
 }
 
 .empty.danger:hover{
+    background: var(--errorB);
+}
+
+.light{
+    background: var(--input);
+    color: var(--main);
+}
+
+.light:hover{
+    background: var(--lighten);
+}
+
+.light.danger{
+    color: var(--error);
+}
+
+.light.danger:hover{
     background: var(--errorB);
 }
 

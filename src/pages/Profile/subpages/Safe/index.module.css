@@ -124,7 +124,7 @@
     color: var(--success);
 }
 
-.currentSession:before{
+.currentSession:before, .currentSession:after{
     content: "";
     display: block;
     width: 8px;
@@ -133,8 +133,17 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: calc(100% + 8px);
+    left: calc(100% + 10px);
     background: var(--success);
+    z-index: 2;
+}
+
+.currentSession:after{
+    width: 14px;
+    height: 14px;
+    opacity: 0.3;
+    left: calc(100% + 7px);
+    z-index: 1;
 }
 
 .sessionItemButton, .sessionItemEnded{

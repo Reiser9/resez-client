@@ -33,6 +33,7 @@ const Profile = () => {
                             <SidebarLink text="Внешний вид" to="theme" />
                             <SidebarLink text="Личные данные" to="data" />
                             <SidebarLink text="Безопасность" to="safe" />
+                            <SidebarLink text="Достижения" to="achievments" />
                         </div>
                     </div>
                 </WithSidebarWrapper>

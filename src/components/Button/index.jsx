@@ -8,7 +8,8 @@ import Preloader from '../Preloader';
 const typesButton = {
     "fill": styles.fill,
     "outline": styles.outline,
-    "empty": styles.empty
+    "empty": styles.empty,
+    "light": styles.light
 }
 
 const themesButton = {

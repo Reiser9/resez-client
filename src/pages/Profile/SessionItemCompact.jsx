@@ -3,9 +3,8 @@ import React from 'react';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { DEVICES } from '../../consts/DEVICES';
-
 import { formatDate } from '../../utils/formatDate';
+import { getDeviceByName } from '../../utils/getDeviceByName';
 
 const SessionItemCompact = ({current = false, data, ...props}) => {
     const {isActive, browser, deviceType, date} = data;
@@ -14,7 +13,7 @@ const SessionItemCompact = ({current = false, data, ...props}) => {
         <div className={`${styles.sessionItem} ${!isActive ? ` ${styles.disabled}` : ""}`} {...props}>
             <div className={styles.sessionItemContent}>
                 <div className={styles.sessionItemIcon}>
-                    {DEVICES[deviceType]?.icon}
+                    {getDeviceByName(deviceType)?.icon}
                 </div>
 
                 <div className={styles.sessionItemWrapper}>

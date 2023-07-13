@@ -7,9 +7,6 @@
     justify-content: center;
     background: var(--lighten);
     flex-shrink: 0;
-    border: none;
-    outline: none;
-    cursor: pointer;
 }
 
 .back:hover{

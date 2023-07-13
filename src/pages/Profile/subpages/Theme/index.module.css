@@ -11,9 +11,6 @@
     border-radius: 4px;
     height: 60px;
     background: var(--input);
-    border: none;
-    cursor: pointer;
-    outline: none;
     position: relative;
     padding: 0;
 }

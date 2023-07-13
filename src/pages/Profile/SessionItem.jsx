@@ -4,9 +4,8 @@ import { Tooltip } from 'antd';
 import typography from '../../styles/typography.module.css';
 import styles from './subpages/Safe/index.module.css';
 
-import { DEVICES } from '../../consts/DEVICES';
-
 import { formatDate } from '../../utils/formatDate';
+import {getDeviceByName} from '../../utils/getDeviceByName';
 
 import Button from '../../components/Button';
 
@@ -15,9 +14,9 @@ const SessionItem = ({current = false, data, active, callback = () => {}, loadin
 
     return (
         <div data-session={id} className={`${styles.sessionItem}${!isActive ? ` ${styles.disabled}` : ""}${active ? ` ${styles.active}` : ""}`}>
-            <Tooltip title={DEVICES[deviceType]?.name}>
+            <Tooltip title={getDeviceByName(deviceType)?.name}>
                 <div className={styles.sessionItemIcon}>
-                    {DEVICES[deviceType]?.icon}
+                    {getDeviceByName(deviceType)?.icon}
                 </div>
             </Tooltip>
 

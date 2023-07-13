@@ -17,7 +17,6 @@
     background: var(--input);
     border-radius: 4px;
     padding: 1rem 1.6rem;
-    outline: none;
     min-height: 44px;
 }
 
