@@ -1,0 +1,10 @@
+.notify{
+    width: calc(100% / 2 - 12px / 2);
+    height: 210px;
+}
+
+@media (max-width: 1100px) {
+    .notify{
+        width: 100%;
+    }
+}

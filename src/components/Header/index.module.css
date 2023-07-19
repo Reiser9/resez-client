@@ -175,6 +175,7 @@
     cursor: pointer;
     padding: 0.8rem 1.2rem;
     transition: .2s linear;
+    position: relative;
 }
 
 @media (max-width: 440px) {
@@ -209,6 +210,22 @@
 
 .delete:hover svg path{
     stroke: var(--error);
+}
+
+.headerProfileNotifyCount{
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--error);
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 12px;
+    font-size: 1.4rem;
 }
 
 .headerThemeCheckbox{

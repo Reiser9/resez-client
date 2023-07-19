@@ -13,7 +13,7 @@ import useNotify from './useNotify';
 import { setSessionsIsLoading, initSessions, setSessions, endSessionById } from '../redux/slices/session';
 
 const useSession = () => {
-    const [sessionIdLoading, setSessionIdLoading] = React.useState("");
+    const [sessionIsLoading, setSessionIsLoading] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
 
@@ -40,7 +40,7 @@ const useSession = () => {
                     case APP_STATUSES.NOT_AUTH:
                         return noAuthController(() => loadSessions(offset, limit, reload));
                     default:
-                        return alertNotify("Ошибка", response.data.message, "error");
+                        return alertNotify("Ошибка", response?.data?.message, "error");
                 }
             }
             
@@ -65,7 +65,7 @@ const useSession = () => {
                     case APP_STATUSES.NOT_AUTH:
                         return noAuthController(() => getAllSessions(sessions?.other?.length, limit));
                     default:
-                        return alertNotify("Ошибка", response.data.message, "error");
+                        return alertNotify("Ошибка", response?.data?.message, "error");
                 }
             }
             
@@ -88,22 +88,22 @@ const useSession = () => {
                 case APP_STATUSES.NOT_AUTH:
                     return noAuthController(endAllSessions);
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
-        alertNotify("Успешно", "Все сессии, кроме текущей, завершены", "success");
+        alertNotify("Успешно", "Все сеансы, кроме текущего, завершены", "success");
         dispatch(initSessions(response.data));
     }
 
     const endSession = async (id) => {
         setError(false);
         setIsLoading(true);
-        setSessionIdLoading(prev => [...prev, id]);
+        setSessionIsLoading(prev => [...prev, id]);
 
         const response = await request(REQUEST_TYPE.SESSION, `/end/${id}`, HTTP_METHODS.GET, true);
 
-        setSessionIdLoading(prev => prev.filter(item => item !== id));
+        setSessionIsLoading(prev => prev.filter(item => item !== id));
         setIsLoading(false);
 
         if(requestDataIsError(response)){
@@ -113,16 +113,16 @@ const useSession = () => {
                 case APP_STATUSES.NOT_AUTH:
                     return noAuthController(() => endSession(id));
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
-        alertNotify("Успешно", "Сессия завершена", "success");
+        alertNotify("Успешно", "Сеанс завершен", "success");
         dispatch(endSessionById(response.data.session));
     }
 
     return {
-        sessionIdLoading,
+        sessionIsLoading,
         isLoading,
         error,
         loadSessions,

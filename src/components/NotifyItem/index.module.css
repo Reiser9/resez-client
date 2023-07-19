@@ -1,0 +1,127 @@
+.notifyItem{
+    width: calc(100% / 2 - 12px / 2);
+    border-radius: 4px;
+    background: var(--input);
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid transparent;
+    position: relative;
+}
+
+@media (max-width: 1100px) {
+    .notifyItem{
+        width: 100%;
+    }
+}
+@media (max-width: 450px) {
+    .notifyItem{
+        padding: 1.2rem;
+    }
+}
+
+.notifyItem.unread:before{
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--error);
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+}
+
+.notifyItemWrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.notifyItemContent{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notifyItemIconInner{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lighten);
+}
+
+.notifyItemIconInner svg{
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.notifyItemIconInner svg path{
+    stroke: var(--main);
+}
+
+.notifyItemIconInner.session{
+    background: var(--errorB);
+}
+
+.notifyItemIconInner.session svg path{
+    stroke: var(--error);
+}
+
+.notifyItemTitleInner{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.notifyItemDate{
+    color: var(--textGrey);
+}
+
+.notifyItemTextContent{
+    position: relative;
+    max-height: 100px;
+    overflow-y: hidden;
+}
+
+.notifyItemTextContent:before{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(to bottom, transparent, var(--input));
+    pointer-events: none;
+}
+
+.notifyItemText{
+    margin-top: 1.2rem;
+}
+
+.notifyItemButton{
+    margin-top: 1.6rem;
+}
+
+.notifyItemLink{
+    color: var(--main);
+}
+
+@media (any-hover: hover) {
+    .notifyItemButton{
+        display: none;
+    }
+
+    .notifyItemTitle:hover{
+        color: var(--main);
+    }
+}

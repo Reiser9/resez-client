@@ -3,13 +3,21 @@ import {useDispatch} from 'react-redux';
 
 import {HTTP_METHODS, REQUEST_TYPE} from '../consts/HTTP';
 import {APP_STATUSES} from '../consts/APP_STATUSES';
-import { authRequest, emptyRequest, sessionRequest, themeRequest, userRequest } from '../consts/AXIOS';
+import {
+    authRequest,
+    emptyRequest,
+    sessionRequest,
+    themeRequest,
+    userRequest,
+    notifyRequest
+} from '../consts/AXIOS';
 
 import { setDataUser } from '../redux/slices/user';
 import { setDataAuth, setIsAuth } from '../redux/slices/auth';
 import { setDataApp } from '../redux/slices/app';
 import { setServerAvailable } from '../redux/slices/server';
 import { setDataSession } from '../redux/slices/session';
+import { setDataNotify } from '../redux/slices/notify';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 import { setMainColors } from '../utils/setMainColors';
@@ -25,6 +33,7 @@ const useRequest = () => {
         [REQUEST_TYPE.USER, userRequest],
         [REQUEST_TYPE.SESSION, sessionRequest],
         [REQUEST_TYPE.THEME, themeRequest],
+        [REQUEST_TYPE.NOTIFY, notifyRequest],
         [REQUEST_TYPE.EMPTY, emptyRequest]
     ]);
 
@@ -35,6 +44,7 @@ const useRequest = () => {
         dispatch(setDataAuth());
         dispatch(setDataApp());
         dispatch(setDataSession());
+        dispatch(setDataNotify());
 
         setMainColors();
 
@@ -130,6 +140,10 @@ const useRequest = () => {
         catch(err){
             setError(true);
             setIsLoading(false);
+
+            if(err.response.status === 429){
+                return APP_STATUSES.TOO_MANY_REQUESTS;
+            }
 
             const serverHealth = await getHealthServer();
 

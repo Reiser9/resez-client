@@ -18,7 +18,7 @@ const Sessions = () => {
     const [isScrollToSession, setIsScrollToSession] = React.useState(false);
     const [sessionMoreLoading, setSessionMoreLoading] = React.useState(false);
 
-    const {sessionIdLoading, loadSessions, getAllSessions, endSession} = useSession();
+    const {sessionIsLoading, loadSessions, getAllSessions, endSession} = useSession();
     const {sessionsIsLoading, sessions} = useSelector(state => state.session);
     const location = useLocation();
 
@@ -77,7 +77,7 @@ const Sessions = () => {
                         data={data}
                         active={location?.state?.id === data.id}
                         callback={() => endSession(data.id)}
-                        loading={sessionIdLoading.includes(data.id)}
+                        loading={sessionIsLoading.includes(data.id)}
                     />)}
                 </>}
 

@@ -10,13 +10,16 @@ import { ArrowBottom, Exit, Moon, Notify, User } from '../Icons';
 
 import useTheme from '../../hooks/useTheme';
 import useAuth from '../../hooks/useAuth';
+import useNotify from '../../hooks/useNotify';
 
 const Header = ({empty = false}) => {
     const {isAuth} = useSelector(state => state.auth);
     const {user} = useSelector(state => state.user);
     const {mode} = useSelector(state => state.theme);
+    const {unreadCount} = useSelector(state => state.notify);
     const {changeTheme} = useTheme();
     const {logout} = useAuth();
+    const {getUnreadNotifiesCount} = useNotify();
     const navigate = useNavigate();
 
     const logoutHandler = () => {
@@ -24,6 +27,10 @@ const Header = ({empty = false}) => {
     }
 
     const {avatar, nickname, status, level} = user;
+
+    React.useEffect(() => {
+        getUnreadNotifiesCount();
+    }, []);
 
     return (
         <header className={styles.header}>
@@ -77,6 +84,8 @@ const Header = ({empty = false}) => {
                                 <Notify />
 
                                 Уведомления
+
+                                {unreadCount !== 0 && <span className={styles.headerProfileNotifyCount}>{unreadCount}</span>}
                             </Link>
 
                             <div className={styles.headerProfileMenuLink} onClick={() => changeTheme()}>

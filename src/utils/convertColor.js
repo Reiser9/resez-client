@@ -3,5 +3,5 @@ export const convertHexToOpacityHex = (hexColor, opacity = "0.1") => {
         return;
     }
   
-    return `${hexColor}${opacity.split(".")[1]}0`;
+    return `${hexColor}${opacity.split(".")[1]}a`;
 }

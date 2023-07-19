@@ -12,6 +12,7 @@ import EmptyWrapper from "./components/Wrapper/EmptyWrapper";
 
 const Main = React.lazy(() => import("./pages/Main"));
 const Profile = React.lazy(() => import("./pages/Profile"));
+const Notifies = React.lazy(() => import("./pages/Notifies"));
 
 const Register = React.lazy(() => import("./pages/Register"));
 const Login = React.lazy(() => import("./pages/Login"));
@@ -35,6 +36,7 @@ const App = () => {
                 <Route path="/" element={<DefaultWrapper />}>
                     <Route index element={withSuspense(Main)} />
                     <Route path="profile/*" element={withSuspense(Profile)} />
+                    <Route path="notifies/*" element={withSuspense(Notifies)} />
                     <Route path="*" element={<Navigate to={"/404"} />} />
                 </Route>
 

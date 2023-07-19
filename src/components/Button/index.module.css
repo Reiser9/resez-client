@@ -1,6 +1,7 @@
 .buttonInner{
     width: 100%;
     position: relative;
+    display: flex;
 }
 
 .button{
@@ -10,7 +11,9 @@
     cursor: pointer;
     color: #fff;
     min-height: 44px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
 }
 
@@ -107,6 +110,7 @@
 .buttonPreloader{
     width: 100%;
     height: 100%;
+    max-height: 44px;
     position: absolute;
     top: 0;
     left: 0;

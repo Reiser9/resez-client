@@ -75,29 +75,6 @@
     gap: 12px;
 }
 
-.profileInfoButton{
-    width: 44px;
-    height: 44px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.8rem;
-    background: var(--input);
-}
-
-.profileInfoButton:hover{
-    background: var(--lighten);
-}
-
-.profileInfoButton svg{
-    width: 24px;
-}
-
-.profileInfoButton svg path{
-    stroke: var(--main);
-}
-
 .profileInfoTheme{
     width: 20px;
     height: 20px;

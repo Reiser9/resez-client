@@ -60,7 +60,7 @@ const useTheme = () => {
                     case APP_STATUSES.NOT_AUTH:
                         return noAuthController(() => getAllTheme());
                     default:
-                        return alertNotify("Ошибка", response.data.message || "Что-то непонятное", "error");
+                        return alertNotify("Ошибка", response?.data?.message || "Что-то непонятное", "error");
                 }
             }
 
@@ -85,7 +85,7 @@ const useTheme = () => {
                 case APP_STATUSES.NOT_AUTH:
                     return noAuthController(() => editTheme(themeId));
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 

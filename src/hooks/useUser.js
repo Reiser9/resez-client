@@ -34,7 +34,7 @@ const useUser = () => {
                 case APP_STATUSES.NOT_AUTH:
                     return noAuthController(getShortInfo);
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
@@ -72,7 +72,7 @@ const useUser = () => {
                 case APP_STATUSES.NOT_AUTH:
                     return noAuthController(() => changePasswordSendCode(oldPassword, newPassword, newPasswordAgain, successCallback));
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
@@ -82,6 +82,12 @@ const useUser = () => {
 
     const changePasswordVerify = async (code, oldPassword, newPassword, successCallback = () => {}) => {
         setError(false);
+
+        if(!code || code.length !== 6){
+            debugger;
+            return alertNotify("Предупреждение", "Некорректный код", "warn");
+        }
+
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.USER, "/verify-change-password-code", HTTP_METHODS.PUT, true, {
@@ -101,7 +107,7 @@ const useUser = () => {
                 case APP_STATUSES.NOT_AUTH:
                     return noAuthController(() => changePasswordVerify(code, oldPassword, newPassword, successCallback));
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 

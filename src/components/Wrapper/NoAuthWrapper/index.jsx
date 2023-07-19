@@ -13,7 +13,7 @@ const NoAuthWrapper = ({children}) => {
     }
 
     if(isAuth){
-        return <Navigate to="/" />
+        return <Navigate to="/" replace />
     }
 
     return children;

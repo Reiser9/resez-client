@@ -13,7 +13,7 @@ const AuthWrapper = ({children}) => {
     }
 
     if(!isAuth){
-        return <Navigate to="/login" />
+        return <Navigate to="/login" replace />
     }
 
     return children;

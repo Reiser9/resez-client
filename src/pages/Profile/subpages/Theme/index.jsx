@@ -2,7 +2,6 @@ import React from 'react';
 
 import typography from '../../../../styles/typography.module.css';
 import profile from '../../index.module.css';
-import styles from './index.module.css';
 
 import ChangeTheme from './ChangeTheme';
 import ChangeMode from './ChangeMode';

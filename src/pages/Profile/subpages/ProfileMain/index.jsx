@@ -12,6 +12,7 @@ import useNotify from '../../../../hooks/useNotify';
 
 import Button from '../../../../components/Button';
 import SidebarLink from '../../../../components/SidebarLink';
+import IconButton from '../../../../components/IconButton';
 
 const ProfileMain = () => {
     const {alertNotify} = useNotify();
@@ -51,14 +52,14 @@ const ProfileMain = () => {
                         </Button>
 
                         <Tooltip title="Просмотр профиля">
-                            <button className={styles.profileInfoButton}>
+                            <IconButton>
                                 <Eye />
-                            </button>
+                            </IconButton>
                         </Tooltip>
 
-                        <button className={styles.profileInfoButton}>
+                        <IconButton>
                             <DotsHorizontal />
-                        </button>
+                        </IconButton>
                     </div>
                 </div>
             </div>

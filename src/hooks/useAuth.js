@@ -74,7 +74,7 @@ const useAuth = () => {
                     await noAuthController(checkAuth);
                     return dispatch(setAuthIsLoading(false));
                 default:
-                    return alertNotify("Информация", response.data.message, "info");
+                    return alertNotify("Информация", response?.data?.message, "info");
             }
         }
 
@@ -86,7 +86,7 @@ const useAuth = () => {
         }
 
         // Вынести в функцию
-        const {primary, light} = data.theme;
+        const {primary, light} = data?.theme || {};
         setMainColors(primary, light);
 
         dispatch(setIsAuth(true));
@@ -160,7 +160,7 @@ const useAuth = () => {
         dispatch(setIsAuth(true));
         dispatch(initUser(data.user));
         checkUserVerified(data.user);
-        const {primary, light} = data?.user?.theme;
+        const {primary, light} = data?.user?.theme || {};
         setMainColors(primary, light);
 
         localStorage.setItem("accessToken", data.accessToken);
@@ -210,7 +210,7 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
@@ -241,7 +241,7 @@ const useAuth = () => {
                 case APP_STATUSES.NOT_AUTH:
                     return noAuthController(() => sendCodeRegister(successCallback));
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
@@ -272,7 +272,7 @@ const useAuth = () => {
                 case APP_STATUSES.NOT_AUTH:
                     return noAuthController(() => verifyCodeRegister(code, successCallback));
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
@@ -313,7 +313,7 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
@@ -345,7 +345,7 @@ const useAuth = () => {
                 case APP_STATUSES.SERVER_NOT_AVAILABLE:
                     return;
                 default:
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
@@ -385,7 +385,7 @@ const useAuth = () => {
                     return;
                 default:
                     rejectCallback();
-                    return alertNotify("Ошибка", response.data.message, "error");
+                    return alertNotify("Ошибка", response?.data?.message, "error");
             }
         }
 
