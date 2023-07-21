@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { HTTP_METHODS, REQUEST_TYPE } from "../consts/HTTP";
-import { APP_STATUSES } from "../consts/APP_STATUSES";
 
 import {setMainColors} from '../utils/setMainColors';
 import { initThemes, setMode } from "../redux/slices/theme";
@@ -11,6 +10,7 @@ import { requestDataIsError } from "../utils/requestDataIsError";
 
 import useRequest from "./useRequest";
 import useNotify from "./useNotify";
+import useError from "./useError";
 
 const useTheme = () => {
     const [initThemesIsLoading, setInitThemesIsLoading] = React.useState(false);
@@ -19,8 +19,10 @@ const useTheme = () => {
 
     const dispatch = useDispatch();
     const {mode, themes} = useSelector(state => state.theme);
-    const {request, noAuthController} = useRequest();
+    const {user} = useSelector(state => state.user);
+    const {request} = useRequest();
     const {alertNotify} = useNotify();
+    const {errorController} = useError();
 
     const initTheme = (themeInit) => {
         dispatch(setMode(themeInit));
@@ -54,14 +56,7 @@ const useTheme = () => {
             setInitThemesIsLoading(false);
 
             if(requestDataIsError(response)){
-                switch(response){
-                    case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                        return;
-                    case APP_STATUSES.NOT_AUTH:
-                        return noAuthController(() => getAllTheme());
-                    default:
-                        return alertNotify("Ошибка", response?.data?.message || "Что-то непонятное", "error");
-                }
+                return errorController(response, getAllTheme);
             }
 
             dispatch(initThemes(response.data.themes));
@@ -70,6 +65,11 @@ const useTheme = () => {
 
     const editTheme = async (themeId) => {
         setError(false);
+
+        if(user?.theme?.id === themeId){
+            return;
+        }
+
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.USER, "/set-theme", HTTP_METHODS.PUT, true, {
@@ -79,14 +79,7 @@ const useTheme = () => {
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => editTheme(themeId));
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, () => editTheme(themeId));
         }
 
         dispatch(initUser(response.data));

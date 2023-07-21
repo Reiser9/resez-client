@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import pws from '../../styles/pageWithSidebar.module.css';
 
@@ -21,6 +21,8 @@ const Profile = () => {
                         <div className={pws.content}>
                             <Routes>
                                 <Route index element={withSuspense(NotifiesMain)} />
+                                <Route path="unread" element={withSuspense(NotifiesMain)} />
+                                <Route path="*" element={<Navigate to={""} />} />
                             </Routes>
                         </div>
 

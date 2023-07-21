@@ -10,9 +10,10 @@ import useSession from '../../../../hooks/useSession';
 import Button from '../../../../components/Button';
 import SessionsSkeleton from '../../../../components/Skeleton/Sessions';
 import SessionItemCompact from '../../SessionItemCompact';
+import NotContent from '../../../../components/NotContent';
 
 const SessionBlock = () => {
-    const {isLoading, loadSessions, endAllSessions} = useSession();
+    const {isLoading, error, loadSessions, endAllSessions} = useSession();
     const {sessionsIsLoading, sessions} = useSelector(state => state.session);
     const navigate = useNavigate();
 
@@ -28,27 +29,29 @@ const SessionBlock = () => {
         <>
             {sessionsIsLoading
             ? <SessionsSkeleton />
-            : <>
-                <div className={styles.sessionWrapper}>
-                    <p className={typography.text}>Текущий сеанс</p>
+            : error
+                ? <NotContent text="Ошибка при загрузке данных" />
+                : <>
+                    <div className={styles.sessionWrapper}>
+                        <p className={typography.text}>Текущий сеанс</p>
 
-                    <SessionItemCompact current data={sessions?.current || {}} onClick={() => seeSessionFull(sessions?.current?.id)} />
+                        <SessionItemCompact current data={sessions?.current || {}} onClick={() => seeSessionFull(sessions?.current?.id)} />
 
-                    {sessions?.totalCount > 0 && <Button loading={isLoading} type="empty" theme="danger" onClick={endAllSessions}>
-                        Завершить другие сеансы
-                    </Button>}
-                </div>
+                        {sessions?.totalCount > 0 && <Button loading={isLoading} type="empty" theme="danger" onClick={endAllSessions}>
+                            Завершить другие сеансы
+                        </Button>}
+                    </div>
 
-                {sessions?.totalCount > 0 && <div className={styles.sessionWrapper}>
-                    <p className={typography.text}>Все сеансы ({sessions?.totalCount + 1 || 0})</p>
-                    
-                    {sessions?.other?.slice(0, 3).map(data => <SessionItemCompact key={data.id} data={data} onClick={() => seeSessionFull(data.id)} />)}
+                    {sessions?.totalCount > 0 && <div className={styles.sessionWrapper}>
+                        <p className={typography.text}>Все сеансы ({sessions?.totalCount + 1 || 0})</p>
+                        
+                        {sessions?.other?.slice(0, 3).map(data => <SessionItemCompact key={data.id} data={data} onClick={() => seeSessionFull(data.id)} />)}
 
-                    {sessions?.totalCount > 3 && <Button type="empty" to="sessions">
-                        Показать все
-                    </Button>}
-                </div>}
-            </>}
+                        {sessions?.totalCount > 3 && <Button type="empty" to="sessions">
+                            Показать все
+                        </Button>}
+                    </div>}
+                </>}
         </>
     )
 }

@@ -43,7 +43,7 @@ const Header = ({empty = false}) => {
                     <div className={styles.headerProfileImgInner}>
                         {avatar
                         ? <img src={avatar} alt="avatar" className={styles.headerProfileImg} />
-                        : <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
+                        : <p className={styles.headerProfileName}>{nickname && nickname[0].toUpperCase()}</p>}
                     </div>
 
                     <p className={`${typography.text} ${styles.headerProfileNick}`}>
@@ -59,7 +59,7 @@ const Header = ({empty = false}) => {
                                     <div className={styles.headerProfileMenuImgInner}>
                                         {avatar
                                         ? <img src={avatar} alt="avatar" className={styles.headerProfileMenuImg} />
-                                        : <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
+                                        : <p className={styles.headerProfileName}>{nickname && nickname[0].toUpperCase()}</p>}
                                     </div>
 
                                     <div className={styles.headerProfileMenuNameInner}>

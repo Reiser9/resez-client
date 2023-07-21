@@ -31,6 +31,8 @@ html{
     --successB: #E8F8F2;
     --warnB: #FFF9ED;
     --errorB: #FEECEC;
+
+    --notifyRed: #FEECEC;
 }
 
 @font-face{
@@ -98,6 +100,7 @@ body.dark{
     --hover: rgba(255, 255, 255, .06);
     --lighten: #33333b;
     --lightLine: rgba(255, 255, 255, 0.05);
+    --notifyRed: #33333b;
 
     /* Icons */
     --iconLightGrey: rgb(127 126 143);

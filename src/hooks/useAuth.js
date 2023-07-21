@@ -13,8 +13,9 @@ import {unmaskPhone} from '../utils/formatPhone';
 import { requestDataIsError } from '../utils/requestDataIsError';
 
 import useRequest from './useRequest';
-import useNotify from './useNotify';
 import useUser from './useUser';
+import useError from './useError';
+import useAlert from './useAlert';
 
 const useAuth = () => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -22,7 +23,8 @@ const useAuth = () => {
 
     const dispatch = useDispatch();
     const {request, getHealthServer, clearLocalData, noAuthController} = useRequest();
-    const {alertNotify} = useNotify();
+    const {errorController} = useError();
+    const {alertNotify} = useAlert();
     const {getShortInfo} = useUser();
 
     const checkUserVerified = (user) => {
@@ -73,6 +75,8 @@ const useAuth = () => {
                     dispatch(setAuthIsLoading(true));
                     await noAuthController(checkAuth);
                     return dispatch(setAuthIsLoading(false));
+                case APP_STATUSES.TOO_MANY_REQUESTS:
+                    return alertNotify("Информация", "Много запросов, бро", "info");
                 default:
                     return alertNotify("Информация", response?.data?.message, "info");
             }
@@ -104,14 +108,7 @@ const useAuth = () => {
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => logout(successCallback));
-                default:
-                    return alertNotify("Ошибка", "Попробуйте еще раз", "error");
-            }
+            return errorController(response, () => logout(successCallback), "Попробуйте еще раз");
         }
 
         alertNotify("Успешно", "Вы вышли из аккаунта", "success");
@@ -147,12 +144,7 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                default:
-                    return alertNotify("Ошибка", "Неверный логин или пароль", "error");
-            }
+            return errorController(response, () => {}, "Неверный логин или пароль");
         }
 
         const {data} = response;
@@ -206,12 +198,7 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response);
         }
 
         const {data} = response;
@@ -235,14 +222,7 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => sendCodeRegister(successCallback));
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, () => sendCodeRegister(successCallback));
         }
 
         successCallback();
@@ -266,14 +246,7 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => verifyCodeRegister(code, successCallback));
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, () => verifyCodeRegister(code, successCallback));
         }
 
         const {data} = response;
@@ -309,12 +282,7 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response);
         }
 
         successCallback();
@@ -341,12 +309,7 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response);
         }
 
         successCallback();
@@ -380,13 +343,9 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                default:
-                    rejectCallback();
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, () => {}, "", () => {
+                rejectCallback();
+            });
         }
 
         successCallback();

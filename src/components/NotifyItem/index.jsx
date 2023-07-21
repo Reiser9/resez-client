@@ -34,9 +34,9 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
                     </span>}
 
                     <span className={styles.notifyItemTitleInner}>
-                        {title && <Link to="1" className={`${typography.h4} ${styles.notifyItemTitle}`}>
+                        {title && <p className={`${typography.h4} ${styles.notifyItemTitle}`}>
                             {title}
-                        </Link>}
+                        </p>}
 
                         {date && <p className={`${typography.text2} ${styles.notifyItemDate}`}>
                             {formatDate(date)}
@@ -51,15 +51,15 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
                 </Tooltip>}
             </span>
 
-            {content && <Link to="1" className={`${typography.text} ${styles.notifyItemText} ${styles.notifyItemTextContent}`}>
+            {content && <p className={`${typography.text} ${styles.notifyItemText} ${styles.notifyItemTextContent}`}>
                 {content}
-            </Link>}
+            </p>}
 
             {type === "session" && <p className={`${typography.text} ${styles.notifyItemText}`}>
                 <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности
             </p>}
 
-            <Button to="1" auto className={styles.notifyItemButton}>
+            <Button auto className={styles.notifyItemButton}>
                 Подробнее
             </Button>
         </div>

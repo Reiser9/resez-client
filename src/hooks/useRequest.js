@@ -18,6 +18,7 @@ import { setDataApp } from '../redux/slices/app';
 import { setServerAvailable } from '../redux/slices/server';
 import { setDataSession } from '../redux/slices/session';
 import { setDataNotify } from '../redux/slices/notify';
+import { setDataTheme } from '../redux/slices/theme';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 import { setMainColors } from '../utils/setMainColors';
@@ -45,6 +46,7 @@ const useRequest = () => {
         dispatch(setDataApp());
         dispatch(setDataSession());
         dispatch(setDataNotify());
+        dispatch(setDataTheme());
 
         setMainColors();
 

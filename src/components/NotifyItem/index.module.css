@@ -69,7 +69,7 @@
 }
 
 .notifyItemIconInner.session{
-    background: var(--errorB);
+    background: var(--notifyRed);
 }
 
 .notifyItemIconInner.session svg path{
@@ -119,9 +119,5 @@
 @media (any-hover: hover) {
     .notifyItemButton{
         display: none;
-    }
-
-    .notifyItemTitle:hover{
-        color: var(--main);
     }
 }

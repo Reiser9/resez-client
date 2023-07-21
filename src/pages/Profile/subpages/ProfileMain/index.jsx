@@ -9,18 +9,36 @@ import { DotsHorizontal, Eye, Friends, User } from '../../../../components/Icons
 import {copyText} from '../../../../utils/copyText';
 
 import useNotify from '../../../../hooks/useNotify';
+import useUser from '../../../../hooks/useUser';
 
 import Button from '../../../../components/Button';
 import SidebarLink from '../../../../components/SidebarLink';
 import IconButton from '../../../../components/IconButton';
+import File from '../../../../components/File';
+import { useSelector } from 'react-redux';
 
 const ProfileMain = () => {
+    const [newAvatar, setNewAvatar] = React.useState("");
+
+    const {user} = useSelector(state => state.user);
+
     const {alertNotify} = useNotify();
+    const {changeAvatar} = useUser();
 
     const copyNick = () => {
         copyText("xw1nchester");
         alertNotify("Успешно", "Никнейм скопирован", "success");
     }
+
+    const changeAvatarHandler = () => {
+        let formData = new FormData();
+
+        formData.append("avatar", newAvatar);
+
+        changeAvatar(formData);
+    }
+
+    const {nickname, avatar} = user;
 
     return (
         <div className={styles.content}>
@@ -29,7 +47,11 @@ const ProfileMain = () => {
                     {/* <img src="/assets/img/banner.jpg" alt="banner" className={styles.profileBanner} /> */}
 
                     <div className={styles.profileAvatarInner}>
-                        {/* <img src="/assets/img/banner.jpg" alt="banner" className={styles.profileAvatar} /> */}
+                        <File id="profileAvatar" setValue={setNewAvatar} />
+
+                        {avatar
+                        ? <img src={avatar} alt="avatar" className={styles.profileAvatar} />
+                        : <p className={`${typography.h1} ${styles.profileAvatarEmpty}`}>{nickname && nickname[0].toUpperCase()}</p>}
 
                         <Tooltip title="Тема пользователя" placement="bottom">
                             <div className={styles.profileInfoTheme} style={{background: "var(--main)"}}></div>
@@ -39,7 +61,7 @@ const ProfileMain = () => {
 
                 <div className={styles.profileInfoInner}>
                     <div className={styles.profileInfoNameInner}>
-                        <h1 className={typography.h3}>Егор Ветров</h1>
+                        <h1 className={typography.h3} onClick={changeAvatarHandler}>Егор Ветров</h1>
 
                         <Tooltip title="Скопировать" placement="bottom">
                             <p className={`${typography.text2} ${styles.profileInfoNick}`} onClick={copyNick}>xw1nchester</p>
@@ -66,7 +88,7 @@ const ProfileMain = () => {
 
             <div className={styles.wrapper}>
                 <div className={styles.profileContent}>
-
+                    
                 </div>
 
                 <div className={styles.sidebar}>

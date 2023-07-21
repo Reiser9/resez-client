@@ -15,12 +15,14 @@ export const themeSlice = createSlice({
         initThemes: (state, action) => {
             state.themes = action.payload;
         },
+        setDataTheme: () => initialState
     }
 });
 
 export const {
     setMode,
-    initThemes
+    initThemes,
+    setDataTheme
 } = themeSlice.actions;
 
 export default themeSlice.reducer;

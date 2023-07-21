@@ -3,9 +3,9 @@ import { Empty } from 'antd';
 
 import styles from './index.module.css';
 
-const NotContent = ({text}) => {
+const NotContent = ({text, ...props}) => {
     return (
-        <div className={styles.emptyContent}>
+        <div className={styles.emptyContent} {...props}>
             <Empty description={text} />
         </div>
     )

@@ -2,20 +2,23 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
-import { APP_STATUSES } from '../consts/APP_STATUSES';
-
-import useRequest from './useRequest';
-import useNotify from './useNotify';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
+
+import { initUser } from '../redux/slices/user';
+
+import useRequest from './useRequest';
+import useAlert from './useAlert';
+import useError from './useError';
 
 const useUser = () => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
-    const {request, noAuthController} = useRequest();
-    const {alertNotify} = useNotify();
+    const {request} = useRequest();
+    const {alertNotify} = useAlert();
+    const {errorController} = useError();
 
     const getShortInfo = async () => {
         setError(false);
@@ -28,14 +31,7 @@ const useUser = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(getShortInfo);
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, getShortInfo);
         }
 
         return response;
@@ -66,14 +62,7 @@ const useUser = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => changePasswordSendCode(oldPassword, newPassword, newPasswordAgain, successCallback));
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, () => changePasswordSendCode(oldPassword, newPassword, newPasswordAgain, successCallback));
         }
 
         alertNotify("Информация", "Вам отправлен код в телеграм для подтверждения смены пароля", "info");
@@ -84,7 +73,6 @@ const useUser = () => {
         setError(false);
 
         if(!code || code.length !== 6){
-            debugger;
             return alertNotify("Предупреждение", "Некорректный код", "warn");
         }
 
@@ -101,17 +89,34 @@ const useUser = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => changePasswordVerify(code, oldPassword, newPassword, successCallback));
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, () => changePasswordVerify(code, oldPassword, newPassword, successCallback));
         }
 
         alertNotify("Успешно", "Вы сменили пароль", "success");
+        successCallback();
+    }
+
+    const changeAvatar = async (formData, successCallback = () => {}) => {
+        setError(false);
+
+        console.log(formData);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.USER, "/set-avatar", HTTP_METHODS.POST, true, formData, {
+            'Content-type': 'multipart/form-data'
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => changeAvatar(formData, successCallback));
+        }
+
+        alertNotify("Успешно", "Вы сменили аватар", "success");
+        dispatch(initUser(response.data.user));
         successCallback();
     }
 
@@ -120,7 +125,8 @@ const useUser = () => {
         error,
         getShortInfo,
         changePasswordSendCode,
-        changePasswordVerify
+        changePasswordVerify,
+        changeAvatar
     }
 }
 

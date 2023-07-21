@@ -1,15 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { APP_STATUSES } from '../consts/APP_STATUSES';
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
-import {addNotify, changeUnreadCount, decrementUnreadCount, initNotifies, readNotifyById, setNotifies, setNotifiesIsLoading} from '../redux/slices/notify';
+import {changeUnreadCount, decrementUnreadCount, initNotifies, readNotifyById, setNotifies, setNotifiesIsLoading} from '../redux/slices/notify';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 
 import useRequest from './useRequest';
-
+import useError from './useError';
+import useAlert from './useAlert';
 
 const useNotify = () => {
     const [notifyIsLoading, setNotifyIsLoading] = React.useState([]);
@@ -17,26 +17,10 @@ const useNotify = () => {
     const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
-    const {notifiesLocal, notifies} = useSelector(state => state.notify);
-    const {noAuthController, request} = useRequest();
-
-    const alertNotify = (title, text, type = "success", time = 2000) => {
-        if(notifiesLocal.length >= 3){
-            return;
-        }
-
-        const idNotify = new Date().getTime();
-
-        const notifyObject = {
-            id: idNotify,
-            title,
-            text,
-            type,
-            time
-        }
-
-        dispatch(addNotify(notifyObject));
-    }
+    const {notifies} = useSelector(state => state.notify);
+    const {request} = useRequest();
+    const {errorController} = useError();
+    const {alertNotify} = useAlert();
 
     const loadNotify = async (offset = 0, limit = 5, reload = false) => {
         setError(false);
@@ -49,14 +33,7 @@ const useNotify = () => {
             dispatch(setNotifiesIsLoading(false));
 
             if(requestDataIsError(response)){
-                switch(response){
-                    case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                        return;
-                    case APP_STATUSES.NOT_AUTH:
-                        return noAuthController(() => loadNotify(offset, limit, reload));
-                    default:
-                        return alertNotify("Ошибка", response?.data?.message, "error");
-                }
+                return errorController(response, () => loadNotify(offset, limit, reload));
             }
             
             dispatch(initNotifies(response.data));
@@ -74,16 +51,8 @@ const useNotify = () => {
             setIsLoading(false);
 
             if(requestDataIsError(response)){
-                setError(true);
-
-                switch(response){
-                    case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                        return;
-                    case APP_STATUSES.NOT_AUTH:
-                        return noAuthController(() => getAllNotify(offset, limit));
-                    default:
-                        return alertNotify("Ошибка", response?.data?.message, "error");
-                }
+              return   setError(true);
+                errorController(response, () => getAllNotify(offset, limit));
             }
 
             dispatch(setNotifies(response.data));
@@ -102,14 +71,7 @@ const useNotify = () => {
         setNotifyIsLoading(prev => prev.filter(item => item !== notifyId));
 
         if(requestDataIsError(response)){
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => readNotify(notifyId));
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, () => readNotify(notifyId));
         }
         
         alertNotify("Успешно", "Сообщение прочитано", "success");
@@ -127,14 +89,7 @@ const useNotify = () => {
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => readAllNotifies());
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, () => readAllNotifies(offset, limit));
         }
 
         alertNotify("Успешно", "Все сообщения прочитаны", "success");
@@ -152,14 +107,7 @@ const useNotify = () => {
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    return noAuthController(() => getUnreadNotifiesCount());
-                default:
-                    return alertNotify("Ошибка", response?.data?.message, "error");
-            }
+            return errorController(response, getUnreadNotifiesCount);
         }
 
         dispatch(changeUnreadCount(response.data));
