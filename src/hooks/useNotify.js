@@ -37,6 +37,7 @@ const useNotify = () => {
             }
             
             dispatch(initNotifies(response.data));
+            dispatch(changeUnreadCount(response.data.unreadNotifiesCount));
         }
     }
 
@@ -51,8 +52,9 @@ const useNotify = () => {
             setIsLoading(false);
 
             if(requestDataIsError(response)){
-              return   setError(true);
-                errorController(response, () => getAllNotify(offset, limit));
+                setError(true);
+
+                return errorController(response, () => getAllNotify(offset, limit));
             }
 
             dispatch(setNotifies(response.data));
@@ -84,7 +86,7 @@ const useNotify = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.NOTIFY, `/read-all?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.NOTIFY, `/read-all?offset=${offset}&limit=${limit}`, HTTP_METHODS.PUT, true);
 
         setIsLoading(false);
 
@@ -97,22 +99,6 @@ const useNotify = () => {
         dispatch(changeUnreadCount(0));
     }
 
-    const getUnreadNotifiesCount = async () => {
-        setError(false);
-
-        setIsLoading(true);
-
-        const response = await request(REQUEST_TYPE.NOTIFY, `/unread-count`, HTTP_METHODS.GET, true);
-
-        setIsLoading(false);
-
-        if(requestDataIsError(response)){
-            return errorController(response, getUnreadNotifiesCount);
-        }
-
-        dispatch(changeUnreadCount(response.data));
-    }
-
     return {
         isLoading,
         notifyIsLoading,
@@ -121,8 +107,7 @@ const useNotify = () => {
         loadNotify,
         getAllNotify,
         readNotify,
-        readAllNotifies,
-        getUnreadNotifiesCount
+        readAllNotifies
     };
 }
 

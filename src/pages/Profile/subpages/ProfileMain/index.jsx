@@ -18,8 +18,6 @@ import File from '../../../../components/File';
 import { useSelector } from 'react-redux';
 
 const ProfileMain = () => {
-    const [newAvatar, setNewAvatar] = React.useState("");
-
     const {user} = useSelector(state => state.user);
 
     const {alertNotify} = useNotify();
@@ -30,7 +28,7 @@ const ProfileMain = () => {
         alertNotify("Успешно", "Никнейм скопирован", "success");
     }
 
-    const changeAvatarHandler = () => {
+    const changeAvatarHandler = (newAvatar) => {
         let formData = new FormData();
 
         formData.append("avatar", newAvatar);
@@ -47,7 +45,7 @@ const ProfileMain = () => {
                     {/* <img src="/assets/img/banner.jpg" alt="banner" className={styles.profileBanner} /> */}
 
                     <div className={styles.profileAvatarInner}>
-                        <File id="profileAvatar" setValue={setNewAvatar} />
+                        <File id="profileAvatar" loadedCallback={changeAvatarHandler} />
 
                         {avatar
                         ? <img src={avatar} alt="avatar" className={styles.profileAvatar} />
@@ -61,7 +59,7 @@ const ProfileMain = () => {
 
                 <div className={styles.profileInfoInner}>
                     <div className={styles.profileInfoNameInner}>
-                        <h1 className={typography.h3} onClick={changeAvatarHandler}>Егор Ветров</h1>
+                        <h1 className={typography.h3}>Егор Ветров</h1>
 
                         <Tooltip title="Скопировать" placement="bottom">
                             <p className={`${typography.text2} ${styles.profileInfoNick}`} onClick={copyNick}>xw1nchester</p>

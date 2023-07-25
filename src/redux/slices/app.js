@@ -2,7 +2,8 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
     appIsLoading: false,
-    blocked: false
+    blocked: false,
+    connection: true
 };
 
 export const appSlice = createSlice({
@@ -15,6 +16,9 @@ export const appSlice = createSlice({
         setBlocked: (state, action) => {
             state.blocked = action.payload
         },
+        setConnection: (state, action) => {
+            state.connection = action.payload;
+        },
         setDataApp: () => initialState
     }
 });
@@ -22,7 +26,8 @@ export const appSlice = createSlice({
 export const {
     setAppIsLoading,
     setBlocked,
-    setDataApp
+    setDataApp,
+    setConnection
 } = appSlice.actions;
 
 export default appSlice.reducer;

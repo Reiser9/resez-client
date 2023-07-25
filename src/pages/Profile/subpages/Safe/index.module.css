@@ -25,11 +25,11 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 12px;
 }
 
 .sessionItem{
-    width: calc(100% / 3 - 40px / 3);
+    width: calc(100% / 3 - 24px / 3);
     padding: 2rem;
     border-radius: 4px;
     background: var(--input);
@@ -42,7 +42,7 @@
 
 @media (max-width: 1130px) {
     .sessionItem{
-        width: calc(100% / 2 - 20px / 2);
+        width: calc(100% / 2 - 12px / 2);
     }
 }
 @media (max-width: 900px) {
@@ -52,7 +52,7 @@
 }
 @media (max-width: 768px) {
     .sessionItem{
-        width: calc(100% / 2 - 20px / 2);
+        width: calc(100% / 2 - 12px / 2);
     }
 }
 @media (max-width: 640px) {

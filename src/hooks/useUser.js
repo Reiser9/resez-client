@@ -99,11 +99,9 @@ const useUser = () => {
     const changeAvatar = async (formData, successCallback = () => {}) => {
         setError(false);
 
-        console.log(formData);
-
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.USER, "/set-avatar", HTTP_METHODS.POST, true, formData, {
+        const response = await request(REQUEST_TYPE.USER, "/set-avatar", HTTP_METHODS.PUT, true, formData, {
             'Content-type': 'multipart/form-data'
         });
 

@@ -68,7 +68,7 @@ const useSession = () => {
         setError(false);
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.SESSION, "/end-all", HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.SESSION, "/end-all", HTTP_METHODS.PUT, true);
 
         setIsLoading(false);
 
@@ -85,7 +85,7 @@ const useSession = () => {
         setIsLoading(true);
         setSessionIsLoading(prev => [...prev, id]);
 
-        const response = await request(REQUEST_TYPE.SESSION, `/end/${id}`, HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.SESSION, `/end/${id}`, HTTP_METHODS.PUT, true);
 
         setSessionIsLoading(prev => prev.filter(item => item !== id));
         setIsLoading(false);

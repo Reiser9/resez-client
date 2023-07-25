@@ -35,7 +35,7 @@ const Register = () => {
 
                     <div className={auth.contentWrapper}>
                         <Input value={nickname} setValue={setNickname} placeholder="Имя пользователя" />
-                        <Input value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" mask="+7(999) 999 99-99" />
+                        <Input value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" mask="+7(999) 999 99-99" onPaste="phone" />
                         <Input value={password} setValue={setPassword} placeholder="Пароль" password />
                     </div>
 

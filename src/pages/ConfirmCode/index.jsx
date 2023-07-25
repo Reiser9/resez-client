@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import typography from '../../styles/typography.module.css';
 import auth from '../../components/Wrapper/AuthFormsWrapper/index.module.css';
-import styles from './index.module.css';
 
 import useAuth from '../../hooks/useAuth';
 
@@ -26,10 +25,6 @@ const ConfirmCode = () => {
     const verifyCode = () => {
         verifyCodeRegister(code, () => navigate("/"));
     }
-
-    React.useEffect(() => {
-        navigate("/");
-    }, []);
 
     return (
         <TitleWrpapper pageTitle="Код подтверждения">

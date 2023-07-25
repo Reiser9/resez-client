@@ -143,17 +143,17 @@ const useRequest = () => {
             setError(true);
             setIsLoading(false);
 
+            if(err?.response?.status === 429){
+                return APP_STATUSES.TOO_MANY_REQUESTS;
+            }
+
             const serverHealth = await getHealthServer();
 
             if(!serverHealth){
                 return APP_STATUSES.SERVER_NOT_AVAILABLE;
             }
 
-            if(err.response.status === 429){
-                return APP_STATUSES.TOO_MANY_REQUESTS;
-            }
-
-            if(err.response.status === 401){
+            if(err?.response?.status === 401){
                 return APP_STATUSES.NOT_AUTH;
             }
 

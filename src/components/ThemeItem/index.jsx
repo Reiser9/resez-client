@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './index.module.css';
 
 const ThemeItem = ({data, active = false, disabled = false, ...props}) => {
-    const {primary, light} = data;
+    const {primary} = data;
 
     return (
         <button

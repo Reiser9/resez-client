@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import typography from '../../styles/typography.module.css';
 import auth from '../../components/Wrapper/AuthFormsWrapper/index.module.css';
-import styles from './index.module.css';
 
 import useAuth from '../../hooks/useAuth';
 
@@ -42,7 +41,7 @@ const Recovery = () => {
                     <h2 className={typography.h2}>Восстановление пароля</h2>
 
                     {step === 1 && <div className={auth.contentWrapper}>
-                        <Input mask="+7(999) 999 99-99" value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" />
+                        <Input mask="+7(999) 999 99-99" value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" onPaste="phone" />
                     </div>}
 
                     {step === 2 && <div className={auth.contentWrapper}>

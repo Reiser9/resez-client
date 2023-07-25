@@ -6,7 +6,7 @@ const inputType = {
     "avatar": styles.avatar
 }
 
-const File = ({id, accept, setValue, type = "avatar"}) => {
+const File = ({id, accept, setValue, type = "avatar", loadedCallback = () => {}}) => {
     const [preview, setPreview] = React.useState("");
 
     const onInputChange = (e) => {
@@ -14,12 +14,17 @@ const File = ({id, accept, setValue, type = "avatar"}) => {
             return;
         }
         
-        setValue(e.target.files[0]);
+        if(setValue){
+            setValue(e.target.files[0]);
+        }
+        
         const fileReader = new FileReader();
         fileReader.readAsDataURL(e.target.files[0]);
 
         fileReader.onloadend = () => {
             setPreview(fileReader.result);
+
+            loadedCallback(e.target.files[0]);
         };
     }
 

@@ -2,7 +2,6 @@ import React from 'react';
 
 import typography from '../../styles/typography.module.css';
 import fullpage from '../../styles/fullpage.module.css';
-import styles from './index.module.css';
 
 import useAuth from '../../hooks/useAuth';
 

@@ -2,18 +2,20 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import useAuth from '../../../hooks/useAuth';
+import useCheckConnection from '../../../hooks/useCheckConnection';
 
 import Preloader from '../../Preloader';
 
 import ServerNotAvailable from '../../../pages/ServerNotAvailable';
 import Ban from '../../../pages/Ban';
-import ConfirmCode from '../../../pages/ConfirmCode';
+import NoConnection from '../../../pages/NoConnection';
 
 const InitialWrapper = ({children}) => {
-    const {appIsLoading, blocked} = useSelector(state => state.app);
+    const {appIsLoading, blocked, connection} = useSelector(state => state.app);
     const {serverAvailable} = useSelector(state => state.server);
-    const {isAuth, verified, authIsLoading} = useSelector(state => state.auth);
+    const {authIsLoading} = useSelector(state => state.auth);
     const {checkAuth} = useAuth();
+    useCheckConnection();
 
     React.useEffect(() => {
         checkAuth();
@@ -23,16 +25,16 @@ const InitialWrapper = ({children}) => {
         return <Preloader />
     }
 
+    if(!connection){
+        return <NoConnection />;
+    }
+
     if(!serverAvailable){
         return <ServerNotAvailable />
     }
 
     if(blocked){
         return <Ban />
-    }
-
-    if(isAuth && !verified){
-        return <ConfirmCode />
     }
 
     return children;

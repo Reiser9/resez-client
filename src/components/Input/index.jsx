@@ -6,9 +6,35 @@ import styles from "./index.module.css";
 
 import {Eye, Blind} from '../Icons';
 
-const Input = ({ value, setValue, placeholder, title, password = false, disabled = false, className, ...props }) => {
+const Input = ({ value, setValue, placeholder, title, password = false, disabled = false, onPaste, className, ...props }) => {
     const [show, setShow] = React.useState(false);
     const [typeInput, setTypeInput] = React.useState("text");
+
+    const pasteHandler = () => {
+        switch(onPaste) {
+            case "phone":
+                return (e) => {
+                    e.preventDefault();
+                    let pastedText = e.clipboardData.getData("text");
+                    pastedText = pastedText.replace(/\+\s*7/g, "");
+
+                    const maxLength = 10;
+                    if(pastedText.length > maxLength) {
+                        pastedText = pastedText.slice(0, maxLength);
+                    }
+
+                    setValue("+7" + pastedText);
+                    console.log("+7" + pastedText);
+
+                    setTimeout(() => {
+                        const inputElement = e.target;
+                        inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+                    }, 0);
+                }
+            default:
+                return () => {}
+        }
+    }
 
     React.useEffect(() => {
         if(!show && password){
@@ -39,6 +65,7 @@ const Input = ({ value, setValue, placeholder, title, password = false, disabled
                     onChange={e => setValue(() => e.target.value)}
                     placeholder={placeholder}
                     type={typeInput}
+                    onPaste={pasteHandler()}
                     {...props}
                 />}
 

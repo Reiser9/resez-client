@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch } from "react-redux";
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
-import { APP_STATUSES } from '../consts/APP_STATUSES';
 
 import { setAuthIsLoading, setIsAuth, setVerified } from '../redux/slices/auth';
 import { initUser } from '../redux/slices/user';
@@ -16,6 +15,7 @@ import useRequest from './useRequest';
 import useUser from './useUser';
 import useError from './useError';
 import useAlert from './useAlert';
+import { changeUnreadCount } from '../redux/slices/notify';
 
 const useAuth = () => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -67,35 +67,27 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
             dispatch(setAuthIsLoading(false));
-
-            switch(response){
-                case APP_STATUSES.SERVER_NOT_AVAILABLE:
-                    return;
-                case APP_STATUSES.NOT_AUTH:
-                    dispatch(setAuthIsLoading(true));
-                    await noAuthController(checkAuth);
-                    return dispatch(setAuthIsLoading(false));
-                case APP_STATUSES.TOO_MANY_REQUESTS:
-                    return alertNotify("Информация", "Много запросов, бро", "info");
-                default:
-                    return alertNotify("Информация", response?.data?.message, "info");
-            }
+            
+            return errorController(response, () => checkAuth(), "", "", async () => {
+                dispatch(setAuthIsLoading(true));
+                await noAuthController(checkAuth);
+                return dispatch(setAuthIsLoading(false));
+            });
         }
 
         const {data} = await getShortInfo();
-        dispatch(setAuthIsLoading(false));
 
         if(!data){
-            return;
+            return dispatch(setAuthIsLoading(false));
         }
 
-        // Вынести в функцию
         const {primary, light} = data?.theme || {};
         setMainColors(primary, light);
 
         dispatch(setIsAuth(true));
         dispatch(initUser(data));
         dispatch(setVerified(data.isVerified));
+        dispatch(changeUnreadCount(data.unreadNotifiesCount));
         dispatch(setAuthIsLoading(false));
     }
 
@@ -111,32 +103,35 @@ const useAuth = () => {
             return errorController(response, () => logout(successCallback), "Попробуйте еще раз");
         }
 
-        alertNotify("Успешно", "Вы вышли из аккаунта", "success");
         successCallback();
         clearLocalData();
+        alertNotify("Успешно", "Вы вышли из аккаунта", "success");
     }
 
     const login = async (nickname, password, successCallback = () => {}) => {
         setError(false);
 
-        if(!nickname){
+        const nicknameTrim = nickname?.trim();
+        const passwordTrim = password?.trim();
+
+        if(!nicknameTrim){
             return alertNotify("Предупреждение", "Имя пользователя не может быть пустым", "warn");
         }
-        else if(nickname.length < 3){
+        else if(nicknameTrim.length < 3){
             return alertNotify("Предупреждение", "Имя пользователя не может быть меньше 3-х символов", "warn");
         }
-        else if(!password){
+        else if(!passwordTrim){
             return alertNotify("Предупреждение", "Пароль не может быть пустым", "warn");
         }
-        else if(password.length < 8){
+        else if(passwordTrim.length < 8){
             return alertNotify("Предупреждение", "Пароль должен быть больше 8 символов", "warn");
         }
 
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.AUTH, "/login", HTTP_METHODS.POST, false, {
-            nickname: nickname.trim(),
-            password: password.trim()
+            nickname: nicknameTrim,
+            password: passwordTrim
         });
 
         setIsLoading(false);
@@ -152,6 +147,8 @@ const useAuth = () => {
         dispatch(setIsAuth(true));
         dispatch(initUser(data.user));
         checkUserVerified(data.user);
+        dispatch(changeUnreadCount(data.user.unreadNotifiesCount));
+
         const {primary, light} = data?.user?.theme || {};
         setMainColors(primary, light);
 
@@ -165,11 +162,13 @@ const useAuth = () => {
         setError(false);
 
         const formatPhoneNumber = unmaskPhone(phoneNumber);
+        const nicknameTrim = nickname?.trim();
+        const passwordTrim = password?.trim();
 
-        if(!nickname){
+        if(!nicknameTrim){
             return alertNotify("Предупреждение", "Имя пользователя не может быть пустым", "warn");
         }
-        else if(nickname.length < 3){
+        else if(nicknameTrim.length < 3){
             return alertNotify("Предупреждение", "Имя пользователя не может быть меньше 3-х символов", "warn");
         }
         else if(!formatPhoneNumber){
@@ -178,19 +177,19 @@ const useAuth = () => {
         else if(formatPhoneNumber.length < 12){
             return alertNotify("Предупреждение", "Введите корректный номер телефона", "warn");
         }
-        else if(!password){
+        else if(!passwordTrim){
             return alertNotify("Предупреждение", "Пароль не может быть пустым", "warn");
         }
-        else if(password.length < 8){
+        else if(passwordTrim.length < 8){
             return alertNotify("Предупреждение", "Пароль должен быть больше 8 символов", "warn");
         }
 
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.AUTH, "/register", HTTP_METHODS.POST, false, {
-            nickname,
+            nickname: nicknameTrim,
             phoneNumber: formatPhoneNumber,
-            password
+            password: passwordTrim
         });
 
         setIsLoading(false);
@@ -319,14 +318,16 @@ const useAuth = () => {
         setError(false);
 
         const formatPhoneNumber = unmaskPhone(phoneNumber);
+        const passwordTrim = password?.trim();
+        const passwordAgainTrim = passwordAgain?.trim();
 
-        if(!password){
+        if(!passwordTrim){
             return alertNotify("Предупреждение", "Введите пароль", "warn");
         }
-        else if(password.length < 8 && password.length > 32){
+        else if(passwordTrim.length < 8 && passwordTrim.length > 32){
             return alertNotify("Предупреждение", "Пароль не может быть меньше 8 и больше 32 символов", "warn");
         }
-        else if(password !== passwordAgain){
+        else if(passwordTrim !== passwordAgainTrim){
             return alertNotify("Предупреждение", "Пароли не совпадают", "warn");
         }
 
@@ -335,7 +336,7 @@ const useAuth = () => {
         const response = await request(REQUEST_TYPE.AUTH, "/recovery-password", HTTP_METHODS.PUT, false, {
             phoneNumber: formatPhoneNumber,
             code,
-            password
+            password: passwordTrim
         });
 
         setIsLoading(false);
