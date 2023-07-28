@@ -82,12 +82,12 @@
 }
 
 .light{
-    background: var(--input);
+    background: var(--lighten);
     color: var(--main);
 }
 
 .light:hover{
-    background: var(--lighten);
+    opacity: 0.7;
 }
 
 .light.danger{

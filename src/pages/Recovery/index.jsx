@@ -11,6 +11,7 @@ import NoAuthWrapper from '../../components/Wrapper/NoAuthWrapper';
 import AuthFormsWrapper from '../../components/Wrapper/AuthFormsWrapper';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import BackButton from '../../components/BackButton';
 
 const Recovery = () => {
     const [step, setStep] = React.useState(1);
@@ -38,7 +39,11 @@ const Recovery = () => {
         <TitleWrpapper pageTitle="Восстановление пароля">
             <NoAuthWrapper>
                 <AuthFormsWrapper>
-                    <h2 className={typography.h2}>Восстановление пароля</h2>
+                    <div className={auth.titleInner}>
+                        {step > 1 && <BackButton onClick={() => setStep(1)} />}
+
+                        <h2 className={typography.h2}>Восстановление пароля</h2>
+                    </div>
 
                     {step === 1 && <div className={auth.contentWrapper}>
                         <Input mask="+7(999) 999 99-99" value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" onPaste="phone" />
@@ -46,6 +51,8 @@ const Recovery = () => {
 
                     {step === 2 && <div className={auth.contentWrapper}>
                         <Input mask="999999" value={code} setValue={setCode} placeholder="Код" />
+
+                        <p className={typography.text}>Код отправлен по номеру: <span className={auth.contentBottomLink}>{phoneNumber}</span></p>
                     </div>}
 
                     {step === 3 && <div className={auth.contentWrapper}>
@@ -59,7 +66,7 @@ const Recovery = () => {
                         {step === 3 && <Button loading={isLoading} className={auth.contentButton} onClick={verifyPassword}>Изменить пароль</Button>}
 
                         {step < 3 && <div className={auth.contentBottom}>
-                            <p className={`${typography.text} ${auth.contentBottomText}`}>
+                            <p className={typography.text}>
                                 Вспомнили пароль? <Link to="/login" className={auth.contentBottomLink}>Войти</Link>
                             </p>
                         </div>}

@@ -11,7 +11,7 @@
 
 @media (max-width: 1500px) {
     .header{
-        padding: 1.2rem 1.6rem;
+        padding: 1.2rem;
     }
 }
 
@@ -30,14 +30,27 @@
 
 .headerProfileInner{
     position: relative;
+}
+
+@media (any-hover: hover) {
+    .headerProfileInner{
+        cursor: pointer;
+    }
+
+    .headerProfileInner:hover .headerProfileArrow{
+        transform: rotate(180deg);
+    }
+
+    .headerProfileInner:hover .headerProfileMenuInner{
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+.headerProfileWrap{
     display: flex;
     align-items: center;
     gap: 8px;
-    cursor: pointer;
-}
-
-.headerProfileInner:hover .headerProfileArrow{
-    transform: rotate(180deg);
 }
 
 .headerProfileImgInner, .headerProfileMenuImgInner{
@@ -46,7 +59,7 @@
     border-radius: 50%;
     overflow: hidden;
     position: relative;
-    background: var(--main);
+    background: var(--lighten);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -59,7 +72,7 @@
 }
 
 .headerProfileName{
-    color: #fff;
+    color: var(--main);
     font-weight: 500;
     font-size: 2rem;
     position: relative;
@@ -77,12 +90,28 @@
 
 .headerProfileNick{
     font-weight: 600;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width: 440px) {
+    .headerProfileNick{
+        display: none;
+    }
 }
 
 .headerProfileArrow{
     width: 16px;
     flex-shrink: 0;
     transition: .2s ease-in-out;
+}
+
+@media (any-hover: none) {
+    .headerProfileArrow.active{
+        transform: rotate(180deg);
+    }
 }
 
 .headerLogin{
@@ -110,9 +139,11 @@
     cursor: default;
 }
 
-.headerProfileInner:hover .headerProfileMenuInner{
-    opacity: 1;
-    pointer-events: all;
+@media (any-hover: none) {
+    .headerProfileMenuInner.active{
+        opacity: 1;
+        pointer-events: all;
+    }
 }
 
 .headerProfileMenu{
@@ -235,4 +266,69 @@
 .headerThemeLabel{
     margin-left: auto;
     pointer-events: none;
+}
+
+.headerLogoWrapper{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menuIconInner{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--input);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+@media (min-width: 1500px) {
+    .menuIconInner{
+        display: none;
+    }
+}
+
+@media (any-hover: hover) {
+    .menuIconInner{
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .menuIconInner{
+        display: flex;
+    }
+}
+
+.menuIcon, .crossIcon{
+    width: 24px;
+    flex-shrink: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: .2s ease-in-out;
+    pointer-events: none;
+}
+
+.menuIcon{
+    transform: translate(-90%, -50%);
+}
+.crossIcon{
+    transform: translate(-10%, -50%);
+}
+
+.menuIcon.active, .crossIcon.active{
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -50%);
+}
+
+.menuIcon path, .crossIcon path{
+    stroke: var(--main);
 }

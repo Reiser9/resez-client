@@ -284,6 +284,7 @@ const useAuth = () => {
             return errorController(response);
         }
 
+        alertNotify("Успешно", "Код отправлен", "success");
         successCallback();
     }
 

@@ -9,7 +9,7 @@ const BackButton = ({...props}) => {
     const navigate = useNavigate();
 
     return (
-        <button className={styles.back} {...props} onClick={() => navigate(-1)}>
+        <button className={styles.back} onClick={() => navigate(-1)} {...props}>
             <ArrowLeft />
         </button>
     )

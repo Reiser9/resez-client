@@ -91,10 +91,10 @@ body.dark{
     --input: #232229;
     --inputDarken: #131316;
     --text: #E5E8EB;
-    --infoB: #25252b;
-    --successB: #25252b;
-    --warnB: #25252b;
-    --errorB: #25252b;
+    --infoB: #33333b;
+    --successB: #33333b;
+    --warnB: #33333b;
+    --errorB: #33333b;
     --textGrey: rgb(127 126 143);
     --line: #474747;
     --hover: rgba(255, 255, 255, .06);

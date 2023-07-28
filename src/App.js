@@ -13,6 +13,7 @@ import EmptyWrapper from "./components/Wrapper/EmptyWrapper";
 const Main = React.lazy(() => import("./pages/Main"));
 const Profile = React.lazy(() => import("./pages/Profile"));
 const Notifies = React.lazy(() => import("./pages/Notifies"));
+const Admin = React.lazy(() => import("./pages/Admin"));
 
 const Register = React.lazy(() => import("./pages/Register"));
 const Login = React.lazy(() => import("./pages/Login"));
@@ -36,23 +37,24 @@ const App = () => {
             <Routes>
                 {isAuth && !verified
                 ? <Route path="/">
-                    <Route index element={withSuspense(ConfirmCode)} />
+                    <Route index element={withSuspense(<ConfirmCode />)} />
                     <Route path="*" element={<Navigate to={"/"} />} />
                 </Route>
                 : <>
                     <Route path="/" element={<DefaultWrapper />}>
-                        <Route index element={withSuspense(Main)} />
-                        <Route path="profile/*" element={withSuspense(Profile)} />
-                        <Route path="notifies/*" element={withSuspense(Notifies)} />
+                        <Route index element={withSuspense(<Main />)} />
+                        <Route path="profile/*" element={withSuspense(<Profile />)} />
+                        <Route path="notifies/*" element={withSuspense(<Notifies />)} />
+                        <Route path="admin/*" element={withSuspense(<Admin />)} />
                         <Route path="*" element={<Navigate to={"/404"} />} />
                     </Route>
 
                     <Route path="/" element={<EmptyWrapper />}>
-                        <Route path="register" element={withSuspense(Register)} />
-                        <Route path="login" element={withSuspense(Login)} />
-                        <Route path="recovery" element={withSuspense(Recovery)} />
-                        <Route path="confirm" element={withSuspense(ConfirmCode)} />
-                        <Route path="404" element={withSuspense(NotFound)} />
+                        <Route path="register" element={withSuspense(<Register />)} />
+                        <Route path="login" element={withSuspense(<Login />)} />
+                        <Route path="recovery" element={withSuspense(<Recovery />)} />
+                        <Route path="confirm" element={withSuspense(<ConfirmCode />)} />
+                        <Route path="404" element={withSuspense(<NotFound />)} />
                     </Route>
                 </>}
             </Routes>

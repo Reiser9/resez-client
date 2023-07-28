@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
-import {changeUnreadCount, decrementUnreadCount, initNotifies, readNotifyById, setNotifies, setNotifiesIsLoading} from '../redux/slices/notify';
+import {changeUnreadCount, decrementUnreadCount, deleteNotifyById, initNotifies, readNotifyById, setNotifies, setNotifiesIsLoading} from '../redux/slices/notify';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 
@@ -22,46 +22,46 @@ const useNotify = () => {
     const {errorController} = useError();
     const {alertNotify} = useAlert();
 
-    const loadNotify = async (offset = 0, limit = 5, reload = false) => {
+    const loadNotify = async (offset = 0, limit = 5, unread = false) => {
         setError(false);
 
-        if(!notifies?.notifies || reload){
-            dispatch(setNotifiesIsLoading(true));
+        dispatch(setNotifiesIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.NOTIFY, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.NOTIFY, `?offset=${offset}&limit=${limit}&unread=${unread}`, HTTP_METHODS.GET, true);
 
-            dispatch(setNotifiesIsLoading(false));
+        dispatch(setNotifiesIsLoading(false));
 
-            if(requestDataIsError(response)){
-                return errorController(response, () => loadNotify(offset, limit, reload));
-            }
-            
-            dispatch(initNotifies(response.data));
-            dispatch(changeUnreadCount(response.data.unreadNotifiesCount));
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => loadNotify(offset, limit, unread));
         }
+        
+        dispatch(initNotifies(response.data));
+        dispatch(changeUnreadCount(response.data.unreadNotifiesCount));
     }
 
-    const getAllNotify = async (offset = 0, limit = 5) => {
+    const getAllNotify = async (offset = 0, limit = 5, unread = false) => {
         setError(false);
 
         if(!notifies?.notifies || notifies?.notifies?.length + 1 < offset + limit){
             setIsLoading(true);
 
-            const response = await request(REQUEST_TYPE.NOTIFY, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.NOTIFY, `?offset=${offset}&limit=${limit}&unread=${unread}`, HTTP_METHODS.GET, true);
 
             setIsLoading(false);
 
             if(requestDataIsError(response)){
                 setError(true);
 
-                return errorController(response, () => getAllNotify(offset, limit));
+                return errorController(response, () => getAllNotify(offset, limit, unread));
             }
 
             dispatch(setNotifies(response.data));
         }
     }
 
-    const readNotify = async (notifyId) => {
+    const readNotify = async (notifyId, unread = false) => {
         setError(false);
 
         setNotifyIsLoading(prev => [...prev, notifyId]);
@@ -77,11 +77,18 @@ const useNotify = () => {
         }
         
         alertNotify("Успешно", "Сообщение прочитано", "success");
-        dispatch(readNotifyById(response.data));
+
+        if(unread){
+            dispatch(deleteNotifyById(response.data));
+        }
+        else{
+            dispatch(readNotifyById(response.data));
+        }
+
         dispatch(decrementUnreadCount());
     }
 
-    const readAllNotifies = async (offset = 0, limit = 6) => {
+    const readAllNotifies = async (offset = 0, limit = 6, unread = false) => {
         setError(false);
 
         setIsLoading(true);
@@ -95,7 +102,18 @@ const useNotify = () => {
         }
 
         alertNotify("Успешно", "Все сообщения прочитаны", "success");
-        dispatch(initNotifies(response.data));
+
+        if(unread){
+            dispatch(initNotifies({
+                notifies: [],
+                totalCount: 0,
+                isLast: true
+            }));
+        }
+        else{
+            dispatch(initNotifies(response.data));
+        }
+
         dispatch(changeUnreadCount(0));
     }
 

@@ -4,7 +4,8 @@ import styles from './index.module.css';
 
 const typesButton = {
     "default": styles.default,
-    "light": styles.light
+    "light": styles.light,
+    "danger": styles.danger
 }
 
 const IconButton = ({type = "default", disabled = false, children, ...props}) => {

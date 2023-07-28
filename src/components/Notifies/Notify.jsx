@@ -4,27 +4,9 @@ import { useDispatch } from 'react-redux';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { Warn, Error, Success, Info } from '../Icons';
 import { removeNotify } from '../../redux/slices/notify';
 
-const notifyTypes = {
-    "success": {
-        icon: <Success />,
-        class: styles.success
-    },
-    "info": {
-        icon: <Info />,
-        class: styles.info
-    },
-    "warn": {
-        icon: <Warn />,
-        class: styles.warn
-    },
-    "error": {
-        icon: <Error />,
-        class: styles.error
-    }
-}
+import { getNotifyByType } from '../../utils/getNotifyByType';
 
 const Notify = ({data}) => {
     const {id, title, text, type, time} = data;
@@ -49,9 +31,9 @@ const Notify = ({data}) => {
     }, [remove, time]);
 
     return (
-        <div className={`${styles.notifyItem} ${notifyTypes[type].class}`} onClick={removeOnClick}>
+        <div className={`${styles.notifyItem} ${getNotifyByType(type).class}`} onClick={removeOnClick}>
             <div className={styles.notifyItemIconWrapper}>
-                {notifyTypes[type].icon}
+                {getNotifyByType(type).icon}
             </div>
 
             <div className={styles.notifyItemWrapper}>

@@ -1,59 +1,103 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { Switch } from 'antd';
 
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { ArrowBottom, Exit, Moon, Notify, User } from '../Icons';
+import { ArrowBottom, Cross, Exit, Menu, Moon, Notify, User } from '../Icons';
+
+import { setSidebarShow } from '../../redux/slices/app';
 
 import useTheme from '../../hooks/useTheme';
 import useAuth from '../../hooks/useAuth';
 
 const Header = ({empty = false}) => {
+    const [profileMenu, setProfileMenu] = React.useState(false);
+
     const {isAuth} = useSelector(state => state.auth);
     const {user} = useSelector(state => state.user);
     const {mode} = useSelector(state => state.theme);
     const {unreadCount} = useSelector(state => state.notify);
+    const {sidebarShow} = useSelector(state => state.app);
     const {changeTheme} = useTheme();
     const {logout} = useAuth();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const profileMenuRef = React.useRef(null);
+
+    const menuHandler = () => {
+        dispatch(setSidebarShow(!sidebarShow));
+    }
+
+    const toggleMenuProfile = () => {
+        setProfileMenu(prev => !prev);
+    }
+
+    const closeProfileMenu = () => {
+        setProfileMenu(false);
+    }
 
     const logoutHandler = () => {
         logout(() => navigate("/"));
+        closeProfileMenu();
     }
+  
+    const handleOutsideClick = (e) => {
+        if (profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
+            setProfileMenu(false);
+        }
+    };
+  
+    React.useEffect(() => {
+        document.addEventListener("click", handleOutsideClick);
+    
+        return () => {
+            document.removeEventListener("click", handleOutsideClick);
+        };
+    }, []);
 
     const {avatar, nickname, status, level} = user;
 
     return (
         <header className={styles.header}>
-            <Link to="/" className={styles.headerLogoInner}>
-                <p className={styles.headerLogo}>ResEz</p>
-            </Link>
+            <div className={styles.headerLogoWrapper}>
+                {!empty && <div className={styles.menuIconInner} onClick={menuHandler}>
+                    <Menu className={`${styles.menuIcon}${!sidebarShow ? ` ${styles.active}` : ""}`} />
+                    <Cross className={`${styles.crossIcon}${sidebarShow ? ` ${styles.active}` : ""}`} />
+                </div>}
+
+                <Link to="/" className={styles.headerLogoInner}>
+                    <p className={styles.headerLogo}>ResEz</p>
+                </Link>
+            </div>
 
             {!empty && (isAuth
-                ? <div className={styles.headerProfileInner}>
-                    <div className={styles.headerProfileImgInner}>
-                        {avatar
-                        ? <img src={avatar} alt="avatar" className={styles.headerProfileImg} />
-                        : <p className={styles.headerProfileName}>{nickname && nickname[0].toUpperCase()}</p>}
+                ? <div className={styles.headerProfileInner} ref={profileMenuRef}>
+                    <div className={styles.headerProfileWrap} onClick={toggleMenuProfile}>
+                        <div className={styles.headerProfileImgInner}>
+                            {avatar
+                            ? <img src={avatar} alt="avatar" className={styles.headerProfileImg} />
+                            : nickname && <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
+                        </div>
+
+                        <p className={`${typography.text} ${styles.headerProfileNick}`}>
+                            {nickname}
+                        </p>
+
+                        <ArrowBottom className={`${styles.headerProfileArrow}${profileMenu ? ` ${styles.active}` : ""}`} />
                     </div>
 
-                    <p className={`${typography.text} ${styles.headerProfileNick}`}>
-                        {nickname}
-                    </p>
-
-                    <ArrowBottom className={styles.headerProfileArrow} />
-
-                    <div className={styles.headerProfileMenuInner}>
+                    <div className={`${styles.headerProfileMenuInner}${profileMenu ? ` ${styles.active}` : ""}`}>
                         <div className={styles.headerProfileMenu}>
                             <div className={styles.headerProfileMenuInfo}>
                                 <div className={styles.headerProfileMenuData}>
                                     <div className={styles.headerProfileMenuImgInner}>
                                         {avatar
                                         ? <img src={avatar} alt="avatar" className={styles.headerProfileMenuImg} />
-                                        : <p className={styles.headerProfileName}>{nickname && nickname[0].toUpperCase()}</p>}
+                                        : nickname && <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
                                     </div>
 
                                     <div className={styles.headerProfileMenuNameInner}>
@@ -68,13 +112,13 @@ const Header = ({empty = false}) => {
                                 </div>
                             </div>
 
-                            <Link to="/profile" className={styles.headerProfileMenuLink}>
+                            <Link to="/profile" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
                                 <User />
 
                                 Профиль
                             </Link>
 
-                            <Link to="/notifies" className={styles.headerProfileMenuLink}>
+                            <Link to="/notifies" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
                                 <Notify />
 
                                 Уведомления

@@ -12,7 +12,7 @@ import ReloadButton from '../../../components/ReloadButton';
 import NotContent from '../../../components/NotContent';
 import Notify from '../../../components/Skeleton/Notify';
 
-const NotifiesMain = () => {
+const NotifiesUnread = () => {
     const [notifiesMoreLoading, setNotifiesMoreLoading] = React.useState(false);
 
     const {notifyIsLoading, loadNotify, getAllNotify, readNotify, readAllNotifies} = useNotify();
@@ -20,12 +20,12 @@ const NotifiesMain = () => {
 
     const loadMoreNotifies = async () => {
         setNotifiesMoreLoading(true);
-        await getAllNotify(notifies?.notifies?.length, 6);
+        await getAllNotify(notifies?.notifies?.length, 6, true);
         setNotifiesMoreLoading(false);
     }
 
     React.useEffect(() => {
-        loadNotify(0, 6);
+        loadNotify(0, 6, true);
     }, []);
 
     const notifiesNotLoadingAndNotEmpty = !notifiesIsLoading && notifies.totalCount !== 0;
@@ -36,10 +36,10 @@ const NotifiesMain = () => {
                 <div className={styles.titleWrapper}>
                     <p className={typography.h3}>Уведомления {notifiesNotLoadingAndNotEmpty && `(${notifies.totalCount || 0})`}</p>
 
-                    <ReloadButton loading={notifiesIsLoading} onClick={() => loadNotify(0, 6)} />
+                    <ReloadButton loading={notifiesIsLoading} onClick={() => loadNotify(0, 6, true)} />
                 </div>
 
-                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || unreadCount === 0} auto type="light" onClick={() => readAllNotifies(0, 6)}>
+                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || unreadCount === 0} auto type="light" onClick={() => readAllNotifies(0, 6, true)}>
                     Прочитать все
                 </Button>}
             </div>
@@ -49,13 +49,13 @@ const NotifiesMain = () => {
                 {[...Array(4)].map((_, id) => <Notify key={id} />)}
             </div>
             : notifies.totalCount === 0
-                ? <NotContent text="Уведомлений не найдено" />
+                ? <NotContent text="Все уведомления прочитаны" />
                 : <div className={styles.notifiesContent}>
                     {notifies?.notifies
                     ?.map(data => <NotifyItem
                         key={data.id}
                         data={data}
-                        callback={() => readNotify(data.id)}
+                        callback={() => readNotify(data.id, true)}
                         loading={notifyIsLoading.includes(data.id)}
                     />)}
                 </div>
@@ -72,4 +72,4 @@ const NotifiesMain = () => {
     )
 }
 
-export default NotifiesMain;
+export default NotifiesUnread;

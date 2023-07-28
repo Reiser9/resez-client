@@ -6,10 +6,8 @@ import styles from './index.module.css';
 
 import { DotsHorizontal, Eye, Friends, User } from '../../../../components/Icons';
 
-import {copyText} from '../../../../utils/copyText';
-
-import useNotify from '../../../../hooks/useNotify';
 import useUser from '../../../../hooks/useUser';
+import useUtils from '../../../../hooks/useUtils';
 
 import Button from '../../../../components/Button';
 import SidebarLink from '../../../../components/SidebarLink';
@@ -20,13 +18,8 @@ import { useSelector } from 'react-redux';
 const ProfileMain = () => {
     const {user} = useSelector(state => state.user);
 
-    const {alertNotify} = useNotify();
+    const {copyTextWithNotify} = useUtils();
     const {changeAvatar} = useUser();
-
-    const copyNick = () => {
-        copyText("xw1nchester");
-        alertNotify("Успешно", "Никнейм скопирован", "success");
-    }
 
     const changeAvatarHandler = (newAvatar) => {
         let formData = new FormData();
@@ -62,7 +55,7 @@ const ProfileMain = () => {
                         <h1 className={typography.h3}>Егор Ветров</h1>
 
                         <Tooltip title="Скопировать" placement="bottom">
-                            <p className={`${typography.text2} ${styles.profileInfoNick}`} onClick={copyNick}>xw1nchester</p>
+                            <p className={`${typography.text2} ${styles.profileInfoNick}`} onClick={() => copyTextWithNotify("xw1nchester")}>xw1nchester</p>
                         </Tooltip>
                     </div>
 
@@ -72,12 +65,12 @@ const ProfileMain = () => {
                         </Button>
 
                         <Tooltip title="Просмотр профиля">
-                            <IconButton>
+                            <IconButton type="light">
                                 <Eye />
                             </IconButton>
                         </Tooltip>
 
-                        <IconButton>
+                        <IconButton type="light">
                             <DotsHorizontal />
                         </IconButton>
                     </div>

@@ -1,9 +1,12 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import base from '../../../styles/base.module.css';
 import styles from './index.module.css';
 
 import { Code, Fire, Message, Tests, Training, Trophy } from '../../Icons';
+
+import { setSidebarShow } from '../../../redux/slices/app';
 
 import SidebarLink from '../../SidebarLink';
 
@@ -13,15 +16,22 @@ const containers = {
 }
 
 const WithSidebarWrapper = ({container = "basic", children}) => {
+    const {sidebarShow} = useSelector(state => state.app);
+    const dispatch = useDispatch();
+
+    const hideSidebar = () => {
+        dispatch(setSidebarShow(false));
+    }
+
     return (
         <div className={styles.wrapper}>
-            <aside className={styles.sidebar}>
-                <SidebarLink text="Тренинг" icon={<Training />} to="/training" />
-                <SidebarLink text="Тесты" icon={<Tests />} to="/tests" />
-                <SidebarLink text="Мессенджер" icon={<Message />} to="/message" />
-                <SidebarLink text="Полезная информация" icon={<Fire />} to="/info" />
-                <SidebarLink text="Достижения" icon={<Trophy />} to="/achievements" />
-                <SidebarLink text="Админка" icon={<Code />} to="/admin" />
+            <aside className={`${styles.sidebar}${sidebarShow ? ` ${styles.active}` : ""}`}>
+                <SidebarLink onClick={hideSidebar} text="Тренинг" icon={<Training />} to="/training" />
+                <SidebarLink onClick={hideSidebar} text="Тесты" icon={<Tests />} to="/tests" />
+                <SidebarLink onClick={hideSidebar} text="Мессенджер" icon={<Message />} to="/message" />
+                <SidebarLink onClick={hideSidebar} text="Полезная информация" icon={<Fire />} to="/info" />
+                <SidebarLink onClick={hideSidebar} text="Достижения" icon={<Trophy />} to="/achievements" />
+                <SidebarLink onClick={hideSidebar} text="Админка" icon={<Code />} to="/admin" />
             </aside>
 
             <div className={styles.contentBackground}>

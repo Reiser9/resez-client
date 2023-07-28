@@ -115,9 +115,3 @@
 .notifyItemLink{
     color: var(--main);
 }
-
-@media (any-hover: hover) {
-    .notifyItemButton{
-        display: none;
-    }
-}

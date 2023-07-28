@@ -9,8 +9,8 @@ const Sessions = React.lazy(() => import("./Sessions"));
 const Safe = () => {
     return (
         <Routes>
-            <Route index element={withSuspense(SafeMain)} />
-            <Route path="/sessions" element={withSuspense(Sessions)} />
+            <Route index element={withSuspense(<SafeMain />)} />
+            <Route path="/sessions" element={withSuspense(<Sessions />)} />
         </Routes>
     )
 }

@@ -22,9 +22,9 @@ const Profile = () => {
                     <div className={pws.wrapper}>
                         <div className={pws.content}>
                             <Routes>
-                                <Route index element={withSuspense(ProfileMain)} />
-                                <Route path="/theme/*" element={withSuspense(Theme)} />
-                                <Route path="/safe/*" element={withSuspense(Safe)} />
+                                <Route index element={withSuspense(<ProfileMain />)} />
+                                <Route path="/theme/*" element={withSuspense(<Theme />)} />
+                                <Route path="/safe/*" element={withSuspense(<Safe />)} />
                             </Routes>
                         </div>
 

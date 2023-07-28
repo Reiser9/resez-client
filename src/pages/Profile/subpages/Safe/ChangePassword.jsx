@@ -47,6 +47,10 @@ const ChangePassword = () => {
             {passwordChangeStep === 2 && <>
                 <Input mask="999999" placeholder="Код подтверждения" value={passwordCode} setValue={setPasswordCode} />
 
+                <Button type="light" onClick={() => setPasswordChangeStep(1)}>
+                    Назад
+                </Button>
+
                 <Button loading={userLoading} onClick={changePasswordHandler}>
                     Отправить
                 </Button>
