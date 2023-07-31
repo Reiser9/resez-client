@@ -17,6 +17,7 @@ const containers = {
 
 const WithSidebarWrapper = ({container = "basic", children}) => {
     const {sidebarShow} = useSelector(state => state.app);
+    const {user} = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     const hideSidebar = () => {
@@ -31,7 +32,7 @@ const WithSidebarWrapper = ({container = "basic", children}) => {
                 <SidebarLink onClick={hideSidebar} text="Мессенджер" icon={<Message />} to="/message" />
                 <SidebarLink onClick={hideSidebar} text="Полезная информация" icon={<Fire />} to="/info" />
                 <SidebarLink onClick={hideSidebar} text="Достижения" icon={<Trophy />} to="/achievements" />
-                <SidebarLink onClick={hideSidebar} text="Админка" icon={<Code />} to="/admin" />
+                {user?.permissions?.length > 0 &&<SidebarLink onClick={hideSidebar} text="Админка" icon={<Code />} to="/admin" />}
             </aside>
 
             <div className={styles.contentBackground}>

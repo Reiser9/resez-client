@@ -154,7 +154,7 @@ const useAuth = () => {
 
         localStorage.setItem("accessToken", data.accessToken);
 
-        alertNotify("Успешно", "Вы авторизовались!", "success");
+        alertNotify("Успешно", "Вы авторизовались", "success");
         successCallback();
     }
 
@@ -223,7 +223,8 @@ const useAuth = () => {
 
             return errorController(response, () => sendCodeRegister(successCallback));
         }
-
+        
+        alertNotify("Успешно", "Код отправлен", "success");
         successCallback();
     }
 
@@ -350,6 +351,7 @@ const useAuth = () => {
             });
         }
 
+        alertNotify("Успешно", "Пароль восстановлен", "success");
         successCallback();
     }
 

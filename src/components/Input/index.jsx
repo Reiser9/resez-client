@@ -6,6 +6,8 @@ import styles from "./index.module.css";
 
 import {Eye, Blind} from '../Icons';
 
+import {cleanPhoneNumber} from '../../utils/formatPhone';
+
 const Input = ({ value, setValue, placeholder, title, password = false, disabled = false, onPaste, className, ...props }) => {
     const [show, setShow] = React.useState(false);
     const [typeInput, setTypeInput] = React.useState("text");
@@ -16,15 +18,10 @@ const Input = ({ value, setValue, placeholder, title, password = false, disabled
                 return (e) => {
                     e.preventDefault();
                     let pastedText = e.clipboardData.getData("text");
-                    pastedText = pastedText.replace(/\+\s*7/g, "");
-
-                    const maxLength = 10;
-                    if(pastedText.length > maxLength) {
-                        pastedText = pastedText.slice(0, maxLength);
-                    }
+                    
+                    pastedText = cleanPhoneNumber(pastedText);
 
                     setValue("+7" + pastedText);
-                    console.log("+7" + pastedText);
 
                     setTimeout(() => {
                         const inputElement = e.target;

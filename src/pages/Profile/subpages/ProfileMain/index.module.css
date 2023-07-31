@@ -36,11 +36,24 @@
     height: 100px;
     border-radius: 50%;
     border: 4px solid var(--white);
-    background: var(--main);
+    background: var(--white);
     position: absolute;
     left: 16px;
     top: 100%;
     transform: translateY(-50%);
+}
+
+.profileAvatarInner:before{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--lighten);
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
 .profileAvatarEmpty{
@@ -48,7 +61,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #fff;
+    color: var(--main);
     text-transform: uppercase;
 }
 

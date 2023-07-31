@@ -11,8 +11,11 @@ import Button from '../../../../components/Button';
 import SessionsSkeleton from '../../../../components/Skeleton/Sessions';
 import SessionItemCompact from '../../SessionItemCompact';
 import NotContent from '../../../../components/NotContent';
+import ConfirmModal from '../../../../components/Modal/ConfirmModal';
 
 const SessionBlock = () => {
+    const [confirmEndSessions, setConfirmEndSessions] = React.useState(false);
+
     const {isLoading, error, loadSessions, endAllSessions} = useSession();
     const {sessionsIsLoading, sessions} = useSelector(state => state.session);
     const navigate = useNavigate();
@@ -37,7 +40,7 @@ const SessionBlock = () => {
 
                         <SessionItemCompact current data={sessions?.current || {}} onClick={() => seeSessionFull(sessions?.current?.id)} />
 
-                        {sessions?.totalCount > 0 && <Button loading={isLoading} type="empty" theme="danger" onClick={endAllSessions}>
+                        {sessions?.totalCount > 0 && <Button loading={isLoading} type="empty" theme="danger" onClick={() => setConfirmEndSessions(true)}>
                             Завершить другие сеансы
                         </Button>}
                     </div>
@@ -52,6 +55,15 @@ const SessionBlock = () => {
                         </Button>}
                     </div>}
                 </>}
+
+            <ConfirmModal
+                value={confirmEndSessions}
+                setValue={setConfirmEndSessions}
+                callback={endAllSessions}
+                text="Вы действительно хотите завершить все сессии, кроме текущей?"
+                confirmText="Завершить"
+                rejectText="Отмена"
+            />
         </>
     )
 }

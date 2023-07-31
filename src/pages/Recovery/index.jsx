@@ -32,7 +32,7 @@ const Recovery = () => {
     }
 
     const verifyPassword = () => {
-        recoveryPassword(phoneNumber, code, password, passwordAgain, () => navigate("/"), () => setStep(2));
+        recoveryPassword(phoneNumber, code, password, passwordAgain, () => navigate("/login"), () => setStep(2));
     }
 
     return (

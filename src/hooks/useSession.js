@@ -34,7 +34,6 @@ const useSession = () => {
             dispatch(setSessionsIsLoading(false));
 
             if(requestDataIsError(response)){
-                debugger;
                 setError(true);
 
                 return errorController(response, () => loadSessions(offset, limit, reload));

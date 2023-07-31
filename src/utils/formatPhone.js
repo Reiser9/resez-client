@@ -21,3 +21,14 @@ export const maskPhone = (phoneNumber) => {
     
     return `${countryCode}(${regionCode}) ${firstPart} ${secondPart}-${thirdPart}`;
 }
+
+export const cleanPhoneNumber = (phoneNumber) => {
+    let cleanedNumber = phoneNumber.replace(/\D/g, "");
+    cleanedNumber = cleanedNumber.replace(/^7/, "");
+  
+    if(cleanedNumber.length > 10) {
+        cleanedNumber = cleanedNumber.slice(0, 10);
+    }
+  
+    return cleanedNumber;
+};

@@ -20,3 +20,7 @@
     flex-wrap: wrap;
     gap: 12px;
 }
+
+.usersMoreButton{
+    margin: 0 auto;
+}

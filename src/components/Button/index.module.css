@@ -84,6 +84,7 @@
 .light{
     background: var(--lighten);
     color: var(--main);
+    border: none;
 }
 
 .light:hover{
@@ -92,9 +93,6 @@
 
 .light.danger{
     color: var(--error);
-}
-
-.light.danger:hover{
     background: var(--errorB);
 }
 
