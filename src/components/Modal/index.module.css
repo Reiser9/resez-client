@@ -1,6 +1,6 @@
 .modalOverlay{
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background: rgba(0, 0, 0, .5);
     position: fixed;
     top: 0;
@@ -150,7 +150,7 @@
     }
 
     .modalText:last-child p{
-        padding-bottom: 7.2rem;
+        padding-bottom: 2.4rem;
     }
 }
 
@@ -164,6 +164,6 @@
 
 @media (max-width: 520px) {
     .confirmModalButtons{
-        padding-bottom: 7.2rem;
+        padding-bottom: 2.4rem;
     }
 }
