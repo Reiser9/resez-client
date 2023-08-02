@@ -8,13 +8,20 @@ const typesButton = {
     "danger": styles.danger
 }
 
-const IconButton = ({type = "default", disabled = false, children, ...props}) => {
+const IconButton = ({
+    type = "default",
+    disabled = false,
+    full = false,
+    className,
+    children,
+    ...props
+}) => {
     return (
         <>
-            {disabled ? <button {...props} className={`${styles.iconButton} ${typesButton[type]} ${styles.disabled}`}>
+            {disabled ? <button className={`${styles.iconButton}${className ? ` ${className}` : ""} ${typesButton[type]} ${styles.disabled}${full ? ` ${styles.full}` : ""}`} {...props}>
                 {children}
             </button>
-            : <button {...props} className={`${styles.iconButton} ${typesButton[type]}`}>
+            : <button className={`${styles.iconButton}${className ? ` ${className}` : ""} ${typesButton[type]}${full ? ` ${styles.full}` : ""}`} {...props}>
                 {children}
             </button>}
         </>

@@ -45,10 +45,10 @@ const useTheme = () => {
         document.body.classList.add(newTheme);
     };
 
-    const getAllTheme = async () => {
+    const getAllTheme = async (reload = false) => {
         setError(false);
 
-        if(themes.length === 0){
+        if(themes.length === 0 || reload){
             setInitThemesIsLoading(true);
 
             const response = await request(REQUEST_TYPE.THEME, "", HTTP_METHODS.GET, true);

@@ -6,7 +6,10 @@
     align-items: center;
     justify-content: center;
     padding: 0.8rem;
-    flex-shrink: 0;
+}
+
+.full{
+    width: 100%;
 }
 
 .disabled{
@@ -37,6 +40,7 @@
 
 .iconButton svg{
     width: 24px;
+    flex-shrink: 0;
 }
 
 .iconButton svg path{

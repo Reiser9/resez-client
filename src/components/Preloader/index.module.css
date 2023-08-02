@@ -13,7 +13,7 @@
 .page{
     position: relative;
     flex: 1;
-    min-height: calc(100vh - 65px);
+    min-height: calc(100dvh - 65px);
 }
 
 .fill{

@@ -70,7 +70,8 @@
         border-radius: 4px 4px 0 0;
         padding: 4rem 1.6rem 0 1.6rem;
         position: relative;
-        transform: scale(1) translateY(100vh);
+        transform: scale(1) translateY(100dvh);
+        max-height: calc(100dvh - 5rem);
     }
 
     .modalContent.active{
@@ -145,8 +146,8 @@
 
 @media (max-width: 520px) {
     .modalText{
-        max-height: calc(100vh - 50px - 43px - 61px);
         overflow-y: auto;
+        height: 100%;
     }
 
     .modalText:last-child p{

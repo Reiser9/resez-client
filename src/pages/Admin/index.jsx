@@ -14,6 +14,7 @@ const AdminMain = React.lazy(() => import("./subpages/AdminMain"));
 const Notifies = React.lazy(() => import("./subpages/Notifies"));
 const Users = React.lazy(() => import("./subpages/Users"));
 const Appearance = React.lazy(() => import("./subpages/Appearance"));
+const AddTheme = React.lazy(() => import("./subpages/AddTheme"));
 
 const Admin = () => {
     return (
@@ -25,8 +26,9 @@ const Admin = () => {
                             <Routes>
                                 <Route index element={withSuspense(<AdminMain />)} />
                                 <Route path="/notifies" element={withSuspense(<Notifies />)} />
-                                <Route path="/users" element={withSuspense(<Users />)} />
+                                <Route path="/users/*" element={withSuspense(<Users />)} />
                                 <Route path="/appearance" element={withSuspense(<Appearance />)} />
+                                <Route path="/appearance/theme/add" element={withSuspense(<AddTheme />)} />
                                 <Route path="*" element={<Navigate to={""} />} />
                             </Routes>
                         </div>
