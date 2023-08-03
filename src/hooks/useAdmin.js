@@ -5,6 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 import { requestDataIsError } from '../utils/requestDataIsError';
 
 import { initUsers, setUsers, setUsersIsLoading } from '../redux/slices/admin';
+import { addNewTheme, deleteTheme } from '../redux/slices/theme';
 
 import useRequest from './useRequest';
 import useError from './useError';
@@ -12,6 +13,7 @@ import useAlert from './useAlert';
 
 const useAdmin = () => {
     const [error, setError] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
     const [userIsLoading, setUserIsLoading] = React.useState([]);
 
     const dispatch = useDispatch();
@@ -74,7 +76,6 @@ const useAdmin = () => {
         
         alertNotify("Успешно", "Пользователь заблокирован", "success");
         successCallback();
-        console.log(response);
     }
 
     const userUnblock = async (userId, successCallback = () => {}) => {
@@ -98,13 +99,61 @@ const useAdmin = () => {
         successCallback();
     }
 
+    const createTheme = async (primary, light, successCallback = () => {}) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.THEME, "", HTTP_METHODS.POST, true, {
+            primary,
+            light
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => createTheme(primary, light, successCallback));
+        }
+
+        dispatch(addNewTheme(response.data.theme));
+        alertNotify("Успешно", "Тема создана", "success");
+        successCallback();
+    }
+
+    const removeTheme = async (id, successCallback = () => {}) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.THEME, "", HTTP_METHODS.DELETE, true, {
+            id
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => removeTheme(id, successCallback));
+        }
+
+        dispatch(deleteTheme(response.data.theme));
+        alertNotify("Успешно", "Тема удалена", "success");
+        successCallback();
+    }
+
     return {
         error,
+        isLoading,
         userIsLoading,
         loadUsers,
         getAllUsers,
         userBlock,
-        userUnblock
+        userUnblock,
+        createTheme,
+        removeTheme
     }
 }
 

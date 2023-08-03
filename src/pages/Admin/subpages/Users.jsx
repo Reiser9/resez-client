@@ -4,19 +4,22 @@ import { useSelector } from 'react-redux';
 import typography from '../../../styles/typography.module.css';
 import styles from '../index.module.css';
 
+import { User } from '../../../components/Icons';
+
 import useAdmin from '../../../hooks/useAdmin';
 
 import ReloadButton from '../../../components/ReloadButton';
 import UserItem from '../../../components/UserItem';
 import Button from '../../../components/Button';
 import UserAdminItem from '../../../components/Skeleton/User/UserAdminItem';
+import NotContent from '../../../components/NotContent';
 
 const Users = () => {
     const [usersMoreLoading, setUsersMoreLoading] = React.useState(false);
 
     const {usersIsLoading, users} = useSelector(state => state.admin);
 
-    const {userIsLoading, loadUsers, getAllUsers, userBlock, userUnblock} = useAdmin();
+    const {error, userIsLoading, loadUsers, getAllUsers, userBlock, userUnblock} = useAdmin();
 
     const loadMoreSession = async () => {
         setUsersMoreLoading(true);
@@ -36,19 +39,23 @@ const Users = () => {
                 <ReloadButton loading={usersIsLoading} onClick={() => loadUsers()} />
             </div>
 
-            <div className={styles.usersContent}>
-                {usersIsLoading
-                ? [...Array(3)].map((_, id) => <UserAdminItem key={id} />)
-                : users?.users?.map(data => <UserItem
-                    key={data.id}
-                    data={data}
-                    loading={userIsLoading.includes(data.id)}
-                    userBlock={() => userBlock(data.id)}
-                    userUnblock={() => userUnblock(data.id)}
-                />)}
-
-                {usersMoreLoading && [...Array(3)].map((_, id) => <UserAdminItem key={id} />)}
+            {usersIsLoading
+            ? <div className={styles.usersContent}>
+                {[...Array(3)].map((_, id) => <UserAdminItem key={id} />)}
             </div>
+            : error ? <NotContent text="Ошибка при загрузке пользователей" />
+            : users?.users?.length > 0 ? <div className={styles.usersContent}>
+                {users?.users?.map(data =>
+                    <UserItem
+                        key={data.id}
+                        data={data}
+                        loading={userIsLoading.includes(data.id)}
+                        userBlock={() => userBlock(data.id)}
+                        userUnblock={() => userUnblock(data.id)}
+                    />)}
+            </div> : <NotContent text="Пользователей не найдено" icon={<User />} />}
+
+            {usersMoreLoading && [...Array(3)].map((_, id) => <UserAdminItem key={id} />)}
 
             {!usersIsLoading && !users?.isLast
             && <Button loading={usersMoreLoading} type="empty" auto className={styles.usersMoreButton} onClick={loadMoreSession}>

@@ -1,6 +1,5 @@
 .colorsContent, .modeContent{
     width: 100%;
-    margin-top: 1.6rem;
     display: flex;
     flex-wrap: wrap;
     gap: 12px;

@@ -104,6 +104,7 @@
 
 .appearanceItemThemeMain{
     left: 10px;
+    z-index: 2;
 }
 
 .appearanceItemThemeSecondary{

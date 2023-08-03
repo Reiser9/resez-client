@@ -15,6 +15,12 @@ export const themeSlice = createSlice({
         initThemes: (state, action) => {
             state.themes = action.payload;
         },
+        addNewTheme: (state, action) => {
+            state.themes = state.themes.length > 0 ? [...state.themes, action.payload] : [];
+        },
+        deleteTheme: (state, action) => {
+            state.themes = state.themes.filter((item) => item.id !== action.payload.id);
+        },
         setDataTheme: () => initialState
     }
 });
@@ -22,7 +28,9 @@ export const themeSlice = createSlice({
 export const {
     setMode,
     initThemes,
-    setDataTheme
+    setDataTheme,
+    addNewTheme,
+    deleteTheme
 } = themeSlice.actions;
 
 export default themeSlice.reducer;

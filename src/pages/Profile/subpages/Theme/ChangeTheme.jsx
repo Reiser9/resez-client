@@ -7,6 +7,7 @@ import useTheme from '../../../../hooks/useTheme';
 
 import ThemeItem from '../../../../components/ThemeItem';
 import ThemeItemSkeleton from '../../../../components/Skeleton/Theme/ThemeItemSkeleton';
+import NotContent from '../../../../components/NotContent';
 
 const ChangeTheme = () => {
     const {initThemesIsLoading, isLoading, getAllTheme, editTheme} = useTheme();
@@ -21,13 +22,13 @@ const ChangeTheme = () => {
         <div className={styles.colorsContent}>
             {initThemesIsLoading
             ? [...Array(4)].map((_, id) => <ThemeItemSkeleton key={id} />)
-            : themes.map(data => <ThemeItem
+            : themes.length > 0 ? themes.map(data => <ThemeItem
                 key={data.id}
                 data={data}
                 onClick={() => editTheme(data.id)}
                 active={user?.theme?.id === data.id}
                 disabled={isLoading}
-            />)}
+            />) : <NotContent text="Тем не найдено" />}
         </div>
     )
 }

@@ -11,7 +11,6 @@ import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
 import SidebarLink from '../../components/SidebarLink';
 
 const NotifiesMain = React.lazy(() => import("./subpages/NotifiesMain"));
-const NotifiesUnread = React.lazy(() => import("./subpages/NotifiesUnread"));
 
 const Profile = () => {
     return (
@@ -22,7 +21,7 @@ const Profile = () => {
                         <div className={pws.content}>
                             <Routes>
                                 <Route index element={withSuspense(<NotifiesMain />)} />
-                                <Route path="unread" element={withSuspense(<NotifiesUnread />)} />
+                                <Route path="unread" element={withSuspense(<NotifiesMain unread />)} />
                                 <Route path="*" element={<Navigate to={""} />} />
                             </Routes>
                         </div>

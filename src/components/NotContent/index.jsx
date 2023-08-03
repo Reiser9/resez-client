@@ -1,12 +1,18 @@
 import React from 'react';
-import { Empty } from 'antd';
 
+import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
-const NotContent = ({text, ...props}) => {
+import { Data } from '../Icons';
+
+const NotContent = ({text, icon, ...props}) => {
     return (
         <div className={styles.emptyContent} {...props}>
-            <Empty description={text} />
+            <div className={styles.emptyImgInner}>
+                {icon ? icon : <Data />}
+            </div>
+
+            <p className={typography.text2}>{text}</p>
         </div>
     )
 }

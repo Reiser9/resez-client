@@ -8,7 +8,18 @@ import {Eye, Blind} from '../Icons';
 
 import {cleanPhoneNumber} from '../../utils/formatPhone';
 
-const Input = ({ value, setValue, placeholder, title, password = false, disabled = false, onPaste, className, ...props }) => {
+const Input = ({
+    value,
+    setValue = () => {},
+    placeholder,
+    title,
+    password = false,
+    disabled = false,
+    onPaste,
+    className,
+    children,
+    ...props
+}) => {
     const [show, setShow] = React.useState(false);
     const [typeInput, setTypeInput] = React.useState("text");
 
@@ -50,7 +61,7 @@ const Input = ({ value, setValue, placeholder, title, password = false, disabled
                 {disabled
                 ? <InputMask
                     maskChar={""}
-                    className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""}${disabled ? ` ${styles.disabled}` : ""}`}
+                    className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""} ${styles.disabled}`}
                     placeholder={placeholder}
                     type={typeInput}
                     {...props}
@@ -59,7 +70,7 @@ const Input = ({ value, setValue, placeholder, title, password = false, disabled
                     maskChar={""}
                     className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""}`}
                     value={value}
-                    onChange={e => setValue(() => e.target.value)}
+                    onChange={e => setValue(e.target.value)}
                     placeholder={placeholder}
                     type={typeInput}
                     onPaste={pasteHandler()}
@@ -69,6 +80,8 @@ const Input = ({ value, setValue, placeholder, title, password = false, disabled
                 {password && <div className={styles.inputShow} onClick={() => setShow(prev => !prev)}>
                     {show ? <Blind /> : <Eye />}
                 </div>}
+
+                {children}
             </div>
         </div>
     );

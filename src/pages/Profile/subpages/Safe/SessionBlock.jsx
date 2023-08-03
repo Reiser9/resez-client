@@ -33,7 +33,7 @@ const SessionBlock = () => {
             {sessionsIsLoading
             ? <SessionsSkeleton />
             : error
-                ? <NotContent text="Ошибка при загрузке данных" />
+                ? <NotContent text="Ошибка при загрузке сеансов" />
                 : <>
                     <div className={styles.sessionWrapper}>
                         <p className={typography.text}>Текущий сеанс</p>

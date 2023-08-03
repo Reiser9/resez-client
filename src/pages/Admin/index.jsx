@@ -29,6 +29,7 @@ const Admin = () => {
                                 <Route path="/users/*" element={withSuspense(<Users />)} />
                                 <Route path="/appearance" element={withSuspense(<Appearance />)} />
                                 <Route path="/appearance/theme/add" element={withSuspense(<AddTheme />)} />
+                                <Route path="/appearance/theme/edit/*" element={withSuspense(<AddTheme edit />)} />
                                 <Route path="*" element={<Navigate to={""} />} />
                             </Routes>
                         </div>

@@ -4,6 +4,8 @@ import {useSelector} from 'react-redux';
 import typography from '../../../styles/typography.module.css';
 import styles from '../index.module.css';
 
+import {Notify as NotifyIcon} from '../../../components/Icons';
+
 import useNotify from '../../../hooks/useNotify';
 
 import Button from '../../../components/Button';
@@ -12,21 +14,21 @@ import ReloadButton from '../../../components/ReloadButton';
 import NotContent from '../../../components/NotContent';
 import Notify from '../../../components/Skeleton/Notify';
 
-const NotifiesMain = () => {
+const NotifiesMain = ({unread = false}) => {
     const [notifiesMoreLoading, setNotifiesMoreLoading] = React.useState(false);
 
-    const {notifyIsLoading, loadNotify, getAllNotify, readNotify, readAllNotifies} = useNotify();
+    const {error, notifyIsLoading, loadNotify, getAllNotify, readNotify, readAllNotifies} = useNotify();
     const {notifiesIsLoading, notifies, unreadCount} = useSelector(state => state.notify);
 
-    const loadMoreNotifies = async () => {
+    const loadMoreNotifies = React.useCallback(async () => {
         setNotifiesMoreLoading(true);
-        await getAllNotify(notifies?.notifies?.length, 6);
+        await getAllNotify(notifies?.notifies?.length, 6, unread);
         setNotifiesMoreLoading(false);
-    }
+    }, [unread]);
 
     React.useEffect(() => {
-        loadNotify(0, 6);
-    }, []);
+        loadNotify(0, 6, unread);
+    }, [unread]);
 
     const notifiesNotLoadingAndNotEmpty = !notifiesIsLoading && notifies.totalCount !== 0;
 
@@ -36,10 +38,10 @@ const NotifiesMain = () => {
                 <div className={styles.titleWrapper}>
                     <p className={typography.h3}>Уведомления {notifiesNotLoadingAndNotEmpty && `(${notifies.totalCount || 0})`}</p>
 
-                    <ReloadButton loading={notifiesIsLoading} onClick={() => loadNotify(0, 6)} />
+                    <ReloadButton loading={notifiesIsLoading} onClick={() => loadNotify(0, 6, unread)} />
                 </div>
 
-                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || unreadCount === 0} auto type="light" onClick={() => readAllNotifies(0, 6)}>
+                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || unreadCount === 0} auto type="light" onClick={() => readAllNotifies(0, 6, unread)}>
                     Прочитать все
                 </Button>}
             </div>
@@ -48,14 +50,15 @@ const NotifiesMain = () => {
             ? <div className={styles.notifiesContent}>
                 {[...Array(4)].map((_, id) => <Notify key={id} />)}
             </div>
+            : error ? <NotContent text="Ошибка при загрузке уведомлений" />
             : notifies.totalCount === 0
-                ? <NotContent text="Уведомлений не найдено" />
+                ? <NotContent text={unread ? "Все уведомления прочитаны" : "Уведомлений не найдено"} icon={<NotifyIcon />} />
                 : <div className={styles.notifiesContent}>
                     {notifies?.notifies
                     ?.map(data => <NotifyItem
                         key={data.id}
                         data={data}
-                        callback={() => readNotify(data.id)}
+                        callback={() => readNotify(data.id, unread)}
                         loading={notifyIsLoading.includes(data.id)}
                     />)}
                 </div>
