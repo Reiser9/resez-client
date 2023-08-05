@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import pws from '../../styles/pageWithSidebar.module.css';
 
@@ -13,6 +13,7 @@ import SidebarLink from '../../components/SidebarLink';
 const ProfileMain = React.lazy(() => import("./subpages/ProfileMain"));
 const Theme = React.lazy(() => import("./subpages/Theme"));
 const Safe = React.lazy(() => import("./subpages/Safe"));
+const Achievments = React.lazy(() => import("./subpages/Achievments"));
 
 const Profile = () => {
     return (
@@ -25,6 +26,8 @@ const Profile = () => {
                                 <Route index element={withSuspense(<ProfileMain />)} />
                                 <Route path="/theme/*" element={withSuspense(<Theme />)} />
                                 <Route path="/safe/*" element={withSuspense(<Safe />)} />
+                                <Route path="/achievments/*" element={withSuspense(<Achievments />)} />
+                                <Route path="*" element={<Navigate to={""} />} />
                             </Routes>
                         </div>
 

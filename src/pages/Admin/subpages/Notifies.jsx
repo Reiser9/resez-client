@@ -1,22 +1,34 @@
 import React from 'react';
-import { Checkbox, DatePicker } from 'antd';
+import { Checkbox } from 'antd';
 
 import typography from '../../../styles/typography.module.css';
 import styles from '../index.module.css';
+
+import {isDateTimePast} from '../../../utils/isDateTimePast';
 
 import Input from '../../../components/Input';
 import Textarea from '../../../components/Textarea';
 import Button from '../../../components/Button';
 import Select from '../../../components/Select';
+import DatePicker from '../../../components/DatePicker';
+import TimePicker from '../../../components/TimePicker';
 
 const Notifies = () => {
     const [title, setTitle] = React.useState("");
     const [author, setAuthor] = React.useState("");
     const [text, setText] = React.useState("");
+    const [date, setDate] = React.useState("");
+    const [time, setTime] = React.useState("");
 
     const [sendAnonim, setSendAnonim] = React.useState(false);
-    const [sendAll, setSendAll] = React.useState(true);
+    const [sendForOne, setSendForOne] = React.useState(false);
     const [delayedSend, setDelayedSend] = React.useState(false);
+
+    const createNotify = () => {
+        if(!isDateTimePast(date, time)){
+            return;
+        }
+    }
 
     return (
         <div className={styles.notifies}>
@@ -25,27 +37,30 @@ const Notifies = () => {
             <div className={styles.notifiesForm}>
                 <Input value={title} setValue={setTitle} title="Заголовок" />
 
-                <Checkbox checked={sendAnonim} onChange={e => setSendAnonim(e.target.checked)}>
-                    Отправить анонимно
+                <Checkbox className={styles.notifiesCheckbox} checked={sendAnonim} onChange={e => setSendAnonim(e.target.checked)}>
+                    Отправить от имени
                 </Checkbox>
 
-                {!sendAnonim && <Input value={author} setValue={setAuthor} title="От кого отправить" />}
+                {sendAnonim && <Input value={author} setValue={setAuthor} title="От кого отправить" />}
 
-                <Checkbox checked={sendAll} onChange={e => setSendAll(e.target.checked)}>
-                    Отправить всем пользователя
+                <Checkbox className={styles.notifiesCheckbox} checked={sendForOne} onChange={e => setSendForOne(e.target.checked)}>
+                    Отправить пользователю
                 </Checkbox>
 
-                {!sendAll && <Select />}
+                {sendForOne && <Select />}
 
-                <Checkbox checked={delayedSend} onChange={e => setDelayedSend(e.target.checked)}>
+                <Checkbox className={styles.notifiesCheckbox} checked={delayedSend} onChange={e => setDelayedSend(e.target.checked)}>
                     Отложенная отправка
                 </Checkbox>
 
-                {delayedSend && <DatePicker showTime placeholder="Выберите дату и время" className={styles.datepicker} />}
+                {delayedSend && <div className={styles.notifiesDelayInner}>
+                    <DatePicker placeholder="Выберите дату" className={styles.notifiesDelayItem} value={date} onChange={e => setDate(e)} />
+                    <TimePicker placeholder="Выберите время" format="HH:mm" className={styles.notifiesDelayItem} value={time} onChange={e => setTime(e)} />
+                </div>}
 
                 <Textarea value={text} setValue={setText} title="Сообщение" />
 
-                <Button auto type="light">
+                <Button auto type="light" onClick={createNotify}>
                     Отправить
                 </Button>
             </div>

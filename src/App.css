@@ -183,3 +183,121 @@ input::placeholder{
         cursor: pointer;
     }
 }
+
+/* Custom checkbox antd */
+.ant-checkbox-inner{
+    background: var(--input)!important;
+}
+
+.ant-checkbox-wrapper-checked .ant-checkbox-inner{
+    background: var(--main)!important;
+}
+
+/* Custom select antd */
+.ant-select-selection-item, .ant-select-selection-placeholder{
+    color: var(--text)!important;
+    line-height: 1.2!important;
+    font-size: 1.6rem!important;
+    display: flex;
+    align-items: center;
+}
+
+.ant-select-selection-placeholder{
+    color: var(--grey)!important;
+    inset-inline-start: 16px!important;
+    inset-inline-end: 16px!important;
+}
+
+.ant-select-selector{
+    background: var(--input)!important;
+    border: 1px solid var(--input)!important;
+    height: auto!important;
+    box-shadow: none!important;
+    min-height: 44px;
+    padding: 0 1.6rem!important;
+    border-radius: 4px!important;
+}
+
+.ant-select-multiple .ant-select-selection-search{
+    inset-inline-start: 0!important;
+    inset-inline-end: 0!important;
+    margin-inline-start: 0!important;
+}
+
+.ant-select-selection-search{
+    inset-inline-start: 16px!important;
+    inset-inline-end: 16px!important;
+}
+
+.ant-select-selection-search-input{
+    height: 100%!important;
+    color: var(--text)!important;
+}
+
+.ant-select-dropdown{
+    background: var(--input)!important;
+}
+
+.ant-select-item, .ant-select-dropdown{
+    color: var(--text)!important;
+}
+
+.ant-select-item-option-selected{
+    background: var(--lighten)!important;
+    font-weight: 500!important;
+}
+
+.ant-select{
+    border-radius: 4px!important;
+    border: 1px solid transparent!important;
+    transition: .2s linear;
+}
+
+.ant-select-focused{
+    border: 1px solid var(--main)!important;
+}
+
+.ant-select-selection-item{
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+}
+
+/* Custom datepicker antd */
+.ant-picker{
+    padding: 1rem 1.6rem!important;
+    color: var(--text)!important;
+    font-size: 1.6rem!important;
+    border-radius: 4px!important;
+    border: 1px solid var(--input)!important;
+    background: var(--input)!important;
+    min-height: 44px!important;
+}
+
+.ant-picker-focused{
+    box-shadow: none!important;
+    border: 1px solid var(--main)!important;
+}
+
+.ant-picker-input input{
+    color: var(--text)!important;
+    font-size: 1.6rem!important;
+    line-height: 1!important;
+}
+
+@media (max-width: 440px) {
+    .ant-picker-input input, .ant-select-selection-item, .ant-select-selection-placeholder{
+        font-size: 1.5rem!important;
+    }
+
+    .ant-picker, .ant-select-selector{
+        min-height: 42px!important;
+    }
+}
+
+.ant-picker-input input::placeholder{
+    color: var(--grey)!important;
+}
+
+.ant-picker-clear{
+    display: none;
+}

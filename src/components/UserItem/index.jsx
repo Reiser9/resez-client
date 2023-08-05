@@ -39,7 +39,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                     <div className={styles.userInfo}>
                         <p className={`${typography.text} ${styles.userInfoName}`}>Алексей Зубков</p>
 
-                        <Tooltip title="Скопировать" placement="bottom">
+                        <Tooltip title="Скопировать">
                             <p className={`${typography.text2} ${styles.userInfoNickname}`} onClick={() => copyTextWithNotify(nickname)}>{nickname}</p>
                         </Tooltip>
                     </div>

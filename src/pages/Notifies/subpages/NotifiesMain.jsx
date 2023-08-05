@@ -24,7 +24,7 @@ const NotifiesMain = ({unread = false}) => {
         setNotifiesMoreLoading(true);
         await getAllNotify(notifies?.notifies?.length, 6, unread);
         setNotifiesMoreLoading(false);
-    }, [unread]);
+    }, [unread, notifies.notifies]);
 
     React.useEffect(() => {
         loadNotify(0, 6, unread);

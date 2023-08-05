@@ -60,10 +60,23 @@
     pointer-events: none;
 }
 
-.appearanceThemeCheckbox{
+.appearanceThemeCheckbox, .notifiesCheckbox{
     color: var(--text);
 }
 
-.datepicker{
+.notifiesDelayInner{
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.notifiesDelayItem{
+    width: calc(100% / 2 - 8px / 2);
+}
+
+@media (max-width: 375px) {
+    .notifiesDelayItem{
+        width: 100%;
+    }
 }
