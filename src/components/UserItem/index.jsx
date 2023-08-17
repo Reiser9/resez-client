@@ -15,7 +15,7 @@ import ModalConfirm from '../Modal/ConfirmModal';
 import Preloader from '../Preloader';
 
 const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = () => {}}) => {
-    const {avatar, isBlocked, isVerified, level, nickname, phoneNumber, theme, id} = data;
+    const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id} = data;
 
     const [confirmBlock, setConfirmBlock] = React.useState(false);
     const [confirmUnblock, setConfirmUnblock] = React.useState(false);
@@ -46,17 +46,15 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                 </div>
 
                 <div className={styles.userPoints}>
+                    <TextPoint title="ID" text={id} />
                     <TextPoint title="Статус" text="Новичек" />
-
                     {phoneNumber && <TextPoint title="Номер телефона" text={phoneNumber} />}
 
-                    <TextPoint title="Роли">
+                    {roles.length > 0 && <TextPoint title="Роли">
                         <div className={styles.userRoles}>
-                            <p className={styles.userRole} style={{color: "#EE7200", background: "#EE72001A"}}>Админ</p>
-                            <p className={styles.userRole} style={{color: "#007CEE", background: "#007CEE1A"}}>Модератор</p>
-                            <p className={styles.userRole} style={{color: "#BE00EE", background: "#BE00EE1A"}}>Роль без названия</p>
+                            {roles.map((data, id) => <p key={id} className={styles.userRole} style={{color: "#EE7200", background: "#EE72001A"}}>{data.role}</p>)}
                         </div>
-                    </TextPoint>
+                    </TextPoint>}
                 </div>
 
                 <div className={styles.userItemWrapper}>
@@ -64,9 +62,9 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                         <p className={styles.userLvlPoint}>{level}</p>
 
                         <div className={styles.userLvlProgressTotal}>
-                            <div className={styles.userLvlProgressLine} style={{width: "45%"}}></div>
+                            <div className={styles.userLvlProgressLine} style={{width: xp / xpLimit}}></div>
 
-                            <p className={`${typography.text3} ${styles.userLvlExp}`}>175 / 1000</p>
+                            <p className={`${typography.text3} ${styles.userLvlExp}`}>{xp} / {xpLimit}</p>
                         </div>
 
                         <p className={styles.userLvlPoint}>{level + 1}</p>

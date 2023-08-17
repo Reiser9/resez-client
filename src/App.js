@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ConfigProvider } from 'antd';
 import { useSelector } from "react-redux";
+import ruRU from 'antd/locale/ru_RU';
 
 import "./App.css";
 
@@ -27,6 +28,7 @@ const App = () => {
 
     return (
         <ConfigProvider
+            locale={ruRU}
             theme={{
                 token: {
                     colorPrimary: user?.theme?.primary || "#007cee",

@@ -90,7 +90,7 @@
 
 .headerProfileNick{
     font-weight: 600;
-    max-width: 90px;
+    max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -176,6 +176,7 @@
     justify-content: center;
     background: var(--main);
     color: #fff;
+    flex-shrink: 0;
 }
 
 .headerProfileMenuData{

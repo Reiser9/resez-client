@@ -24,7 +24,11 @@ export const adminSlice = createSlice({
             };
         },
         setUser: (state, action) => {
+            const index = state.users?.users?.findIndex(obj => obj.id === action.payload.id);
 
+            if(index !== -1){
+                state.users?.users?.splice(index, 1, action.payload);
+            }
         },
         setDataAdmin: () => initialState
     }

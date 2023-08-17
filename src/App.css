@@ -208,7 +208,7 @@ input::placeholder{
     inset-inline-end: 16px!important;
 }
 
-.ant-select-selector{
+.ant-select-multiple .ant-select-selector{
     background: var(--input)!important;
     border: 1px solid var(--input)!important;
     height: auto!important;
@@ -300,4 +300,35 @@ input::placeholder{
 
 .ant-picker-clear{
     display: none;
+}
+
+.ant-picker-ranges{
+    gap: 8px;
+}
+
+.ant-select-multiple .ant-select-selection-item{
+    background: var(--hover)!important;
+}
+
+.ant-picker-panel-container{
+    background: var(--input)!important;
+}
+
+.ant-picker-time-panel-cell-inner, .ant-picker-content th, .ant-picker-dropdown .ant-picker-cell-in-view,
+.ant-picker-dropdown .ant-picker-header, .ant-picker-dropdown .ant-picker-header button{
+    color: var(--text)!important;
+}
+
+.ant-picker-time-panel-cell-inner:hover, .ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner,
+.ant-picker-dropdown .ant-picker-cell-disabled::before{
+    background: var(--hover)!important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-disabled, .ant-picker-cell{
+    color: var(--textGrey)!important;
+}
+
+.ant-btn-primary:disabled{
+    color: var(--text)!important;
+    opacity: 0.6;
 }

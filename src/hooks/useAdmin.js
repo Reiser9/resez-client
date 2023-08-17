@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 import { requestDataIsError } from '../utils/requestDataIsError';
 
-import { initUsers, setUsers, setUsersIsLoading } from '../redux/slices/admin';
+import { initUsers, setUser, setUsers, setUsersIsLoading } from '../redux/slices/admin';
 import { addNewTheme, deleteTheme } from '../redux/slices/theme';
 
 import useRequest from './useRequest';
@@ -74,6 +74,7 @@ const useAdmin = () => {
             return errorController(response, () => userBlock(userId, successCallback));
         }
         
+        dispatch(setUser(response.data.user));
         alertNotify("Успешно", "Пользователь заблокирован", "success");
         successCallback();
     }
@@ -95,6 +96,7 @@ const useAdmin = () => {
             return errorController(response, () => userBlock(userId, successCallback));
         }
         
+        dispatch(setUser(response.data.user));
         alertNotify("Успешно", "Пользователь разблокирован", "success");
         successCallback();
     }

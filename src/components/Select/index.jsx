@@ -3,7 +3,7 @@ import {Select as SelectAnt} from 'antd';
 
 import styles from './index.module.css';
 
-import { ArrowBottom } from '../Icons';
+import { ArrowBottom, Cross } from '../Icons';
 
 import NotContent from '../NotContent';
 
@@ -17,6 +17,7 @@ const Select = () => {
             notFoundContent={<NotContent text="Ничего не найдено" />}
             mode="multiple"
             maxTagCount="responsive"
+            removeIcon={<Cross width="14" />}
             options={[
                 {
                     value: 'Reiser95',
