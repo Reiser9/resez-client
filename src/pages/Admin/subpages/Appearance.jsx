@@ -13,37 +13,53 @@ import ThemeItemAdminSkeleton from '../../../components/Skeleton/Theme/ThemeItem
 import NotContent from '../../../components/NotContent';
 
 const Appearance = () => {
+    const [themesMoreLoading, setThemesMoreLoading] = React.useState(false);
     // isLoading при удалении включать лоадер на определенную тему
-    const {error, initThemesIsLoading, isLoading, getAllTheme} = useTheme();
-    const {themes} = useSelector(state => state.theme);
+    const {error, isLoading, loadAllThemes, getAllThemes} = useTheme();
+    const {themesIsLoading, themes} = useSelector(state => state.theme);
+
+    const loadMoreThemes = React.useCallback(async () => {
+        setThemesMoreLoading(true);
+        await getAllThemes(themes?.themes?.length, 8);
+        setThemesMoreLoading(false);
+    }, [themes.themes]);
 
     React.useEffect(() => {
-        getAllTheme();
+        loadAllThemes(0, 8);
     }, []);
 
     return (
         <div className={styles.appearance}>
             <div className={styles.appearanceWrapper}>
                 <div className={styles.appearanceTitleInner}>
-                    <p className={typography.h3}>Темы {!initThemesIsLoading && `(${themes.totalCount || 0})`}</p>
+                    <p className={typography.h3}>Темы {!themesIsLoading && `(${themes.totalCount || 0})`}</p>
 
-                    <ReloadButton loading={initThemesIsLoading} onClick={() => getAllTheme(true)} />
+                    <ReloadButton loading={themesIsLoading} onClick={() => loadAllThemes(0, 8, true)} />
                 </div>
 
-                <Button type="light" auto to="theme/add">
+                <Button disabled={themesIsLoading} type="light" auto to="theme/add">
                     Добавить
                 </Button>
             </div>
 
-            {initThemesIsLoading
+            {/* Сделать высоту скелетона больше */}
+            {themesIsLoading
             ? <div className={styles.appearanceContent}>
-                {[...Array(4)].map((_, id) => <ThemeItemAdminSkeleton key={id} />)}
+                {[...Array(8)].map((_, id) => <ThemeItemAdminSkeleton key={id} />)}
             </div>
             : error ? <NotContent text="Ошибка при загрузке тем" />
             : themes?.themes?.length > 0 ? <div className={styles.appearanceContent}>
                 {themes.themes.map((data, id) => <ThemeItemAdmin key={id} data={data} />)}
             </div>
             : <NotContent text="Тем не найдено" />}
+
+            {themesMoreLoading && <div className={styles.appearanceContent}>
+                {[...Array(4)].map((_, id) => <ThemeItemAdminSkeleton key={id} />)}
+            </div>}
+
+            {!themesIsLoading && !themes?.isLast && <Button loading={themesMoreLoading} type="empty" auto className={styles.themesMoreButton} onClick={loadMoreThemes}>
+                Показать еще
+            </Button>}
         </div>
     )
 }

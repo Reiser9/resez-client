@@ -10,17 +10,17 @@ import ThemeItemSkeleton from '../../../../components/Skeleton/Theme/ThemeItemSk
 import NotContent from '../../../../components/NotContent';
 
 const ChangeTheme = () => {
-    const {initThemesIsLoading, isLoading, getAllTheme, editTheme} = useTheme();
-    const {themes} = useSelector(state => state.theme);
+    const {isLoading, loadAllThemes, editTheme} = useTheme();
+    const {themesIsLoading, themes} = useSelector(state => state.theme);
     const {user} = useSelector(state => state.user);
 
     React.useEffect(() => {
-        getAllTheme();
+        loadAllThemes(0, 8);
     }, []);
 
     return (
         <div className={styles.colorsContent}>
-            {initThemesIsLoading
+            {themesIsLoading
             ? [...Array(4)].map((_, id) => <ThemeItemSkeleton key={id} />)
             : themes?.themes?.length > 0 ? themes.themes.map(data => <ThemeItem
                 key={data.id}

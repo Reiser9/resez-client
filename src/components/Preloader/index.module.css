@@ -22,7 +22,7 @@
 
 .preloader{
     margin: 60px auto;
-    font-size: 8px;
+    font-size: 4px;
     position: relative;
     text-indent: -9999em;
     border-top: .6em solid rgba(101,171,248, 0.2);
@@ -33,8 +33,8 @@
     animation: load 1.1s infinite linear;
     overflow: hidden;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
 }
 
 .preloader.small{

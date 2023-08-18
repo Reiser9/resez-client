@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { HTTP_METHODS, REQUEST_TYPE } from "../consts/HTTP";
 
 import {setMainColors} from '../utils/setMainColors';
-import { initThemes, setMode } from "../redux/slices/theme";
+import { initThemes, setMode, setThemes, setThemesIsLoading } from "../redux/slices/theme";
 import { changeThemeUser, initUser } from "../redux/slices/user";
 import { requestDataIsError } from "../utils/requestDataIsError";
 
@@ -13,7 +13,7 @@ import useNotify from "./useNotify";
 import useError from "./useError";
 
 const useTheme = () => {
-    const [initThemesIsLoading, setInitThemesIsLoading] = React.useState(false);
+    const [themeIsLoading, setThemeIsLoading] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
 
@@ -45,21 +45,39 @@ const useTheme = () => {
         document.body.classList.add(newTheme);
     };
 
-    const getAllTheme = async (reload = false) => {
+    const loadAllThemes = async (offset = 0, limit = 5, reload = false) => {
         setError(false);
 
-        if(themes.length === 0 || reload){
-            setInitThemesIsLoading(true);
+        if(!themes.themes || reload){
+            dispatch(setThemesIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.THEME, "", HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.THEME, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
-            setInitThemesIsLoading(false);
+            dispatch(setThemesIsLoading(false));
 
             if(requestDataIsError(response)){
-                return errorController(response, getAllTheme);
+                return errorController(response, () => loadAllThemes(offset, limit, reload));
             }
 
             dispatch(initThemes(response.data));
+        }
+    }
+
+    const getAllThemes = async (offset = 0, limit = 5) => {
+        setError(false);
+
+        if(themes?.themes?.length === 0 || themes?.themes?.length < offset + limit){
+            setIsLoading(true);
+
+            const response = await request(REQUEST_TYPE.THEME, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+
+            setIsLoading(false);
+
+            if(requestDataIsError(response)){
+                return errorController(response, () => getAllThemes(offset, limit));
+            }
+
+            dispatch(setThemes(response.data));
         }
     }
 
@@ -115,11 +133,12 @@ const useTheme = () => {
     }, []);
 
     return {
-        initThemesIsLoading,
+        themeIsLoading,
         isLoading,
         error,
         changeTheme,
-        getAllTheme,
+        loadAllThemes,
+        getAllThemes,
         getThemeById,
         editTheme
     };
