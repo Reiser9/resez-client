@@ -75,7 +75,7 @@ const useAuth = () => {
             });
         }
 
-        const {data} = await getShortInfo();
+        const {data} = await getShortInfo() || "";
 
         if(!data){
             return dispatch(setAuthIsLoading(false));
@@ -139,7 +139,7 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => {}, "Неверный логин или пароль");
+            return errorController(response, () => {});
         }
 
         const {data} = response;

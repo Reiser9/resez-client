@@ -16,10 +16,19 @@ export const themeSlice = createSlice({
             state.themes = action.payload;
         },
         addNewTheme: (state, action) => {
-            state.themes = state.themes.length > 0 ? [...state.themes, action.payload] : [];
+            state.themes.themes = state.themes?.themes?.length > 0 ? [...state.themes.themes, action.payload] : [];
+        },
+        changeTheme: (state, action) => {
+            state.themes.themes = state.themes.themes.map((obj) => {
+                if(obj.id == action.payload.id){
+                    return action.payload.theme;
+                }
+
+                return obj;
+            });
         },
         deleteTheme: (state, action) => {
-            state.themes = state.themes.filter((item) => item.id !== action.payload.id);
+            state.themes.themes = state.themes?.themes?.filter((item) => item.id !== action.payload.id);
         },
         setDataTheme: () => initialState
     }
@@ -30,6 +39,7 @@ export const {
     initThemes,
     setDataTheme,
     addNewTheme,
+    changeTheme,
     deleteTheme
 } = themeSlice.actions;
 

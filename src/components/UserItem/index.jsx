@@ -4,7 +4,7 @@ import { Tooltip } from 'antd';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { Notify, Stop } from '../Icons';
+import { Notify, Stop, Verified } from '../Icons';
 
 import useUtils from '../../hooks/useUtils';
 
@@ -15,7 +15,7 @@ import ModalConfirm from '../Modal/ConfirmModal';
 import Preloader from '../Preloader';
 
 const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = () => {}}) => {
-    const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id} = data;
+    const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName} = data;
 
     const [confirmBlock, setConfirmBlock] = React.useState(false);
     const [confirmUnblock, setConfirmUnblock] = React.useState(false);
@@ -34,10 +34,16 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                         <Tooltip title="Тема пользователя">
                             <div className={styles.userThemeCircle} style={{background: theme?.primary || "#007cee"}}></div>
                         </Tooltip>
+
+                        {isVerified && <Tooltip title="Верифицирован">
+                            <div className={styles.userVerified}>
+                                <Verified className={styles.userVerifiedIcon} />
+                            </div>
+                        </Tooltip>}
                     </div>
 
                     <div className={styles.userInfo}>
-                        <p className={`${typography.text} ${styles.userInfoName}`}>Алексей Зубков</p>
+                        {firstName && lastName && <p className={`${typography.text} ${styles.userInfoName}`}>{`${firstName} ${lastName}`}</p>}
 
                         <Tooltip title="Скопировать">
                             <p className={`${typography.text2} ${styles.userInfoNickname}`} onClick={() => copyTextWithNotify(nickname)}>{nickname}</p>
@@ -52,7 +58,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
 
                     {roles.length > 0 && <TextPoint title="Роли">
                         <div className={styles.userRoles}>
-                            {roles.map((data, id) => <p key={id} className={styles.userRole} style={{color: "#EE7200", background: "#EE72001A"}}>{data.role}</p>)}
+                            {roles.map((data, id) => <p key={id} className={styles.userRole} style={{color: data?.textColor || "#007cee", background: data?.backgroundColor || "#007cee"}}>{data.role}</p>)}
                         </div>
                     </TextPoint>}
                 </div>

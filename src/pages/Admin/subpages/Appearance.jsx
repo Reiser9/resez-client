@@ -25,7 +25,7 @@ const Appearance = () => {
         <div className={styles.appearance}>
             <div className={styles.appearanceWrapper}>
                 <div className={styles.appearanceTitleInner}>
-                    <p className={typography.h3}>Темы (3)</p>
+                    <p className={typography.h3}>Темы {!initThemesIsLoading && `(${themes.totalCount || 0})`}</p>
 
                     <ReloadButton loading={initThemesIsLoading} onClick={() => getAllTheme(true)} />
                 </div>
@@ -40,8 +40,8 @@ const Appearance = () => {
                 {[...Array(4)].map((_, id) => <ThemeItemAdminSkeleton key={id} />)}
             </div>
             : error ? <NotContent text="Ошибка при загрузке тем" />
-            : themes.length > 0 ? <div className={styles.appearanceContent}>
-                {themes.map((data, id) => <ThemeItemAdmin key={id} data={data} />)}
+            : themes?.themes?.length > 0 ? <div className={styles.appearanceContent}>
+                {themes.themes.map((data, id) => <ThemeItemAdmin key={id} data={data} />)}
             </div>
             : <NotContent text="Тем не найдено" />}
         </div>

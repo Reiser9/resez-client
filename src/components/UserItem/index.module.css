@@ -231,3 +231,26 @@
     border-radius: 4px;
     z-index: -1;
 }
+
+.userVerified{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    background: var(--input);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.userVerifiedIcon{
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.userVerifiedIcon path{
+    stroke: #007cee;
+}

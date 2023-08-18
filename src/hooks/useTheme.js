@@ -5,7 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from "../consts/HTTP";
 
 import {setMainColors} from '../utils/setMainColors';
 import { initThemes, setMode } from "../redux/slices/theme";
-import { initUser } from "../redux/slices/user";
+import { changeThemeUser, initUser } from "../redux/slices/user";
 import { requestDataIsError } from "../utils/requestDataIsError";
 
 import useRequest from "./useRequest";
@@ -59,8 +59,24 @@ const useTheme = () => {
                 return errorController(response, getAllTheme);
             }
 
-            dispatch(initThemes(response.data.themes));
+            dispatch(initThemes(response.data));
         }
+    }
+
+    const getThemeById = async (id) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.THEME, `/${id}`, HTTP_METHODS.GET, true);
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => getThemeById(id));
+        }
+
+        return response.data.theme;
     }
 
     const editTheme = async (themeId) => {
@@ -82,7 +98,7 @@ const useTheme = () => {
             return errorController(response, () => editTheme(themeId));
         }
 
-        dispatch(initUser(response.data));
+        dispatch(changeThemeUser(response.data.theme));
 
         const {primary, light} = response.data.theme;
         setMainColors(primary, light);
@@ -104,6 +120,7 @@ const useTheme = () => {
         error,
         changeTheme,
         getAllTheme,
+        getThemeById,
         editTheme
     };
 };

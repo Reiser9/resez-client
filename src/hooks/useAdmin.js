@@ -5,7 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 import { requestDataIsError } from '../utils/requestDataIsError';
 
 import { initUsers, setUser, setUsers, setUsersIsLoading } from '../redux/slices/admin';
-import { addNewTheme, deleteTheme } from '../redux/slices/theme';
+import { addNewTheme, changeTheme, deleteTheme } from '../redux/slices/theme';
 
 import useRequest from './useRequest';
 import useError from './useError';
@@ -101,14 +101,15 @@ const useAdmin = () => {
         successCallback();
     }
 
-    const createTheme = async (primary, light, successCallback = () => {}) => {
+    const createTheme = async (primary, light, isRatingEnabled, successCallback = () => {}) => {
         setError(false);
 
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.THEME, "", HTTP_METHODS.POST, true, {
             primary,
-            light
+            light,
+            isRatingEnabled
         });
 
         setIsLoading(false);
@@ -116,11 +117,36 @@ const useAdmin = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => createTheme(primary, light, successCallback));
+            return errorController(response, () => createTheme(primary, light, isRatingEnabled, successCallback));
         }
 
         dispatch(addNewTheme(response.data.theme));
         alertNotify("Успешно", "Тема создана", "success");
+        successCallback();
+    }
+
+    const editTheme = async (id, primary, light, isRatingEnabled, successCallback = () => {}) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.THEME, "", HTTP_METHODS.PUT, true, {
+            id,
+            primary,
+            light,
+            isRatingEnabled
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => editTheme(id, primary, light, isRatingEnabled, successCallback));
+        }
+
+        dispatch(changeTheme({id, theme: response.data.theme}));
+        alertNotify("Успешно", "Тема изменена", "success");
         successCallback();
     }
 
@@ -155,6 +181,7 @@ const useAdmin = () => {
         userBlock,
         userUnblock,
         createTheme,
+        editTheme,
         removeTheme
     }
 }

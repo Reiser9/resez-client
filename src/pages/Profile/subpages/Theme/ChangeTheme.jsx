@@ -22,7 +22,7 @@ const ChangeTheme = () => {
         <div className={styles.colorsContent}>
             {initThemesIsLoading
             ? [...Array(4)].map((_, id) => <ThemeItemSkeleton key={id} />)
-            : themes.length > 0 ? themes.map(data => <ThemeItem
+            : themes?.themes?.length > 0 ? themes.themes.map(data => <ThemeItem
                 key={data.id}
                 data={data}
                 onClick={() => editTheme(data.id)}

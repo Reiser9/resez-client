@@ -31,7 +31,7 @@ const App = () => {
             locale={ruRU}
             theme={{
                 token: {
-                    colorPrimary: user?.theme?.primary || "#007cee",
+                    colorPrimary: user.isPreviewTheme ? user?.previewTheme?.primary || "#007cee" : user?.theme?.primary || "#007cee",
                     fontFamily: "Nunito"
                 }
             }}

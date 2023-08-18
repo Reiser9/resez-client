@@ -17,7 +17,7 @@ const SessionItemCompact = ({current = false, data, ...props}) => {
                 </div>
 
                 <div className={styles.sessionItemWrapper}>
-                    {browser && <p className={typography.text}>Браузер {browser}</p>}
+                    <p className={typography.text}>Браузер {browser ? browser : "неопределен"}</p>
 
                     {date && <p className={`${typography.text2} ${styles.sessionItemDate}`}>{formatDate(date)}</p>}
                 </div>

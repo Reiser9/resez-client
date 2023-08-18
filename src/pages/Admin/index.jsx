@@ -15,6 +15,7 @@ const Notifies = React.lazy(() => import("./subpages/Notifies"));
 const Users = React.lazy(() => import("./subpages/Users"));
 const Appearance = React.lazy(() => import("./subpages/Appearance"));
 const AddTheme = React.lazy(() => import("./subpages/AddTheme"));
+const Roles = React.lazy(() => import("./subpages/Roles"));
 
 const Admin = () => {
     return (
@@ -29,7 +30,8 @@ const Admin = () => {
                                 <Route path="/users/*" element={withSuspense(<Users />)} />
                                 <Route path="/appearance" element={withSuspense(<Appearance />)} />
                                 <Route path="/appearance/theme/add" element={withSuspense(<AddTheme />)} />
-                                <Route path="/appearance/theme/edit/*" element={withSuspense(<AddTheme edit />)} />
+                                <Route path="/appearance/theme/edit/:id" element={withSuspense(<AddTheme edit />)} />
+                                <Route path="/roles/*" element={withSuspense(<Roles />)} />
                                 <Route path="*" element={<Navigate to={""} />} />
                             </Routes>
                         </div>
@@ -39,6 +41,7 @@ const Admin = () => {
                             <SidebarLink text="Уведомления" to="notifies" />
                             <SidebarLink text="Пользователи" to="users" />
                             <SidebarLink text="Внешний вид" to="appearance" />
+                            <SidebarLink text="Роли" to="roles" />
                         </div>
                     </div>
                 </WithSidebarWrapper>

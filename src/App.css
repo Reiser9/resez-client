@@ -194,7 +194,7 @@ input::placeholder{
 }
 
 /* Custom select antd */
-.ant-select-selection-item, .ant-select-selection-placeholder{
+.ant-select-multiple .ant-select-selection-item, .ant-select-selection-placeholder{
     color: var(--text)!important;
     line-height: 1.2!important;
     font-size: 1.6rem!important;
@@ -247,17 +247,17 @@ input::placeholder{
     font-weight: 500!important;
 }
 
-.ant-select{
+.ant-select-multiple{
     border-radius: 4px!important;
     border: 1px solid transparent!important;
     transition: .2s linear;
 }
 
-.ant-select-focused{
+.ant-select-multiple.ant-select-focused{
     border: 1px solid var(--main)!important;
 }
 
-.ant-select-selection-item{
+.ant-select-multiple .ant-select-selection-item{
     margin-top: 0!important;
     margin-bottom: 0!important;
 }

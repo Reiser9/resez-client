@@ -28,6 +28,7 @@ const ThemeItemAdmin = ({data}) => {
                     </div>
 
                     <div className={styles.appearanceItemPoints}>
+                        <TextPoint title="ID" text={id} />
                         <TextPoint title="Primary" text={primary} />
                         <TextPoint title="Lighten" text={light} />
                     </div>

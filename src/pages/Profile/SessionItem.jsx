@@ -34,7 +34,7 @@ const SessionItem = ({current = false, data, active, callback = () => {}, loadin
                         : <p className={typography.text}>{isActive ? "Активный" : "Завершен"}</p>}
                     </div>
 
-                    <TextPoint title="Браузер" text={`${browser} ${browserVersion}`} />
+                    <TextPoint title="Браузер" text={browser ? `${browser} ${browserVersion}` : "Неопределен"} />
                     <TextPoint title="Операционная система" text={os ? os : "Неопределена"} />
                     <TextPoint title="Платформа" text={platform ? platform : "Неопределена"} />
                     <TextPoint title="IP адрес" text={ip ? ip : "Неопределен"} />
