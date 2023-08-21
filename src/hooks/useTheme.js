@@ -51,11 +51,12 @@ const useTheme = () => {
         if(!themes.themes || reload){
             dispatch(setThemesIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.THEME, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/theme?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             dispatch(setThemesIsLoading(false));
 
             if(requestDataIsError(response)){
+                setError(true);
                 return errorController(response, () => loadAllThemes(offset, limit, reload));
             }
 
@@ -69,11 +70,12 @@ const useTheme = () => {
         if(themes?.themes?.length === 0 || themes?.themes?.length < offset + limit){
             setIsLoading(true);
 
-            const response = await request(REQUEST_TYPE.THEME, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/theme?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             setIsLoading(false);
 
             if(requestDataIsError(response)){
+                setError(true);
                 return errorController(response, () => getAllThemes(offset, limit));
             }
 
@@ -86,11 +88,12 @@ const useTheme = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.THEME, `/${id}`, HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.ADMIN, `/theme/${id}`, HTTP_METHODS.GET, true);
 
         setIsLoading(false);
 
         if(requestDataIsError(response)){
+            setError(true);
             return errorController(response, () => getThemeById(id));
         }
 

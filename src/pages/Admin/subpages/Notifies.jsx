@@ -6,12 +6,15 @@ import styles from '../index.module.css';
 
 import {isDateTimePast} from '../../../utils/isDateTimePast';
 
+import useAdmin from '../../../hooks/useAdmin';
+
 import Input from '../../../components/Input';
 import Textarea from '../../../components/Textarea';
 import Button from '../../../components/Button';
 import Select from '../../../components/Select';
 import DatePicker from '../../../components/DatePicker';
 import TimePicker from '../../../components/TimePicker';
+import { formatDate } from '../../../utils/formatDate';
 
 const Notifies = () => {
     const [title, setTitle] = React.useState("");
@@ -20,14 +23,22 @@ const Notifies = () => {
     const [date, setDate] = React.useState("");
     const [time, setTime] = React.useState("");
 
+    const {isLoading, sendNotify} = useAdmin();
+
     const [sendAnonim, setSendAnonim] = React.useState(false);
     const [sendForOne, setSendForOne] = React.useState(false);
     const [delayedSend, setDelayedSend] = React.useState(false);
 
     const createNotify = () => {
-        if(!isDateTimePast(date, time)){
-            return;
+        if(delayedSend && !isDateTimePast(date, time)){
+            return alert("Ошибка");
         }
+
+        if(delayedSend){
+            var newDate = formatDate(`${date?.format("YYYY-MM-DD")}T${time?.format("HH:mm:ss")}`, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+        }
+
+        sendNotify(title, author, [], newDate, text);
     }
 
     return (
@@ -41,7 +52,7 @@ const Notifies = () => {
                     Отправить от имени
                 </Checkbox>
 
-                {sendAnonim && <Input value={author} setValue={setAuthor} title="От кого отправить" />}
+                {sendAnonim && <Input value={author} setValue={setAuthor} placeholder="От кого отправить" />}
 
                 <Checkbox className={styles.notifiesCheckbox} checked={sendForOne} onChange={e => setSendForOne(e.target.checked)}>
                     Отправить пользователю
@@ -60,7 +71,7 @@ const Notifies = () => {
 
                 <Textarea value={text} setValue={setText} title="Сообщение" />
 
-                <Button auto type="light" onClick={createNotify}>
+                <Button auto type="light" onClick={createNotify} loading={isLoading}>
                     Отправить
                 </Button>
             </div>

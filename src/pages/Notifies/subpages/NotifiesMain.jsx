@@ -17,7 +17,7 @@ import Notify from '../../../components/Skeleton/Notify';
 const NotifiesMain = ({unread = false}) => {
     const [notifiesMoreLoading, setNotifiesMoreLoading] = React.useState(false);
 
-    const {error, notifyIsLoading, loadNotify, getAllNotify, readNotify, readAllNotifies} = useNotify();
+    const {isLoading, error, notifyIsLoading, loadNotify, getAllNotify, readNotify, readAllNotifies} = useNotify();
     const {notifiesIsLoading, notifies, unreadCount} = useSelector(state => state.notify);
 
     const loadMoreNotifies = React.useCallback(async () => {
@@ -30,6 +30,12 @@ const NotifiesMain = ({unread = false}) => {
         loadNotify(0, 6, unread);
     }, [unread]);
 
+    React.useEffect(() => {
+        if(unread && notifies?.notifies?.length === 0 && !notifies?.isLast){
+            loadMoreNotifies();
+        }
+    }, [notifies?.notifies, unread, notifies?.isLast]);
+
     const notifiesNotLoadingAndNotEmpty = !notifiesIsLoading && notifies.totalCount !== 0;
 
     return (
@@ -41,7 +47,7 @@ const NotifiesMain = ({unread = false}) => {
                     <ReloadButton loading={notifiesIsLoading} onClick={() => loadNotify(0, 6, unread)} />
                 </div>
 
-                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || unreadCount === 0} auto type="light" onClick={() => readAllNotifies(0, 6, unread)}>
+                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || unreadCount === 0 || isLoading} auto type="light" onClick={() => readAllNotifies(0, 6, unread)}>
                     Прочитать все
                 </Button>}
             </div>

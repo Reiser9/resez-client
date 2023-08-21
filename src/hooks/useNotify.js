@@ -76,7 +76,7 @@ const useNotify = () => {
             return errorController(response, () => readNotify(notifyId));
         }
         
-        alertNotify("Успешно", "Сообщение прочитано", "success");
+        alertNotify("Успешно", "Уведомление прочитано", "success");
 
         if(unread){
             dispatch(deleteNotifyById(response.data));

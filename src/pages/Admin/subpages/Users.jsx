@@ -57,8 +57,8 @@ const Users = () => {
 
             {usersMoreLoading && [...Array(3)].map((_, id) => <UserAdminItem key={id} />)}
 
-            {!usersIsLoading && !users?.isLast
-            && <Button loading={usersMoreLoading} type="empty" auto className={styles.usersMoreButton} onClick={loadMoreSession}>
+            {users.length > 0 && !usersIsLoading && !users?.isLast &&
+            <Button loading={usersMoreLoading} type="empty" auto className={styles.usersMoreButton} onClick={loadMoreSession}>
                 Показать еще
             </Button>}
         </div>

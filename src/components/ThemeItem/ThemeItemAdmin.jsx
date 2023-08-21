@@ -3,7 +3,7 @@ import { Tooltip } from 'antd';
 
 import styles from './index.module.css';
 
-import { Delete, Edit } from '../Icons';
+import { Delete, Dislike, Edit, Id, Like, Star, User } from '../Icons';
 
 import useAdmin from '../../hooks/useAdmin';
 
@@ -12,7 +12,7 @@ import IconButton from '../IconButton';
 import ConfirmModal from '../Modal/ConfirmModal';
 
 const ThemeItemAdmin = ({data}) => {
-    const {primary, light, id} = data;
+    const {primary, light, id, likesCount, dislikesCount, usersCount, isRatingEnabled} = data;
 
     const [confirmDelete, setConfirmDelete] = React.useState(false);
 
@@ -27,8 +27,49 @@ const ThemeItemAdmin = ({data}) => {
                         <div className={styles.appearanceItemThemeSecondary} style={{background: light, border: `1px solid ${primary}`}}></div>
                     </div>
 
+                    <div className={styles.apperanceItemStatsInner}>
+                        <Tooltip title="ID">
+                            <div className={styles.apperanceItemStatsItem}>
+                                <Id />
+
+                                {id}
+                            </div>
+                        </Tooltip>
+
+                        <Tooltip title="Используют тему">
+                            <div className={styles.apperanceItemStatsItem}>
+                                <User />
+
+                                {usersCount}
+                            </div>
+                        </Tooltip>
+
+                        <Tooltip title="Лайков">
+                            <div className={styles.apperanceItemStatsItem}>
+                                <Like />
+
+                                {likesCount}
+                            </div>
+                        </Tooltip>
+
+                        <Tooltip title="Дизлайков">
+                            <div className={styles.apperanceItemStatsItem}>
+                                <Dislike />
+
+                                {dislikesCount}
+                            </div>
+                        </Tooltip>
+
+                        <Tooltip title="Оценка пользователями">
+                            <div className={styles.apperanceItemStatsItem}>
+                                <Star />
+
+                                {isRatingEnabled ? "Включена" : "Выключена"}
+                            </div>
+                        </Tooltip>
+                    </div>
+
                     <div className={styles.appearanceItemPoints}>
-                        <TextPoint title="ID" text={id} />
                         <TextPoint title="Primary" text={primary} />
                         <TextPoint title="Lighten" text={light} />
                     </div>

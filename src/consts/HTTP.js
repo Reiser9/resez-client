@@ -12,5 +12,6 @@ export const REQUEST_TYPE = {
     SESSION: 'session',
     THEME: 'theme',
     NOTIFY: 'notify',
+    ADMIN: 'admin',
     EMPTY: 'empty'
 };

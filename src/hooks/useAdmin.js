@@ -28,7 +28,7 @@ const useAdmin = () => {
 
         dispatch(setUsersIsLoading(true));
 
-        const response = await request(REQUEST_TYPE.USER, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.ADMIN, `/user?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
         dispatch(setUsersIsLoading(false));
 
@@ -45,7 +45,7 @@ const useAdmin = () => {
         setError(false);
 
         if(!users?.users || users?.users?.length + 1 < offset + limit){
-            const response = await request(REQUEST_TYPE.USER, `?offset=${users?.users?.length}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/user?offset=${users?.users?.length}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             if(requestDataIsError(response)){
                 setError(true);
@@ -69,8 +69,6 @@ const useAdmin = () => {
         setUserIsLoading(prev => prev.filter(item => item !== userId));
 
         if(requestDataIsError(response)){
-            setError(true);
-
             return errorController(response, () => userBlock(userId, successCallback));
         }
         
@@ -91,8 +89,6 @@ const useAdmin = () => {
         setUserIsLoading(prev => prev.filter(item => item !== userId));
 
         if(requestDataIsError(response)){
-            setError(true);
-
             return errorController(response, () => userBlock(userId, successCallback));
         }
         
@@ -106,7 +102,7 @@ const useAdmin = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.THEME, "", HTTP_METHODS.POST, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/theme", HTTP_METHODS.POST, true, {
             primary,
             light,
             isRatingEnabled
@@ -115,8 +111,6 @@ const useAdmin = () => {
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            setError(true);
-
             return errorController(response, () => createTheme(primary, light, isRatingEnabled, successCallback));
         }
 
@@ -130,7 +124,7 @@ const useAdmin = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.THEME, "", HTTP_METHODS.PUT, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/theme", HTTP_METHODS.PUT, true, {
             id,
             primary,
             light,
@@ -140,8 +134,6 @@ const useAdmin = () => {
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            setError(true);
-
             return errorController(response, () => editTheme(id, primary, light, isRatingEnabled, successCallback));
         }
 
@@ -155,21 +147,42 @@ const useAdmin = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.THEME, "", HTTP_METHODS.DELETE, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/theme", HTTP_METHODS.DELETE, true, {
             id
         });
 
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            setError(true);
-
             return errorController(response, () => removeTheme(id, successCallback));
         }
 
         dispatch(deleteTheme(response.data.theme));
         alertNotify("Успешно", "Тема удалена", "success");
         successCallback();
+    }
+
+    const sendNotify = async (title, sender, userIDs, date, content) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.NOTIFY, "", HTTP_METHODS.POST, true, {
+            title,
+            sender,
+            userIDs: userIDs || [],
+            date,
+            content,
+            notifyTypeId: 1
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => sendNotify(title, sender, userIDs, date, content));
+        }
+
+        alertNotify("Успешно", "Уведомление отправлено", "success");
     }
 
     return {
@@ -182,7 +195,8 @@ const useAdmin = () => {
         userUnblock,
         createTheme,
         editTheme,
-        removeTheme
+        removeTheme,
+        sendNotify
     }
 }
 

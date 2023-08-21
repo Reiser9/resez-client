@@ -9,8 +9,6 @@ import TitleWrpapper from "../../components/Wrapper/TitleWrapper";
 import WithSidebarWrapper from "../../components/Wrapper/WithSidebarWrapper";
 import Block from "./Block";
 
-import Modal from '../../components/Modal';
-
 const Main = () => {
     return (
         <TitleWrpapper pageTitle="ResEz">

@@ -6,6 +6,7 @@ import {
     BASE_API_URL_SESSION,
     BASE_API_URL_THEME,
     BASE_API_URL_NOTIFY,
+    BASE_API_URL_ADMIN,
     BASE_API_URL_USER
 } from './API_URLS';
 
@@ -31,6 +32,11 @@ export const themeRequest = axios.create({
 
 export const notifyRequest = axios.create({
     baseURL: BASE_API_URL_NOTIFY,
+    withCredentials: true
+});
+
+export const adminRequest = axios.create({
+    baseURL: BASE_API_URL_ADMIN,
     withCredentials: true
 });
 

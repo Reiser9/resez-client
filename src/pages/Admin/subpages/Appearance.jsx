@@ -28,6 +28,12 @@ const Appearance = () => {
         loadAllThemes(0, 8);
     }, []);
 
+    React.useEffect(() => {
+        if(themes?.themes?.length === 0 && !themes?.isLast){
+            loadMoreThemes();
+        }
+    }, [themes?.themes, themes?.isLast]);
+
     return (
         <div className={styles.appearance}>
             <div className={styles.appearanceWrapper}>
@@ -57,7 +63,7 @@ const Appearance = () => {
                 {[...Array(4)].map((_, id) => <ThemeItemAdminSkeleton key={id} />)}
             </div>}
 
-            {!themesIsLoading && !themes?.isLast && <Button loading={themesMoreLoading} type="empty" auto className={styles.themesMoreButton} onClick={loadMoreThemes}>
+            {themes?.themes?.length > 0 && !themesIsLoading && !themes?.isLast && <Button loading={themesMoreLoading} type="empty" auto className={styles.themesMoreButton} onClick={loadMoreThemes}>
                 Показать еще
             </Button>}
         </div>

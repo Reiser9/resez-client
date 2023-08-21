@@ -19,7 +19,7 @@ const notifyTypes = {
 }
 
 const NotifyItem = ({data, loading = false, callback = () => {}}) => {
-    const {title, content, type, date, isRead} = data;
+    const {title, content, type, date, isRead, sender} = data;
 
     const [modal, setModal] = React.useState(false);
 
@@ -63,9 +63,15 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
                     <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности
                 </p>}
 
-                <Button auto type="light" className={styles.notifyItemButton} onClick={() => setModal(true)}>
-                    Подробнее
-                </Button>
+                <div className={styles.notifyItemButtonInner}>
+                    <Button auto type="light" onClick={() => setModal(true)}>
+                        Подробнее
+                    </Button>
+
+                    {sender && <p className={`${typography.text2} ${styles.notifyItemFrom}`}>
+                        <span>От:</span> {sender}
+                    </p>}
+                </div>
             </div>
 
             <Modal value={modal} setValue={setModal} title={title} subtitle={formatDate(date)} text={content} />

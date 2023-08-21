@@ -6,6 +6,8 @@ import styles from './index.module.css';
 
 import { Notify, Stop, Verified } from '../Icons';
 
+import { maskPhone } from '../../utils/formatPhone';
+
 import useUtils from '../../hooks/useUtils';
 
 import Button from '../Button';
@@ -54,7 +56,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                 <div className={styles.userPoints}>
                     <TextPoint title="ID" text={id} />
                     <TextPoint title="Статус" text="Новичек" />
-                    {phoneNumber && <TextPoint title="Номер телефона" text={phoneNumber} />}
+                    {phoneNumber && <TextPoint title="Номер телефона" text={maskPhone(phoneNumber)} />}
 
                     {roles.length > 0 && <TextPoint title="Роли">
                         <div className={styles.userRoles}>

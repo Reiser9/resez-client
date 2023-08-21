@@ -125,3 +125,34 @@
     gap: 8px;
     justify-content: center;
 }
+
+.apperanceItemStatsInner{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    align-items: center;
+    gap: 12px;
+}
+
+.apperanceItemStatsItem{
+    width: calc(100% / 2 - 12px / 2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.apperanceItemStatsItem:last-child{
+    width: 100%;
+}
+
+.apperanceItemStatsItem svg{
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.apperanceItemStatsItem svg path{
+    stroke: var(--main);
+}
