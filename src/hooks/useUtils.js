@@ -5,9 +5,9 @@ import useAlert from './useAlert';
 const useUtils = () => {
     const {alertNotify} = useAlert();
 
-    const copyTextWithNotify = (text) => {
+    const copyTextWithNotify = (text, alertText = "Текст скопирован") => {
         copyText(text);
-        alertNotify("Успешно", "Текст скопирован", "success");
+        alertNotify("Успешно", alertText, "success");
     }
 
     return {

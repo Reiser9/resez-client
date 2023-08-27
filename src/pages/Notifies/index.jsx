@@ -9,6 +9,7 @@ import AuthWrapper from '../../components/Wrapper/AuthWrapper';
 import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
 import SidebarLink from '../../components/SidebarLink';
+import InnerSidebar from '../../components/InnerSidebar';
 
 const NotifiesMain = React.lazy(() => import("./subpages/NotifiesMain"));
 
@@ -26,10 +27,10 @@ const Profile = () => {
                             </Routes>
                         </div>
 
-                        <div className={pws.sidebar}>
+                        <InnerSidebar>
                             <SidebarLink text="Все" to="" end />
                             <SidebarLink text="Непрочитанные" to="unread" />
-                        </div>
+                        </InnerSidebar>
                     </div>
                 </WithSidebarWrapper>
             </TitleWrpapper>

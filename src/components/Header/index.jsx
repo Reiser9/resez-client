@@ -132,7 +132,7 @@ const Header = ({empty = false}) => {
 
                                     Уведомления
 
-                                    {unreadCount !== 0 && <span className={styles.headerProfileNotifyCount}>{unreadCount}</span>}
+                                    {unreadCount !== 0 && <span className={styles.headerProfileNotifyCount}>{unreadCount > 10 ? "9+" : unreadCount}</span>}
                                 </Link>
 
                                 <div className={styles.headerProfileMenuLink} onClick={() => changeTheme()}>

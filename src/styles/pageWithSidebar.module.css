@@ -50,29 +50,121 @@
     }
 }
 
-.sidebar{
+.sidebarOverlay{
     width: 100%;
     max-width: 280px;
     flex-shrink: 0;
+    position: sticky;
+    top: 0px;
+}
+
+.sidebarWrapper{
+    width: 100%;
+}
+
+.sidebar{
+    width: 100%;
     padding: 1.6rem 0;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     background: var(--white);
-    position: sticky;
-    top: 0px;
 }
 
 @media (max-width: 1300px) {
-    .sidebar{
+    .sidebarOverlay{
         max-width: 220px;
     }
 }
 
 @media (max-width: 768px) {
-    .sidebar{
+    .sidebarOverlay{
         max-width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100dvh;
+        background: rgba(0, 0, 0, .5);
+        z-index: 1100;
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: block;
+        opacity: 0;
+        pointer-events: none;
+        transition: .3s ease-in-out;
+    }
+
+    .sidebarOverlay.active{
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .sidebarWrapper{
+        display: flex;
+        min-height: calc(100% - 5rem);
+        margin: 5rem 0 0 0;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .sidebar{
+        border-radius: 8px 8px 0 0;
         position: relative;
+        padding: 4rem 0 1.6rem 0;
+        transform: translateY(100dvh);
+        transition: .3s ease-in-out;
+    }
+
+    .sidebar.active{
+        transform: translateY(0);
+    }
+
+    .sidebar:before{
+        content: "";
+        display: block;
+        width: 75px;
+        height: 2px;
+        border-radius: 50px;
+        background: var(--textGrey);
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.sidebarMenu{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--input);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 4px var(--iconGrey);
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+.sidebarMenu svg{
+    width: 24px;
+    transition: .2s ease-in-out;
+}
+
+.sidebarMenu svg path{
+    stroke: var(--main);
+}
+
+@media (max-width: 768px) {
+    .sidebarMenu{
+        display: flex;
+    }
+
+    .sidebarMenu.active{
+        opacity: 0;
+        transform: translateX(16px);
     }
 }

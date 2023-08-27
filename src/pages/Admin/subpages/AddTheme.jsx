@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import typography from '../../../styles/typography.module.css';
 import styles from '../index.module.css';
 
+import { CONFIG } from '../../../consts/CONFIG';
+
 import { isPreviewTheme, previewThemeUser } from '../../../redux/slices/user';
 
 import {convertHexToOpacityHex} from '../../../utils/convertColor';
@@ -23,12 +25,12 @@ const AddTheme = ({edit = false}) => {
     const [mainPickEnd, setMainPickEnd] = React.useState(false);
     const [secondPickEnd, setSecondPickEnd] = React.useState(false);
 
-    const [mainColor, setMainColor] = React.useState("#007cee");
+    const [mainColor, setMainColor] = React.useState(CONFIG.BASE_COLOR);
     const [mainColorFormatHex, setMainColorFormatHex] = React.useState('hex');
 
     const [customSecondColor, setCustomSecondColor] = React.useState(edit ? false : true);
 
-    const [secondColor, setSecondColor] = React.useState("#007cee");
+    const [secondColor, setSecondColor] = React.useState(CONFIG.BASE_COLOR);
     const [secondColorFormatHex, setSecondColorFormatHex] = React.useState('hex');
 
     const [themeRating, setThemeRating] = React.useState(false);

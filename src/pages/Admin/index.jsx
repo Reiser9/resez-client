@@ -9,6 +9,7 @@ import PrivateWrapper from '../../components/Wrapper/PrivateWrapper';
 import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
 import SidebarLink from '../../components/SidebarLink';
+import InnerSidebar from '../../components/InnerSidebar';
 
 const AdminMain = React.lazy(() => import("./subpages/AdminMain"));
 const Notifies = React.lazy(() => import("./subpages/Notifies"));
@@ -36,13 +37,13 @@ const Admin = () => {
                             </Routes>
                         </div>
 
-                        <div className={pws.sidebar}>
+                        <InnerSidebar>
                             <SidebarLink text="Главная" to="" end />
                             <SidebarLink text="Уведомления" to="notifies" />
                             <SidebarLink text="Пользователи" to="users" />
                             <SidebarLink text="Внешний вид" to="appearance" />
                             <SidebarLink text="Роли" to="roles" />
-                        </div>
+                        </InnerSidebar>
                     </div>
                 </WithSidebarWrapper>
             </TitleWrpapper>

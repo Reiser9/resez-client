@@ -7,39 +7,22 @@ import { ArrowBottom, Cross } from '../Icons';
 
 import NotContent from '../NotContent';
 
-const Select = () => {
+const Select = ({
+    placeholder,
+    className,
+    options,
+    ...props
+}) => {
     return (
         <SelectAnt
             showSearch
-            placeholder="Пользователь"
-            className={styles.select}
+            placeholder={placeholder}
+            className={`${styles.select}${className ? ` ${className}` : ""}`}
             suffixIcon={<ArrowBottom width="16" />}
             notFoundContent={<NotContent text="Ничего не найдено" />}
-            mode="multiple"
-            maxTagCount="responsive"
             removeIcon={<Cross width="14" />}
-            options={[
-                {
-                    value: 'Reiser95',
-                    label: 'Reiser95',
-                },
-                {
-                    value: 'xw1nchester',
-                    label: 'xw1nchester',
-                },
-                {
-                    value: 'Silence95',
-                    label: 'Silence95',
-                },
-                {
-                    value: 'Renderman',
-                    label: 'Renderman',
-                },
-                {
-                    value: 'DrDuardoPlay',
-                    label: 'DrDuardoPlay',
-                }
-            ]}
+            options={options}
+            {...props}
         />
     )
 }

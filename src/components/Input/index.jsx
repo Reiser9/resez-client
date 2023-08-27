@@ -17,6 +17,7 @@ const Input = ({
     disabled = false,
     onPaste,
     className,
+    wrapperClass,
     children,
     ...props
 }) => {
@@ -54,7 +55,7 @@ const Input = ({
     }, [show, password]);
 
     return (
-        <div className={styles.inputWrapper}>
+        <div className={`${styles.inputWrapper}${wrapperClass ? ` ${wrapperClass}` : ""}`}>
             {title && <p className={typography.text3}>{title}</p>}
 
             <div className={styles.inputInner}>

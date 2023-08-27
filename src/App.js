@@ -6,6 +6,8 @@ import ruRU from 'antd/locale/ru_RU';
 
 import "./App.css";
 
+import { CONFIG } from "./consts/CONFIG";
+
 import { withSuspense } from "./hoc/withSuspense";
 
 import DefaultWrapper from "./components/Wrapper/DefaultWrapper";
@@ -31,7 +33,7 @@ const App = () => {
             locale={ruRU}
             theme={{
                 token: {
-                    colorPrimary: user.isPreviewTheme ? user?.previewTheme?.primary || "#007cee" : user?.theme?.primary || "#007cee",
+                    colorPrimary: user.isPreviewTheme ? user?.previewTheme?.primary || CONFIG.BASE_COLOR : user?.theme?.primary || CONFIG.BASE_COLOR,
                     fontFamily: "Nunito"
                 }
             }}

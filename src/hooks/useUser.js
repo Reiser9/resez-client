@@ -96,7 +96,7 @@ const useUser = () => {
         successCallback();
     }
 
-    const changeAvatar = async (formData, successCallback = () => {}) => {
+    const changeAvatar = async (formData, endImgLoader = () => {}, successCallback = () => {}) => {
         setError(false);
 
         setIsLoading(true);
@@ -106,16 +106,59 @@ const useUser = () => {
         });
 
         setIsLoading(false);
+        endImgLoader();
 
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => changeAvatar(formData, successCallback));
+            return errorController(response, () => changeAvatar(formData, endImgLoader, successCallback));
         }
 
         alertNotify("Успешно", "Вы сменили аватар", "success");
         dispatch(initUser(response.data.user));
         successCallback();
+    }
+
+    const deleteAvatar = async (endImgLoader = () => {}, successCallback = () => {}) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.USER, "/delete-avatar", HTTP_METHODS.PUT, true);
+
+        setIsLoading(false);
+        endImgLoader();
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => deleteAvatar(endImgLoader));
+        }
+
+        alertNotify("Успешно", "Вы удалили аватар", "success");
+        dispatch(initUser(response.data.user));
+        successCallback();
+    }
+
+    const changeData = async (firstName, lastName, birthDate, gender) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.USER, "/update-profile", HTTP_METHODS.PUT, true, {
+            firstName,
+            lastName,
+            birthDate,
+            gender
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => changeData(firstName, lastName, birthDate, gender));
+        }
+
+        alertNotify("Успешно", "Данные сохранены", "success");
     }
 
     return {
@@ -124,7 +167,9 @@ const useUser = () => {
         getShortInfo,
         changePasswordSendCode,
         changePasswordVerify,
-        changeAvatar
+        changeAvatar,
+        deleteAvatar,
+        changeData
     }
 }
 

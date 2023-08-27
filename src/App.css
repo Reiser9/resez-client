@@ -194,12 +194,17 @@ input::placeholder{
 }
 
 /* Custom select antd */
-.ant-select-multiple .ant-select-selection-item, .ant-select-selection-placeholder{
+.ant-select-selection-item, .ant-select-selection-placeholder{
     color: var(--text)!important;
     line-height: 1.2!important;
     font-size: 1.6rem!important;
     display: flex;
     align-items: center;
+}
+
+.ant-color-picker-input-container .ant-select-selection-item{
+    font-size: unset!important;
+    line-height: unset!important;
 }
 
 .ant-select-selection-placeholder{
@@ -208,7 +213,7 @@ input::placeholder{
     inset-inline-end: 16px!important;
 }
 
-.ant-select-multiple .ant-select-selector{
+.ant-select-selector{
     background: var(--input)!important;
     border: 1px solid var(--input)!important;
     height: auto!important;
@@ -216,6 +221,11 @@ input::placeholder{
     min-height: 44px;
     padding: 0 1.6rem!important;
     border-radius: 4px!important;
+}
+
+.ant-color-picker-input-container .ant-select-selector{
+    min-height: unset!important;
+    padding: unset!important;
 }
 
 .ant-select-multiple .ant-select-selection-search{
@@ -260,6 +270,10 @@ input::placeholder{
 .ant-select-multiple .ant-select-selection-item{
     margin-top: 0!important;
     margin-bottom: 0!important;
+}
+
+.ant-color-picker-input-container .ant-select-arrow path{
+    fill: var(--textGrey)!important;
 }
 
 /* Custom datepicker antd */
@@ -331,4 +345,29 @@ input::placeholder{
 .ant-btn-primary:disabled{
     color: var(--text)!important;
     opacity: 0.6;
+}
+
+/* Custom color picker */
+.ant-popover-arrow:before, .ant-popover-inner, .ant-input, .ant-input-affix-wrapper, .ant-input-number{
+    background: var(--white)!important;
+}
+
+.ant-input-affix-wrapper, .ant-input-number{
+    border: 1px solid var(--line)!important;
+}
+
+.ant-input-prefix, .ant-input, .ant-input-number-input, .ant-input-number-handler path{
+    color: var(--text)!important;
+}
+
+.ant-input-number-handler-wrap{
+    background: var(--input)!important;
+}
+
+.ant-input-number-handler{
+    border-inline-start: 1px solid var(--line)!important;
+}
+
+.ant-input-number-handler-down{
+    border-block-start: 1px solid var(--line)!important;
 }

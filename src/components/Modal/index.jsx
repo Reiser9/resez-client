@@ -20,7 +20,7 @@ const Modal = ({value, setValue, title, subtitle, text, size = "default", childr
     return (
         <div className={`${styles.modalOverlay}${value ? ` ${styles.active}` : ""}`} onClick={() => setValue(false)}>
             <div className={`${styles.modalWrapper} ${modalSize(size)}`}>
-                <div className={`${styles.modalContent}${value ? ` ${styles.active}` : ""}`} onClick={(e) => e.stopPropagation()}>
+                <div className={`${styles.modalContent}${value ? ` ${styles.active}` : ""}`} onClick={e => e.stopPropagation()}>
                     <div className={styles.modalTitleInner}>
                         <div className={styles.modalTitleWrapper}>
                             {title && <p className={typography.h3}>{title}</p>}

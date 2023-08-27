@@ -58,14 +58,14 @@ const Notifies = () => {
                     Отправить пользователю
                 </Checkbox>
 
-                {sendForOne && <Select />}
+                {sendForOne && <Select placeholder="Пользователь" mode="multiple" maxTagCount="responsive" />}
 
                 <Checkbox className={styles.notifiesCheckbox} checked={delayedSend} onChange={e => setDelayedSend(e.target.checked)}>
                     Отложенная отправка
                 </Checkbox>
 
                 {delayedSend && <div className={styles.notifiesDelayInner}>
-                    <DatePicker placeholder="Выберите дату" className={styles.notifiesDelayItem} value={date} onChange={e => setDate(e)} />
+                    <DatePicker disablePrevDate placeholder="Выберите дату" className={styles.notifiesDelayItem} value={date} onChange={e => setDate(e)} />
                     <TimePicker placeholder="Выберите время" format="HH:mm" className={styles.notifiesDelayItem} value={time} onChange={e => setTime(e)} />
                 </div>}
 
