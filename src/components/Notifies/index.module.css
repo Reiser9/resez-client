@@ -9,6 +9,7 @@
     align-items: flex-start;
     gap: 4px;
     padding: 4px;
+    z-index: 11;
 }
 
 .notifyItem{

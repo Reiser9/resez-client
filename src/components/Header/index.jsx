@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import { Switch } from 'antd';
 
@@ -28,6 +28,7 @@ const Header = ({empty = false}) => {
     const {logout} = useAuth();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const profileMenuRef = React.useRef(null);
 
@@ -35,27 +36,22 @@ const Header = ({empty = false}) => {
         dispatch(setSidebarShow(!sidebarShow));
     }
 
-    const closeSidebar = () => {
-        dispatch(setSidebarShow(false));
-    }
-
-    const toggleMenuProfile = () => {
-        setProfileMenu(prev => !prev);
-        closeSidebar();
-    }
-
     const closeProfileMenu = () => {
         setProfileMenu(false);
     }
 
+    const toggleMenuProfile = () => {
+        setProfileMenu(prev => !prev);
+        dispatch(setSidebarShow(false));
+    }
+
     const logoutHandler = () => {
         logout(() => navigate("/"));
-        closeProfileMenu();
     }
   
     const handleOutsideClick = (e) => {
         if (profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
-            setProfileMenu(false);
+            closeProfileMenu();
         }
     };
   
@@ -66,6 +62,10 @@ const Header = ({empty = false}) => {
             document.removeEventListener("click", handleOutsideClick);
         };
     }, []);
+
+    React.useEffect(() => {
+        dispatch(setSidebarShow(false));
+    }, [location]);
 
     const {avatar, nickname, status, level} = user;
 
@@ -78,7 +78,7 @@ const Header = ({empty = false}) => {
                         <Cross className={`${styles.crossIcon}${sidebarShow ? ` ${styles.active}` : ""}`} />
                     </div>}
 
-                    <Link to="/" className={styles.headerLogoInner} onClick={closeSidebar}>
+                    <Link to="/" className={styles.headerLogoInner}>
                         <p className={styles.headerLogo}>ResEz</p>
                     </Link>
                 </div>
@@ -143,7 +143,10 @@ const Header = ({empty = false}) => {
                                     <Switch size="small" checked={mode === "dark"} className={styles.headerThemeLabel} />
                                 </div>
 
-                                <div className={`${styles.headerProfileMenuLink} ${styles.delete}`} onClick={() => setConfirmLeave(true)}>
+                                <div className={`${styles.headerProfileMenuLink} ${styles.delete}`} onClick={() => {
+                                    setConfirmLeave(true);
+                                    closeProfileMenu();
+                                }}>
                                     <Exit />
 
                                     Выход

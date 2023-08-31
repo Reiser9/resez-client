@@ -1,54 +1,100 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { QRCode, Tooltip } from 'antd';
+import io from 'socket.io-client';
 
 import typography from '../../styles/typography.module.css';
 import auth from '../../components/Wrapper/AuthFormsWrapper/index.module.css';
 
+import { initCodeData, initUser } from '../../redux/slices/user';
+
 import useAuth from '../../hooks/useAuth';
+import useAlert from '../../hooks/useAlert';
 
 import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
 import AuthFormsWrapper from '../../components/Wrapper/AuthFormsWrapper';
-import Input from '../../components/Input';
 import Button from '../../components/Button';
 
+const socket = io.connect("http://localhost:8080");
+
 const ConfirmCode = () => {
-    const [code, setCode] = React.useState("");
-    const [step, setStep] = React.useState(1);
+    const {user, verificationCodeData} = useSelector(state => state.user);
 
-    const {isLoading, logout, sendCodeRegister, verifyCodeRegister} = useAuth();
-    const navigate = useNavigate();
+    const [qrExpired, setQrExpired] = React.useState(false);
+    const [remainingTime, setRemainingTime] = React.useState(verificationCodeData?.lifetime / 1000);
+    const [link, setLink] = React.useState("1");
 
-    const sendCode = () => {
-        sendCodeRegister(() => setStep(2));
+    const {isLoading, logout, sendVerificationCode} = useAuth();
+    const {alertNotify} = useAlert();
+    const dispatch = useDispatch();
+    const {mode} = useSelector(state => state.theme);
+
+    const refreshQr = () => {
+        sendVerificationCode();
+        setQrExpired(false);
     }
+    
+    React.useEffect(() => {
+        const timer = setInterval(() => {
+            setRemainingTime(prevTime => prevTime - 1);
+        }, 1000);
+      
+        if (remainingTime === 0) {
+            clearInterval(timer);
+            setQrExpired(true);
+        }
+      
+        return () => clearInterval(timer);
+    }, [remainingTime]);
 
-    const verifyCode = () => {
-        verifyCodeRegister(code, () => navigate("/"));
-    }
+    React.useEffect(() => {
+        socket.emit("join", user?.id);
+    }, [user]);
+
+    React.useEffect(() => {
+        sendVerificationCode();
+
+        socket.on("verify", (data) => {
+            console.log(data);
+            dispatch(initUser(data));
+            alertNotify("Успешно", "Аккаунт верифицирован", "success");
+        });
+
+        socket.on("verificationCodeUpdated", (data) => {
+            dispatch(initCodeData(data));
+        });
+    }, []);
+
+    React.useEffect(() => {
+        setLink(`${process.env.REACT_APP_BOT_LINK}?start=${verificationCodeData?.code}`);
+        setRemainingTime(verificationCodeData.lifetime / 1000);
+    }, [verificationCodeData]);
 
     return (
         <TitleWrpapper pageTitle="Код подтверждения">
             <AuthFormsWrapper>
-                <h2 className={typography.h2}>Код подтверждения</h2>
+                <h2 className={typography.h2}>Верификация аккаунта</h2>
 
-                {step === 1 && <>
-                    <p className={`${typography.text} ${auth.postText}`}>
-                        Перед тем, как отправить код подтверждения, вам нужно написать <a href={process.env.REACT_APP_BOT_LINK} target='_blanc'>нашему боту</a> и следовать инструкциям.
-                    </p>
+                <p className={`${typography.text} ${auth.postText}`}>
+                    Отсканируйте QR-код, либо {qrExpired
+                    ? <Tooltip title="Ссылка устарела">
+                        <span className={auth.linkExpired}>перейдите по ссылке</span>
+                    </Tooltip>
+                    : <a href={link} target="_blanc">перейдите по ссылке</a>} и следуйте инструкциям
+                </p>
 
-                    <p className={`${typography.text} ${auth.postText}`}>
-                        После чего нажмите кнопку ниже
-                    </p>
-                </>}
-
-                {step === 2 && <div className={auth.contentWrapper}>
-                    <Input value={code} setValue={setCode} placeholder="Код" mask="999999" />
-                </div>}
+                <div className={auth.verifyItem}>
+                    <QRCode
+                        errorLevel="H"
+                        value={link}
+                        icon="/assets/img/logo-circle.svg"
+                        color={mode === "light" ? "#333" : "#fff"}
+                        status={qrExpired ? "expired" : isLoading ? "loading" : "active"}
+                        onRefresh={refreshQr}
+                    />
+                </div>
 
                 <div className={auth.contentBottomInner}>
-                    {step === 1 && <Button loading={isLoading} className={auth.contentButton} onClick={sendCode}>Выслать код</Button>}
-                    {step === 2 && <Button loading={isLoading} className={auth.contentButton} onClick={verifyCode}>Отправить</Button>}
-
                     <Button loading={isLoading} theme="danger" type="empty" className={auth.contentButton} onClick={() => logout()}>Выйти</Button>
                 </div>
             </AuthFormsWrapper>

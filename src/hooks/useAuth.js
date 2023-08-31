@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
-import { setAuthIsLoading, setIsAuth, setVerified } from '../redux/slices/auth';
-import { initUser } from '../redux/slices/user';
+import { setAuthIsLoading, setIsAuth } from '../redux/slices/auth';
+import { initCodeData, initUser } from '../redux/slices/user';
 import { setAppIsLoading } from '../redux/slices/app';
 
 import {setMainColors} from '../utils/setMainColors';
@@ -26,15 +26,6 @@ const useAuth = () => {
     const {errorController} = useError();
     const {alertNotify} = useAlert();
     const {getShortInfo} = useUser();
-
-    const checkUserVerified = (user) => {
-        if(user?.isVerified){
-            dispatch(setVerified(true));
-        }
-        else{
-            dispatch(setVerified(false));
-        }
-    }
 
     const reload = async () => {
         dispatch(setAppIsLoading(true));
@@ -86,7 +77,6 @@ const useAuth = () => {
 
         dispatch(setIsAuth(true));
         dispatch(initUser(data));
-        dispatch(setVerified(data.isVerified));
         dispatch(changeUnreadCount(data.unreadNotifiesCount));
         dispatch(setAuthIsLoading(false));
     }
@@ -146,7 +136,7 @@ const useAuth = () => {
 
         dispatch(setIsAuth(true));
         dispatch(initUser(data.user));
-        checkUserVerified(data.user);
+        dispatch(initCodeData(data.verificationCodeData));
         dispatch(changeUnreadCount(data.user.unreadNotifiesCount));
 
         const {primary, light} = data?.user?.theme || {};
@@ -253,7 +243,6 @@ const useAuth = () => {
 
         dispatch(setIsAuth(true));
         dispatch(initUser(data.user));
-        checkUserVerified(data.user);
         
         alertNotify("Успешно", "Вы зарегистрировались", "success");
         successCallback();
@@ -355,6 +344,24 @@ const useAuth = () => {
         successCallback();
     }
 
+    const sendVerificationCode = async (successCallback = () => {}) => {
+        setError(false);
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.AUTH, "/send-verification-code", HTTP_METHODS.GET, true);
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => sendVerificationCode(successCallback));
+        }
+
+        dispatch(initCodeData(response.data.verificationCodeData));
+        successCallback();
+    }
+
     return {
         isLoading,
         error,
@@ -367,7 +374,8 @@ const useAuth = () => {
         verifyCodeRegister,
         sendRecoveryPasswordCode,
         verifyRecoveryCode,
-        recoveryPassword
+        recoveryPassword,
+        sendVerificationCode
     }
 }
 

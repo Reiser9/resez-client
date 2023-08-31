@@ -8,6 +8,7 @@
     align-items: flex-start;
     border: 1px solid transparent;
     position: relative;
+    gap: 12px;
 }
 
 @media (max-width: 1100px) {
@@ -21,30 +22,11 @@
     }
 }
 
-.notifyItem.unread:before{
-    content: "";
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--error);
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-}
-
 .notifyItemWrapper{
     width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
     gap: 8px;
-}
-
-.notifyItemContent{
-    display: flex;
-    align-items: center;
-    gap: 12px;
 }
 
 .notifyItemIconInner{
@@ -77,10 +59,36 @@
 }
 
 .notifyItemTitleInner{
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.notifyItemTitle{
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    padding-right: 1.2rem;
+}
+
+.unread .notifyItemTitle:before{
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--error);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
 }
 
 .notifyItemDate{
@@ -96,19 +104,17 @@
     word-break: break-word;
 }
 
-.notifyItemText{
-    margin: 1.2rem 0 0 0;
-}
-
-.notifyItemText:last-of-type{
-    margin: 1.2rem 0 1.6rem 0;
+@media (max-width: 480px) {
+    .notifyItemTextContent{
+        -webkit-line-clamp: 1;
+    }
 }
 
 .notifyItemButtonInner{
     width: 100%;
     margin-top: auto;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 8px;
     flex-wrap: wrap;
@@ -120,4 +126,15 @@
 
 .notifyItemFrom span{
     color: var(--textGrey);
+}
+
+.notifyItemButtonWrap{
+    display: flex;
+    gap: 8px;
+}
+
+@media (max-width: 375px) {
+    .notifyItemButtonMore, .notifyItemButtonWrap{
+        width: 100%;
+    }
 }

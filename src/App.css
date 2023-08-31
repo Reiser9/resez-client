@@ -15,6 +15,7 @@ html{
     --textGrey: rgb(137 135 148);
     --hover: rgba(0, 0, 0, .06);
     --lightLine: rgba(0, 0, 0, 0.05);
+    --qrExpiredBg: rgba(255, 255, 255, .96);
 
     /* Icons */
     --iconLightGrey: #fff;
@@ -101,6 +102,7 @@ body.dark{
     --lighten: #33333b;
     --lightLine: rgba(255, 255, 255, 0.05);
     --notifyRed: #33333b;
+    --qrExpiredBg: rgba(23, 23, 23, .96);
 
     /* Icons */
     --iconLightGrey: rgb(127 126 143);
@@ -370,4 +372,21 @@ input::placeholder{
 
 .ant-input-number-handler-down{
     border-block-start: 1px solid var(--line)!important;
+}
+
+/* Custom qr antd */
+.ant-qrcode{
+    border: 1px solid var(--line);
+}
+
+.ant-qrcode-mask{
+    background: var(--qrExpiredBg)!important;
+}
+
+.ant-qrcode-mask path{
+    transition: none!important;
+}
+
+.ant-qrcode-expired{
+    color: var(--text)!important;
 }

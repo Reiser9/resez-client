@@ -28,53 +28,63 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
         callback();
     }
 
+    const readMore = () => {
+        setModal(true);
+    }
+
     return (
         <>
             <div className={`${styles.notifyItem}${!isRead ? ` ${styles.unread}` : ""}`}>
                 <span className={styles.notifyItemWrapper}>
-                    <span className={styles.notifyItemContent}>
-                        {type && <span className={`${styles.notifyItemIconInner}${type === "session" ? ` ${styles.session}` : ""}`}>
-                            {notifyTypes[type]}
-                        </span>}
+                    {type && <span className={`${styles.notifyItemIconInner}${type === "session" ? ` ${styles.session}` : ""}`}>
+                        {notifyTypes[type]}
+                    </span>}
 
-                        <span className={styles.notifyItemTitleInner}>
-                            {title && <p className={`${typography.h4} ${styles.notifyItemTitle}`}>
-                                {title}
-                            </p>}
+                    <span className={styles.notifyItemTitleInner}>
+                        {sender && <p className={`${typography.text2} ${styles.notifyItemFrom}`}>
+                            <span>От:</span> {sender}
+                        </p>}
 
-                            {date && <p className={`${typography.text2} ${styles.notifyItemDate}`}>
-                                {formatDate(date)}
-                            </p>}
-                        </span>
+                        {title && <p className={`${typography.h4} ${styles.notifyItemTitle}`}>
+                            {title}
+                        </p>}
+
+                        {date && <p className={`${typography.text2} ${styles.notifyItemDate}`}>
+                            {formatDate(date)}
+                        </p>}
                     </span>
-
-                    {!isRead && <Tooltip title="Пометить как прочитанное">
-                        <IconButton type="light" onClick={readNotify} disabled={loading}>
-                            <Eye />
-                        </IconButton>
-                    </Tooltip>}
                 </span>
 
-                {content && <p className={`${typography.text} ${styles.notifyItemText} ${styles.notifyItemTextContent}`}>
+                {content && <div className={`${typography.text} ${styles.notifyItemText} ${styles.notifyItemTextContent}`}>
                     {content}
-                </p>}
 
-                {type === "session" && <p className={`${typography.text} ${styles.notifyItemText}`}>
-                    <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности
-                </p>}
+                    {type === "session" && <p className={`${typography.text} ${styles.notifyItemText}`}>
+                        <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности
+                    </p>}
+                </div>}
 
                 <div className={styles.notifyItemButtonInner}>
-                    <Button auto type="light" onClick={() => setModal(true)}>
-                        Подробнее
-                    </Button>
+                    <div className={styles.notifyItemButtonWrap}>
+                        <Button auto type="light" onClick={readMore} className={styles.notifyItemButtonMore}>
+                            Подробнее
+                        </Button>
 
-                    {sender && <p className={`${typography.text2} ${styles.notifyItemFrom}`}>
-                        <span>От:</span> {sender}
-                    </p>}
+                        {!isRead && <Tooltip title="Пометить как прочитанное">
+                            <IconButton type="light" onClick={readNotify} disabled={loading}>
+                                <Eye />
+                            </IconButton>
+                        </Tooltip>}
+                    </div>
                 </div>
             </div>
 
-            <Modal value={modal} setValue={setModal} title={title} subtitle={formatDate(date)} text={content} />
+            <Modal value={modal} setValue={setModal} title={title} subtitle={formatDate(date)}>
+                {content}
+
+                {type === "session" && <p className={typography.text}>
+                    <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности
+                </p>}
+            </Modal>
         </>
     )
 }

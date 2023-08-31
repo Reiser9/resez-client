@@ -1,7 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    user: {}
+    user: {},
+    verificationCodeData: {}
 };
 
 export const userSlice = createSlice({
@@ -10,6 +11,9 @@ export const userSlice = createSlice({
     reducers: {
         initUser: (state, action) => {
             state.user = action.payload || {};
+        },
+        initCodeData: (state, action) => {
+            state.verificationCodeData = action.payload;
         },
         changeThemeUser: (state, action) => {
             state.user.theme = {...action.payload}
@@ -26,6 +30,7 @@ export const userSlice = createSlice({
 
 export const {
     initUser,
+    initCodeData,
     changeThemeUser,
     previewThemeUser,
     isPreviewTheme,

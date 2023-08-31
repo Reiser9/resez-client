@@ -167,7 +167,7 @@ const useAdmin = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.NOTIFY, "", HTTP_METHODS.POST, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/notify", HTTP_METHODS.POST, true, {
             title,
             sender,
             userIDs: userIDs || [],

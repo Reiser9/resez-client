@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import pws from '../../styles/pageWithSidebar.module.css';
 
-import { Menu } from '../Icons';
+import { MenuBlock } from '../Icons';
 
 const InnerSidebar = ({children}) => {
     const [sidebarActive, setSidebarActive] = React.useState(false);
@@ -25,7 +25,7 @@ const InnerSidebar = ({children}) => {
             </div>
 
             <button className={`${pws.sidebarMenu}${sidebarActive ? ` ${pws.active}` : ""}`} onClick={() => setSidebarActive(true)}>
-                <Menu />
+                <MenuBlock />
             </button>
         </>
     )

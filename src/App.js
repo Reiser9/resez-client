@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { ConfigProvider } from 'antd';
 import { useSelector } from "react-redux";
 import ruRU from 'antd/locale/ru_RU';
+import io from "socket.io-client";
 
 import "./App.css";
 
@@ -12,6 +13,8 @@ import { withSuspense } from "./hoc/withSuspense";
 
 import DefaultWrapper from "./components/Wrapper/DefaultWrapper";
 import EmptyWrapper from "./components/Wrapper/EmptyWrapper";
+
+const socket = io.connect("http://localhost:8080");
 
 const Main = React.lazy(() => import("./pages/Main"));
 const Profile = React.lazy(() => import("./pages/Profile"));
@@ -26,7 +29,21 @@ const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 const App = () => {
     const {user} = useSelector(state => state.user);
-    const {isAuth, verified} = useSelector(state => state.auth);
+    const {isAuth} = useSelector(state => state.auth);
+
+    React.useEffect(() => {
+        if(isAuth){
+            socket.emit("join", user?.id);
+
+            socket.on("message", (data) => {
+                console.log(data);
+            });
+
+            socket.on("notify", (data) => {
+                console.log(data);
+            });
+        }
+    }, [isAuth, user]);
 
     return (
         <ConfigProvider
@@ -39,7 +56,7 @@ const App = () => {
             }}
         >
             <Routes>
-                {isAuth && !verified
+                {isAuth && !user.isVerified
                 ? <Route path="/">
                     <Route index element={withSuspense(<ConfirmCode />)} />
                     <Route path="*" element={<Navigate to={"/"} />} />

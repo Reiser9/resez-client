@@ -109,7 +109,7 @@
     }
 
     .sidebar{
-        border-radius: 8px 8px 0 0;
+        border-radius: 4px 4px 0 0;
         position: relative;
         padding: 4rem 0 1.6rem 0;
         transform: translateY(100dvh);
@@ -135,10 +135,10 @@
 }
 
 .sidebarMenu{
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: var(--input);
+    background: var(--white);
     display: none;
     align-items: center;
     justify-content: center;

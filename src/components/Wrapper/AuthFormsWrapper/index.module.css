@@ -93,3 +93,18 @@
     flex-wrap: wrap;
     gap: 8px;
 }
+
+.verifyItem{
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.2rem;
+}
+
+.linkExpired{
+    opacity: 0.5;
+    display: inline;
+    color: var(--main);
+}
