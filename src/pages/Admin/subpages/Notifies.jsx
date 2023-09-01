@@ -1,5 +1,6 @@
 import React from 'react';
 import { Checkbox } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 import typography from '../../../styles/typography.module.css';
 import styles from '../index.module.css';
@@ -16,7 +17,6 @@ import Button from '../../../components/Button';
 import Select from '../../../components/Select';
 import DatePicker from '../../../components/DatePicker';
 import TimePicker from '../../../components/TimePicker';
-import { debounce } from 'lodash';
 
 const Notifies = () => {
     const [title, setTitle] = React.useState("");
@@ -26,16 +26,20 @@ const Notifies = () => {
     const [time, setTime] = React.useState("");
     const [searchValue, setSearchValue] = React.useState("");
     const [userOptions, setUserOptions] = React.useState([]);
-
-    const {isLoading, serchUsersLoading, sendNotify, serchUsers} = useAdmin();
-    const {alertNotify} = useAlert();
+    const [userIDs, setUserIDs] = React.useState([]);
 
     const [sendAnonim, setSendAnonim] = React.useState(false);
     const [sendForOne, setSendForOne] = React.useState(false);
     const [delayedSend, setDelayedSend] = React.useState(false);
 
+    const {isLoading, serchUsersLoading, sendNotify, serchUsers} = useAdmin();
+    const {alertNotify} = useAlert();
+    const navigate = useNavigate();
+
+    const serachUsersRef = React.useRef(null);
+
     const createNotify = () => {
-        if(delayedSend && !isDateTimePast(date, time)){
+        if((!date || !time) && delayedSend && !isDateTimePast(date, time)){
             return alertNotify("Ошибка", "Нельзя отправить уведомление в прошедшую дату", "error");
         }
 
@@ -43,10 +47,10 @@ const Notifies = () => {
             var newDate = formatDate(`${date?.format("YYYY-MM-DD")}T${time?.format("HH:mm:ss")}`, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
         }
 
-        sendNotify(title, author, [], newDate, text);
+        sendNotify(title, author, userIDs, newDate, text, () => navigate("/admin"));
     }
 
-    React.useEffect(() => {
+    const searchUsersHandler = () => {
         serchUsers(searchValue).then(users => {
             if(!users){
                 return;
@@ -54,6 +58,14 @@ const Notifies = () => {
 
             setUserOptions(users.data.users);
         });
+    }
+
+    React.useEffect(() => {
+        serachUsersRef.current = setTimeout(searchUsersHandler, 500);
+
+        return () => {
+            clearTimeout(serachUsersRef.current);
+        };
     }, [searchValue]);
 
     return (
@@ -73,8 +85,6 @@ const Notifies = () => {
                     Отправить пользователю
                 </Checkbox>
 
-                {userOptions.length && userOptions.map((data, id) => <p key={id}>{data.nickname}</p>)}
-
                 {sendForOne && <Select
                     showSearch
                     placeholder="Пользователь"
@@ -83,10 +93,12 @@ const Notifies = () => {
                     notContentText="Пользователей не найдено"
                     loading={serchUsersLoading}
                     onSearch={value => setSearchValue(value)}
+                    onChange={value => setUserIDs(value)}
+                    filterOption={false}
                     options={userOptions.map(data => {
                         return {
                             label: data.nickname,
-                            value: data.nickname
+                            value: data.id
                         }
                     })}
                 />}

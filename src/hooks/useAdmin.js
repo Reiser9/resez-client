@@ -179,7 +179,7 @@ const useAdmin = () => {
         successCallback();
     }
 
-    const sendNotify = async (title, sender, userIDs, date, content) => {
+    const sendNotify = async (title, sender, userIDs, date, content, successCallback = () => {}) => {
         setError(false);
 
         setIsLoading(true);
@@ -200,6 +200,7 @@ const useAdmin = () => {
         }
 
         alertNotify("Успешно", "Уведомление отправлено", "success");
+        successCallback();
     }
 
     return {

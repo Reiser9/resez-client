@@ -1,5 +1,5 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {HTTP_METHODS, REQUEST_TYPE} from '../consts/HTTP';
 import {APP_STATUSES} from '../consts/APP_STATUSES';
@@ -24,12 +24,14 @@ import { setDataAdmin } from '../redux/slices/admin';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 import { setMainColors } from '../utils/setMainColors';
+import { socket } from '../utils/socket';
 
 const useRequest = () => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
+    const {user} = useSelector(state => state.user);
 
     const axiosInstancesMap = new Map([
         [REQUEST_TYPE.AUTH, authRequest],
@@ -42,6 +44,10 @@ const useRequest = () => {
     ]);
 
     const clearLocalData = () => {
+        if(Object.keys(user).length !== 0){
+            socket.emit("leave", user.id);
+        }
+
         localStorage.removeItem("accessToken");
 
         dispatch(setDataUser());

@@ -1,25 +1,28 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import io from "socket.io-client";
 
-export const socket = io.connect("http://localhost:8080");
+import {socket} from '../utils/socket';
 
 const useSocket = () => {
     const {user} = useSelector(state => state.user);
 
     React.useEffect(() => {
+        if(!user.id){
+            return;
+        }
+
         socket.emit("join", user?.id);
     }, [user]);
 
     React.useEffect(() => {
-        const handleNotify = (data) => {
-            console.log(data);
-        };
+        socket.connect();
         
-        socket.on("notify", handleNotify);
+        socket.on("notify", (data) => {
+            console.log(data.notify);
+        });
 
         return () => {
-            socket.off("notify", handleNotify);
+            socket.off("notify");
         };
     }, []);
 }

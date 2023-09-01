@@ -9,7 +9,7 @@ import { initCodeData, initUser } from '../../redux/slices/user';
 
 import useAuth from '../../hooks/useAuth';
 import useAlert from '../../hooks/useAlert';
-import {socket} from '../../hooks/useSocket';
+import {socket} from '../../utils/socket';
 
 import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
 import AuthFormsWrapper from '../../components/Wrapper/AuthFormsWrapper';
@@ -47,15 +47,20 @@ const ConfirmCode = () => {
 
     React.useEffect(() => {
         sendVerificationCode();
-
+        
         socket.on("verify", (data) => {
-            dispatch(initUser(data));
+            dispatch(initUser(data.user));
             alertNotify("Успешно", "Аккаунт верифицирован", "success");
         });
 
         socket.on("verificationCodeUpdated", (data) => {
-            dispatch(initCodeData(data));
+            dispatch(initCodeData(data.verificationCodeData));
         });
+
+        return () => {
+            socket.off("verify");
+            socket.off("verificationCodeUpdated");
+        };
     }, []);
 
     React.useEffect(() => {
