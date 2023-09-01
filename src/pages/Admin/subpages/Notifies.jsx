@@ -4,9 +4,11 @@ import { Checkbox } from 'antd';
 import typography from '../../../styles/typography.module.css';
 import styles from '../index.module.css';
 
+import { formatDate } from '../../../utils/formatDate';
 import {isDateTimePast} from '../../../utils/isDateTimePast';
 
 import useAdmin from '../../../hooks/useAdmin';
+import useAlert from '../../../hooks/useAlert';
 
 import Input from '../../../components/Input';
 import Textarea from '../../../components/Textarea';
@@ -14,7 +16,6 @@ import Button from '../../../components/Button';
 import Select from '../../../components/Select';
 import DatePicker from '../../../components/DatePicker';
 import TimePicker from '../../../components/TimePicker';
-import { formatDate } from '../../../utils/formatDate';
 
 const Notifies = () => {
     const [title, setTitle] = React.useState("");
@@ -22,8 +23,10 @@ const Notifies = () => {
     const [text, setText] = React.useState("");
     const [date, setDate] = React.useState("");
     const [time, setTime] = React.useState("");
+    const [userOptions, setUserOptions] = React.useState([]);
 
-    const {isLoading, sendNotify} = useAdmin();
+    const {isLoading, serchUsersLoading, sendNotify, serchUsers} = useAdmin();
+    const {alertNotify} = useAlert();
 
     const [sendAnonim, setSendAnonim] = React.useState(false);
     const [sendForOne, setSendForOne] = React.useState(false);
@@ -31,7 +34,7 @@ const Notifies = () => {
 
     const createNotify = () => {
         if(delayedSend && !isDateTimePast(date, time)){
-            return alert("Ошибка");
+            return alertNotify("Ошибка", "Нельзя отправить уведомление в прошедшую дату", "error");
         }
 
         if(delayedSend){
@@ -41,12 +44,24 @@ const Notifies = () => {
         sendNotify(title, author, [], newDate, text);
     }
 
+    const searchUsersHandler = async (query) => {
+        const users = await serchUsers(query);
+        const usersArr = users.data.users.map(data => {
+            return {
+                label: data.nickname,
+                value: data.nickname
+            }
+        });
+
+        setUserOptions(usersArr);
+    }
+
     return (
         <div className={styles.notifies}>
             <p className={typography.h3}>Отправка уведомления</p>
 
             <div className={styles.notifiesForm}>
-                <Input value={title} setValue={setTitle} title="Заголовок" />
+                <Input value={title} setValue={setTitle} placeholder="Заголовок" />
 
                 <Checkbox className={styles.notifiesCheckbox} checked={sendAnonim} onChange={e => setSendAnonim(e.target.checked)}>
                     Отправить от имени
@@ -58,7 +73,15 @@ const Notifies = () => {
                     Отправить пользователю
                 </Checkbox>
 
-                {sendForOne && <Select placeholder="Пользователь" mode="multiple" maxTagCount="responsive" />}
+                {sendForOne && <Select
+                    placeholder="Пользователь"
+                    mode="multiple"
+                    maxTagCount="responsive"
+                    notContentText="Пользователей не найдено"
+                    loading={serchUsersLoading}
+                    onSearch={searchUsersHandler}
+                    options={userOptions}
+                />}
 
                 <Checkbox className={styles.notifiesCheckbox} checked={delayedSend} onChange={e => setDelayedSend(e.target.checked)}>
                     Отложенная отправка
@@ -69,7 +92,7 @@ const Notifies = () => {
                     <TimePicker placeholder="Выберите время" format="HH:mm" className={styles.notifiesDelayItem} value={time} onChange={e => setTime(e)} />
                 </div>}
 
-                <Textarea value={text} setValue={setText} title="Сообщение" />
+                <Textarea value={text} setValue={setText} placeholder="Сообщение" />
 
                 <Button auto type="light" onClick={createNotify} loading={isLoading}>
                     Отправить

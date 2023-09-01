@@ -14,6 +14,7 @@ import useAlert from './useAlert';
 const useAdmin = () => {
     const [error, setError] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [serchUsersLoading, setSerchUsersLoading] = React.useState(false);
     const [userIsLoading, setUserIsLoading] = React.useState([]);
 
     const dispatch = useDispatch();
@@ -55,6 +56,22 @@ const useAdmin = () => {
             
             dispatch(setUsers(response.data));
         }
+    }
+
+    const serchUsers = async (query = "") => {
+        setSerchUsersLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, `/user?search=${query}`, HTTP_METHODS.GET, true);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => serchUsers(query));
+        }
+
+        setSerchUsersLoading(false);
+
+        return response;
     }
 
     const userBlock = async (userId, successCallback = () => {}) => {
@@ -188,9 +205,11 @@ const useAdmin = () => {
     return {
         error,
         isLoading,
+        serchUsersLoading,
         userIsLoading,
         loadUsers,
         getAllUsers,
+        serchUsers,
         userBlock,
         userUnblock,
         createTheme,

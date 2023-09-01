@@ -45,9 +45,9 @@ const ChangeThemeAnimate = () => {
             setAnimateColor("dark");
         }
         
-        setTimeout(offAnimate, 2800);
-        setTimeout(onAnimateIcons, 1000);
-        setTimeout(offAnimateIcons, 2000);
+        setTimeout(offAnimate, 2700);
+        setTimeout(onAnimateIcons, 800);
+        setTimeout(offAnimateIcons, 1900);
 
         return () => {
             clearTimeout(offAnimateRef.current);

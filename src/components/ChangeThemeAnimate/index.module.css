@@ -16,7 +16,7 @@
     width: 100%;
     height: 25%;
     transform: translateX(-110%);
-    animation: fadeInLeft 2.4s ease-in-out forwards;
+    animation: fadeInLeft 2.3s ease-in-out forwards;
 }
 
 .light .themeAnimateItem{
@@ -27,20 +27,16 @@
     background: #232229;
 }
 
-.themeAnimateItem:first-child{
+.themeAnimateItem:nth-child(2){
     animation-delay: 100ms;
 }
 
-.themeAnimateItem:nth-child(2){
+.themeAnimateItem:nth-child(3){
     animation-delay: 200ms;
 }
 
-.themeAnimateItem:nth-child(3){
-    animation-delay: 300ms;
-}
-
 .themeAnimateItem:nth-child(4){
-    animation-delay: 400ms;
+    animation-delay: 300ms;
 }
 
 @keyframes fadeInLeft{

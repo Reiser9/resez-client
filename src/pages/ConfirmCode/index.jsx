@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { QRCode, Tooltip } from 'antd';
-import io from 'socket.io-client';
 
 import typography from '../../styles/typography.module.css';
 import auth from '../../components/Wrapper/AuthFormsWrapper/index.module.css';
@@ -10,15 +9,14 @@ import { initCodeData, initUser } from '../../redux/slices/user';
 
 import useAuth from '../../hooks/useAuth';
 import useAlert from '../../hooks/useAlert';
+import useSocket from '../../hooks/useSocket';
 
 import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
 import AuthFormsWrapper from '../../components/Wrapper/AuthFormsWrapper';
 import Button from '../../components/Button';
 
-const socket = io.connect("http://localhost:8080");
-
 const ConfirmCode = () => {
-    const {user, verificationCodeData} = useSelector(state => state.user);
+    const {verificationCodeData} = useSelector(state => state.user);
 
     const [qrExpired, setQrExpired] = React.useState(false);
     const [remainingTime, setRemainingTime] = React.useState(verificationCodeData?.lifetime / 1000);
@@ -28,6 +26,7 @@ const ConfirmCode = () => {
     const {alertNotify} = useAlert();
     const dispatch = useDispatch();
     const {mode} = useSelector(state => state.theme);
+    const {socket} = useSocket();
 
     const refreshQr = () => {
         sendVerificationCode();
@@ -48,14 +47,9 @@ const ConfirmCode = () => {
     }, [remainingTime]);
 
     React.useEffect(() => {
-        socket.emit("join", user?.id);
-    }, [user]);
-
-    React.useEffect(() => {
         sendVerificationCode();
 
         socket.on("verify", (data) => {
-            console.log(data);
             dispatch(initUser(data));
             alertNotify("Успешно", "Аккаунт верифицирован", "success");
         });

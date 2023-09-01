@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import useAuth from '../../../hooks/useAuth';
 import useCheckConnection from '../../../hooks/useCheckConnection';
+import useSocket from '../../../hooks/useSocket';
 
 import Preloader from '../../Preloader';
 
@@ -15,6 +16,7 @@ const InitialWrapper = ({children}) => {
     const {serverAvailable} = useSelector(state => state.server);
     const {authIsLoading} = useSelector(state => state.auth);
     const {checkAuth} = useAuth();
+    useSocket();
     useCheckConnection();
 
     React.useEffect(() => {
