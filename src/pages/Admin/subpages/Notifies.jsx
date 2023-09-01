@@ -76,6 +76,7 @@ const Notifies = () => {
                 {userOptions.length && userOptions.map((data, id) => <p key={id}>{data.nickname}</p>)}
 
                 {sendForOne && <Select
+                    showSearch
                     placeholder="Пользователь"
                     mode="multiple"
                     maxTagCount="responsive"

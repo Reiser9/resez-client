@@ -9,7 +9,7 @@ import { initCodeData, initUser } from '../../redux/slices/user';
 
 import useAuth from '../../hooks/useAuth';
 import useAlert from '../../hooks/useAlert';
-import useSocket from '../../hooks/useSocket';
+import {socket} from '../../hooks/useSocket';
 
 import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
 import AuthFormsWrapper from '../../components/Wrapper/AuthFormsWrapper';
@@ -26,7 +26,6 @@ const ConfirmCode = () => {
     const {alertNotify} = useAlert();
     const dispatch = useDispatch();
     const {mode} = useSelector(state => state.theme);
-    const {socket} = useSocket();
 
     const refreshQr = () => {
         sendVerificationCode();

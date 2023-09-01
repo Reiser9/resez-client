@@ -208,6 +208,10 @@ input::placeholder{
     font-size: 1.4rem!important;
 }
 
+.ant-select-single .ant-select-selection-item{
+    font-size: 1.6rem!important;
+}
+
 .ant-color-picker-input-container .ant-select-selection-item{
     font-size: unset!important;
     line-height: unset!important;
@@ -245,9 +249,18 @@ input::placeholder{
     inset-inline-end: 16px!important;
 }
 
+.ant-select-single .ant-select-selection-search-input{
+    font-size: 1.6rem!important;
+}
+
 .ant-select-selection-search-input{
     color: var(--text)!important;
     font-size: 1.4rem!important;
+}
+
+.ant-select-single .ant-select-selection-search-input{
+    height: 100%!important;
+    font-size: 1.6rem!important;
 }
 
 .ant-select-dropdown{
