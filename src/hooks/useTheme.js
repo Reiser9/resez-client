@@ -5,7 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from "../consts/HTTP";
 
 import {setMainColors} from '../utils/setMainColors';
 import { initThemes, setMode, setThemes, setThemesIsLoading } from "../redux/slices/theme";
-import { changeThemeUser, initUser } from "../redux/slices/user";
+import { changeThemeUser } from "../redux/slices/user";
 import { requestDataIsError } from "../utils/requestDataIsError";
 
 import useRequest from "./useRequest";
@@ -41,8 +41,10 @@ const useTheme = () => {
         dispatch(setMode(newTheme));
         localStorage.setItem("theme", newTheme);
 
-        document.body.classList.remove("light", "dark");
-        document.body.classList.add(newTheme);
+        setTimeout(() => {
+            document.body.classList.remove("light", "dark");
+            document.body.classList.add(newTheme);
+        }, 1000);
     };
 
     const loadAllThemes = async (offset = 0, limit = 5, reload = false) => {

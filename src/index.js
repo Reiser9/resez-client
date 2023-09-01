@@ -10,6 +10,7 @@ import App from './App';
 import Notifies from './components/Notifies';
 import InitialWrapper from "./components/Wrapper/InitialWrapper";
 import ThemeWrapper from "./components/Wrapper/ThemeWrapper";
+import ChangeThemeAnimate from './components/ChangeThemeAnimate';
 
 import {store} from './redux/store';
 
@@ -19,6 +20,8 @@ root.render(
     <Provider store={store}>
         <BrowserRouter>
             <ThemeWrapper>
+                <ChangeThemeAnimate />
+
                 <InitialWrapper>
                     <SkeletonTheme baseColor="var(--input)" highlightColor="var(--inputDarken)">
                         <App />
