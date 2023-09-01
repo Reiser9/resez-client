@@ -16,6 +16,7 @@ import Button from '../../../components/Button';
 import Select from '../../../components/Select';
 import DatePicker from '../../../components/DatePicker';
 import TimePicker from '../../../components/TimePicker';
+import { debounce } from 'lodash';
 
 const Notifies = () => {
     const [title, setTitle] = React.useState("");
@@ -23,6 +24,7 @@ const Notifies = () => {
     const [text, setText] = React.useState("");
     const [date, setDate] = React.useState("");
     const [time, setTime] = React.useState("");
+    const [searchValue, setSearchValue] = React.useState("");
     const [userOptions, setUserOptions] = React.useState([]);
 
     const {isLoading, serchUsersLoading, sendNotify, serchUsers} = useAdmin();
@@ -44,17 +46,15 @@ const Notifies = () => {
         sendNotify(title, author, [], newDate, text);
     }
 
-    const searchUsersHandler = async (query) => {
-        const users = await serchUsers(query);
-        const usersArr = users.data.users.map(data => {
-            return {
-                label: data.nickname,
-                value: data.nickname
+    React.useEffect(() => {
+        serchUsers(searchValue).then(users => {
+            if(!users){
+                return;
             }
-        });
 
-        setUserOptions(usersArr);
-    }
+            setUserOptions(users.data.users);
+        });
+    }, [searchValue]);
 
     return (
         <div className={styles.notifies}>
@@ -73,14 +73,21 @@ const Notifies = () => {
                     Отправить пользователю
                 </Checkbox>
 
+                {userOptions.length && userOptions.map((data, id) => <p key={id}>{data.nickname}</p>)}
+
                 {sendForOne && <Select
                     placeholder="Пользователь"
                     mode="multiple"
                     maxTagCount="responsive"
                     notContentText="Пользователей не найдено"
                     loading={serchUsersLoading}
-                    onSearch={searchUsersHandler}
-                    options={userOptions}
+                    onSearch={value => setSearchValue(value)}
+                    options={userOptions.map(data => {
+                        return {
+                            label: data.nickname,
+                            value: data.nickname
+                        }
+                    })}
                 />}
 
                 <Checkbox className={styles.notifiesCheckbox} checked={delayedSend} onChange={e => setDelayedSend(e.target.checked)}>

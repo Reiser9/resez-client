@@ -63,13 +63,13 @@ const useAdmin = () => {
 
         const response = await request(REQUEST_TYPE.ADMIN, `/user?search=${query}`, HTTP_METHODS.GET, true);
 
+        setSerchUsersLoading(false);
+
         if(requestDataIsError(response)){
             setError(true);
 
             return errorController(response, () => serchUsers(query));
         }
-
-        setSerchUsersLoading(false);
 
         return response;
     }

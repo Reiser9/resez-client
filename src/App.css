@@ -204,6 +204,10 @@ input::placeholder{
     align-items: center;
 }
 
+.ant-select-selection-item{
+    font-size: 1.4rem!important;
+}
+
 .ant-color-picker-input-container .ant-select-selection-item{
     font-size: unset!important;
     line-height: unset!important;
@@ -242,8 +246,8 @@ input::placeholder{
 }
 
 .ant-select-selection-search-input{
-    height: 100%!important;
     color: var(--text)!important;
+    font-size: 1.4rem!important;
 }
 
 .ant-select-dropdown{
@@ -301,7 +305,7 @@ input::placeholder{
 }
 
 @media (max-width: 440px) {
-    .ant-picker-input input, .ant-select-selection-item, .ant-select-selection-placeholder{
+    .ant-picker-input input, .ant-select-selection-placeholder{
         font-size: 1.5rem!important;
     }
 

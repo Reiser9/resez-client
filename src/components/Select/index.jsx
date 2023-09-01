@@ -25,7 +25,7 @@ const Select = ({
             notFoundContent={loading ? <Preloader small className={styles.loader} /> : <NotContent text={notContentText} />}
             removeIcon={<Cross width="14" />}
             options={options}
-            loading
+            labelInValue
             {...props}
         />
     )
