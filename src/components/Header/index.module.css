@@ -66,6 +66,14 @@
     justify-content: center;
 }
 
+.headerProfileImgInner svg{
+    width: 24px;
+}
+
+.headerProfileImgInner svg path{
+    stroke: var(--main);
+}
+
 .headerProfileMenuImgInner{
     width: 44px;
     height: 44px;
@@ -112,17 +120,6 @@
     .headerProfileArrow.active{
         transform: rotate(180deg);
     }
-}
-
-.headerLogin{
-    background: var(--main);
-    color: #fff;
-    border-radius: 4px;
-    padding: 0.8rem 1.6rem;
-}
-
-.headerLogin:hover{
-    opacity: 0.8;
 }
 
 .headerProfileMenuInner{

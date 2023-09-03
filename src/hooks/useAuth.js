@@ -15,7 +15,6 @@ import useRequest from './useRequest';
 import useUser from './useUser';
 import useError from './useError';
 import useAlert from './useAlert';
-import { changeUnreadCount } from '../redux/slices/notify';
 
 const useAuth = () => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -77,7 +76,6 @@ const useAuth = () => {
 
         dispatch(setIsAuth(true));
         dispatch(initUser(data));
-        dispatch(changeUnreadCount(data.unreadNotifiesCount));
         dispatch(setAuthIsLoading(false));
     }
 
@@ -137,7 +135,6 @@ const useAuth = () => {
         dispatch(setIsAuth(true));
         dispatch(initUser(data.user));
         dispatch(initCodeData(data.verificationCodeData));
-        dispatch(changeUnreadCount(data.user.unreadNotifiesCount));
 
         const {primary, light} = data?.user?.theme || {};
         setMainColors(primary, light);

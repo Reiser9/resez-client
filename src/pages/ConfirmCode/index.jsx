@@ -28,8 +28,7 @@ const ConfirmCode = () => {
     const {mode} = useSelector(state => state.theme);
 
     const refreshQr = () => {
-        sendVerificationCode();
-        setQrExpired(false);
+        sendVerificationCode(() => setQrExpired(false));
     }
     
     React.useEffect(() => {
@@ -87,7 +86,7 @@ const ConfirmCode = () => {
                         value={link}
                         icon="/assets/img/logo-circle.svg"
                         color={mode === "light" ? "#333" : "#fff"}
-                        status={qrExpired ? "expired" : isLoading ? "loading" : "active"}
+                        status={isLoading ? "loading" : qrExpired ? "expired" : "active"}
                         onRefresh={refreshQr}
                     />
                 </div>

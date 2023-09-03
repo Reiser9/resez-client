@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
-import {changeUnreadCount, decrementUnreadCount, deleteNotifyById, initNotifies, readNotifyById, setNotifies, setNotifiesIsLoading} from '../redux/slices/notify';
+import {deleteNotifyById, initNotifies, readNotifyById, setNotifies, setNotifiesIsLoading} from '../redux/slices/notify';
+import { decrementUreadNotifyCount, setUreadNotifyCount } from '../redux/slices/user';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 
@@ -37,8 +38,8 @@ const useNotify = () => {
             return errorController(response, () => loadNotify(offset, limit, unread));
         }
         
+        dispatch(setUreadNotifyCount(response.data.unreadNotifiesCount));
         dispatch(initNotifies(response.data));
-        dispatch(changeUnreadCount(response.data.unreadNotifiesCount));
     }
 
     const getAllNotify = async (offset = 0, limit = 5, unread = false) => {
@@ -57,6 +58,7 @@ const useNotify = () => {
                 return errorController(response, () => getAllNotify(offset, limit, unread));
             }
 
+            dispatch(setUreadNotifyCount(response.data.unreadNotifiesCount));
             dispatch(setNotifies(response.data));
         }
     }
@@ -85,7 +87,7 @@ const useNotify = () => {
             dispatch(readNotifyById(response.data));
         }
 
-        dispatch(decrementUnreadCount());
+        dispatch(decrementUreadNotifyCount());
     }
 
     const readAllNotifies = async (offset = 0, limit = 6, unread = false) => {
@@ -107,14 +109,13 @@ const useNotify = () => {
             dispatch(initNotifies({
                 notifies: [],
                 totalCount: 0,
+                unreadNotifiesCount: 0,
                 isLast: true
             }));
         }
         else{
             dispatch(initNotifies(response.data));
         }
-
-        dispatch(changeUnreadCount(0));
     }
 
     return {

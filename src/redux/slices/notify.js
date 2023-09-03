@@ -3,8 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
     notifiesLocal: [],
     notifiesIsLoading: false,
-    notifies: {},
-    unreadCount: 0
+    notifies: {}
 };
 
 export const notifySlice = createSlice({
@@ -42,12 +41,6 @@ export const notifySlice = createSlice({
             state.notifies.notifies = state.notifies?.notifies?.filter(item => item.id != action.payload?.notify?.id);
             state.notifies.totalCount--;
         },
-        changeUnreadCount: (state, action) => {
-            state.unreadCount = action.payload;
-        },
-        decrementUnreadCount: (state) => {
-            state.unreadCount--;
-        },
         setDataNotify: () => initialState
     }
 });
@@ -60,8 +53,6 @@ export const {
     setNotifies,
     readNotifyById,
     deleteNotifyById,
-    changeUnreadCount,
-    decrementUnreadCount,
     setDataNotify
 } = notifySlice.actions;
 

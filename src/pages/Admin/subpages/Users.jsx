@@ -55,9 +55,11 @@ const Users = () => {
                     />)}
             </div> : <NotContent text="Пользователей не найдено" icon={<User />} />}
 
-            {usersMoreLoading && [...Array(3)].map((_, id) => <UserAdminItem key={id} />)}
+            {usersMoreLoading && <div className={styles.usersContent}>
+                {[...Array(3)].map((_, id) => <UserAdminItem key={id} />)}
+            </div>}
 
-            {users.length > 0 && !usersIsLoading && !users?.isLast &&
+            {users?.users?.length > 0 && !usersIsLoading && !users?.isLast &&
             <Button loading={usersMoreLoading} type="empty" auto className={styles.usersMoreButton} onClick={loadMoreSession}>
                 Показать еще
             </Button>}

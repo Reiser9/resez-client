@@ -16,6 +16,7 @@ const useAdmin = () => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [serchUsersLoading, setSerchUsersLoading] = React.useState(false);
     const [userIsLoading, setUserIsLoading] = React.useState([]);
+    const [themeIsLoading, setThemeIsLoading] = React.useState([]);
 
     const dispatch = useDispatch();
     const {users} = useSelector(state => state.admin);
@@ -162,13 +163,13 @@ const useAdmin = () => {
     const removeTheme = async (id, successCallback = () => {}) => {
         setError(false);
 
-        setIsLoading(true);
+        setThemeIsLoading(prev => [...prev, id]);
 
         const response = await request(REQUEST_TYPE.ADMIN, "/theme", HTTP_METHODS.DELETE, true, {
             id
         });
 
-        setIsLoading(false);
+        setThemeIsLoading(prev => prev.filter(item => item !== id));
 
         if(requestDataIsError(response)){
             return errorController(response, () => removeTheme(id, successCallback));
@@ -208,6 +209,7 @@ const useAdmin = () => {
         isLoading,
         serchUsersLoading,
         userIsLoading,
+        themeIsLoading,
         loadUsers,
         getAllUsers,
         serchUsers,

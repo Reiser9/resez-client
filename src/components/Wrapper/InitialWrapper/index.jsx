@@ -12,9 +12,10 @@ import Ban from '../../../pages/Ban';
 import NoConnection from '../../../pages/NoConnection';
 
 const InitialWrapper = ({children}) => {
-    const {appIsLoading, blocked, connection} = useSelector(state => state.app);
+    const {appIsLoading, connection} = useSelector(state => state.app);
     const {serverAvailable} = useSelector(state => state.server);
     const {authIsLoading} = useSelector(state => state.auth);
+    const {user} = useSelector(state => state.user);
     const {checkAuth} = useAuth();
     useSocket();
     useCheckConnection();
@@ -22,6 +23,8 @@ const InitialWrapper = ({children}) => {
     React.useEffect(() => {
         checkAuth();
     }, []);
+
+    const {isBlocked} = user;
 
     if(appIsLoading || authIsLoading){
         return <Preloader />
@@ -35,7 +38,7 @@ const InitialWrapper = ({children}) => {
         return <ServerNotAvailable />
     }
 
-    if(blocked){
+    if(isBlocked){
         return <Ban />
     }
 

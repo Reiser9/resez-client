@@ -28,7 +28,7 @@ export const themeSlice = createSlice({
             };
         },
         addNewTheme: (state, action) => {
-            state.themes.themes = state.themes?.themes?.length > 0 ? [...state.themes.themes, action.payload] : [];
+            state.themes.themes = [...state.themes.themes, action.payload];
             state.themes.totalCount++;
         },
         changeTheme: (state, action) => {
@@ -44,7 +44,10 @@ export const themeSlice = createSlice({
             state.themes.themes = state.themes?.themes?.filter((item) => item.id !== action.payload.id);
             state.themes.totalCount--;
         },
-        setDataTheme: () => initialState
+        setDataTheme: (state) => {
+            state.themes = [];
+            state.themesIsLoading = false;
+        }
     }
 });
 

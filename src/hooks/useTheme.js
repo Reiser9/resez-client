@@ -13,7 +13,6 @@ import useNotify from "./useNotify";
 import useError from "./useError";
 
 const useTheme = () => {
-    const [themeIsLoading, setThemeIsLoading] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
 
@@ -138,7 +137,6 @@ const useTheme = () => {
     }, []);
 
     return {
-        themeIsLoading,
         isLoading,
         error,
         changeTheme,

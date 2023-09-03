@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import base from '../../../styles/base.module.css';
 import styles from './index.module.css';
 
-import { Code, Fire, Message, Tests, Training, Trophy } from '../../Icons';
+import { Code, Fire, Message, Store, Tests, Training, Trophy } from '../../Icons';
 
 import { setSidebarShow } from '../../../redux/slices/app';
 
@@ -32,6 +32,7 @@ const WithSidebarWrapper = ({container = "basic", children}) => {
                 <SidebarLink onClick={hideSidebar} text="Мессенджер" icon={<Message />} to="/message" />
                 <SidebarLink onClick={hideSidebar} text="Полезная информация" icon={<Fire />} to="/info" />
                 <SidebarLink onClick={hideSidebar} text="Достижения" icon={<Trophy />} to="/achievements" />
+                <SidebarLink onClick={hideSidebar} text="Магазин" icon={<Store />} to="/store" />
                 {user?.permissions?.length > 0 &&<SidebarLink onClick={hideSidebar} text="Админка" icon={<Code />} to="/admin" />}
             </aside>
 

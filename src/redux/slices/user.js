@@ -24,6 +24,15 @@ export const userSlice = createSlice({
         isPreviewTheme: (state, action) => {
             state.user.isPreviewTheme = action.payload;
         },
+        setUreadNotifyCount: (state, action) => {
+            state.user.unreadNotifiesCount = action.payload;
+        },
+        decrementUreadNotifyCount: (state) => {
+            state.user.unreadNotifiesCount--;
+        },
+        setUserBlocked: (state, action) => {
+            state.user.isBlocked = action.payload;
+        },
         setDataUser: () => initialState
     }
 });
@@ -34,6 +43,9 @@ export const {
     changeThemeUser,
     previewThemeUser,
     isPreviewTheme,
+    setUreadNotifyCount,
+    decrementUreadNotifyCount,
+    setUserBlocked,
     setDataUser
 } = userSlice.actions;
 

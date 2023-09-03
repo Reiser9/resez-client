@@ -100,12 +100,14 @@
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
+    line-clamp: 3;
     -webkit-line-clamp: 3;
     word-break: break-word;
 }
 
 @media (max-width: 480px) {
     .notifyItemTextContent{
+        line-clamp: 1;
         -webkit-line-clamp: 1;
     }
 }

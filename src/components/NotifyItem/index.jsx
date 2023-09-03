@@ -55,10 +55,10 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
                     </span>
                 </span>
 
-                {content && <div className={`${typography.text} ${styles.notifyItemText} ${styles.notifyItemTextContent}`}>
+                {content && <div className={`${typography.text} ${styles.notifyItemTextContent}`}>
                     {content}
 
-                    {type === "session" && <p className={`${typography.text} ${styles.notifyItemText}`}>
+                    {type === "session" && <p className={`${typography.text}`}>
                         <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности
                     </p>}
                 </div>}

@@ -2,7 +2,6 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
     appIsLoading: false,
-    blocked: false,
     connection: true,
     sidebarShow: false
 };
@@ -13,9 +12,6 @@ export const appSlice = createSlice({
     reducers: {
         setAppIsLoading: (state, action) => {
             state.appIsLoading = action.payload
-        },
-        setBlocked: (state, action) => {
-            state.blocked = action.payload
         },
         setConnection: (state, action) => {
             state.connection = action.payload;
@@ -29,7 +25,6 @@ export const appSlice = createSlice({
 
 export const {
     setAppIsLoading,
-    setBlocked,
     setDataApp,
     setConnection,
     setSidebarShow

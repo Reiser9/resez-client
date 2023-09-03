@@ -5,6 +5,7 @@ import typography from '../../../styles/typography.module.css';
 import styles from '../index.module.css';
 
 import useTheme from '../../../hooks/useTheme';
+import useAdmin from '../../../hooks/useAdmin';
 
 import ReloadButton from '../../../components/ReloadButton';
 import Button from '../../../components/Button';
@@ -14,9 +15,9 @@ import NotContent from '../../../components/NotContent';
 
 const Appearance = () => {
     const [themesMoreLoading, setThemesMoreLoading] = React.useState(false);
-    // isLoading при удалении включать лоадер на определенную тему
-    const {error, isLoading, loadAllThemes, getAllThemes} = useTheme();
+    const {error, loadAllThemes, getAllThemes} = useTheme();
     const {themesIsLoading, themes} = useSelector(state => state.theme);
+    const {themeIsLoading, removeTheme} = useAdmin();
 
     const loadMoreThemes = React.useCallback(async () => {
         setThemesMoreLoading(true);
@@ -48,14 +49,19 @@ const Appearance = () => {
                 </Button>
             </div>
 
-            {/* Сделать высоту скелетона больше */}
             {themesIsLoading
             ? <div className={styles.appearanceContent}>
                 {[...Array(8)].map((_, id) => <ThemeItemAdminSkeleton key={id} />)}
             </div>
             : error ? <NotContent text="Ошибка при загрузке тем" />
             : themes?.themes?.length > 0 ? <div className={styles.appearanceContent}>
-                {themes.themes.map((data, id) => <ThemeItemAdmin key={id} data={data} />)}
+                {themes.themes.map((data, id) => 
+                    <ThemeItemAdmin
+                        key={id}
+                        data={data}
+                        themeDelete={() => removeTheme(data.id)}
+                        loading={themeIsLoading.includes(data.id)}
+                    />)}
             </div>
             : <NotContent text="Тем не найдено" />}
 

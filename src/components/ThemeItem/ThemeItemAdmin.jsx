@@ -5,42 +5,39 @@ import styles from './index.module.css';
 
 import { Delete, Dislike, Edit, Id, Like, Star, User } from '../Icons';
 
-import useAdmin from '../../hooks/useAdmin';
-
 import TextPoint from '../TextPoint';
 import IconButton from '../IconButton';
 import ConfirmModal from '../Modal/ConfirmModal';
+import Preloader from '../Preloader';
 
-const ThemeItemAdmin = ({data}) => {
+const ThemeItemAdmin = ({data, themeDelete = () => {}, loading = false}) => {
     const {primary, light, id, likesCount, dislikesCount, usersCount, isRatingEnabled} = data;
 
     const [confirmDelete, setConfirmDelete] = React.useState(false);
-
-    const {removeTheme} = useAdmin();
 
     return (
         <>
             <div className={styles.appearanceItem}>
                 <div className={styles.appearanceItemWrapper}>
-                    <div className={styles.appearanceItemTheme}>
+                    {primary && light && <div className={styles.appearanceItemTheme}>
                         <div className={styles.appearanceItemThemeMain} style={{background: primary, border: `1px solid ${primary}`}}></div>
                         <div className={styles.appearanceItemThemeSecondary} style={{background: light, border: `1px solid ${primary}`}}></div>
-                    </div>
+                    </div>}
 
                     <div className={styles.apperanceItemStatsInner}>
-                        <Tooltip title="ID">
+                        {id && <Tooltip title="ID">
                             <div className={styles.apperanceItemStatsItem}>
                                 <Id />
 
                                 {id}
                             </div>
-                        </Tooltip>
+                        </Tooltip>}
 
                         <Tooltip title="Используют тему">
                             <div className={styles.apperanceItemStatsItem}>
                                 <User />
 
-                                {usersCount}
+                                {usersCount || 0}
                             </div>
                         </Tooltip>
 
@@ -48,7 +45,7 @@ const ThemeItemAdmin = ({data}) => {
                             <div className={styles.apperanceItemStatsItem}>
                                 <Like />
 
-                                {likesCount}
+                                {likesCount || 0}
                             </div>
                         </Tooltip>
 
@@ -56,7 +53,7 @@ const ThemeItemAdmin = ({data}) => {
                             <div className={styles.apperanceItemStatsItem}>
                                 <Dislike />
 
-                                {dislikesCount}
+                                {dislikesCount || 0}
                             </div>
                         </Tooltip>
 
@@ -70,8 +67,8 @@ const ThemeItemAdmin = ({data}) => {
                     </div>
 
                     <div className={styles.appearanceItemPoints}>
-                        <TextPoint title="Primary" text={primary} />
-                        <TextPoint title="Lighten" text={light} />
+                        <TextPoint title="Primary" text={primary || "---"} />
+                        <TextPoint title="Lighten" text={light || "---"} />
                     </div>
                 </div>
 
@@ -88,9 +85,13 @@ const ThemeItemAdmin = ({data}) => {
                         </IconButton>
                     </Tooltip>
                 </div>
+
+                {loading && <div className={styles.appearanceItemLoader}>
+                    <Preloader small />
+                </div>}
             </div>
 
-            <ConfirmModal value={confirmDelete} setValue={setConfirmDelete} text="Вы действительно хотите удалить данную тему?" callback={() => removeTheme(id)} />
+            <ConfirmModal value={confirmDelete} setValue={setConfirmDelete} text="Вы действительно хотите удалить данную тему?" callback={themeDelete} />
         </>
     )
 }

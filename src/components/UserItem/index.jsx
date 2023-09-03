@@ -19,7 +19,7 @@ import ModalConfirm from '../Modal/ConfirmModal';
 import Preloader from '../Preloader';
 
 const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = () => {}}) => {
-    const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName} = data;
+    const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName, status} = data;
 
     const [confirmBlock, setConfirmBlock] = React.useState(false);
     const [confirmUnblock, setConfirmUnblock] = React.useState(false);
@@ -33,11 +33,13 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                     <div className={styles.userAvatarInner}>
                         {avatar
                         ? <img src={avatar} alt="avatar" className={styles.userAvatar} />
-                        : nickname && <p className={styles.userAvatarName}>{nickname[0].toUpperCase()}</p>}
+                        : nickname
+                            ? <p className={styles.userAvatarName}>{nickname[0].toUpperCase()}</p>
+                            : <p className={styles.userAvatarName}>Unk</p>}
 
-                        <Tooltip title="Тема пользователя">
+                        {theme && <Tooltip title="Тема пользователя">
                             <div className={styles.userThemeCircle} style={{background: theme?.primary || CONFIG.BASE_COLOR}}></div>
-                        </Tooltip>
+                        </Tooltip>}
 
                         {isVerified && <Tooltip title="Верифицирован">
                             <div className={styles.userVerified}>
@@ -49,18 +51,18 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                     <div className={styles.userInfo}>
                         {firstName && lastName && <p className={`${typography.text} ${styles.userInfoName}`}>{`${firstName} ${lastName}`}</p>}
 
-                        <Tooltip title="Скопировать">
+                        {nickname && <Tooltip title="Скопировать">
                             <p className={`${typography.text2} ${styles.userInfoNickname}`} onClick={() => copyTextWithNotify(nickname)}>{nickname}</p>
-                        </Tooltip>
+                        </Tooltip>}
                     </div>
                 </div>
 
                 <div className={styles.userPoints}>
-                    <TextPoint title="ID" text={id} />
-                    <TextPoint title="Статус" text="Новичек" />
+                    {id && <TextPoint title="ID" text={id} />}
+                    {status && <TextPoint title="Статус" text={status} />}
                     {phoneNumber && <TextPoint title="Номер телефона" text={maskPhone(phoneNumber)} />}
 
-                    {roles.length > 0 && <TextPoint title="Роли">
+                    {roles?.length > 0 && <TextPoint title="Роли">
                         <div className={styles.userRoles}>
                             {roles.map((data, id) => <p key={id} className={styles.userRole} style={{color: data?.textColor || CONFIG.BASE_COLOR, background: data?.backgroundColor || CONFIG.BASE_COLOR}}>{data.role}</p>)}
                         </div>
@@ -69,15 +71,15 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
 
                 <div className={styles.userItemWrapper}>
                     <div className={styles.userLvlInner}>
-                        <p className={styles.userLvlPoint}>{level}</p>
+                        <p className={styles.userLvlPoint}>{level || 1}</p>
 
                         <div className={styles.userLvlProgressTotal}>
                             <div className={styles.userLvlProgressLine} style={{width: xp / xpLimit}}></div>
 
-                            <p className={`${typography.text3} ${styles.userLvlExp}`}>{xp} / {xpLimit}</p>
+                            <p className={`${typography.text3} ${styles.userLvlExp}`}>{xp || 0} / {xpLimit || 0}</p>
                         </div>
 
-                        <p className={styles.userLvlPoint}>{level + 1}</p>
+                        <p className={styles.userLvlPoint}>{level || 1 + 1}</p>
                     </div>
 
                     <div className={styles.userItemButtons}>
@@ -87,13 +89,13 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
 
                         {!isBlocked && <>
                             <Tooltip title="Уведомление">
-                                <IconButton type="light">
+                                <IconButton type="light" className={styles.userItemButtonIcons}>
                                     <Notify />
                                 </IconButton>
                             </Tooltip>
 
                             <Tooltip title="Заблокировать">
-                                <IconButton type="danger" onClick={() => setConfirmBlock(true)}>
+                                <IconButton type="danger" className={styles.userItemButtonIcons} onClick={() => setConfirmBlock(true)}>
                                     <Stop />
                                 </IconButton>
                             </Tooltip>
@@ -115,7 +117,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
             <ModalConfirm
                 value={confirmBlock}
                 setValue={setConfirmBlock}
-                text={`Вы действительно хотите заблокировать пользователя ${nickname && nickname}`}
+                text={`Вы действительно хотите заблокировать пользователя ${nickname || ""}`}
                 confirmText="Заблокировать"
                 rejectText="Отмена"
                 callback={userBlock}
@@ -124,7 +126,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
             <ModalConfirm
                 value={confirmUnblock}
                 setValue={setConfirmUnblock}
-                text={`Вы действительно хотите разблокировать пользователя ${nickname && nickname}`}
+                text={`Вы действительно хотите разблокировать пользователя ${nickname || ""}`}
                 confirmText="Разблокировать"
                 rejectText="Отмена"
                 callback={userUnblock}

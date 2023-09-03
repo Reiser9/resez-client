@@ -6,7 +6,7 @@ import { Switch } from 'antd';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { ArrowBottom, Cross, Exit, Menu, Moon, Notify, User } from '../Icons';
+import { ArrowBottom, Cross, Enter, Exit, Menu, Moon, Notify, User } from '../Icons';
 
 import { setSidebarShow } from '../../redux/slices/app';
 
@@ -22,7 +22,6 @@ const Header = ({empty = false}) => {
     const {isAuth} = useSelector(state => state.auth);
     const {user} = useSelector(state => state.user);
     const {mode} = useSelector(state => state.theme);
-    const {unreadCount} = useSelector(state => state.notify);
     const {sidebarShow} = useSelector(state => state.app);
     const {changeTheme} = useTheme();
     const {logout} = useAuth();
@@ -67,7 +66,7 @@ const Header = ({empty = false}) => {
         dispatch(setSidebarShow(false));
     }, [location]);
 
-    const {avatar, nickname, status, level} = user;
+    const {avatar, nickname, status, level, unreadNotifiesCount} = user;
 
     return (
         <>
@@ -83,57 +82,64 @@ const Header = ({empty = false}) => {
                     </Link>
                 </div>
 
-                {!empty && (isAuth
-                    ? <div className={styles.headerProfileInner} ref={profileMenuRef}>
+                {!empty && <div className={styles.headerProfileInner} ref={profileMenuRef}>
                         <div className={styles.headerProfileWrap} onClick={toggleMenuProfile}>
                             <div className={styles.headerProfileImgInner}>
-                                {avatar
+                                {isAuth ? avatar
                                 ? <img src={avatar} alt="avatar" className={styles.headerProfileImg} />
-                                : nickname && <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
+                                : nickname && <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>
+                                : <Enter />}
                             </div>
 
-                            <p className={`${typography.text} ${styles.headerProfileNick}`}>
+                            {isAuth && <p className={`${typography.text} ${styles.headerProfileNick}`}>
                                 {nickname}
-                            </p>
+                            </p>}
 
                             <ArrowBottom className={`${styles.headerProfileArrow}${profileMenu ? ` ${styles.active}` : ""}`} />
                         </div>
 
                         <div className={`${styles.headerProfileMenuInner}${profileMenu ? ` ${styles.active}` : ""}`}>
                             <div className={styles.headerProfileMenu}>
-                                <div className={styles.headerProfileMenuInfo}>
-                                    <div className={styles.headerProfileMenuData}>
-                                        <div className={styles.headerProfileMenuImgInner}>
-                                            {avatar
-                                            ? <img src={avatar} alt="avatar" className={styles.headerProfileMenuImg} />
-                                            : nickname && <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
+                                {isAuth ? <>
+                                    <div className={styles.headerProfileMenuInfo}>
+                                        <div className={styles.headerProfileMenuData}>
+                                            <div className={styles.headerProfileMenuImgInner}>
+                                                {avatar
+                                                ? <img src={avatar} alt="avatar" className={styles.headerProfileMenuImg} />
+                                                : nickname && <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
+                                            </div>
+
+                                            <div className={styles.headerProfileMenuNameInner}>
+                                                <p className={`${typography.text} ${styles.headerProfileMenuName}`}>{nickname}</p>
+
+                                                <p className={`${typography.text2} ${styles.headerProfileMenuStatus}`}>{status}</p>
+                                            </div>
                                         </div>
 
-                                        <div className={styles.headerProfileMenuNameInner}>
-                                            <p className={`${typography.text} ${styles.headerProfileMenuName}`}>{nickname}</p>
-
-                                            <p className={`${typography.text2} ${styles.headerProfileMenuStatus}`}>{status}</p>
+                                        <div className={`${typography.text2} ${styles.headerProfileLvl}`}>
+                                            {level}
                                         </div>
                                     </div>
 
-                                    <div className={`${typography.text2} ${styles.headerProfileLvl}`}>
-                                        {level}
-                                    </div>
-                                </div>
+                                    <Link to="/profile" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
+                                        <User />
 
+                                        Профиль
+                                    </Link>
+
+                                    <Link to="/notifies" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
+                                        <Notify />
+
+                                        Уведомления
+
+                                        {unreadNotifiesCount !== 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 10 ? "9+" : unreadNotifiesCount}</span>}
+                                    </Link>
+                                </> :
                                 <Link to="/profile" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
                                     <User />
 
-                                    Профиль
-                                </Link>
-
-                                <Link to="/notifies" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
-                                    <Notify />
-
-                                    Уведомления
-
-                                    {unreadCount !== 0 && <span className={styles.headerProfileNotifyCount}>{unreadCount > 10 ? "9+" : unreadCount}</span>}
-                                </Link>
+                                    Войти
+                                </Link>}
 
                                 <div className={styles.headerProfileMenuLink} onClick={() => changeTheme()}>
                                     <Moon />
@@ -143,20 +149,17 @@ const Header = ({empty = false}) => {
                                     <Switch size="small" checked={mode === "dark"} className={styles.headerThemeLabel} />
                                 </div>
 
-                                <div className={`${styles.headerProfileMenuLink} ${styles.delete}`} onClick={() => {
+                                {isAuth && <div className={`${styles.headerProfileMenuLink} ${styles.delete}`} onClick={() => {
                                     setConfirmLeave(true);
                                     closeProfileMenu();
                                 }}>
                                     <Exit />
 
                                     Выход
-                                </div>
+                                </div>}
                             </div>
                         </div>
-                    </div>
-                    : <Link to="/login" className={styles.headerLogin}>
-                        Войти
-                    </Link>)}
+                    </div>}
             </header>
 
             {!empty

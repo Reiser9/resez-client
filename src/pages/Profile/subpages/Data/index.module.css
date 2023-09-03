@@ -17,6 +17,12 @@ div.dataItem{
     width: calc(100% / 2 - 12px / 2);
 }
 
+@media (max-width: 900px) {
+    div.dataItem{
+        width: 100%;
+    }
+}
+
 .dataButton{
     margin: auto auto 0 auto;
 }

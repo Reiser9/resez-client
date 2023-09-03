@@ -172,6 +172,10 @@
     gap: 8px;
 }
 
+.userItemButtonIcons{
+    flex-shrink: 0;
+}
+
 .userAvatarName{
     position: absolute;
     top: 50%;
@@ -212,24 +216,12 @@
     width: 100%;
     height: 100%;
     border-radius: 4px;
-    background: var(--white);
+    background: var(--input);
     z-index: 3;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.userItemLoader:before{
-    content: "";
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: var(--input);
-    position: absolute;
-    top: 0;
-    left: 0;
     border-radius: 4px;
-    z-index: -1;
 }
 
 .userVerified{

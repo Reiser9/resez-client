@@ -1,10 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {socket} from '../utils/socket';
 
+import { setUserBlocked } from '../redux/slices/user';
+
 const useSocket = () => {
     const {user} = useSelector(state => state.user);
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
         if(!user.id){
@@ -21,8 +24,18 @@ const useSocket = () => {
             console.log(data.notify);
         });
 
+        socket.on("blocked", () => {
+            dispatch(setUserBlocked(true));
+        });
+
+        socket.on("unblocked", () => {
+            dispatch(setUserBlocked(false));
+        });
+
         return () => {
             socket.off("notify");
+            socket.off("blocked");
+            socket.off("unblocked");
         };
     }, []);
 }

@@ -2,7 +2,9 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
     usersIsLoading: false,
-    users: []
+    users: [],
+    themesIsLoading: false,
+    themes: []
 };
 
 export const adminSlice = createSlice({

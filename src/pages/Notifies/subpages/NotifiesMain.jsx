@@ -18,7 +18,8 @@ const NotifiesMain = ({unread = false}) => {
     const [notifiesMoreLoading, setNotifiesMoreLoading] = React.useState(false);
 
     const {isLoading, error, notifyIsLoading, loadNotify, getAllNotify, readNotify, readAllNotifies} = useNotify();
-    const {notifiesIsLoading, notifies, unreadCount} = useSelector(state => state.notify);
+    const {notifiesIsLoading, notifies} = useSelector(state => state.notify);
+    const {user} = useSelector(state => state.user);
 
     const loadMoreNotifies = React.useCallback(async () => {
         setNotifiesMoreLoading(true);
@@ -47,7 +48,7 @@ const NotifiesMain = ({unread = false}) => {
                     <ReloadButton loading={notifiesIsLoading} onClick={() => loadNotify(0, 6, unread)} />
                 </div>
 
-                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || unreadCount === 0 || isLoading} auto type="light" onClick={() => readAllNotifies(0, 6, unread)}>
+                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || user.unreadNotifiesCount === 0 || isLoading} auto type="light" onClick={() => readAllNotifies(0, 6, unread)}>
                     Прочитать все
                 </Button>}
             </div>

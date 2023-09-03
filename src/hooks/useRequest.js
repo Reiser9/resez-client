@@ -167,9 +167,9 @@ const useRequest = () => {
                 return APP_STATUSES.NOT_AUTH;
             }
 
-            // if(){
-            //     return APP_STATUSES.YOUR_BLOCKED;
-            // }
+            if(err?.response?.status === 403){
+                return APP_STATUSES.YOUR_BLOCKED;
+            }
 
             return err.response;
         }

@@ -11,6 +11,8 @@ const useError = () => {
         switch(response){
             case APP_STATUSES.SERVER_NOT_AVAILABLE:
                 return;
+            case APP_STATUSES.YOUR_BLOCKED:
+                return;
             case APP_STATUSES.NOT_AUTH:
                 if(notAuthCallback){
                     return notAuthCallback();
