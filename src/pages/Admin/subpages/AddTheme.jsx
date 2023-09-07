@@ -14,7 +14,6 @@ import {convertHexToOpacityHex} from '../../../utils/convertColor';
 import { setMainColors } from '../../../utils/setMainColors';
 
 import useAdmin from '../../../hooks/useAdmin';
-import useTheme from '../../../hooks/useTheme';
 
 import BackButton from '../../../components/BackButton';
 import Input from '../../../components/Input';
@@ -36,8 +35,7 @@ const AddTheme = ({edit = false}) => {
     const [themeRating, setThemeRating] = React.useState(false);
     const [preview, setPreview] = React.useState(false);
 
-    const {isLoading, createTheme, editTheme} = useAdmin();
-    const {isLoading: themeIsLoading, getThemeById} = useTheme();
+    const {isLoading, themeByIdIsLoading, createTheme, editTheme, getThemeById} = useAdmin();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {user} = useSelector(state => state.user);
@@ -93,7 +91,7 @@ const AddTheme = ({edit = false}) => {
         }
     }, [id]);
 
-    if(themeIsLoading){
+    if(themeByIdIsLoading){
         return <Preloader page />
     }
 

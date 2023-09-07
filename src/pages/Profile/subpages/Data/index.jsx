@@ -20,10 +20,10 @@ const Data = () => {
 
     const changeDataHandler = () => {
         if(birthday){
-            setBirthday(birthday?.format("YYYY-MM-DD"));
+            var birthdayTemp = birthday?.format("YYYY-MM-DD");
         }
 
-        changeData(name, surname, birthday, sex);
+        changeData(name, surname, birthdayTemp, sex);
     }
 
     return (

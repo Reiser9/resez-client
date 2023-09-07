@@ -13,9 +13,6 @@ export const themeSlice = createSlice({
         setMode: (state, action) => {
             state.mode = action.payload;
         },
-        setThemesIsLoading: (state, action) => {
-            state.themesIsLoading = action.payload;
-        },
         initThemes: (state, action) => {
             state.themes = action.payload;
         },
@@ -27,39 +24,18 @@ export const themeSlice = createSlice({
                 themes: [...currentThemes, ...action.payload?.themes]
             };
         },
-        addNewTheme: (state, action) => {
-            state.themes.themes = [...state.themes.themes, action.payload];
-            state.themes.totalCount++;
-        },
-        changeTheme: (state, action) => {
-            state.themes.themes = state.themes.themes.map((obj) => {
-                if(obj.id == action.payload.id){
-                    return action.payload.theme;
-                }
-
-                return obj;
-            });
-        },
-        deleteTheme: (state, action) => {
-            state.themes.themes = state.themes?.themes?.filter((item) => item.id !== action.payload.id);
-            state.themes.totalCount--;
-        },
         setDataTheme: (state) => {
-            state.themes = [];
             state.themesIsLoading = false;
+            state.themes = [];
         }
     }
 });
 
 export const {
     setMode,
-    setThemesIsLoading,
     initThemes,
-    setDataTheme,
     setThemes,
-    addNewTheme,
-    changeTheme,
-    deleteTheme
+    setDataTheme
 } = themeSlice.actions;
 
 export default themeSlice.reducer;

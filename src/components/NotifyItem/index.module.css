@@ -96,7 +96,6 @@
 }
 
 .notifyItemTextContent{
-    max-height: 100px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;

@@ -31,7 +31,7 @@ const useRequest = () => {
     const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
-    const {user} = useSelector(state => state.user);
+    const {user, sessionId} = useSelector(state => state.user);
 
     const axiosInstancesMap = new Map([
         [REQUEST_TYPE.AUTH, authRequest],
@@ -44,8 +44,8 @@ const useRequest = () => {
     ]);
 
     const clearLocalData = () => {
-        if(Object.keys(user).length !== 0){
-            socket.emit("leave", user.id);
+        if(Object.keys(user).length !== 0 && sessionId){
+            socket.emit("leave", user.id, sessionId);
         }
 
         localStorage.removeItem("accessToken");

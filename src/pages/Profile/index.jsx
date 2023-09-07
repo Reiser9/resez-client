@@ -16,6 +16,7 @@ const Theme = React.lazy(() => import("./subpages/Theme"));
 const Data = React.lazy(() => import("./subpages/Data"));
 const Safe = React.lazy(() => import("./subpages/Safe"));
 const Achievments = React.lazy(() => import("./subpages/Achievments"));
+const Settings = React.lazy(() => import("./subpages/Settings"));
 
 const Profile = () => {
     return (
@@ -30,6 +31,7 @@ const Profile = () => {
                                 <Route path="/data" element={withSuspense(<Data />)} />
                                 <Route path="/safe/*" element={withSuspense(<Safe />)} />
                                 <Route path="/achievments/*" element={withSuspense(<Achievments />)} />
+                                <Route path="/settings" element={withSuspense(<Settings />)} />
                                 <Route path="*" element={<Navigate to={""} />} />
                             </Routes>
                         </div>
@@ -40,6 +42,7 @@ const Profile = () => {
                             <SidebarLink text="Личные данные" to="data" />
                             <SidebarLink text="Безопасность" to="safe" />
                             <SidebarLink text="Достижения" to="achievments" />
+                            <SidebarLink text="Настройки" to="settings" />
                         </InnerSidebar>
                     </div>
                 </WithSidebarWrapper>

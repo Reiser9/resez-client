@@ -51,7 +51,7 @@ const Notifies = () => {
     }
 
     const searchUsersHandler = () => {
-        serchUsers(searchValue).then(users => {
+        serchUsers(searchValue, true).then(users => {
             if(!users){
                 return;
             }

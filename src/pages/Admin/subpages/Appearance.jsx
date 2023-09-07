@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import typography from '../../../styles/typography.module.css';
 import styles from '../index.module.css';
 
-import useTheme from '../../../hooks/useTheme';
 import useAdmin from '../../../hooks/useAdmin';
 
 import ReloadButton from '../../../components/ReloadButton';
@@ -15,9 +14,8 @@ import NotContent from '../../../components/NotContent';
 
 const Appearance = () => {
     const [themesMoreLoading, setThemesMoreLoading] = React.useState(false);
-    const {error, loadAllThemes, getAllThemes} = useTheme();
-    const {themesIsLoading, themes} = useSelector(state => state.theme);
-    const {themeIsLoading, removeTheme} = useAdmin();
+    const {themesIsLoading, themes} = useSelector(state => state.admin);
+    const {themeIsLoading, error, loadAllThemes, getAllThemes, removeTheme} = useAdmin();
 
     const loadMoreThemes = React.useCallback(async () => {
         setThemesMoreLoading(true);

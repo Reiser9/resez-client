@@ -32,6 +32,37 @@ export const adminSlice = createSlice({
                 state.users?.users?.splice(index, 1, action.payload);
             }
         },
+        setThemesIsLoading: (state, action) => {
+            state.themesIsLoading = action.payload;
+        },
+        initThemes: (state, action) => {
+            state.themes = action.payload;
+        },
+        setThemes: (state, action) => {
+            const currentThemes = state.themes.themes;
+
+            state.themes = {
+                ...action.payload,
+                themes: [...currentThemes, ...action.payload?.themes]
+            };
+        },
+        addNewTheme: (state, action) => {
+            state.themes.themes = [...state.themes.themes, action.payload];
+            state.themes.totalCount++;
+        },
+        changeTheme: (state, action) => {
+            state.themes.themes = state.themes.themes.map((obj) => {
+                if(obj.id == action.payload.id){
+                    return action.payload.theme;
+                }
+
+                return obj;
+            });
+        },
+        deleteTheme: (state, action) => {
+            state.themes.themes = state.themes?.themes?.filter((item) => item.id !== action.payload.id);
+            state.themes.totalCount--;
+        },
         setDataAdmin: () => initialState
     }
 });
@@ -41,6 +72,12 @@ export const {
     initUsers,
     setUsers,
     setUser,
+    setThemesIsLoading,
+    initThemes,
+    setThemes,
+    addNewTheme,
+    changeTheme,
+    deleteTheme,
     setDataAdmin
 } = adminSlice.actions;
 

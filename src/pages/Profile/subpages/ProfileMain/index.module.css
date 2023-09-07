@@ -139,3 +139,139 @@
     position: sticky;
     top: 0;
 }
+
+.profileMoreInner{
+    display: flex;
+    position: relative;
+}
+
+.profileMoreWrapper{
+    width: 215px;
+    padding-top: 8px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 3;
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s linear;
+}
+
+@media (max-width: 768px) {
+    .profileMoreWrapper{
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100dvh;
+        background: rgba(0, 0, 0, .5);
+        z-index: 1100;
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: block;
+        opacity: 0;
+        pointer-events: none;
+        transition: .3s ease-in-out;
+    }
+}
+
+.profileMore{
+    width: 100%;
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .profileMore{
+        min-height: calc(100% - 5rem);
+        margin: 5rem 0 0 0;
+        align-items: flex-end;
+        justify-content: center;
+    }
+}
+
+.profileMoreContent{
+    width: 100%;
+    padding: 0.8rem 0;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+    .profileMoreContent{
+        border-radius: 4px 4px 0 0;
+        position: relative;
+        padding: 4rem 0 1.6rem 0;
+        transform: translateY(100dvh);
+        transition: .3s ease-in-out;
+    }
+
+    .profileMoreContent:before{
+        content: "";
+        display: block;
+        width: 75px;
+        height: 2px;
+        border-radius: 50px;
+        background: var(--textGrey);
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .active .profileMoreContent{
+        transform: translateY(0);
+    }
+}
+
+.profileMoreLink{
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: .2s linear;
+}
+
+@media (any-hover: none) {
+    .profileMoreWrapper.active{
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+@media (any-hover: hover) {
+    .profileMoreLink{
+        cursor: pointer;
+    }
+
+    .profileMoreInner:hover .profileMoreWrapper{
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+.profileMoreLink:hover{
+    color: var(--main);
+    background: var(--lighten);
+}
+
+.profileMoreLink svg{
+    width: 22px;
+}
+
+.profileMoreLink:hover svg path{
+    stroke: var(--main);
+}
+
+.profileMoreLink.delete:hover{
+    color: var(--error);
+    background: var(--errorB);
+}
+
+.profileMoreLink.delete:hover svg path{
+    stroke: var(--error);
+}

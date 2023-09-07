@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
 import { setAuthIsLoading, setIsAuth } from '../redux/slices/auth';
-import { initCodeData, initUser } from '../redux/slices/user';
+import { initCodeData, initSessionId, initUser } from '../redux/slices/user';
 import { setAppIsLoading } from '../redux/slices/app';
 
 import {setMainColors} from '../utils/setMainColors';
@@ -134,6 +134,7 @@ const useAuth = () => {
 
         dispatch(setIsAuth(true));
         dispatch(initUser(data.user));
+        dispatch(initSessionId(data.sessionId));
         dispatch(initCodeData(data.verificationCodeData));
 
         const {primary, light} = data?.user?.theme || {};

@@ -7,7 +7,7 @@ import styles from './index.module.css';
 
 import { CONFIG } from '../../../../consts/CONFIG';
 
-import { DotsHorizontal, Eye, Friends, User } from '../../../../components/Icons';
+import { Block, Delete, DotsHorizontal, Edit, Eye, Friends, Message, User } from '../../../../components/Icons';
 
 import useUser from '../../../../hooks/useUser';
 import useUtils from '../../../../hooks/useUtils';
@@ -18,10 +18,13 @@ import IconButton from '../../../../components/IconButton';
 import File from '../../../../components/File';
 
 const ProfileMain = () => {
+    const [moreProfileMenu, setMoreProfileMenu] = React.useState(false);
     const {user} = useSelector(state => state.user);
 
     const {copyTextWithNotify} = useUtils();
     const {changeAvatar, deleteAvatar} = useUser();
+
+    const profileMenuMoreRef = React.useRef(null);
 
     const changeAvatarHandler = (newAvatar, callback) => {
         let formData = new FormData();
@@ -34,6 +37,24 @@ const ProfileMain = () => {
     const deleteAvatarHandler = (callback) => {
         deleteAvatar(callback);
     }
+
+    const closeProfileMenu = () => {
+        setMoreProfileMenu(false);
+    }
+
+    const handleOutsideClick = (e) => {
+        if (profileMenuMoreRef.current && !profileMenuMoreRef.current.contains(e.target)) {
+            closeProfileMenu();
+        }
+    };
+  
+    React.useEffect(() => {
+        document.addEventListener("click", handleOutsideClick);
+    
+        return () => {
+            document.removeEventListener("click", handleOutsideClick);
+        };
+    }, []);
 
     const {nickname, avatar, theme} = user;
 
@@ -76,9 +97,47 @@ const ProfileMain = () => {
                             </IconButton>
                         </Tooltip>
 
-                        <IconButton type="light">
-                            <DotsHorizontal />
-                        </IconButton>
+                        <div className={styles.profileMoreInner} ref={profileMenuMoreRef}>
+                            <IconButton type="light" onClick={() => setMoreProfileMenu(prev => !prev)}>
+                                <DotsHorizontal />
+                            </IconButton>
+
+                            <div className={`${styles.profileMoreWrapper}${moreProfileMenu ? ` ${styles.active}` : ""}`} onClick={() => setMoreProfileMenu(false)}>
+                                <div className={styles.profileMore}>
+                                    <div className={styles.profileMoreContent} onClick={e => e.stopPropagation()}>
+                                        <div className={styles.profileMoreLink}>
+                                            <Edit />
+
+                                            Редактировать
+                                        </div>
+
+                                        <div className={styles.profileMoreLink}>
+                                            <Message />
+
+                                            Сообщение
+                                        </div>
+
+                                        <div className={styles.profileMoreLink}>
+                                            <User />
+
+                                            Добавить в друзья
+                                        </div>
+
+                                        <div className={`${styles.profileMoreLink} ${styles.delete}`}>
+                                            <Block />
+
+                                            Заблокировать
+                                        </div>
+
+                                        <div className={`${styles.profileMoreLink} ${styles.delete}`}>
+                                            <Delete />
+
+                                            Удалить из друзей
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -84,7 +84,7 @@ const Header = ({empty = false}) => {
 
                 {!empty && <div className={styles.headerProfileInner} ref={profileMenuRef}>
                         <div className={styles.headerProfileWrap} onClick={toggleMenuProfile}>
-                            <div className={styles.headerProfileImgInner}>
+                            <div className={`${styles.headerProfileImgInner}${unreadNotifiesCount > 0 ? ` ${styles.unread}` : ""}`}>
                                 {isAuth ? avatar
                                 ? <img src={avatar} alt="avatar" className={styles.headerProfileImg} />
                                 : nickname && <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>
@@ -132,7 +132,7 @@ const Header = ({empty = false}) => {
 
                                         Уведомления
 
-                                        {unreadNotifiesCount !== 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 10 ? "9+" : unreadNotifiesCount}</span>}
+                                        {unreadNotifiesCount > 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 10 ? "9+" : unreadNotifiesCount}</span>}
                                     </Link>
                                 </> :
                                 <Link to="/profile" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>

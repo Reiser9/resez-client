@@ -4,8 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 import { requestDataIsError } from '../utils/requestDataIsError';
 
-import { initUsers, setUser, setUsers, setUsersIsLoading } from '../redux/slices/admin';
-import { addNewTheme, changeTheme, deleteTheme } from '../redux/slices/theme';
+import {
+    initThemes,
+    initUsers,
+    setThemes,
+    setThemesIsLoading,
+    setUser,
+    setUsers,
+    setUsersIsLoading,
+    addNewTheme,
+    changeTheme,
+    deleteTheme
+} from '../redux/slices/admin';
 
 import useRequest from './useRequest';
 import useError from './useError';
@@ -14,12 +24,13 @@ import useAlert from './useAlert';
 const useAdmin = () => {
     const [error, setError] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [themeByIdIsLoading, setThemeByIdIsLoading] = React.useState(false);
     const [serchUsersLoading, setSerchUsersLoading] = React.useState(false);
     const [userIsLoading, setUserIsLoading] = React.useState([]);
     const [themeIsLoading, setThemeIsLoading] = React.useState([]);
 
     const dispatch = useDispatch();
-    const {users} = useSelector(state => state.admin);
+    const {users, themes} = useSelector(state => state.admin);
 
     const {request} = useRequest();
     const {errorController} = useError();
@@ -59,10 +70,10 @@ const useAdmin = () => {
         }
     }
 
-    const serchUsers = async (query = "") => {
+    const serchUsers = async (query = "", isShortInfo = false) => {
         setSerchUsersLoading(true);
 
-        const response = await request(REQUEST_TYPE.ADMIN, `/user?search=${query}`, HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.ADMIN, `/user?search=${query}&isShortInfo=${isShortInfo}`, HTTP_METHODS.GET, true);
 
         setSerchUsersLoading(false);
 
@@ -80,7 +91,7 @@ const useAdmin = () => {
 
         setUserIsLoading(prev => [...prev, userId]);
 
-        const response = await request(REQUEST_TYPE.USER, "/block", HTTP_METHODS.PUT, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/block", HTTP_METHODS.PUT, true, {
             userId
         });
 
@@ -100,7 +111,7 @@ const useAdmin = () => {
 
         setUserIsLoading(prev => [...prev, userId]);
 
-        const response = await request(REQUEST_TYPE.USER, "/unblock", HTTP_METHODS.PUT, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/unblock", HTTP_METHODS.PUT, true, {
             userId
         });
 
@@ -113,6 +124,61 @@ const useAdmin = () => {
         dispatch(setUser(response.data.user));
         alertNotify("Успешно", "Пользователь разблокирован", "success");
         successCallback();
+    }
+
+    const loadAllThemes = async (offset = 0, limit = 5, reload = false) => {
+        setError(false);
+
+        if(!themes.themes || reload){
+            dispatch(setThemesIsLoading(true));
+
+            const response = await request(REQUEST_TYPE.ADMIN, `/theme?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+
+            dispatch(setThemesIsLoading(false));
+
+            if(requestDataIsError(response)){
+                setError(true);
+                return errorController(response, () => loadAllThemes(offset, limit, reload));
+            }
+
+            dispatch(initThemes(response.data));
+        }
+    }
+
+    const getAllThemes = async (offset = 0, limit = 5) => {
+        setError(false);
+
+        if(themes?.themes?.length === 0 || themes?.themes?.length < offset + limit){
+            setIsLoading(true);
+
+            const response = await request(REQUEST_TYPE.ADMIN, `/theme?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+
+            setIsLoading(false);
+
+            if(requestDataIsError(response)){
+                setError(true);
+                return errorController(response, () => getAllThemes(offset, limit));
+            }
+
+            dispatch(setThemes(response.data));
+        }
+    }
+
+    const getThemeById = async (id) => {
+        setError(false);
+
+        setThemeByIdIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, `/theme/${id}`, HTTP_METHODS.GET, true);
+
+        setThemeByIdIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+            return errorController(response, () => getThemeById(id));
+        }
+
+        return response.data.theme;
     }
 
     const createTheme = async (primary, light, isRatingEnabled, successCallback = () => {}) => {
@@ -207,6 +273,7 @@ const useAdmin = () => {
     return {
         error,
         isLoading,
+        themeByIdIsLoading,
         serchUsersLoading,
         userIsLoading,
         themeIsLoading,
@@ -215,6 +282,9 @@ const useAdmin = () => {
         serchUsers,
         userBlock,
         userUnblock,
+        loadAllThemes,
+        getAllThemes,
+        getThemeById,
         createTheme,
         editTheme,
         removeTheme,

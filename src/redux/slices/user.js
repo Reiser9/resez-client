@@ -2,7 +2,8 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
     user: {},
-    verificationCodeData: {}
+    verificationCodeData: {},
+    sessionId: ""
 };
 
 export const userSlice = createSlice({
@@ -33,6 +34,9 @@ export const userSlice = createSlice({
         setUserBlocked: (state, action) => {
             state.user.isBlocked = action.payload;
         },
+        initSessionId: (state, action) => {
+            state.sessionId = action.payload;
+        },
         setDataUser: () => initialState
     }
 });
@@ -46,6 +50,7 @@ export const {
     setUreadNotifyCount,
     decrementUreadNotifyCount,
     setUserBlocked,
+    initSessionId,
     setDataUser
 } = userSlice.actions;
 
