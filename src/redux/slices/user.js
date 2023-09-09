@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
     user: {},
+    profileData: {},
     verificationCodeData: {},
     sessionId: ""
 };
@@ -12,6 +13,9 @@ export const userSlice = createSlice({
     reducers: {
         initUser: (state, action) => {
             state.user = action.payload || {};
+        },
+        initProfileData: (state, action) => {
+            state.profileData = action.payload || {};
         },
         initCodeData: (state, action) => {
             state.verificationCodeData = action.payload;
@@ -43,6 +47,7 @@ export const userSlice = createSlice({
 
 export const {
     initUser,
+    initProfileData,
     initCodeData,
     changeThemeUser,
     previewThemeUser,

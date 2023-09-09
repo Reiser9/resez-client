@@ -5,7 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 
-import { initUser } from '../redux/slices/user';
+import { initProfileData, initUser } from '../redux/slices/user';
 
 import useRequest from './useRequest';
 import useAlert from './useAlert';
@@ -13,6 +13,7 @@ import useError from './useError';
 
 const useUser = () => {
     const [isLoading, setIsLoading] = React.useState(false);
+    const [profileInfoIsLoading, setProfileInfoIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
@@ -35,6 +36,23 @@ const useUser = () => {
         }
 
         return response;
+    }
+
+    const getProfileInfo = async () => {
+        setError(false);
+        setProfileInfoIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.USER, "/profile-info", HTTP_METHODS.GET, true);
+
+        setProfileInfoIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, getProfileInfo);
+        }
+
+        dispatch(initProfileData(response.data.user));
     }
 
     const changePasswordSendCode = async (oldPassword, newPassword, newPasswordAgain, successCallback = () => {}) => {
@@ -163,8 +181,10 @@ const useUser = () => {
 
     return {
         isLoading,
+        profileInfoIsLoading,
         error,
         getShortInfo,
+        getProfileInfo,
         changePasswordSendCode,
         changePasswordVerify,
         changeAvatar,

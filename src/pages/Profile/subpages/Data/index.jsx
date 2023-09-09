@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 
 import styles from './index.module.css';
 import typography from '../../../../styles/typography.module.css';
@@ -9,14 +11,16 @@ import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import DatePicker from '../../../../components/DatePicker';
 import Select from '../../../../components/Select';
+import Preloader from '../../../../components/Preloader';
 
 const Data = () => {
     const [name, setName] = React.useState("");
     const [surname, setSurname] = React.useState("");
     const [birthday, setBirthday] = React.useState("");
-    const [sex, setSex] = React.useState("Мужской");
+    const [sex, setSex] = React.useState(null);
 
-    const {isLoading, changeData} = useUser();
+    const {isLoading, profileInfoIsLoading, changeData, getProfileInfo} = useUser();
+    const {profileData} = useSelector(state => state.user);
 
     const changeDataHandler = () => {
         if(birthday){
@@ -24,6 +28,25 @@ const Data = () => {
         }
 
         changeData(name, surname, birthdayTemp, sex);
+    }
+
+    React.useEffect(() => {
+        getProfileInfo();
+    }, []);
+
+    React.useEffect(() => {
+        if(Object.keys(profileData).length !== 0){
+            const {firstName, lastName, birthDate, gender} = profileData;
+
+            setName(firstName || "");
+            setSurname(lastName || "");
+            setBirthday(birthDate ? dayjs(birthDate) : "");
+            setSex(gender || null);
+        }
+    }, [profileData]);
+
+    if(profileInfoIsLoading){
+        return <Preloader page /> // Заменить на скелетон после готовности страницы профиля
     }
 
     return (

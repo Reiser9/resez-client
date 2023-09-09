@@ -8,6 +8,7 @@ import useTheme from '../../../../hooks/useTheme';
 import ThemeItem from '../../../../components/ThemeItem';
 import ThemeItemSkeleton from '../../../../components/Skeleton/Theme/ThemeItemSkeleton';
 import NotContent from '../../../../components/NotContent';
+import Button from '../../../../components/Button';
 
 const ChangeTheme = () => {
     const {isLoading, loadAllThemes, editTheme} = useTheme();
@@ -28,7 +29,11 @@ const ChangeTheme = () => {
                 onClick={() => editTheme(data.id)}
                 active={user?.theme?.id === data.id}
                 disabled={isLoading}
-            />) : <NotContent text="Тем не найдено" />}
+            />) : <NotContent text="Вы не добавили ни одной темы">
+                <Button to="/store" auto type="light">
+                    В магазин
+                </Button>
+            </NotContent>}
         </div>
     )
 }

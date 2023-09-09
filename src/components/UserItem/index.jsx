@@ -79,7 +79,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                             <p className={`${typography.text3} ${styles.userLvlExp}`}>{xp || 0} / {xpLimit || 0}</p>
                         </div>
 
-                        <p className={styles.userLvlPoint}>{level || 1 + 1}</p>
+                        <p className={styles.userLvlPoint}>{(level || 1) + 1}</p>
                     </div>
 
                     <div className={styles.userItemButtons}>

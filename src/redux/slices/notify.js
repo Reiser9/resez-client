@@ -41,6 +41,9 @@ export const notifySlice = createSlice({
             state.notifies.notifies = state.notifies?.notifies?.filter(item => item.id != action.payload?.notify?.id);
             state.notifies.totalCount--;
         },
+        addNotifyInStart: (state, action) => {
+            state.notifies.notifies = state.notifies?.notifies?.length > 0 ? [action.payload, ...state.notifies.notifies] : [action.payload];
+        },
         setDataNotify: () => initialState
     }
 });
@@ -53,6 +56,7 @@ export const {
     setNotifies,
     readNotifyById,
     deleteNotifyById,
+    addNotifyInStart,
     setDataNotify
 } = notifySlice.actions;
 

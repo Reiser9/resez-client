@@ -5,18 +5,14 @@ import { Tooltip } from 'antd';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { Eye, News, Warn } from '../Icons';
+import { Eye } from '../Icons';
 
 import {formatDate} from '../../utils/formatDate';
+import { getNotifyType } from '../../utils/getNotifyType';
 
 import Button from '../Button';
 import IconButton from '../IconButton';
 import Modal from '../Modal';
-
-const notifyTypes = {
-    "info": <News />,
-    "session": <Warn />
-}
 
 const NotifyItem = ({data, loading = false, callback = () => {}}) => {
     const {title, content, type, date, isRead, sender} = data;
@@ -36,8 +32,8 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
         <>
             <div className={`${styles.notifyItem}${!isRead ? ` ${styles.unread}` : ""}`}>
                 <span className={styles.notifyItemWrapper}>
-                    {type && <span className={`${styles.notifyItemIconInner}${type === "session" ? ` ${styles.session}` : ""}`}>
-                        {notifyTypes[type]}
+                    {type && <span className={`${styles.notifyItemIconInner}${getNotifyType(type)?.name === "session" ? ` ${styles.session}` : ""}`}>
+                        {getNotifyType(type)?.icon}
                     </span>}
 
                     <span className={styles.notifyItemTitleInner}>

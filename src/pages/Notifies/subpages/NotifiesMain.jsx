@@ -75,7 +75,7 @@ const NotifiesMain = ({unread = false}) => {
                 {[...Array(2)].map((_, id) => <Notify key={id} />)}
             </div>}
 
-            {!notifiesIsLoading && !notifies?.isLast && <Button loading={notifiesMoreLoading} type="empty" auto className={styles.notifiesMoreButton} onClick={loadMoreNotifies}>
+            {Object.keys(notifies).length !== 0 && !notifiesIsLoading && !notifies?.isLast && <Button loading={notifiesMoreLoading} type="empty" auto className={styles.notifiesMoreButton} onClick={loadMoreNotifies}>
                 Показать еще
             </Button>}
         </div>

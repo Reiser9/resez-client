@@ -75,7 +75,8 @@ const useAuth = () => {
         setMainColors(primary, light);
 
         dispatch(setIsAuth(true));
-        dispatch(initUser(data));
+        dispatch(initUser(data.user));
+        dispatch(initSessionId(data.sessionId));
         dispatch(setAuthIsLoading(false));
     }
 

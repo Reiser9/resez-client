@@ -24,19 +24,24 @@ const Notifies = () => {
     const [text, setText] = React.useState("");
     const [date, setDate] = React.useState("");
     const [time, setTime] = React.useState("");
+
     const [searchValue, setSearchValue] = React.useState("");
+    const [userSelectOpen, setUserSelectOpen] = React.useState(false);
     const [userOptions, setUserOptions] = React.useState([]);
     const [userIDs, setUserIDs] = React.useState([]);
+
+    const [type, setType] = React.useState(null);
+    const [typeOptions, setTypeOptions] = React.useState([]);
 
     const [sendAnonim, setSendAnonim] = React.useState(false);
     const [sendForOne, setSendForOne] = React.useState(false);
     const [delayedSend, setDelayedSend] = React.useState(false);
 
-    const {isLoading, serchUsersLoading, sendNotify, serchUsers} = useAdmin();
+    const {isLoading, serchUsersLoading, notifyTypesIsLoading, sendNotify, serchUsers, getNotifyTypes} = useAdmin();
     const {alertNotify} = useAlert();
     const navigate = useNavigate();
 
-    const serachUsersRef = React.useRef(null);
+    const searchUsersRef = React.useRef(null);
 
     const createNotify = () => {
         if((!date || !time) && delayedSend && !isDateTimePast(date, time)){
@@ -47,10 +52,11 @@ const Notifies = () => {
             var newDate = formatDate(`${date?.format("YYYY-MM-DD")}T${time?.format("HH:mm:ss")}`, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
         }
 
-        sendNotify(title, author, userIDs, newDate, text, () => navigate("/admin"));
+        sendNotify(title, author, userIDs, newDate, text, type, () => navigate("/admin"));
     }
 
     const searchUsersHandler = () => {
+        setUserOptions([]);
         serchUsers(searchValue, true).then(users => {
             if(!users){
                 return;
@@ -58,13 +64,37 @@ const Notifies = () => {
 
             setUserOptions(users.data.users);
         });
+    };
+
+    const handleDropdownVisibleUsersChange = (open) => {
+        setUserSelectOpen(open);
+
+        if(open && userOptions.length === 0){
+            searchUsersHandler();
+        }
+    }
+    
+    const handleDropdownVisibleTypeChange = (open) => {
+        if(open && typeOptions.length === 0){
+            getNotifyTypes().then(types => {
+                if(!types){
+                    return;
+                }
+    
+                setTypeOptions(types.data.notifyTypes);
+            });;
+        }
     }
 
     React.useEffect(() => {
-        serachUsersRef.current = setTimeout(searchUsersHandler, 500);
+        if(!userSelectOpen){
+            return;
+        }
+
+        searchUsersRef.current = setTimeout(searchUsersHandler, 500);
 
         return () => {
-            clearTimeout(serachUsersRef.current);
+            clearTimeout(searchUsersRef.current);
         };
     }, [searchValue]);
 
@@ -92,7 +122,8 @@ const Notifies = () => {
                     maxTagCount="responsive"
                     notContentText="Пользователей не найдено"
                     loading={serchUsersLoading}
-                    onSearch={value => setSearchValue(value)}
+                    onSearch={value => setSearchValue(value.trim())}
+                    onDropdownVisibleChange={handleDropdownVisibleUsersChange}
                     onChange={value => setUserIDs(value)}
                     filterOption={false}
                     options={userOptions.map(data => {
@@ -111,6 +142,20 @@ const Notifies = () => {
                     <DatePicker disablePrevDate placeholder="Выберите дату" className={styles.notifiesDelayItem} value={date} onChange={e => setDate(e)} />
                     <TimePicker placeholder="Выберите время" format="HH:mm" className={styles.notifiesDelayItem} value={time} onChange={e => setTime(e)} />
                 </div>}
+
+                <Select
+                    placeholder="Тип уведомления"
+                    notContentText="Типов уведомления не найдено"
+                    loading={notifyTypesIsLoading}
+                    onDropdownVisibleChange={handleDropdownVisibleTypeChange}
+                    onChange={value => setType(value)}
+                    options={typeOptions.map(data => {
+                        return {
+                            label: data.type,
+                            value: data.id
+                        }
+                    })}
+                />
 
                 <Textarea value={text} setValue={setText} placeholder="Сообщение" />
 

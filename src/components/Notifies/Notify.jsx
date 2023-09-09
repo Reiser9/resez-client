@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
@@ -9,17 +10,22 @@ import { removeNotify } from '../../redux/slices/notify';
 import { getNotifyByType } from '../../utils/getNotifyByType';
 
 const Notify = ({data}) => {
-    const {id, title, text, type, time} = data;
+    const {id, title, text, type, to, time} = data;
 
     const notifyTimeout = React.useRef();
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const remove = React.useCallback(() => {
         dispatch(removeNotify(id));
     }, [dispatch, id]);
 
     const removeOnClick = () => {
+        if(to){
+            navigate(to);
+        }
+
         remove();
         clearTimeout(notifyTimeout.current);
     }

@@ -7,6 +7,7 @@ import useRequest from './useRequest';
 import useNotify from './useNotify';
 
 import { setUserBlocked } from '../redux/slices/user';
+import { addNotifyInStart } from '../redux/slices/notify';
 
 const useSocket = () => {
     const {user, sessionId} = useSelector(state => state.user);
@@ -26,16 +27,13 @@ const useSocket = () => {
         socket.connect();
         
         socket.on("notify", (data) => {
-            console.log(data.notify);
+            dispatch(addNotifyInStart(data.notify));
+            alertNotify("Информация", "Новое уведомление", "info", "/notifies", 4000);
         });
 
-        socket.on("session", () => {
+        socket.on("endSession", () => {
             clearLocalData();
             alertNotify("Сессия завершена", "Кто-то завершил вашу сессию", "error");
-        });
-
-        socket.on("message", (data) => {
-            console.log(data);
         });
 
         socket.on("blocked", () => {

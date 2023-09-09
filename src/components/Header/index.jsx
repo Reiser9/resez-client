@@ -132,7 +132,7 @@ const Header = ({empty = false}) => {
 
                                         Уведомления
 
-                                        {unreadNotifiesCount > 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 10 ? "9+" : unreadNotifiesCount}</span>}
+                                        {unreadNotifiesCount > 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 9 ? "9+" : unreadNotifiesCount}</span>}
                                     </Link>
                                 </> :
                                 <Link to="/profile" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>

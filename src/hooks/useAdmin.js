@@ -24,6 +24,7 @@ import useAlert from './useAlert';
 const useAdmin = () => {
     const [error, setError] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [notifyTypesIsLoading, setNotifyTypesIsLoading] = React.useState(false);
     const [themeByIdIsLoading, setThemeByIdIsLoading] = React.useState(false);
     const [serchUsersLoading, setSerchUsersLoading] = React.useState(false);
     const [userIsLoading, setUserIsLoading] = React.useState([]);
@@ -71,6 +72,7 @@ const useAdmin = () => {
     }
 
     const serchUsers = async (query = "", isShortInfo = false) => {
+        setError(false);
         setSerchUsersLoading(true);
 
         const response = await request(REQUEST_TYPE.ADMIN, `/user?search=${query}&isShortInfo=${isShortInfo}`, HTTP_METHODS.GET, true);
@@ -80,7 +82,7 @@ const useAdmin = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => serchUsers(query));
+            return errorController(response, () => serchUsers(query, isShortInfo));
         }
 
         return response;
@@ -246,7 +248,7 @@ const useAdmin = () => {
         successCallback();
     }
 
-    const sendNotify = async (title, sender, userIDs, date, content, successCallback = () => {}) => {
+    const sendNotify = async (title, sender, userIDs, date, content, type = 1, successCallback = () => {}) => {
         setError(false);
 
         setIsLoading(true);
@@ -257,7 +259,7 @@ const useAdmin = () => {
             userIDs: userIDs || [],
             date,
             content,
-            notifyTypeId: 1
+            notifyTypeId: type
         });
 
         setIsLoading(false);
@@ -270,9 +272,27 @@ const useAdmin = () => {
         successCallback();
     }
 
+    const getNotifyTypes = async () => {
+        setError(false);
+        setNotifyTypesIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, `/notify-type`, HTTP_METHODS.GET, true);
+
+        setNotifyTypesIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, getNotifyTypes);
+        }
+        
+        return response;
+    }
+
     return {
         error,
         isLoading,
+        notifyTypesIsLoading,
         themeByIdIsLoading,
         serchUsersLoading,
         userIsLoading,
@@ -288,7 +308,8 @@ const useAdmin = () => {
         createTheme,
         editTheme,
         removeTheme,
-        sendNotify
+        sendNotify,
+        getNotifyTypes
     }
 }
 

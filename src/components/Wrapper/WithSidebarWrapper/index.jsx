@@ -31,7 +31,6 @@ const WithSidebarWrapper = ({container = "basic", children}) => {
                 <SidebarLink onClick={hideSidebar} text="Тесты" icon={<Tests />} to="/tests" />
                 <SidebarLink onClick={hideSidebar} text="Мессенджер" icon={<Message />} to="/message" />
                 <SidebarLink onClick={hideSidebar} text="Полезная информация" icon={<Fire />} to="/info" />
-                <SidebarLink onClick={hideSidebar} text="Достижения" icon={<Trophy />} to="/achievements" />
                 <SidebarLink onClick={hideSidebar} text="Магазин" icon={<Store />} to="/store" />
                 {user?.permissions?.length > 0 &&<SidebarLink onClick={hideSidebar} text="Админка" icon={<Code />} to="/admin" />}
             </aside>

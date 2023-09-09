@@ -5,14 +5,16 @@ import styles from './index.module.css';
 
 import { Data } from '../Icons';
 
-const NotContent = ({text, icon, ...props}) => {
+const NotContent = ({text, icon, children, ...props}) => {
     return (
         <div className={styles.emptyContent} {...props}>
             <div className={styles.emptyImgInner}>
                 {icon ? icon : <Data />}
             </div>
 
-            <p className={typography.text2}>{text}</p>
+            {text && <p className={typography.text2}>{text}</p>}
+
+            {children}
         </div>
     )
 }

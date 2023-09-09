@@ -19,10 +19,10 @@ import File from '../../../../components/File';
 
 const ProfileMain = () => {
     const [moreProfileMenu, setMoreProfileMenu] = React.useState(false);
-    const {user} = useSelector(state => state.user);
+    const {user, profileData} = useSelector(state => state.user);
 
     const {copyTextWithNotify} = useUtils();
-    const {changeAvatar, deleteAvatar} = useUser();
+    const {changeAvatar, deleteAvatar, getProfileInfo} = useUser();
 
     const profileMenuMoreRef = React.useRef(null);
 
@@ -49,6 +49,7 @@ const ProfileMain = () => {
     };
   
     React.useEffect(() => {
+        getProfileInfo();
         document.addEventListener("click", handleOutsideClick);
     
         return () => {
@@ -57,6 +58,7 @@ const ProfileMain = () => {
     }, []);
 
     const {nickname, avatar, theme} = user;
+    const {firstName, lastName, birthDate, gender} = profileData;
 
     return (
         <div className={styles.content}>
@@ -79,7 +81,7 @@ const ProfileMain = () => {
 
                 <div className={styles.profileInfoInner}>
                     <div className={styles.profileInfoNameInner}>
-                        <h1 className={typography.h3}>Егор Ветров</h1>
+                        {firstName && lastName && <h1 className={typography.h3}>{firstName} {lastName}</h1>}
 
                         <Tooltip title="Скопировать" placement="bottom">
                             <p className={`${typography.text2} ${styles.profileInfoNick}`} onClick={() => copyTextWithNotify(nickname, "Ник скопирован")}>{nickname}</p>

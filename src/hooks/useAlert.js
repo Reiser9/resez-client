@@ -8,7 +8,7 @@ const useAlert = () => {
     
     const {notifiesLocal} = useSelector(state => state.notify);
 
-    const alertNotify = (title, text, type = "success", time = 2000) => {
+    const alertNotify = (title, text, type = "success", to = "", time = 2000) => {
         if(notifiesLocal.length >= 3){
             return;
         }
@@ -20,6 +20,7 @@ const useAlert = () => {
             title,
             text,
             type,
+            to,
             time
         }
 
