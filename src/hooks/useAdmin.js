@@ -251,11 +251,18 @@ const useAdmin = () => {
     const sendNotify = async (title, sender, userIDs, date, content, type = 1, successCallback = () => {}) => {
         setError(false);
 
+        const titleTrim = title?.trim();
+        const senderTrim = sender?.trim();
+
+        if(!titleTrim){
+            return alertNotify("Предупреждение", "Заголовок не может быть пустым", "warn");
+        }
+
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.ADMIN, "/notify", HTTP_METHODS.POST, true, {
             title,
-            sender,
+            sender: senderTrim,
             userIDs: userIDs || [],
             date,
             content,

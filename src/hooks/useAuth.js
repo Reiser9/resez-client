@@ -193,6 +193,8 @@ const useAuth = () => {
 
         dispatch(setIsAuth(true));
         dispatch(initUser(data.user));
+        dispatch(initSessionId(data.sessionId));
+        dispatch(initCodeData(data.verificationCodeData));
 
         localStorage.setItem("accessToken", data.accessToken);
 

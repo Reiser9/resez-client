@@ -22,6 +22,9 @@ const File = ({
 }) => {
     const [preview, setPreview] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(false);
+    const [fileMenu, setFileMenu] = React.useState(false);
+
+    const fileMenuRef = React.useRef(null);
 
     const onInputChange = (e) => {
         if(!e.target.files[0]){
@@ -43,17 +46,39 @@ const File = ({
             loadedCallback(e.target.files[0], () => {
                 setIsLoading(false);
                 e.target.value = null;
+                closeFileMenu();
             });
         };
     }
 
-    const deleteCallbackHandler = () => {
-        setIsLoading(true);
-        deleteCallback(() => setIsLoading(false));
+    const closeFileMenu = () => {
+        setFileMenu(false);
     }
 
+    const deleteCallbackHandler = () => {
+        setIsLoading(true);
+        deleteCallback(() => {
+            setIsLoading(false);
+            closeFileMenu();
+        });
+    }
+
+    const handleOutsideClick = (e) => {
+        if (fileMenuRef.current && !fileMenuRef.current.contains(e.target)) {
+            closeFileMenu();
+        }
+    };
+
+    React.useEffect(() => {
+        document.addEventListener("click", handleOutsideClick);
+    
+        return () => {
+            document.removeEventListener("click", handleOutsideClick);
+        };
+    }, []);
+
     return (
-        <div className={styles.inputInner}>
+        <div className={`${styles.inputInner}${fileMenu ? ` ${styles.active}` : ""}`} onClick={() => setFileMenu(prev => !prev)} ref={fileMenuRef}>
             <input
                 id={id}
                 type="file"
@@ -62,13 +87,17 @@ const File = ({
                 onChange={onInputChange}
             />
 
-            <div className={`${styles.fileLabel} ${inputType[type]}`}>
+            <div className={`${styles.fileLabel} ${inputType[type]}`} onClick={e => e.stopPropagation()}>
                 <label htmlFor={id} className={styles.fileLabelHoverButton}>
                     <Upload />
+
+                    <p className={styles.fileLabelText}>Загрузить</p>
                 </label>
 
                 {withDelete && <button className={`${styles.fileLabelHoverButton} ${styles.delete}`} onClick={deleteCallbackHandler}>
                     <Delete />
+
+                    <p className={styles.fileLabelText}>Удалить</p>
                 </button>}
 
                 {withPreview && preview && <img src={preview} alt="preview" className={styles.fileLabelImg} />}

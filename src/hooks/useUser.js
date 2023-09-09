@@ -161,11 +161,14 @@ const useUser = () => {
     const changeData = async (firstName, lastName, birthDate, gender) => {
         setError(false);
 
+        const firstNameTrim = firstName?.trim();
+        const lastNameTrim = lastName?.trim();
+
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.USER, "/update-profile", HTTP_METHODS.PUT, true, {
-            firstName,
-            lastName,
+            firstName: firstNameTrim,
+            lastName: lastNameTrim,
             birthDate,
             gender
         });

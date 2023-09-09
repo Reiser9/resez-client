@@ -7,7 +7,7 @@ import styles from './index.module.css';
 
 import { CONFIG } from '../../../../consts/CONFIG';
 
-import { Block, Delete, DotsHorizontal, Edit, Eye, Friends, Message, User } from '../../../../components/Icons';
+import { Block, Delete, DotsHorizontal, Edit, Eye, Friends, Message, Qr, User } from '../../../../components/Icons';
 
 import useUser from '../../../../hooks/useUser';
 import useUtils from '../../../../hooks/useUtils';
@@ -58,7 +58,7 @@ const ProfileMain = () => {
     }, []);
 
     const {nickname, avatar, theme} = user;
-    const {firstName, lastName, birthDate, gender} = profileData;
+    const {firstName, lastName} = profileData;
 
     return (
         <div className={styles.content}>
@@ -89,13 +89,15 @@ const ProfileMain = () => {
                     </div>
 
                     <div className={styles.profileInfoItem}>
-                        <Button auto type="light">
-                            Редактировать
-                        </Button>
-
                         <Tooltip title="Просмотр профиля">
                             <IconButton type="light">
                                 <Eye />
+                            </IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="QR-код профиля">
+                            <IconButton type="light">
+                                <Qr />
                             </IconButton>
                         </Tooltip>
 

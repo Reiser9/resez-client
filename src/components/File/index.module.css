@@ -2,6 +2,25 @@
     width: 100%;
     height: 100%;
     position: relative;
+    z-index: 3;
+}
+
+@media (any-hover: hover) {
+    .inputInner:hover .fileLabel{
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .fileLabelHoverButton{
+        cursor: pointer;
+    }
+}
+
+@media (any-hover: none) {
+    .inputInner.active .fileLabel{
+        opacity: 1;
+        pointer-events: all;
+    }
 }
 
 .file{
@@ -24,11 +43,42 @@
     justify-content: center;
     gap: 4px;
     opacity: 0;
+    pointer-events: none;
     transition: .2s linear;
 }
 
-.fileLabel:hover{
-    opacity: 1;
+.fileLabel.avatar{
+    border-radius: 50%;
+}
+
+.fileLabelText{
+    display: none;
+}
+
+@media (any-hover: none) {
+    .fileLabel.avatar, .fileLabel{
+        border-radius: 4px;
+        top: calc(100% + 8px);
+        left: 0;
+        width: 200px;
+        border: 1px solid var(--line);
+        background: var(--white);
+        height: auto;
+        padding: 0.8rem 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+
+    .fileLabelText{
+        display: inline-block;
+    }
+}
+
+@media (max-width: 440px) {
+    .fileLabelText{
+        font-size: 1.4rem;
+    }
 }
 
 .fileLabelHoverButton{
@@ -40,7 +90,6 @@
     justify-content: center;
     flex-shrink: 0;
     background: var(--main);
-    cursor: pointer;
     transition: .2s linear;
 }
 
@@ -60,8 +109,46 @@
     stroke: #fff;
 }
 
-.fileLabel.avatar{
-    border-radius: 50%;
+@media (any-hover: none) {
+    .fileLabelHoverButton{
+        width: 100%;
+        height: auto;
+        padding: 0.8rem 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        border-radius: 0;
+        background: transparent;
+        color: var(--text);
+    }
+
+    .fileLabelHoverButton:hover{
+        background: var(--lighten);
+        opacity: 1;
+        color: var(--main);
+    }
+
+    .fileLabelHoverButton svg path{
+        stroke: var(--text);
+    }
+
+    .fileLabelHoverButton:hover svg path{
+        stroke: var(--main);
+    }
+
+    .fileLabelHoverButton.delete{
+        background: transparent;
+    }
+
+    .fileLabelHoverButton.delete:hover{
+        background: var(--errorB);
+        color: var(--error);
+    }
+
+    .fileLabelHoverButton.delete:hover svg path{
+        stroke: var(--error)
+    }
 }
 
 .fileLabelImg{
