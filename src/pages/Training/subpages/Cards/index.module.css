@@ -39,6 +39,7 @@
 .front{
     transform: perspective(600px) rotateY(0deg);
     opacity: 1;
+    z-index: 4;
 }
 
 .back{
@@ -54,4 +55,27 @@
 .rotate .back{
     transform: perspective(600px) rotateY(-180deg);
     opacity: 1;
+    z-index: 4;
+}
+
+.cardVolume{
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 32px;
+    height: 32px;
+    background: var(--input);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 4
+}
+
+.cardVolume:hover{
+    opacity: 0.75;
+}
+
+.cardVolume svg{
+    width: 20px;
 }

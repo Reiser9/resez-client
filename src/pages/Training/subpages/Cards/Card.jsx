@@ -3,12 +3,34 @@ import { useSwipeable } from 'react-swipeable';
 
 import styles from './index.module.css';
 
+import {Volume} from '../../../../components/Icons';
+
 const Card = ({text = "", answer = ""}) => {
     const [rotate, setRotate] = React.useState(false);
     const [isDragging, setIsDragging] = React.useState(false);
     const [callback, setCallback] = React.useState("");
     const [position, setPosition] = React.useState({ x: 0, y: 0, rotate: 0 });
     const [color, setColor] = React.useState({r: 0, g: 0, b: 0});
+
+    const [isSpeaking, setIsSpeaking] = React.useState(false);
+    const [speech, setSpeech] = React.useState(null);
+
+    const speakMessage = (text) => {
+        if('speechSynthesis' in window) {
+            if (isSpeaking) {
+                speechSynthesis.cancel();
+                setIsSpeaking(false);
+                setSpeech(null);
+            } else {
+                const newSpeech = new SpeechSynthesisUtterance(text);
+                speechSynthesis.speak(newSpeech);
+                setIsSpeaking(true);
+                setSpeech(newSpeech);
+            }
+        }else {
+            console.log("Ваш браузер не поддерживает Text-to-Speech");
+        }
+    };
 
     const handlers = useSwipeable({
         onSwipeStart: () => {
@@ -73,10 +95,24 @@ const Card = ({text = "", answer = ""}) => {
             onClick={() => setRotate(prev => !prev)}
         >
             <div className={styles.front}>
+                <button className={styles.cardVolume} onClick={e => {
+                    e.stopPropagation();
+                    speakMessage(text);
+                }}>
+                    <Volume />
+                </button>
+
                 {text}
             </div>
 
             <div className={styles.back}>
+                <button className={styles.cardVolume} onClick={e => {
+                    e.stopPropagation();
+                    speakMessage(answer);
+                }}>
+                    <Volume />
+                </button>
+
                 {answer}
             </div>
         </div>
