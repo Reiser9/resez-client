@@ -186,6 +186,18 @@ input::placeholder{
     }
 }
 
+.carousel{
+    width: 100%;
+}
+
+.carousel div{
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 4px;
+}
+
 /* Custom checkbox antd */
 .ant-checkbox-inner{
     background: var(--input)!important;
