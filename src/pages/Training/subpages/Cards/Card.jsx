@@ -3,34 +3,42 @@ import { useSwipeable } from 'react-swipeable';
 
 import styles from './index.module.css';
 
-import {Volume} from '../../../../components/Icons';
+import CardPart from './CardPart';
 
-const Card = ({text = "", answer = ""}) => {
+const offsetTranslateCard = 125;
+
+const Card = ({text = "", answer = "", wrongText = "Не знаю", correctText = "Знаю"}) => {
     const [rotate, setRotate] = React.useState(false);
     const [isDragging, setIsDragging] = React.useState(false);
-    const [callback, setCallback] = React.useState("");
     const [position, setPosition] = React.useState({ x: 0, y: 0, rotate: 0 });
-    const [color, setColor] = React.useState({r: 0, g: 0, b: 0});
+    const [correct, setCorrect] = React.useState(0);
+    const [wrong, setWrong] = React.useState(0);
 
-    const [isSpeaking, setIsSpeaking] = React.useState(false);
-    const [speech, setSpeech] = React.useState(null);
+    React.useEffect(() => {
+        const handleBeforeUnload = () => {
+            speechSynthesis.cancel();
+        };
+      
+        window.addEventListener("beforeunload", handleBeforeUnload);
 
-    const speakMessage = (text) => {
-        if('speechSynthesis' in window) {
-            if (isSpeaking) {
-                speechSynthesis.cancel();
-                setIsSpeaking(false);
-                setSpeech(null);
-            } else {
-                const newSpeech = new SpeechSynthesisUtterance(text);
-                speechSynthesis.speak(newSpeech);
-                setIsSpeaking(true);
-                setSpeech(newSpeech);
-            }
-        }else {
-            console.log("Ваш браузер не поддерживает Text-to-Speech");
+        return () => {
+            handleBeforeUnload();
+            window.removeEventListener("beforeunload", handleBeforeUnload);
         }
-    };
+    }, []);
+
+    // Карточка
+    const clearCard = () => {
+        setPosition({
+            x: 0,
+            y: 0,
+            rotate: 0
+        });
+
+        setIsDragging(false);
+        setCorrect(0);
+        setWrong(0);
+    }
 
     const handlers = useSwipeable({
         onSwipeStart: () => {
@@ -42,36 +50,33 @@ const Card = ({text = "", answer = ""}) => {
             setPosition({
                 x: deltaX,
                 y: deltaY,
-                rotate: deltaX / 14
+                rotate: deltaX / 18
             });
 
-            setColor({
-                r: deltaX < 0 ? -deltaX : 0,
-                g: deltaX > 0 ? deltaX : 0,
-                b: 0
-            });
+            if(deltaX > 0){
+                setCorrect(deltaX > offsetTranslateCard ? 1 : deltaX / offsetTranslateCard);
+                setWrong(0);
+            }
+            else{
+                setWrong(deltaX < -offsetTranslateCard ? 1 : -deltaX / offsetTranslateCard);
+                setCorrect(0);
+            }
         },
         onSwiped: (data) => {
-            const {deltaX, deltaY} = data;
+            const {deltaX} = data;
 
-            setCallback(deltaX > 125 ? "Вправо" : deltaX < -125 ? "Влево" : "");
-            deltaX > 125 ? console.log("Правильно") : deltaX < -125 && console.log("Неверно")
+            deltaX > offsetTranslateCard ? console.log("Вправо") : deltaX < -offsetTranslateCard && console.log("Влево");
 
-            setColor({
-                r: 0,
-                g: 0,
-                b: 0
-            });
-
-            setPosition({
-                x: 0,
-                y: 0,
-                rotate: 0
-            });
-
-            setIsDragging(false);
+            clearCard();
         },
-        preventScrollOnSwipe: true
+        onTap: () => {
+            setRotate(prev => !prev);
+        },
+        onTouchEndOrOnMouseUp: () => {
+            clearCard();
+        },
+        preventScrollOnSwipe: true,
+        trackMouse: true
     });
 
     const myRef = React.useRef();
@@ -82,6 +87,10 @@ const Card = ({text = "", answer = ""}) => {
         myRef.current = el;
     }
 
+    const rotateHandler = () => {
+        setRotate(prev => !prev);
+    }
+
     return (
         <div className={`${styles.card}${!isDragging ? ` ${styles.cardTransition}` : ""}${rotate ? ` ${styles.rotate}` : ""}`} {...handlers} ref={refPassthrough}
             style={{
@@ -90,30 +99,18 @@ const Card = ({text = "", answer = ""}) => {
                 top: position.y,
                 transform: `rotate(${position.rotate}deg) perspective(600px)${rotate ? " rotateY(180deg)" : ""}`,
                 userSelect: "none",
-                background: `rgba(${color.r}, ${color.g}, ${color.b})`
+                cursor: "grab"
             }}
-            onClick={() => setRotate(prev => !prev)}
         >
-            <div className={styles.front}>
-                <button className={styles.cardVolume} onClick={e => {
-                    e.stopPropagation();
-                    speakMessage(text);
-                }}>
-                    <Volume />
-                </button>
+            <CardPart onClick={rotateHandler} text={text} className={styles.front} />
+            <CardPart onClick={rotateHandler} text={answer} className={styles.back} />
 
-                {text}
+            <div className={`${styles.verdict} ${styles.wrong}${!isDragging ? ` ${styles.cardTransition}` : ""}`} style={{opacity: wrong}}>
+                {wrongText}
             </div>
 
-            <div className={styles.back}>
-                <button className={styles.cardVolume} onClick={e => {
-                    e.stopPropagation();
-                    speakMessage(answer);
-                }}>
-                    <Volume />
-                </button>
-
-                {answer}
+            <div className={`${styles.verdict} ${styles.correct}${!isDragging ? ` ${styles.cardTransition}` : ""}`} style={{opacity: correct}}>
+                {correctText}
             </div>
         </div>
     )

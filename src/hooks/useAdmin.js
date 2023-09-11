@@ -233,9 +233,7 @@ const useAdmin = () => {
 
         setThemeIsLoading(prev => [...prev, id]);
 
-        const response = await request(REQUEST_TYPE.ADMIN, "/theme", HTTP_METHODS.DELETE, true, {
-            id
-        });
+        const response = await request(REQUEST_TYPE.ADMIN, `/theme/${id}`, HTTP_METHODS.DELETE, true);
 
         setThemeIsLoading(prev => prev.filter(item => item !== id));
 
