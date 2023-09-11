@@ -28,6 +28,14 @@
     stroke: var(--main);
 }
 
+.danger .emptyImgInner{
+    background: var(--errorB);
+}
+
+.danger .emptyImgInner svg path{
+    stroke: var(--error);
+}
+
 @media (max-width: 480px) {
     .emptyImgInner{
         width: 48px;

@@ -7,7 +7,8 @@ import {
     BASE_API_URL_THEME,
     BASE_API_URL_NOTIFY,
     BASE_API_URL_ADMIN,
-    BASE_API_URL_USER
+    BASE_API_URL_USER,
+    BASE_API_URL_COLLECTION
 } from './API_URLS';
 
 export const authRequest = axios.create({
@@ -42,5 +43,10 @@ export const adminRequest = axios.create({
 
 export const emptyRequest = axios.create({
     baseURL: BASE_API_URL_EMPTY,
+    withCredentials: true
+});
+
+export const collectionRequest = axios.create({
+    baseURL: BASE_API_URL_COLLECTION,
     withCredentials: true
 });

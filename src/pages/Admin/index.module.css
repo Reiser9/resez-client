@@ -60,7 +60,7 @@
     pointer-events: none;
 }
 
-.appearanceThemeCheckbox, .notifiesCheckbox{
+.appearanceThemeCheckbox{
     color: var(--text);
 }
 

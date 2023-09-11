@@ -10,6 +10,7 @@ import {
     themeRequest,
     userRequest,
     adminRequest,
+    collectionRequest,
     notifyRequest
 } from '../consts/AXIOS';
 
@@ -40,6 +41,7 @@ const useRequest = () => {
         [REQUEST_TYPE.THEME, themeRequest],
         [REQUEST_TYPE.NOTIFY, notifyRequest],
         [REQUEST_TYPE.ADMIN, adminRequest],
+        [REQUEST_TYPE.COLLECTION, collectionRequest],
         [REQUEST_TYPE.EMPTY, emptyRequest]
     ]);
 

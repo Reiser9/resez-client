@@ -110,7 +110,7 @@ const AddTheme = ({edit = false}) => {
                     </Input>
                 </ColorPicker>
 
-                <Checkbox checked={customSecondColor} onChange={e => setCustomSecondColor(e.target.checked)} className={styles.appearanceThemeCheckbox}>
+                <Checkbox checked={customSecondColor} onChange={e => setCustomSecondColor(e.target.checked)}>
                     Сгенировать цвет автоматически
                 </Checkbox>
 
@@ -120,11 +120,11 @@ const AddTheme = ({edit = false}) => {
                     </Input>
                 </ColorPicker>}
 
-                <Checkbox checked={themeRating} onChange={e => setThemeRating(e.target.checked)} className={styles.appearanceThemeCheckbox}>
+                <Checkbox checked={themeRating} onChange={e => setThemeRating(e.target.checked)}>
                     Оценка темы пользователями
                 </Checkbox>
 
-                <Checkbox checked={preview} onChange={e => setPreview(e.target.checked)} className={styles.appearanceThemeCheckbox}>
+                <Checkbox checked={preview} onChange={e => setPreview(e.target.checked)}>
                     Предпросмотр
                 </Checkbox>
 

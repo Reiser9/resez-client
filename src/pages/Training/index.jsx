@@ -14,6 +14,7 @@ import InnerSidebar from '../../components/InnerSidebar';
 
 const TrainingMain = React.lazy(() => import("./subpages/TrainingMain"));
 const Cards = React.lazy(() => import("./subpages/Cards"));
+const AddCardCollection = React.lazy(() => import("./subpages/AddCardCollection"));
 
 const Training = () => {
     return (
@@ -23,7 +24,8 @@ const Training = () => {
                     <div className={pws.content}>
                         <Routes>
                             <Route index element={withSuspense(<TrainingMain />)} />
-                            <Route path="/cards" element={withSuspense(<Cards />)} />
+                            <Route path="/cards/*" element={withSuspense(<Cards />)} />
+                            <Route path="/cards/add" element={withSuspense(<AddCardCollection />)} />
                             <Route path="*" element={<Navigate to={""} />} />
                         </Routes>
                     </div>

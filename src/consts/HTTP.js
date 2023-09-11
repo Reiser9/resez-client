@@ -13,5 +13,6 @@ export const REQUEST_TYPE = {
     THEME: 'theme',
     NOTIFY: 'notify',
     ADMIN: 'admin',
+    COLLECTION: 'collection',
     EMPTY: 'empty'
 };

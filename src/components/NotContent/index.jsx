@@ -5,9 +5,9 @@ import styles from './index.module.css';
 
 import { Data } from '../Icons';
 
-const NotContent = ({text, icon, children, ...props}) => {
+const NotContent = ({text, icon, danger = false, children, ...props}) => {
     return (
-        <div className={styles.emptyContent} {...props}>
+        <div className={`${styles.emptyContent}${danger ? ` ${styles.danger}` : ""}`} {...props}>
             <div className={styles.emptyImgInner}>
                 {icon ? icon : <Data />}
             </div>

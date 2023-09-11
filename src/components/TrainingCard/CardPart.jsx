@@ -2,9 +2,9 @@ import React from 'react';
 
 import styles from './index.module.css';
 
-import { speakText } from '../../../../utils/speakText';
+import { speakText } from '../../utils/speakText';
 
-import { Volume } from '../../../../components/Icons';
+import { Volume } from '../Icons';
 
 const CardPart = ({
     text = "",

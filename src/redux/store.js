@@ -8,6 +8,7 @@ import appSlice from "./slices/app";
 import sessionSlice from "./slices/session";
 import themeSlice from "./slices/theme";
 import adminSlice from "./slices/admin";
+import trainingSlice from "./slices/training";
 
 export const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
         app: appSlice,
         session: sessionSlice,
         theme: themeSlice,
-        admin: adminSlice
+        admin: adminSlice,
+        training: trainingSlice
     },
 });

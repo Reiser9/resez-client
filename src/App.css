@@ -207,6 +207,10 @@ input::placeholder{
     background: var(--main)!important;
 }
 
+.ant-checkbox-wrapper{
+    color: var(--text);
+}
+
 /* Custom select antd */
 .ant-select-selection-item, .ant-select-selection-placeholder{
     color: var(--text)!important;

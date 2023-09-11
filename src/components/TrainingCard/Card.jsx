@@ -7,12 +7,22 @@ import CardPart from './CardPart';
 
 const offsetTranslateCard = 125;
 
-const Card = ({text = "", answer = "", wrongText = "Не знаю", correctText = "Знаю"}) => {
+const Card = ({
+    data,
+    wrongText = "Не знаю",
+    correctText = "Знаю",
+    active = false,
+    prev = false,
+    correctCallback = () => {},
+    wrongCallback = () => {},
+}) => {
     const [rotate, setRotate] = React.useState(false);
     const [isDragging, setIsDragging] = React.useState(false);
     const [position, setPosition] = React.useState({ x: 0, y: 0, rotate: 0 });
     const [correct, setCorrect] = React.useState(0);
     const [wrong, setWrong] = React.useState(0);
+
+    const [positive, setPositive] = React.useState(false);
 
     React.useEffect(() => {
         const handleBeforeUnload = () => {
@@ -27,7 +37,6 @@ const Card = ({text = "", answer = "", wrongText = "Не знаю", correctText 
         }
     }, []);
 
-    // Карточка
     const clearCard = () => {
         setPosition({
             x: 0,
@@ -65,7 +74,16 @@ const Card = ({text = "", answer = "", wrongText = "Не знаю", correctText 
         onSwiped: (data) => {
             const {deltaX} = data;
 
-            deltaX > offsetTranslateCard ? console.log("Вправо") : deltaX < -offsetTranslateCard && console.log("Влево");
+            if(deltaX > offsetTranslateCard){
+                correctCallback();
+                setPositive(true);
+                speechSynthesis.cancel();
+            }
+            else if(deltaX < -offsetTranslateCard){
+                wrongCallback();
+                setPositive(false);
+                speechSynthesis.cancel();
+            }
 
             clearCard();
         },
@@ -91,8 +109,12 @@ const Card = ({text = "", answer = "", wrongText = "Не знаю", correctText 
         setRotate(prev => !prev);
     }
 
+    const {text, answer} = data;
+
     return (
-        <div className={`${styles.card}${!isDragging ? ` ${styles.cardTransition}` : ""}${rotate ? ` ${styles.rotate}` : ""}`} {...handlers} ref={refPassthrough}
+        <div
+            className={`${styles.card}${active ? ` ${styles.active}` : ""}${prev ? positive ? ` ${styles.swipeRight}` : ` ${styles.swipeLeft}` : ""}${!isDragging ? ` ${styles.cardTransition}` : ""}${rotate ? ` ${styles.rotate}` : ""}`}
+            ref={refPassthrough}
             style={{
                 position: "absolute",
                 left: position.x,
@@ -101,6 +123,7 @@ const Card = ({text = "", answer = "", wrongText = "Не знаю", correctText 
                 userSelect: "none",
                 cursor: "grab"
             }}
+            {...handlers}
         >
             <CardPart onClick={rotateHandler} text={text} className={styles.front} />
             <CardPart onClick={rotateHandler} text={answer} className={styles.back} />

@@ -105,13 +105,13 @@ const Notifies = () => {
             <div className={styles.notifiesForm}>
                 <Input value={title} setValue={setTitle} placeholder="Заголовок" />
 
-                <Checkbox className={styles.notifiesCheckbox} checked={sendAnonim} onChange={e => setSendAnonim(e.target.checked)}>
+                <Checkbox checked={sendAnonim} onChange={e => setSendAnonim(e.target.checked)}>
                     Отправить от имени
                 </Checkbox>
 
                 {sendAnonim && <Input value={author} setValue={setAuthor} placeholder="От кого отправить" />}
 
-                <Checkbox className={styles.notifiesCheckbox} checked={sendForOne} onChange={e => setSendForOne(e.target.checked)}>
+                <Checkbox checked={sendForOne} onChange={e => setSendForOne(e.target.checked)}>
                     Отправить пользователю
                 </Checkbox>
 
@@ -134,7 +134,7 @@ const Notifies = () => {
                     })}
                 />}
 
-                <Checkbox className={styles.notifiesCheckbox} checked={delayedSend} onChange={e => setDelayedSend(e.target.checked)}>
+                <Checkbox checked={delayedSend} onChange={e => setDelayedSend(e.target.checked)}>
                     Отложенная отправка
                 </Checkbox>
 

@@ -1,0 +1,113 @@
+.addCardCollection, .addCardCollectionForm{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.addCardCollectionWrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.addCardCollectionTitleInner{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.addCardCollectionForm{
+    max-width: 600px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.addCardCollectionPairs{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.addCardCollectionPairWrap{
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    position: relative;
+}
+
+@media (max-width: 560px) {
+    .addCardCollectionPairWrap{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+.addCardCollectionPairSwap{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--lighten);
+}
+
+@media (max-width: 560px) {
+    .addCardCollectionPairSwap{
+        transform: translate(-50%, -50%) rotate(90deg);
+    }
+}
+
+.addCardCollectionPairSwap.disable{
+    pointer-events: none;
+    opacity: .5;
+}
+
+.addCardCollectionPairSwap svg{
+    width: 20px;
+}
+
+.addCardCollectionPairSwap svg path{
+    stroke: var(--main);
+}
+
+.addCardCollectionPair{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.addCardCollectionPair:nth-last-child(2) .addCardCollectionPairDelete{
+    filter: grayscale(1);
+}
+
+.addCardCollectionPairInput{
+    width: calc(100% / 2 - 20px / 2);
+}
+
+.addCardCollectionPairDelete{
+    flex-shrink: 0;
+}
+
+@media (max-width: 560px) {
+    .addCardCollectionPair{
+        flex-wrap: wrap;
+    }
+
+    .addCardCollectionPairInput, .addCardCollectionPair .addCardCollectionPairDelete{
+        width: 100%;
+    }
+}
