@@ -7,6 +7,7 @@ import styles from './index.module.css';
 
 import Card from '../../../../components/TrainingCard/Card';
 import BackButton from '../../../../components/BackButton';
+import Button from '../../../../components/Button';
 
 const MemoTypeCards = () => {
     const [currentIdCard, setCurrentIdCard] = React.useState(0);
@@ -25,6 +26,12 @@ const MemoTypeCards = () => {
     const correctAnswer = () => {
         setCurrentIdCard(prev => prev + 1);
         setTotalCorrect(prev => prev + 1);
+    }
+
+    const restart = () => {
+        setCurrentIdCard(0);
+        setTotalCorrect(0);
+        setTotalWrong(0);
     }
 
     React.useEffect(() => {
@@ -62,6 +69,10 @@ const MemoTypeCards = () => {
 
                     <p>Правильно: {totalCorrect}</p>
                     <p>Неверно: {totalWrong}</p>
+
+                    <Button auto type="light" onClick={restart}>
+                        Начать заново
+                    </Button>
                 </div>
             </div>
         </div>

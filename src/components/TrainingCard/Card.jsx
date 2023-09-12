@@ -18,6 +18,7 @@ const Card = ({
 }) => {
     const [rotate, setRotate] = React.useState(false);
     const [isDragging, setIsDragging] = React.useState(false);
+    const [isSwipingInClick, setIsSwipingInClick] = React.useState(false);
     const [position, setPosition] = React.useState({ x: 0, y: 0, rotate: 0 });
     const [correct, setCorrect] = React.useState(0);
     const [wrong, setWrong] = React.useState(0);
@@ -62,6 +63,8 @@ const Card = ({
                 rotate: deltaX / 18
             });
 
+            setIsSwipingInClick(true);
+
             if(deltaX > 0){
                 setCorrect(deltaX > offsetTranslateCard ? 1 : deltaX / offsetTranslateCard);
                 setWrong(0);
@@ -84,6 +87,10 @@ const Card = ({
                 setPositive(false);
                 speechSynthesis.cancel();
             }
+
+            setTimeout(() => {
+                setIsSwipingInClick(false);
+            }, 100);
 
             clearCard();
         },
@@ -116,7 +123,12 @@ const Card = ({
                 userSelect: "none",
                 cursor: "grab"
             }}
-            onClick={() => setRotate(prev => !prev)}
+            onClick={() => {
+                    if(!isSwipingInClick){
+                        setRotate(prev => !prev)
+                    }
+                }
+            }
             {...handlers}
         >
             <CardPart text={question} className={styles.front} />
