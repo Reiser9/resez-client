@@ -87,9 +87,6 @@ const Card = ({
 
             clearCard();
         },
-        onTap: () => {
-            setRotate(prev => !prev);
-        },
         onTouchEndOrOnMouseUp: () => {
             clearCard();
         },
@@ -103,10 +100,6 @@ const Card = ({
         handlers.ref(el);
 
         myRef.current = el;
-    }
-
-    const rotateHandler = () => {
-        setRotate(prev => !prev);
     }
 
     const {question, answer} = data;
@@ -123,10 +116,11 @@ const Card = ({
                 userSelect: "none",
                 cursor: "grab"
             }}
+            onClick={() => setRotate(prev => !prev)}
             {...handlers}
         >
-            <CardPart onClick={rotateHandler} text={question} className={styles.front} />
-            <CardPart onClick={rotateHandler} text={answer} className={styles.back} />
+            <CardPart text={question} className={styles.front} />
+            <CardPart text={answer} className={styles.back} />
 
             <div className={`${styles.verdict} ${styles.wrong}${!isDragging ? ` ${styles.cardTransition}` : ""}`} style={{opacity: wrong}}>
                 {wrongText}
