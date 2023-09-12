@@ -1,4 +1,4 @@
-export const speakText = (text, rate = 2, pitch = 1) => {
+export const speakText = (text, rate = 1, pitch = 1) => {
     if('speechSynthesis' in window) {
         speechSynthesis.cancel();
         const newSpeech = new SpeechSynthesisUtterance(text);
