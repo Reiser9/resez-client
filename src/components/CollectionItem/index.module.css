@@ -1,0 +1,124 @@
+.collectionItem{
+    width: calc(100% / 3 - 24px / 3);
+    padding: 1.2rem;
+    border-radius: 4px;
+    background: var(--input);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.collectionItemInfoInner{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.collectionItemInfo{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.collectionItemLink{
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lighten);
+    flex-shrink: 0;
+}
+
+.collectionItemLink:hover{
+    opacity: 0.75;
+}
+
+.collectionItemLink svg{
+    width: 24px;
+}
+
+.collectionItemLink svg path{
+    stroke: var(--main);
+}
+
+.collectionItemName{
+    font-weight: 600;
+    width: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    word-break: break-word;
+}
+
+.collectionItemNumber{
+    padding: 0.4rem 0.8rem;
+    border-radius: 2px;
+    background: var(--lighten);
+    color: var(--main);
+    font-size: 1.4rem;
+}
+
+.collectionItemDescription{
+    width: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    word-break: break-word;
+}
+
+.collectionItemBottom{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.collectionItemAuthor{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.collectionItemAuthorName{
+    font-weight: 600;
+}
+
+.collectionItemAuthorImgInner{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--lighten);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.collectionItemAuthorImg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.collectionItemAuthorWord{
+    text-align: center;
+    color: var(--main);
+    font-weight: 600;
+    font-size: 1.8rem;
+}

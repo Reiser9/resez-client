@@ -13,6 +13,7 @@ const IconButton = ({
     type = "default",
     disabled = false,
     full = false,
+    small = false,
     to = "",
     className,
     children,
@@ -20,14 +21,14 @@ const IconButton = ({
 }) => {
     return (
         <>
-            {disabled ? <button className={`${styles.iconButton}${className ? ` ${className}` : ""} ${typesButton[type]} ${styles.disabled}${full ? ` ${styles.full}` : ""}`} {...props}>
+            {disabled ? <button className={`${styles.iconButton}${small ? ` ${styles.small}` : ""}${className ? ` ${className}` : ""} ${typesButton[type]} ${styles.disabled}${full ? ` ${styles.full}` : ""}`} {...props}>
                 {children}
             </button>
             : to
-            ? <Link to={to} className={`${styles.iconButton}${className ? ` ${className}` : ""} ${typesButton[type]}${full ? ` ${styles.full}` : ""}`} {...props}>
+            ? <Link to={to} className={`${styles.iconButton}${small ? ` ${styles.small}` : ""}${className ? ` ${className}` : ""} ${typesButton[type]}${full ? ` ${styles.full}` : ""}`} {...props}>
                 {children}
             </Link>
-            : <button className={`${styles.iconButton}${className ? ` ${className}` : ""} ${typesButton[type]}${full ? ` ${styles.full}` : ""}`} {...props}>
+            : <button className={`${styles.iconButton}${small ? ` ${styles.small}` : ""}${className ? ` ${className}` : ""} ${typesButton[type]}${full ? ` ${styles.full}` : ""}`} {...props}>
                 {children}
             </button>}
         </>

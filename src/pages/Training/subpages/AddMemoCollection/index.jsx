@@ -116,13 +116,13 @@ const AddCardCollection = () => {
             </div>
 
             <div className={styles.addCardCollectionForm}>
-                <Input value={name} setValue={setName} placeholder="Название" />
+                <Input value={name} setValue={setName} placeholder="Название" lengthLimit={75} trackLength />
 
                 <Checkbox checked={withDescription} onChange={e => setWithDescription(e.target.checked)}>
                     Добавить описание
                 </Checkbox>
 
-                {withDescription && <Textarea value={description} setValue={setDescription} placeholder="Описание" />}
+                {withDescription && <Textarea value={description} setValue={setDescription} placeholder="Описание" lengthLimit={500} trackLength />}
 
                 <Checkbox checked={anonimCollection} onChange={e => setAnonimCollection(e.target.checked)}>
                     Скрыть от других пользователей
@@ -146,8 +146,8 @@ const AddCardCollection = () => {
 
                     <div className={styles.addCardCollectionPair}>
                         <div className={styles.addCardCollectionPairWrap}>
-                            <Input placeholder="Вопрос" value={question} setValue={setQuestion} wrapperClass={styles.addCardCollectionPairInput} />
-                            <Input placeholder="Ответ" value={answer} setValue={setAnswer} wrapperClass={styles.addCardCollectionPairInput} />
+                            <Input placeholder="Вопрос" lengthLimit={250} value={question} setValue={setQuestion} wrapperClass={styles.addCardCollectionPairInput} />
+                            <Input placeholder="Ответ" lengthLimit={250} value={answer} setValue={setAnswer} wrapperClass={styles.addCardCollectionPairInput} />
 
                             <button className={`${styles.addCardCollectionPairSwap}${(!answer && !question) ? ` ${styles.disable}` : ""}`} onClick={swapElements}>
                                 <Swap />

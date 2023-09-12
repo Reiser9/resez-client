@@ -143,6 +143,10 @@
 .modalText{
     width: 100%;
     margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
     word-break: break-word;
 }
 
@@ -152,7 +156,7 @@
         height: 100%;
     }
 
-    .modalText{
+    .modalText:last-child{
         padding-bottom: 2.4rem;
     }
 }
@@ -162,11 +166,4 @@
     display: flex;
     justify-content: center;
     gap: 12px;
-    margin-top: 2rem;
-}
-
-@media (max-width: 520px) {
-    .confirmModalButtons{
-        padding-bottom: 2.4rem;
-    }
 }

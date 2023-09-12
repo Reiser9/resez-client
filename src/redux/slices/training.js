@@ -1,7 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    collections: []
+    collections: [],
+    collection: {}
 };
 
 export const trainingSlice = createSlice({
@@ -11,13 +12,17 @@ export const trainingSlice = createSlice({
         initCollections: (state, action) => {
             state.collections = action.payload
         },
+        initCollection: (state, action) => {
+            state.collection = action.payload
+        },
         setDataTraining: () => initialState
     }
 });
 
 export const {
-    setDataTraining,
-    initCollections
+    initCollections,
+    initCollection,
+    setDataTraining
 } = trainingSlice.actions;
 
 export default trainingSlice.reducer;

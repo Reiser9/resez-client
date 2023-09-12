@@ -109,7 +109,7 @@ const Card = ({
         setRotate(prev => !prev);
     }
 
-    const {text, answer} = data;
+    const {question, answer} = data;
 
     return (
         <div
@@ -125,7 +125,7 @@ const Card = ({
             }}
             {...handlers}
         >
-            <CardPart onClick={rotateHandler} text={text} className={styles.front} />
+            <CardPart onClick={rotateHandler} text={question} className={styles.front} />
             <CardPart onClick={rotateHandler} text={answer} className={styles.back} />
 
             <div className={`${styles.verdict} ${styles.wrong}${!isDragging ? ` ${styles.cardTransition}` : ""}`} style={{opacity: wrong}}>

@@ -5,7 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 
-import {initCollections} from '../redux/slices/training';
+import {initCollection, initCollections} from '../redux/slices/training';
 
 import useRequest from './useRequest';
 import useError from './useError';
@@ -19,20 +19,21 @@ const useTraining = () => {
     const {errorController} = useError();
     const {alertNotify} = useNotify();
     const dispatch = useDispatch();
+    const {collection} = useSelector(state => state.training);
 
-    const loadCollections = async () => {
+    const loadCollections = async (offset = 0, limit = 5, reload = false) => {
         setError(false);
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.COLLECTION, "", HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.COLLECTION, `?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
         setIsLoading(false);
 
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, loadCollections);
+            return errorController(response, () => loadCollections(offset, limit, reload));
         }
 
         dispatch(initCollections(response.data));
@@ -110,13 +111,32 @@ const useTraining = () => {
         // Обновление коллекции
     }
 
+    const getCollectionById = async (id) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.COLLECTION, `${id}`, HTTP_METHODS.GET, true);
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => getCollectionById(id));
+        }
+
+        dispatch(initCollection(response.data.collection));
+    }
+
     return{
         error,
         isLoading,
         loadCollections,
         createCollection,
         deleteCollection,
-        updateCollection
+        updateCollection,
+        getCollectionById
     }
 }
 

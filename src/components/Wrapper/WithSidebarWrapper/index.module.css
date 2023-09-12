@@ -65,6 +65,7 @@
     background: var(--input);
     padding: 2.4rem 2.4rem 7.5rem 2.4rem;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 @media (max-width: 1500px) {

@@ -35,6 +35,9 @@ export const userSlice = createSlice({
         decrementUreadNotifyCount: (state) => {
             state.user.unreadNotifiesCount--;
         },
+        incrementUreadNotifyCount: (state) => {
+            state.user.unreadNotifiesCount++;
+        },
         setUserBlocked: (state, action) => {
             state.user.isBlocked = action.payload;
         },
@@ -54,6 +57,7 @@ export const {
     isPreviewTheme,
     setUreadNotifyCount,
     decrementUreadNotifyCount,
+    incrementUreadNotifyCount,
     setUserBlocked,
     initSessionId,
     setDataUser

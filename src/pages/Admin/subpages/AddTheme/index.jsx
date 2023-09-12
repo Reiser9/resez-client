@@ -3,22 +3,22 @@ import { Checkbox, ColorPicker } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import typography from '../../../styles/typography.module.css';
-import styles from '../index.module.css';
+import typography from '../../../../styles/typography.module.css';
+import styles from './index.module.css';
 
-import { CONFIG } from '../../../consts/CONFIG';
+import { CONFIG } from '../../../../consts/CONFIG';
 
-import { isPreviewTheme, previewThemeUser } from '../../../redux/slices/user';
+import { isPreviewTheme, previewThemeUser } from '../../../../redux/slices/user';
 
-import {convertHexToOpacityHex} from '../../../utils/convertColor';
-import { setMainColors } from '../../../utils/setMainColors';
+import {convertHexToOpacityHex} from '../../../../utils/convertColor';
+import { setMainColors } from '../../../../utils/setMainColors';
 
-import useAdmin from '../../../hooks/useAdmin';
+import useAdmin from '../../../../hooks/useAdmin';
 
-import BackButton from '../../../components/BackButton';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
-import Preloader from '../../../components/Preloader';
+import BackButton from '../../../../components/BackButton';
+import Input from '../../../../components/Input';
+import Button from '../../../../components/Button';
+import Preloader from '../../../../components/Preloader';
 
 const AddTheme = ({edit = false}) => {
     const [mainPickEnd, setMainPickEnd] = React.useState(false);

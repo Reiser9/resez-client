@@ -60,3 +60,17 @@
     width: 100%;
     max-width: 24px;
 }
+
+.inputTitleWrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.limitText{
+    color: var(--textGrey);
+    margin-left: auto;
+}

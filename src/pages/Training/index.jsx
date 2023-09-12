@@ -13,8 +13,10 @@ import SidebarLink from '../../components/SidebarLink';
 import InnerSidebar from '../../components/InnerSidebar';
 
 const TrainingMain = React.lazy(() => import("./subpages/TrainingMain"));
-const Cards = React.lazy(() => import("./subpages/Cards"));
-const AddCardCollection = React.lazy(() => import("./subpages/AddCardCollection"));
+const Memo = React.lazy(() => import("./subpages/Memo"));
+const AddMemoCollection = React.lazy(() => import("./subpages/AddMemoCollection"));
+const MemoCollectionView = React.lazy(() => import("./subpages/MemoCollectionView"));
+const MemoTypeCards = React.lazy(() => import("./subpages/MemoTypeCards"));
 
 const Training = () => {
     return (
@@ -24,15 +26,17 @@ const Training = () => {
                     <div className={pws.content}>
                         <Routes>
                             <Route index element={withSuspense(<TrainingMain />)} />
-                            <Route path="/cards/*" element={withSuspense(<Cards />)} />
-                            <Route path="/cards/add" element={withSuspense(<AddCardCollection />)} />
+                            <Route path="/memo" element={withSuspense(<Memo />)} />
+                            <Route path="/memo/add" element={withSuspense(<AddMemoCollection />)} />
+                            <Route path="/memo/:id" element={withSuspense(<MemoCollectionView />)} />
+                            <Route path="/memo/:id/cards" element={withSuspense(<MemoTypeCards />)} />
                             <Route path="*" element={<Navigate to={""} />} />
                         </Routes>
                     </div>
 
                     <InnerSidebar>
                         <SidebarLink text="Главная" to="" end />
-                        <SidebarLink text="Карточки" to="cards" />
+                        <SidebarLink text="Запоминание" to="memo" />
                     </InnerSidebar>
                 </div>
             </WithSidebarWrapper>

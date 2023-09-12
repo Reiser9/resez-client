@@ -15,6 +15,8 @@ const Input = ({
     title,
     password = false,
     disabled = false,
+    trackLength = false,
+    lengthLimit = 0,
     onPaste,
     className,
     wrapperClass,
@@ -56,7 +58,10 @@ const Input = ({
 
     return (
         <div className={`${styles.inputWrapper}${wrapperClass ? ` ${wrapperClass}` : ""}`}>
-            {title && <p className={typography.text3}>{title}</p>}
+            {(title || trackLength) && <div className={styles.inputTitleWrapper}>
+                {title && <p className={typography.text3}>{title}</p>}
+                {trackLength && <p className={`${typography.text3} ${styles.limitText}`}>{value.length}{lengthLimit ? ` / ${lengthLimit}` : ""}</p>}
+            </div>}
 
             <div className={styles.inputInner}>
                 {disabled
@@ -71,7 +76,8 @@ const Input = ({
                     maskChar={""}
                     className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""}`}
                     value={value}
-                    onChange={e => setValue(e.target.value)}
+                    onChange={(e) => setValue(e.target.value)}
+                    maxLength={lengthLimit !== 0 ? lengthLimit : 9999}
                     placeholder={placeholder}
                     type={typeInput}
                     onPaste={pasteHandler()}

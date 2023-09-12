@@ -10,13 +10,18 @@ const Textarea = ({
     placeholder,
     title,
     disabled = false,
+    trackLength = false,
+    lengthLimit = 0,
     className,
     children,
     ...props
 }) => {
     return (
         <div className={input.inputWrapper}>
-            {title && <p className={typography.text3}>{title}</p>}
+            {(title || trackLength) && <div className={input.inputTitleWrapper}>
+                {title && <p className={typography.text3}>{title}</p>}
+                {trackLength && <p className={`${typography.text3} ${input.limitText}`}>{value.length}{lengthLimit ? ` / ${lengthLimit}` : ""}</p>}
+            </div>}
 
             <div className={input.inputInner}>
                 {disabled

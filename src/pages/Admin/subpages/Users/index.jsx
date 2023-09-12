@@ -1,18 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import typography from '../../../styles/typography.module.css';
-import styles from '../index.module.css';
+import typography from '../../../../styles/typography.module.css';
+import styles from './index.module.css';
 
-import { User } from '../../../components/Icons';
+import { User } from '../../../../components/Icons';
 
-import useAdmin from '../../../hooks/useAdmin';
+import useAdmin from '../../../../hooks/useAdmin';
 
-import ReloadButton from '../../../components/ReloadButton';
-import UserItem from '../../../components/UserItem';
-import Button from '../../../components/Button';
-import UserAdminItem from '../../../components/Skeleton/User/UserAdminItem';
-import NotContent from '../../../components/NotContent';
+import ReloadButton from '../../../../components/ReloadButton';
+import UserItem from '../../../../components/UserItem';
+import Button from '../../../../components/Button';
+import UserAdminItem from '../../../../components/Skeleton/User/UserAdminItem';
+import NotContent from '../../../../components/NotContent';
 
 const Users = () => {
     const [usersMoreLoading, setUsersMoreLoading] = React.useState(false);

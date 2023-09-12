@@ -13,7 +13,8 @@ const CardPart = ({
 }) => {
     return (
         <div {...props}>
-            <button className={styles.cardVolume} onClick={() => {
+            <button className={styles.cardVolume} onClick={(e) => {
+                e.stopPropagation();
                 onClick();
                 speakText(text);
             }}>

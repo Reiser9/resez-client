@@ -54,8 +54,8 @@ const Data = () => {
             <p className={typography.h3}>Личные данные</p>
 
             <div className={styles.dataContent}>
-                <Input placeholder="Имя" value={name} setValue={setName} wrapperClass={styles.dataItem} />
-                <Input placeholder="Фамилия" value={surname} setValue={setSurname} wrapperClass={styles.dataItem} />
+                <Input value={name} setValue={setName} wrapperClass={styles.dataItem} title="Имя" lengthLimit={20} trackLength />
+                <Input value={surname} setValue={setSurname} wrapperClass={styles.dataItem} title="Фамилия" lengthLimit={30} trackLength />
                 <DatePicker placeholder="Дата рождения" value={birthday} setValue={setBirthday} className={styles.dataItem} />
                 <Select placeholder="Пол" value={sex} onChange={setSex} className={styles.dataItem} options={[
                     {

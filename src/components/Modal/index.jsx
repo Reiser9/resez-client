@@ -33,15 +33,14 @@ const Modal = ({value, setValue, title, subtitle, text, size = "default", childr
                         </button>
                     </div>
 
-                    {text && <div className={styles.modalText}>
-                        <p className={typography.text}>
+                    {(text || children) && <div className={styles.modalText}>
+                        {text && <p className={typography.text}>
                             {text}
-                        </p>
-                    </div>}
+                        </p>}
 
-                    {children && <div className={styles.modalText}>
                         {children}
                     </div>}
+
                 </div>
             </div>
         </div>

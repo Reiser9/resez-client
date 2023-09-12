@@ -6,7 +6,7 @@ import {socket} from '../utils/socket';
 import useRequest from './useRequest';
 import useNotify from './useNotify';
 
-import { setUserBlocked } from '../redux/slices/user';
+import { incrementUreadNotifyCount, setUserBlocked } from '../redux/slices/user';
 import { addNotifyInStart } from '../redux/slices/notify';
 
 const useSocket = () => {
@@ -28,6 +28,7 @@ const useSocket = () => {
         
         socket.on("notify", (data) => {
             dispatch(addNotifyInStart(data.notify));
+            dispatch(incrementUreadNotifyCount());
             alertNotify("Информация", "Новое уведомление", "info", "/notifies", 4000);
         });
 

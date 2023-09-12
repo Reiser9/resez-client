@@ -1,16 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import typography from '../../../styles/typography.module.css';
-import styles from '../index.module.css';
+import typography from '../../../../styles/typography.module.css';
+import styles from '../AddTheme/index.module.css';
 
-import useAdmin from '../../../hooks/useAdmin';
+import useAdmin from '../../../../hooks/useAdmin';
 
-import ReloadButton from '../../../components/ReloadButton';
-import Button from '../../../components/Button';
-import ThemeItemAdmin from '../../../components/ThemeItem/ThemeItemAdmin';
-import ThemeItemAdminSkeleton from '../../../components/Skeleton/Theme/ThemeItemAdminSkeleton';
-import NotContent from '../../../components/NotContent';
+import ReloadButton from '../../../../components/ReloadButton';
+import Button from '../../../../components/Button';
+import ThemeItemAdmin from '../../../../components/ThemeItem/ThemeItemAdmin';
+import ThemeItemAdminSkeleton from '../../../../components/Skeleton/Theme/ThemeItemAdminSkeleton';
+import NotContent from '../../../../components/NotContent';
 
 const Appearance = () => {
     const [themesMoreLoading, setThemesMoreLoading] = React.useState(false);

@@ -2,21 +2,21 @@ import React from 'react';
 import { Checkbox } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import typography from '../../../styles/typography.module.css';
-import styles from '../index.module.css';
+import typography from '../../../../styles/typography.module.css';
+import styles from './index.module.css';
 
-import { formatDate } from '../../../utils/formatDate';
-import {isDateTimePast} from '../../../utils/isDateTimePast';
+import { formatDate } from '../../../../utils/formatDate';
+import {isDateTimePast} from '../../../../utils/isDateTimePast';
 
-import useAdmin from '../../../hooks/useAdmin';
-import useAlert from '../../../hooks/useAlert';
+import useAdmin from '../../../../hooks/useAdmin';
+import useAlert from '../../../../hooks/useAlert';
 
-import Input from '../../../components/Input';
-import Textarea from '../../../components/Textarea';
-import Button from '../../../components/Button';
-import Select from '../../../components/Select';
-import DatePicker from '../../../components/DatePicker';
-import TimePicker from '../../../components/TimePicker';
+import Input from '../../../../components/Input';
+import Textarea from '../../../../components/Textarea';
+import Button from '../../../../components/Button';
+import Select from '../../../../components/Select';
+import DatePicker from '../../../../components/DatePicker';
+import TimePicker from '../../../../components/TimePicker';
 
 const Notifies = () => {
     const [title, setTitle] = React.useState("");
@@ -103,13 +103,13 @@ const Notifies = () => {
             <p className={typography.h3}>Отправка уведомления</p>
 
             <div className={styles.notifiesForm}>
-                <Input value={title} setValue={setTitle} placeholder="Заголовок" />
+                <Input value={title} setValue={setTitle} placeholder="Заголовок" lengthLimit={100} trackLength />
 
                 <Checkbox checked={sendAnonim} onChange={e => setSendAnonim(e.target.checked)}>
                     Отправить от имени
                 </Checkbox>
 
-                {sendAnonim && <Input value={author} setValue={setAuthor} placeholder="От кого отправить" />}
+                {sendAnonim && <Input value={author} setValue={setAuthor} placeholder="От кого отправить" lengthLimit={30} trackLength />}
 
                 <Checkbox checked={sendForOne} onChange={e => setSendForOne(e.target.checked)}>
                     Отправить пользователю
