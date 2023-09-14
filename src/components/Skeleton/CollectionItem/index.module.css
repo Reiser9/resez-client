@@ -1,0 +1,25 @@
+.collectionItem{
+    width: calc(100% / 3 - 24px / 3);
+    height: 175px;
+}
+
+@media (max-width: 1150px) {
+    .collectionItem{
+        width: calc(100% / 2 - 12px / 2);
+    }
+}
+@media (max-width: 920px) {
+    .collectionItem{
+        width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .collectionItem{
+        width: calc(100% / 2 - 12px / 2);
+    }
+}
+@media (max-width: 650px) {
+    .collectionItem{
+        width: 100%;
+    }
+}

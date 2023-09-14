@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import typography from '../../styles/typography.module.css';
 import auth from '../../components/Wrapper/AuthFormsWrapper/index.module.css';
@@ -17,12 +17,11 @@ const Login = () => {
     const [password, setPassword] = React.useState("");
 
     const {isLoading, login} = useAuth();
-    const navigate = useNavigate();
 
     const loginHandler = (e) => {
         e.preventDefault();
 
-        login(nickname, password, () => navigate("/"));
+        login(nickname, password);
     }
 
     return (

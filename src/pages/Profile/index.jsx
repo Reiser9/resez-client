@@ -32,7 +32,7 @@ const Profile = () => {
                                 <Route path="/safe/*" element={withSuspense(<Safe />)} />
                                 <Route path="/achievments/*" element={withSuspense(<Achievments />)} />
                                 <Route path="/settings" element={withSuspense(<Settings />)} />
-                                <Route path="*" element={<Navigate to={""} />} />
+                                <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>
                         </div>
 

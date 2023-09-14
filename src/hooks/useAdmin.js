@@ -123,7 +123,7 @@ const useAdmin = () => {
             return errorController(response, () => userBlock(userId, successCallback));
         }
         
-        dispatch(setUser(response.data.user));
+        dispatch(setUser(response.data));
         alertNotify("Успешно", "Пользователь разблокирован", "success");
         successCallback();
     }

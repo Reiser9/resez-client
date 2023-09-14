@@ -3,13 +3,270 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
 }
 
-/* Удалить */
-.memoCollectionPlay{
-    background: var(--main);
-    color: #fff;
-    padding: 0.8rem 2.4rem;
+.memoCollectionWrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.memoCollectionTextInner{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.memoCollectionTags{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.memoCollectionTitleInner{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.memoCollectionCount{
+    padding: 0.6rem 1.2rem;
     border-radius: 4px;
-    margin: 1.2rem auto 0 auto;
+    background: var(--lighten);
+    color: var(--main);
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.memoCollectionLock{
+    width: 31px;
+    height: 31px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lighten);
+}
+
+.memoCollectionLock svg{
+    width: 18px;
+}
+
+.memoCollectionLock svg path{
+    stroke: var(--main);
+}
+
+.memoCollectionActions{
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.memoCollectionAuthor{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.memoCollectionAuthorImgInner{
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    position: relative;
+    background: var(--lighten);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+    .memoCollectionAuthorImgInner{
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.memoCollectionAuthorImg{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.memoCollectionAuthorLetter{
+    text-transform: uppercase;
+    color: var(--main);
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.memoCollectionDateInner{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 1.4rem;
+}
+
+.memoCollectionDateInner svg{
+    width: 20px;
+}
+
+.memoCollectionDateInner svg path{
+    stroke: var(--main);
+}
+
+.memoCollectionPairsInner{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 2.4rem;
+}
+
+@media (max-width: 480px) {
+    .memoCollectionPairsInner{
+        margin-top: .8rem;
+    }
+}
+
+.memoCollectionPairs{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.memoCollectionPair{
+    width: calc(100% / 3 - 24px / 3);
+    padding: 1.2rem 1.2rem 2rem 1.2rem;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--input);
+}
+
+@media (max-width: 1100px) {
+    .memoCollectionPair{
+        width: calc(100% / 2 - 12px / 2);
+    }
+}
+@media (max-width: 900px) {
+    .memoCollectionPair{
+        width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .memoCollectionPair{
+        width: calc(100% / 2 - 12px / 2);
+    }
+}
+@media (max-width: 630px) {
+    .memoCollectionPair{
+        width: 100%;
+    }
+}
+
+.memoCollectionTypes{
+    width: 100%;
+    margin-top: 2.4rem;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+    .memoCollectionTypes{
+        margin-top: .8rem;
+    }
+}
+
+.memoCollectionTypesItem{
+    width: calc(100% / 4 - 36px / 4);
+    padding: 1.2rem;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--input);
+    border: 1px solid transparent;
+}
+
+.memoCollectionTypesItem.disabled{
+    pointer-events: none;
+    filter: grayscale(1);
+    opacity: 0.6;
+}
+
+@media (max-width: 1100px) {
+    .memoCollectionTypesItem{
+        width: calc(100% / 2 - 12px / 2);
+    }
+}
+@media (max-width: 575px) {
+    .memoCollectionTypesItem{
+        width: 100%;
+    }
+}
+
+.memoCollectionTypesItem:hover{
+    border: 1px solid var(--main);
+}
+
+.memoCollectionTypesItemWrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.memoCollectionTypeName{
+    font-weight: 600;
+}
+
+@media (any-hover: hover) {
+    .memoCollectionTypesItemWrapper svg{
+        opacity: 0;
+        transform: translateX(-12px);
+    }
+
+    .memoCollectionTypesItem:hover svg{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.memoCollectionTypesItemWrapper svg{
+    width: 24px;
+    transition: .2s linear;
+}
+
+.memoCollectionTypesItemWrapper svg path{
+    stroke: var(--main);
+}
+
+.memoCollectionTypeImgInner{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.memoCollectionTypeImgInner svg{
+    max-width: 100%;
+    max-height: 100%;
 }

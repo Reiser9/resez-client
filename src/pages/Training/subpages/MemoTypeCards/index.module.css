@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 2.4rem;
+    margin-top: 1.8rem;
     position: relative;
 }
 
@@ -56,6 +56,21 @@
 }
 
 .active{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.typeCardsEvents{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s linear;
+}
+
+.typeCardsEvents.active{
     opacity: 1;
     pointer-events: all;
 }

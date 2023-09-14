@@ -42,6 +42,12 @@ const AddCardCollection = () => {
         setAnswer("");
     }
 
+    const enterNewPair = (e) => {
+        if(e.key === "Enter"){
+            addNewPair();
+        }
+    }
+
     const removePair = (id) => {
         const updatedObjects = [...pairs];
         updatedObjects.splice(id, 1);
@@ -82,7 +88,7 @@ const AddCardCollection = () => {
             return alertNotify("Предупреждение", "Не все поля заполнены", "warn");
         }
 
-        createCollection(name, description, anonimCollection, newPairs, () => navigate("../cards"));
+        createCollection(name, description, anonimCollection, newPairs, () => navigate("../memo"));
     }
 
     const swapElementsInArray = (id) => {
@@ -111,8 +117,6 @@ const AddCardCollection = () => {
 
                     <p className={typography.h3}>Создание коллекции</p>
                 </div>
-
-                
             </div>
 
             <div className={styles.addCardCollectionForm}>
@@ -144,10 +148,10 @@ const AddCardCollection = () => {
                         </IconButton>
                     </div>)}
 
-                    <div className={styles.addCardCollectionPair}>
+                    <div className={styles.addCardCollectionPair} id="pairsAdd">
                         <div className={styles.addCardCollectionPairWrap}>
-                            <Input placeholder="Вопрос" lengthLimit={250} value={question} setValue={setQuestion} wrapperClass={styles.addCardCollectionPairInput} />
-                            <Input placeholder="Ответ" lengthLimit={250} value={answer} setValue={setAnswer} wrapperClass={styles.addCardCollectionPairInput} />
+                            <Input placeholder="Вопрос" lengthLimit={250} value={question} setValue={setQuestion} wrapperClass={styles.addCardCollectionPairInput} onKeyDown={enterNewPair} />
+                            <Input placeholder="Ответ" lengthLimit={250} value={answer} setValue={setAnswer} wrapperClass={styles.addCardCollectionPairInput} onKeyDown={enterNewPair} />
 
                             <button className={`${styles.addCardCollectionPairSwap}${(!answer && !question) ? ` ${styles.disable}` : ""}`} onClick={swapElements}>
                                 <Swap />

@@ -9,6 +9,27 @@
     gap: 16px;
 }
 
+@media (max-width: 1150px) {
+    .collectionItem{
+        width: calc(100% / 2 - 12px / 2);
+    }
+}
+@media (max-width: 920px) {
+    .collectionItem{
+        width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .collectionItem{
+        width: calc(100% / 2 - 12px / 2);
+    }
+}
+@media (max-width: 650px) {
+    .collectionItem{
+        width: 100%;
+    }
+}
+
 .collectionItemInfoInner{
     width: 100%;
     display: flex;
@@ -59,12 +80,37 @@
     word-break: break-word;
 }
 
+.collectionItemTags{
+    width: 100%;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
 .collectionItemNumber{
     padding: 0.4rem 0.8rem;
     border-radius: 2px;
     background: var(--lighten);
     color: var(--main);
     font-size: 1.4rem;
+}
+
+.collectionItemLock{
+    width: 27px;
+    height: 27px;
+    border-radius: 4px;
+    background: var(--lighten);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.collectionItemLock svg{
+    width: 16px;
+}
+
+.collectionItemLock svg path{
+    stroke: var(--main);
 }
 
 .collectionItemDescription{

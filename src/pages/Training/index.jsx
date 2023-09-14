@@ -30,7 +30,7 @@ const Training = () => {
                             <Route path="/memo/add" element={withSuspense(<AddMemoCollection />)} />
                             <Route path="/memo/:id" element={withSuspense(<MemoCollectionView />)} />
                             <Route path="/memo/:id/cards" element={withSuspense(<MemoTypeCards />)} />
-                            <Route path="*" element={<Navigate to={""} />} />
+                            <Route path="*" element={<Navigate to={""} replace />} />
                         </Routes>
                     </div>
 

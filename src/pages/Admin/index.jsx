@@ -33,7 +33,7 @@ const Admin = () => {
                                 <Route path="/appearance/theme/add" element={withSuspense(<AddTheme />)} />
                                 <Route path="/appearance/theme/edit/:id" element={withSuspense(<AddTheme edit />)} />
                                 <Route path="/roles/*" element={withSuspense(<Roles />)} />
-                                <Route path="*" element={<Navigate to={""} />} />
+                                <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>
                         </div>
 

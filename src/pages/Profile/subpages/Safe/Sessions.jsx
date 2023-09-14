@@ -5,20 +5,23 @@ import { useLocation } from 'react-router-dom';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
+import { Cross } from '../../../../components/Icons';
+
 import useSession from '../../../../hooks/useSession';
 import useAuth from '../../../../hooks/useAuth';
 
 import SessionItem from '../../SessionItem';
 import BackButton from '../../../../components/BackButton';
-import Button from '../../../../components/Button';
 import SessionItemFull from '../../../../components/Skeleton/Sessions/SessionItemFull';
 import ReloadButton from '../../../../components/ReloadButton';
+import NotContent from '../../../../components/NotContent';
+import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
 
 const Sessions = () => {
     const [isScrollToSession, setIsScrollToSession] = React.useState(false);
     const [sessionMoreLoading, setSessionMoreLoading] = React.useState(false);
 
-    const {sessionIsLoading, loadSessions, getAllSessions, endSession} = useSession();
+    const {error, sessionIsLoading, loadSessions, getAllSessions, endSession} = useSession();
     const {sessionsIsLoading, sessions} = useSelector(state => state.session);
     const location = useLocation();
 
@@ -59,10 +62,20 @@ const Sessions = () => {
                 <ReloadButton loading={sessionsIsLoading} onClick={() => loadSessions(0, 5, true)} />
             </div>
 
-            <div className={styles.sessionContent}>
-                {sessionsIsLoading
-                ? [...Array(3)].map((_, id) => <SessionItemFull key={id} />)
-                : <>
+            <BlockDataWithPaggination
+                error={error}
+                dataIsLoading={sessionsIsLoading}
+                dataMoreIsLoading={sessionMoreLoading}
+                dataLength={sessions?.other?.length + 1}
+                Skeleton={SessionItemFull}
+                skeletonLoading={3}
+                containerClassName={styles.sessionContent}
+                errorContent={<NotContent text="Ошибка при загрузке сессий" icon={<Cross />} danger />}
+                notContent={<NotContent text="Сессии не найдены" />}
+                isLast={sessions?.isLast}
+                loadMoreData={loadMoreSession}
+            >
+                <>
                     <SessionItem
                         current
                         data={sessions?.current || {}}
@@ -71,23 +84,17 @@ const Sessions = () => {
                         loading={authLoading}
                     />
 
-                    {sessions?.other
-                    ?.map(data => <SessionItem
-                        key={data.id}
-                        data={data}
-                        active={location?.state?.id === data.id}
-                        callback={() => endSession(data.id)}
-                        loading={sessionIsLoading.includes(data.id)}
-                    />)}
-                </>}
-
-                {sessionMoreLoading && [...Array(3)].map((_, id) => <SessionItemFull key={id} />)}
-            </div>
-
-            {!sessionsIsLoading && !sessions?.isLast
-            && <Button loading={sessionMoreLoading} type="empty" auto className={styles.sessionsMoreButton} onClick={loadMoreSession}>
-                Показать еще
-            </Button>}
+                    {sessions?.other?.map(data =>
+                        <SessionItem
+                            key={data.id}
+                            data={data}
+                            active={location?.state?.id === data.id}
+                            callback={() => endSession(data.id)}
+                            loading={sessionIsLoading.includes(data.id)}
+                        />
+                    )}
+                </>
+            </BlockDataWithPaggination>
         </div>
     )
 }

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { User } from '../../../../components/Icons';
+import { Cross, User } from '../../../../components/Icons';
 
 import useAdmin from '../../../../hooks/useAdmin';
 
@@ -13,6 +13,7 @@ import UserItem from '../../../../components/UserItem';
 import Button from '../../../../components/Button';
 import UserAdminItem from '../../../../components/Skeleton/User/UserAdminItem';
 import NotContent from '../../../../components/NotContent';
+import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
 
 const Users = () => {
     const [usersMoreLoading, setUsersMoreLoading] = React.useState(false);
@@ -21,7 +22,7 @@ const Users = () => {
 
     const {error, userIsLoading, loadUsers, getAllUsers, userBlock, userUnblock} = useAdmin();
 
-    const loadMoreSession = async () => {
+    const loadMoreUsers = async () => {
         setUsersMoreLoading(true);
         await getAllUsers(users?.users?.length, 6);
         setUsersMoreLoading(false);
@@ -39,12 +40,19 @@ const Users = () => {
                 <ReloadButton loading={usersIsLoading} onClick={() => loadUsers()} />
             </div>
 
-            {usersIsLoading
-            ? <div className={styles.usersContent}>
-                {[...Array(3)].map((_, id) => <UserAdminItem key={id} />)}
-            </div>
-            : error ? <NotContent text="Ошибка при загрузке пользователей" />
-            : users?.users?.length > 0 ? <div className={styles.usersContent}>
+            <BlockDataWithPaggination
+                error={error}
+                dataIsLoading={usersIsLoading}
+                dataMoreIsLoading={usersMoreLoading}
+                dataLength={users?.users?.length}
+                Skeleton={UserAdminItem}
+                skeletonLoading={3}
+                containerClassName={styles.usersContent}
+                errorContent={<NotContent text="Ошибка при загрузке пользователей" icon={<Cross />} danger />}
+                notContent={<NotContent text="Пользователей не найдено" />}
+                isLast={users?.isLast}
+                loadMoreData={loadMoreUsers}
+            >
                 {users?.users?.map(data =>
                     <UserItem
                         key={data.id}
@@ -52,17 +60,9 @@ const Users = () => {
                         loading={userIsLoading.includes(data.id)}
                         userBlock={() => userBlock(data.id)}
                         userUnblock={() => userUnblock(data.id)}
-                    />)}
-            </div> : <NotContent text="Пользователей не найдено" icon={<User />} />}
-
-            {usersMoreLoading && <div className={styles.usersContent}>
-                {[...Array(3)].map((_, id) => <UserAdminItem key={id} />)}
-            </div>}
-
-            {users?.users?.length > 0 && !usersIsLoading && !users?.isLast &&
-            <Button loading={usersMoreLoading} type="empty" auto className={styles.usersMoreButton} onClick={loadMoreSession}>
-                Показать еще
-            </Button>}
+                    />
+                )}
+            </BlockDataWithPaggination>
         </div>
     )
 }

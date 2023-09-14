@@ -5,7 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 
-import {initCollection, initCollections} from '../redux/slices/training';
+import {addCollection, initCollection, initCollections, removeCollection, setCollectionIsLoading, setCollections} from '../redux/slices/training';
 
 import useRequest from './useRequest';
 import useError from './useError';
@@ -19,24 +19,46 @@ const useTraining = () => {
     const {errorController} = useError();
     const {alertNotify} = useNotify();
     const dispatch = useDispatch();
-    const {collection} = useSelector(state => state.training);
+    const {collections, collection} = useSelector(state => state.training);
 
     const loadCollections = async (offset = 0, limit = 5, reload = false) => {
         setError(false);
 
-        setIsLoading(true);
+        if(!collections.collections || reload){
+            dispatch(setCollectionIsLoading(true));
 
-        const response = await request(REQUEST_TYPE.COLLECTION, `?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.COLLECTION, `?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
-        setIsLoading(false);
+            dispatch(setCollectionIsLoading(false));
 
-        if(requestDataIsError(response)){
-            setError(true);
+            if(requestDataIsError(response)){
+                setError(true);
 
-            return errorController(response, () => loadCollections(offset, limit, reload));
+                return errorController(response, () => loadCollections(offset, limit, reload));
+            }
+
+            dispatch(initCollections(response.data));
         }
+    }
 
-        dispatch(initCollections(response.data));
+    const getCollections = async (offset = 0, limit = 5) => {
+        setError(false);
+
+        if(collections?.collections?.length === 0 || collections?.collections?.length < offset + limit){
+            setIsLoading(true);
+
+            const response = await request(REQUEST_TYPE.COLLECTION, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+
+            setIsLoading(false);
+
+            if(requestDataIsError(response)){
+                setError(true);
+
+                return errorController(response, () => getCollections(offset, limit));
+            }
+
+            dispatch(setCollections(response.data));
+        }
     }
 
     const createCollection = async (collection, description, isPrivate, QAPairs, successCallback = () => {}) => {
@@ -63,10 +85,11 @@ const useTraining = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => createCollection(collection, description, QAPairs));
+            return errorController(response, () => createCollection(collection, description, QAPairs, successCallback));
         }
 
-        // Добавление в начало созданную коллекцию
+        dispatch(addCollection(response.data.collection));
+        alertNotify("Успешно", "Коллекция создана", "success");
         successCallback();
     }
 
@@ -85,7 +108,8 @@ const useTraining = () => {
             return errorController(response, () => deleteCollection(id));
         }
 
-        // Удаление коллекции
+        dispatch(removeCollection(response.data.collection));
+        alertNotify("Успешно", "Коллекция удалена", "success");
     }
 
     const updateCollection = async (id, collection, description, QAPairs) => {
@@ -105,13 +129,14 @@ const useTraining = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => updateCollection(id));
+            return errorController(response, () => updateCollection(id, collection, description, QAPairs));
         }
-
+        
+        alertNotify("Успешно", "Коллекция обновлена", "success");
         // Обновление коллекции
     }
 
-    const getCollectionById = async (id) => {
+    const getCollectionById = async (id, notFoundCallback = () => {}) => {
         setError(false);
 
         setIsLoading(true);
@@ -123,7 +148,10 @@ const useTraining = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => getCollectionById(id));
+            return errorController(response, () => getCollectionById(id, notFoundCallback), "", () => {
+                notFoundCallback();
+                alertNotify("Ошибка", response?.data?.message, "error");
+            });
         }
 
         dispatch(initCollection(response.data.collection));
@@ -133,6 +161,7 @@ const useTraining = () => {
         error,
         isLoading,
         loadCollections,
+        getCollections,
         createCollection,
         deleteCollection,
         updateCollection,

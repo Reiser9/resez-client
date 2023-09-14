@@ -215,10 +215,15 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    cursor: pointer;
     padding: 0.8rem 1.2rem;
     transition: .2s linear;
     position: relative;
+}
+
+@media (any-hover: hover) {
+    .headerProfileMenuLink{
+        cursor: pointer;
+    }
 }
 
 @media (max-width: 440px) {

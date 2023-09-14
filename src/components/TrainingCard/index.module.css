@@ -16,19 +16,19 @@
 }
 
 .swipeLeft{
-    transform: translateX(-50vh) rotate(-40deg)!important;
+    transform: translateX(calc(-50vw - 100px)) rotate(-40deg)!important;
 }
 
 .swipeRight{
-    transform: translateX(50vh) rotate(40deg)!important;
+    transform: translateX(calc(50vw + 100px)) rotate(40deg)!important;
 }
 
 .rotate.swipeLeft{
-    transform: translateX(-50vh) rotate(-40deg) rotateY(180deg)!important;
+    transform: translateX(calc(-50vw - 100px)) rotate(-40deg) rotateY(180deg)!important;
 }
 
 .rotate.swipeRight{
-    transform: translateX(50vh) rotate(40deg) rotateY(180deg)!important;
+    transform: translateX(calc(50vw + 100px)) rotate(40deg) rotateY(180deg)!important;
 }
 
 .cardTransition, .front, .back{
@@ -44,6 +44,8 @@
     justify-content: center;
     text-align: center;
     color: var(--text);
+    font-size: 1.8rem;
+    font-weight: 600;
     padding: 1.2rem;
     overflow: hidden;
 }
@@ -101,7 +103,7 @@
     height: calc(100% + 4px);
     border-radius: 4px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     font-size: 2rem;
     font-weight: 600;
@@ -112,6 +114,7 @@
     z-index: 10;
     opacity: 0;
     pointer-events: none;
+    padding: 1.6rem;
 }
 
 .rotate .verdict{

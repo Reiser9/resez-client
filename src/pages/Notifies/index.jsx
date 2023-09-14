@@ -13,7 +13,7 @@ import InnerSidebar from '../../components/InnerSidebar';
 
 const NotifiesMain = React.lazy(() => import("./subpages/NotifiesMain"));
 
-const Profile = () => {
+const Notifies = () => {
     return (
         <AuthWrapper>
             <TitleWrpapper pageTitle="ResEz - Уведомления">
@@ -38,4 +38,4 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default Notifies;

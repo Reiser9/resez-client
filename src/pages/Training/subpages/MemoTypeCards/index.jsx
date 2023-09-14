@@ -8,11 +8,15 @@ import styles from './index.module.css';
 import Card from '../../../../components/TrainingCard/Card';
 import BackButton from '../../../../components/BackButton';
 import Button from '../../../../components/Button';
+import IconButton from '../../../../components/IconButton';
+import { Return } from '../../../../components/Icons';
 
 const MemoTypeCards = () => {
     const [currentIdCard, setCurrentIdCard] = React.useState(0);
     const [totalCorrect, setTotalCorrect] = React.useState(0);
     const [totalWrong, setTotalWrong] = React.useState(0);
+    const [prevAnswer, setPrevAnswer] = React.useState(null);
+    const [isProcessPlaying, setIsProcessPlaying] = React.useState(false);
 
     const {collection} = useSelector(state => state.training);
     const navigate = useNavigate();
@@ -21,17 +25,38 @@ const MemoTypeCards = () => {
     const wrongAnswer = () => {
         setCurrentIdCard(prev => prev + 1);
         setTotalWrong(prev => prev + 1);
+        setPrevAnswer(false);
     }
 
     const correctAnswer = () => {
         setCurrentIdCard(prev => prev + 1);
         setTotalCorrect(prev => prev + 1);
+        setPrevAnswer(true);
     }
 
     const restart = () => {
         setCurrentIdCard(0);
         setTotalCorrect(0);
         setTotalWrong(0);
+        setPrevAnswer(null);
+        setIsProcessPlaying(true);
+    }
+
+    const returnPrevSlide = () => {
+        if(prevAnswer){
+            setTotalCorrect(prev => prev - 1);
+        }
+        else{
+            setTotalWrong(prev => prev - 1);
+        }
+
+        if(currentIdCard > 0){
+            if(currentIdCard === 1){
+                setPrevAnswer(null);
+            }
+
+            setCurrentIdCard(prev => prev - 1);
+        }
     }
 
     React.useEffect(() => {
@@ -39,6 +64,15 @@ const MemoTypeCards = () => {
             navigate(`../memo/${id}`);
         }
     }, [id]);
+    
+    React.useEffect(() => {
+        if(currentIdCard === collection.pairsCount){
+            setIsProcessPlaying(false);
+        }
+        else{
+            setIsProcessPlaying(true);
+        }
+    }, [currentIdCard, collection]);
 
     return (
         <div className={styles.typeCards}>
@@ -74,6 +108,12 @@ const MemoTypeCards = () => {
                         Начать заново
                     </Button>
                 </div>
+            </div>
+
+            <div className={`${styles.typeCardsEvents}${isProcessPlaying ? ` ${styles.active}` : ""}`}>
+                <IconButton small onClick={returnPrevSlide} disabled={currentIdCard <= 0}>
+                    <Return />
+                </IconButton>
             </div>
         </div>
     )

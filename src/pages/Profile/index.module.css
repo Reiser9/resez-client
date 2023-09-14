@@ -46,8 +46,13 @@
     justify-content: space-between;
     background: var(--input);
     border: 1px solid transparent;
-    cursor: pointer;
     transition: .2s linear;
+}
+
+@media (any-hover: hover) {
+    .sessionItem{
+        cursor: pointer;
+    }
 }
 
 @media (max-width: 375px){

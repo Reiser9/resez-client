@@ -209,9 +209,26 @@ input::placeholder{
 
 .ant-checkbox-wrapper{
     color: var(--text);
+    cursor: default!important;
+}
+
+@media (any-hover: hover) {
+    .ant-checkbox-wrapper{
+        cursor: pointer!important;
+    }
 }
 
 /* Custom select antd */
+.ant-select, .ant-select-selector input, .ant-select-dropdown .ant-select-item{
+    cursor: default!important;
+}
+
+@media (any-hover: hover) {
+    .ant-select, .ant-select-selector input, .ant-select-dropdown .ant-select-item{
+        cursor: pointer!important;
+    }
+}
+
 .ant-select-selection-item, .ant-select-selection-placeholder{
     color: var(--text)!important;
     line-height: 1.2!important;
@@ -312,6 +329,16 @@ input::placeholder{
 }
 
 /* Custom datepicker antd */
+.ant-picker-dropdown .ant-picker-cell, .ant-picker-dropdown .ant-picker-header button{
+    cursor: default!important;
+}
+
+@media (any-hover: hover) {
+    .ant-picker-dropdown .ant-picker-cell, .ant-picker-dropdown .ant-picker-header button{
+        cursor: pointer!important;
+    }
+}
+
 .ant-picker{
     padding: 1rem 1.6rem!important;
     color: var(--text)!important;

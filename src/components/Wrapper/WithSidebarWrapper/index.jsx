@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import base from '../../../styles/base.module.css';
 import styles from './index.module.css';
 
-import { Code, Fire, Message, Store, Tests, Training, Trophy } from '../../Icons';
+import { Code, Fire, Message, Store, Tests, Training } from '../../Icons';
 
 import { setSidebarShow } from '../../../redux/slices/app';
 
 import SidebarLink from '../../SidebarLink';
+import Sidebar from '../../Sidebar';
 
 const containers = {
     "full": base.containerFull,
@@ -16,7 +17,6 @@ const containers = {
 }
 
 const WithSidebarWrapper = ({container = "basic", children}) => {
-    const {sidebarShow} = useSelector(state => state.app);
     const {user} = useSelector(state => state.user);
     const dispatch = useDispatch();
 
@@ -26,14 +26,14 @@ const WithSidebarWrapper = ({container = "basic", children}) => {
 
     return (
         <div className={styles.wrapper}>
-            <aside className={`${styles.sidebar}${sidebarShow ? ` ${styles.active}` : ""}`}>
+            <Sidebar>
                 <SidebarLink onClick={hideSidebar} text="Тренинг" icon={<Training />} to="/training" />
                 <SidebarLink onClick={hideSidebar} text="Тесты" icon={<Tests />} to="/tests" />
                 <SidebarLink onClick={hideSidebar} text="Мессенджер" icon={<Message />} to="/message" />
                 <SidebarLink onClick={hideSidebar} text="Полезная информация" icon={<Fire />} to="/info" />
                 <SidebarLink onClick={hideSidebar} text="Магазин" icon={<Store />} to="/store" />
                 {user?.permissions?.length > 0 &&<SidebarLink onClick={hideSidebar} text="Админка" icon={<Code />} to="/admin" />}
-            </aside>
+            </Sidebar>
 
             <div className={styles.contentBackground}>
                 <div className={`${styles.content} ${containers[container]}`}>

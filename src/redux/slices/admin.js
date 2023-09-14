@@ -22,7 +22,7 @@ export const adminSlice = createSlice({
 
             state.users = {
                 ...action.payload,
-                users: [...currentOther, ...action.payload?.users]
+                users: [...currentOther, ...action.payload]
             };
         },
         setUser: (state, action) => {
@@ -43,7 +43,7 @@ export const adminSlice = createSlice({
 
             state.themes = {
                 ...action.payload,
-                themes: [...currentThemes, ...action.payload?.themes]
+                themes: [...currentThemes, ...action.payload.themes]
             };
         },
         addNewTheme: (state, action) => {

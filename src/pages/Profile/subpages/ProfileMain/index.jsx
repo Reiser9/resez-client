@@ -12,10 +12,11 @@ import { Block, Delete, DotsHorizontal, Edit, Eye, Friends, Message, Qr, User } 
 import useUser from '../../../../hooks/useUser';
 import useUtils from '../../../../hooks/useUtils';
 
-import Button from '../../../../components/Button';
 import SidebarLink from '../../../../components/SidebarLink';
 import IconButton from '../../../../components/IconButton';
 import File from '../../../../components/File';
+import HoverMenu from '../../../../components/HoverMenu';
+import MenuLink from '../../../../components/HoverMenu/MenuLink';
 
 const ProfileMain = () => {
     const [moreProfileMenu, setMoreProfileMenu] = React.useState(false);
@@ -37,24 +38,9 @@ const ProfileMain = () => {
     const deleteAvatarHandler = (callback) => {
         deleteAvatar(callback);
     }
-
-    const closeProfileMenu = () => {
-        setMoreProfileMenu(false);
-    }
-
-    const handleOutsideClick = (e) => {
-        if (profileMenuMoreRef.current && !profileMenuMoreRef.current.contains(e.target)) {
-            closeProfileMenu();
-        }
-    };
   
     React.useEffect(() => {
         getProfileInfo();
-        document.addEventListener("click", handleOutsideClick);
-    
-        return () => {
-            document.removeEventListener("click", handleOutsideClick);
-        };
     }, []);
 
     const {nickname, avatar, theme} = user;
@@ -100,48 +86,46 @@ const ProfileMain = () => {
                                 <Qr />
                             </IconButton>
                         </Tooltip>
+                        
+                        <HoverMenu
+                            button={
+                                <IconButton type="light" onClick={() => setMoreProfileMenu(prev => !prev)}>
+                                    <DotsHorizontal />
+                                </IconButton>
+                            }
+                            value={moreProfileMenu}
+                            setValue={setMoreProfileMenu}
+                        >
+                            <MenuLink>
+                                <Edit />
 
-                        <div className={styles.profileMoreInner} ref={profileMenuMoreRef}>
-                            <IconButton type="light" onClick={() => setMoreProfileMenu(prev => !prev)}>
-                                <DotsHorizontal />
-                            </IconButton>
+                                Редактировать
+                            </MenuLink>
 
-                            <div className={`${styles.profileMoreWrapper}${moreProfileMenu ? ` ${styles.active}` : ""}`} onClick={() => setMoreProfileMenu(false)}>
-                                <div className={styles.profileMore}>
-                                    <div className={styles.profileMoreContent} onClick={e => e.stopPropagation()}>
-                                        <div className={styles.profileMoreLink}>
-                                            <Edit />
+                            <MenuLink>
+                                <Message />
 
-                                            Редактировать
-                                        </div>
+                                Сообщение
+                            </MenuLink>
 
-                                        <div className={styles.profileMoreLink}>
-                                            <Message />
+                            <MenuLink>
+                                <User />
 
-                                            Сообщение
-                                        </div>
+                                Добавить в друзья
+                            </MenuLink>
 
-                                        <div className={styles.profileMoreLink}>
-                                            <User />
+                            <MenuLink danger>
+                                <Block />
 
-                                            Добавить в друзья
-                                        </div>
+                                Заблокировать
+                            </MenuLink>
 
-                                        <div className={`${styles.profileMoreLink} ${styles.delete}`}>
-                                            <Block />
+                            <MenuLink danger>
+                                <Delete />
 
-                                            Заблокировать
-                                        </div>
-
-                                        <div className={`${styles.profileMoreLink} ${styles.delete}`}>
-                                            <Delete />
-
-                                            Удалить из друзей
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                Удалить из друзей
+                            </MenuLink>
+                        </HoverMenu>
                     </div>
                 </div>
             </div>

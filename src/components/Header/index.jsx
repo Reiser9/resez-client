@@ -23,6 +23,7 @@ const Header = ({empty = false}) => {
     const {user} = useSelector(state => state.user);
     const {mode} = useSelector(state => state.theme);
     const {sidebarShow} = useSelector(state => state.app);
+
     const {changeTheme} = useTheme();
     const {logout} = useAuth();
     const navigate = useNavigate();
@@ -31,12 +32,14 @@ const Header = ({empty = false}) => {
 
     const profileMenuRef = React.useRef(null);
 
-    const menuHandler = () => {
-        dispatch(setSidebarShow(!sidebarShow));
-    }
-
     const closeProfileMenu = () => {
         setProfileMenu(false);
+    }
+
+    const menuHandler = (e) => {
+        e.stopPropagation();
+        closeProfileMenu();
+        dispatch(setSidebarShow(!sidebarShow));
     }
 
     const toggleMenuProfile = () => {
@@ -135,13 +138,16 @@ const Header = ({empty = false}) => {
                                         {unreadNotifiesCount > 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 9 ? "9+" : unreadNotifiesCount}</span>}
                                     </Link>
                                 </> :
-                                <Link to="/profile" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
+                                <Link to="/login" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
                                     <User />
 
                                     Войти
                                 </Link>}
 
-                                <div className={styles.headerProfileMenuLink} onClick={() => changeTheme()}>
+                                <div className={styles.headerProfileMenuLink} onClick={() => {
+                                    changeTheme();
+                                    closeProfileMenu();
+                                }}>
                                     <Moon />
 
                                     Темная тема

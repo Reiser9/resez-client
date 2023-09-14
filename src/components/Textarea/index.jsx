@@ -20,7 +20,7 @@ const Textarea = ({
         <div className={input.inputWrapper}>
             {(title || trackLength) && <div className={input.inputTitleWrapper}>
                 {title && <p className={typography.text3}>{title}</p>}
-                {trackLength && <p className={`${typography.text3} ${input.limitText}`}>{value.length}{lengthLimit ? ` / ${lengthLimit}` : ""}</p>}
+                {trackLength && <p className={`${typography.text3} ${input.limitText} ${value.length >= lengthLimit ? ` ${input.limit}` : ""}`}>{value.length}{lengthLimit ? ` / ${lengthLimit}` : ""}</p>}
             </div>}
 
             <div className={input.inputInner}>
@@ -35,6 +35,7 @@ const Textarea = ({
                     placeholder={placeholder}
                     onChange={e => setValue(e.target.value)}
                     className={`${input.input} ${styles.textarea}${className ? ` ${className}` : ""}`}
+                    maxLength={lengthLimit}
                     {...props}
                 ></textarea>}
 

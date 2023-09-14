@@ -11,6 +11,8 @@ import Button from '../../../../components/Button';
 import ThemeItemAdmin from '../../../../components/ThemeItem/ThemeItemAdmin';
 import ThemeItemAdminSkeleton from '../../../../components/Skeleton/Theme/ThemeItemAdminSkeleton';
 import NotContent from '../../../../components/NotContent';
+import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
+import { Cross } from '../../../../components/Icons';
 
 const Appearance = () => {
     const [themesMoreLoading, setThemesMoreLoading] = React.useState(false);
@@ -47,29 +49,29 @@ const Appearance = () => {
                 </Button>
             </div>
 
-            {themesIsLoading
-            ? <div className={styles.appearanceContent}>
-                {[...Array(8)].map((_, id) => <ThemeItemAdminSkeleton key={id} />)}
-            </div>
-            : error ? <NotContent text="Ошибка при загрузке тем" />
-            : themes?.themes?.length > 0 ? <div className={styles.appearanceContent}>
-                {themes.themes.map((data, id) => 
+            <BlockDataWithPaggination
+                error={error}
+                dataIsLoading={themesIsLoading}
+                dataMoreIsLoading={themesMoreLoading}
+                dataLength={themes?.themes?.length}
+                Skeleton={ThemeItemAdminSkeleton}
+                skeletonLoading={8}
+                skeletonMoreLoading={4}
+                containerClassName={styles.appearanceContent}
+                errorContent={<NotContent text="Ошибка при загрузке тем" icon={<Cross />} danger />}
+                notContent={<NotContent text="Тем не найдено" />}
+                isLast={themes?.isLast}
+                loadMoreData={loadMoreThemes}
+            >
+                {themes?.themes?.map((data, id) => 
                     <ThemeItemAdmin
                         key={id}
                         data={data}
                         themeDelete={() => removeTheme(data.id)}
                         loading={themeIsLoading.includes(data.id)}
-                    />)}
-            </div>
-            : <NotContent text="Тем не найдено" />}
-
-            {themesMoreLoading && <div className={styles.appearanceContent}>
-                {[...Array(4)].map((_, id) => <ThemeItemAdminSkeleton key={id} />)}
-            </div>}
-
-            {themes?.themes?.length > 0 && !themesIsLoading && !themes?.isLast && <Button loading={themesMoreLoading} type="empty" auto className={styles.themesMoreButton} onClick={loadMoreThemes}>
-                Показать еще
-            </Button>}
+                    />
+                )}
+            </BlockDataWithPaggination>
         </div>
     )
 }

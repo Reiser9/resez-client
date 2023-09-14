@@ -52,7 +52,7 @@ const App = () => {
                         <Route path="notifies/*" element={withSuspense(<Notifies />)} />
                         <Route path="training/*" element={withSuspense(<Training />)} />
                         <Route path="admin/*" element={withSuspense(<Admin />)} />
-                        <Route path="*" element={<Navigate to={"/404"} />} />
+                        <Route path="*" element={<Navigate to={"/404"} replace />} />
                     </Route>
 
                     <Route path="/" element={<EmptyWrapper />}>

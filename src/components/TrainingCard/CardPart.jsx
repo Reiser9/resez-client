@@ -2,22 +2,31 @@ import React from 'react';
 
 import styles from './index.module.css';
 
-import { speakText } from '../../utils/speakText';
+import useSpeakText from '../../hooks/useSpeakText';
 
-import { Volume } from '../Icons';
+import { Pause, Volume } from '../Icons';
 
 const CardPart = ({
     text = "",
     ...props
 }) => {
+    const {isSpeaking, speakText, clearSpeak, speakIsSupport} = useSpeakText();
+
+    const speakTextHandler = (e) => {
+        e.stopPropagation();
+
+        if(isSpeaking){
+            return clearSpeak();
+        }
+
+        speakText(text);
+    }
+
     return (
         <div {...props}>
-            <button className={styles.cardVolume} onClick={(e) => {
-                e.stopPropagation();
-                speakText(text);
-            }}>
-                <Volume />
-            </button>
+            {speakIsSupport() && <button className={styles.cardVolume} onClick={speakTextHandler}>
+                {isSpeaking ? <Pause /> : <Volume />}
+            </button>}
 
             {text}
         </div>

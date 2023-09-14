@@ -12,38 +12,65 @@ import ReloadButton from '../../../../components/ReloadButton';
 import Button from '../../../../components/Button';
 import NotContent from '../../../../components/NotContent';
 import CollectionItem from '../../../../components/CollectionItem';
+import CollectionItemSkeleton from '../../../../components/Skeleton/CollectionItem/CollectionItemSkeleton';
+import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
 
 const Cards = () => {
-    const {error, isLoading, loadCollections} = useTraining();
-    const {collections} = useSelector(state => state.training);
+    const [collectionMoreLoading, setCollectionMoreLoading] = React.useState(false);
+
+    const {error, isLoading, loadCollections, getCollections, deleteCollection} = useTraining();
+    const {collectionIsLoading, collections} = useSelector(state => state.training);
+
+    const loadMoreCollection = React.useCallback(async () => {
+        setCollectionMoreLoading(true);
+        await getCollections(collections?.collections?.length, 6);
+        setCollectionMoreLoading(false);
+    }, [collections.collections]);
 
     React.useEffect(() => {
         loadCollections(0, 6);
     }, []);
 
+    React.useEffect(() => {
+        if(collections?.collections?.length === 0 && !collections?.isLast){
+            loadMoreCollection();
+        }
+    }, [collections?.collections, collections?.isLast]);
+
     return (
         <div className={styles.cards}>
             <div className={styles.cardsWrapper}>
                 <div className={styles.cardsTitleInner}>
-                    <p className={typography.h3}>Коллекции (3)</p>
+                    <p className={typography.h3}>Коллекции {!collectionIsLoading && `(${collections.totalCount || 0})`}</p>
 
-                    <ReloadButton />
+                    <ReloadButton loading={collectionIsLoading} onClick={() => loadCollections(0, 6, true)} />
                 </div>
 
-                <Button type="light" auto to="add">
-                    Добавить
+                <Button disabled={collectionIsLoading} type="light" auto to="add">
+                    Создать
                 </Button>
             </div>
 
-            {isLoading
-            ? <div className={styles.collectionsContent}>
-                Загрузка...
-            </div>
-            : error ? <NotContent text="Ошибка при загрузке коллекций" icon={<Cross />} danger />
-            : collections?.collections?.length > 0 ? <div className={styles.collectionsContent}>
-                {collections?.collections?.map((data, id) => <CollectionItem key={id} data={data} />)}
-            </div>
-            : <NotContent text="Коллекций не найдено" />}
+            <BlockDataWithPaggination
+                error={error}
+                dataIsLoading={collectionIsLoading}
+                dataMoreIsLoading={collectionMoreLoading}
+                dataLength={collections?.collections?.length}
+                Skeleton={CollectionItemSkeleton}
+                containerClassName={styles.collectionsContent}
+                errorContent={<NotContent text="Ошибка при загрузке коллекций" icon={<Cross />} danger />}
+                notContent={<NotContent text="Коллекций не найдено" />}
+                isLast={collections?.isLast}
+                loadMoreData={loadMoreCollection}
+            >
+                {collections?.collections?.map((data, id) =>
+                    <CollectionItem
+                        key={id}
+                        data={data}
+                        deleteCollection={() => deleteCollection(data.id)}
+                    />
+                )}
+            </BlockDataWithPaggination>
         </div>
     )
 }
