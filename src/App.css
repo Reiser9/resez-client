@@ -186,6 +186,12 @@ input::placeholder{
     }
 }
 
+@media (any-hover: none) {
+    a, button{
+        cursor: default;
+    }
+}
+
 .carousel{
     width: 100%;
 }
