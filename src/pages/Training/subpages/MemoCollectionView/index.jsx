@@ -18,19 +18,23 @@ import MenuLink from '../../../../components/HoverMenu/MenuLink';
 import IconButton from '../../../../components/IconButton';
 import TextPoint from '../../../../components/TextPoint';
 import Preloader from '../../../../components/Preloader';
+import ConfirmModal from '../../../../components/Modal/ConfirmModal';
 
 const CardCollectionView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
+    const [deleteCollectionModal, setDeleteCollectionModal] = React.useState(false);
 
-    const {isLoading, getCollectionById} = useTraining();
+    const {isLoading, getCollectionById, deleteCollection} = useTraining();
     const navigate = useNavigate();
     const {id} = useParams();
     const {collection} = useSelector(state => state.training);
 
     React.useEffect(() => {
-        getCollectionById(id, () => {
-            navigate("../memo");
-        });
+        if(isNaN(id)){
+            return navigate("../memo");
+        }
+
+        getCollectionById(id, () => navigate("../memo"));
     }, [id]);
 
     const {collection: name, pairsCount, description, isPrivate, user, QAPairs, date} = collection;
@@ -66,13 +70,13 @@ const CardCollectionView = () => {
                             </IconButton>
                         }
                     >
-                        <MenuLink>
+                        <MenuLink onClick={() => navigate("edit")}>
                             <Edit />
 
                             Редактировать
                         </MenuLink>
 
-                        <MenuLink danger>
+                        <MenuLink danger onClick={() => setDeleteCollectionModal(true)}>
                             <Delete />
 
                             Удалить
@@ -167,6 +171,13 @@ const CardCollectionView = () => {
                     </div>)}
                 </div>
             </div>
+
+            <ConfirmModal
+                value={deleteCollectionModal}
+                setValue={setDeleteCollectionModal}
+                text="Вы действительно хотите удалить коллекцию?"
+                callback={() => deleteCollection(id, () => navigate("../memo"))}
+            />
         </div>
     )
 }

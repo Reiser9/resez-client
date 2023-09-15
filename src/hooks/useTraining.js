@@ -93,7 +93,7 @@ const useTraining = () => {
         successCallback();
     }
 
-    const deleteCollection = async (id) => {
+    const deleteCollection = async (id, successCallback = () => {}) => {
         setError(false);
 
         setIsLoading(true);
@@ -105,14 +105,15 @@ const useTraining = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => deleteCollection(id));
+            return errorController(response, () => deleteCollection(id, successCallback));
         }
 
         dispatch(removeCollection(response.data.collection));
         alertNotify("Успешно", "Коллекция удалена", "success");
+        successCallback();
     }
 
-    const updateCollection = async (id, collection, description, QAPairs) => {
+    const updateCollection = async (id, collection, description, isPrivate, QAPairs, successCallback = () => {}) => {
         setError(false);
 
         setIsLoading(true);
@@ -121,6 +122,7 @@ const useTraining = () => {
             id,
             collection,
             description,
+            isPrivate,
             QAPairs
         });
 
@@ -129,10 +131,11 @@ const useTraining = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => updateCollection(id, collection, description, QAPairs));
+            return errorController(response, () => updateCollection(id, collection, description, isPrivate, QAPairs, successCallback));
         }
         
         alertNotify("Успешно", "Коллекция обновлена", "success");
+        successCallback();
         // Обновление коллекции
     }
 

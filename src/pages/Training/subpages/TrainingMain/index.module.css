@@ -1,0 +1,93 @@
+.training{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.trainingTextInner{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.trainingItems{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.trainingItem{
+    width: calc(100% / 3 - 24px / 3);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 1.2rem;
+    border-radius: 4px;
+    background: var(--input);
+    border: 1px solid transparent;
+}
+
+@media (max-width: 1100px) {
+    .trainingItem{
+        width: calc(100% / 2 - 12px / 2);
+    }
+}
+@media (max-width: 875px) {
+    .trainingItem{
+        width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .trainingItem{
+        width: calc(100% / 2 - 12px / 2);
+    }
+}
+@media (max-width: 660px) {
+    .trainingItem{
+        width: 100%;
+    }
+}
+
+@media (any-hover: hover) {
+    .trainingItemArrow svg{
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    .trainingItem:hover svg{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.trainingItem:hover{
+    border: 1px solid var(--main);
+}
+
+.trainingItemTitleInner{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.trainingItemArrow{
+    display: flex;
+}
+
+.trainingItemArrow svg{
+    width: 24px;
+    flex-shrink: 0;
+    transition: .2s linear;
+}
+
+.trainingItemArrow svg path{
+    stroke: var(--main);
+}

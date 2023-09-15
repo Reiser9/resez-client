@@ -251,6 +251,7 @@
 
 .memoCollectionTypesItemWrapper svg{
     width: 24px;
+    flex-shrink: 0;
     transition: .2s linear;
 }
 

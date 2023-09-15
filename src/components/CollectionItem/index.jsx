@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Tooltip } from 'antd';
 
 import typography from '../../styles/typography.module.css';
@@ -14,8 +14,9 @@ import ConfirmModal from '../Modal/ConfirmModal';
 
 const CollectionItem = ({data, deleteCollection = () => {}}) => {
     const [collectionItemMenu, setCollectionItemMenu] = React.useState(false);
-
     const [deleteCollectionModal, setDeleteCollectionModal] = React.useState(false);
+
+    const navigate = useNavigate();
 
     const {collection, description, pairsCount, user, id, isPrivate} = data;
     const {nickname, avatar} = user;
@@ -23,25 +24,25 @@ const CollectionItem = ({data, deleteCollection = () => {}}) => {
     return (
         <>
             <div className={styles.collectionItem}>
-                <div className={styles.collectionItemInfoInner}>
-                    <div className={styles.collectionItemInfo}>
+                <Link to={`${id}`} className={styles.collectionItemInfoInner}>
+                    <span className={styles.collectionItemInfo}>
                         <p className={styles.collectionItemName}>{collection}</p>
 
-                        <div className={styles.collectionItemTags}>
+                        <span className={styles.collectionItemTags}>
                             <p className={styles.collectionItemNumber}>Терминов: {pairsCount}</p>
 
                             {isPrivate && <Tooltip title="Скрыта">
-                                <div className={styles.collectionItemLock}>
+                                <span className={styles.collectionItemLock}>
                                     <Lock />
-                                </div>    
+                                </span>    
                             </Tooltip>}
-                        </div>
-                    </div>
+                        </span>
+                    </span>
 
-                    <Link to={`${id}`} className={styles.collectionItemLink}>
+                    <span className={styles.collectionItemLink}>
                         <ArrowRightLong />
-                    </Link>
-                </div>
+                    </span>
+                </Link>
 
                 {description && <p className={`${typography.text2} ${styles.collectionItemDescription}`}>{description}</p>}
 
@@ -65,7 +66,7 @@ const CollectionItem = ({data, deleteCollection = () => {}}) => {
                         value={collectionItemMenu}
                         setValue={setCollectionItemMenu}
                     >
-                        <MenuLink>
+                        <MenuLink onClick={() => navigate(`${id}/edit`)}>
                             <Edit />
 
                             Редактировать

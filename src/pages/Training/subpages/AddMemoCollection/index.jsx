@@ -1,6 +1,7 @@
 import React from 'react';
 import { Checkbox } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
@@ -15,8 +16,9 @@ import Textarea from '../../../../components/Textarea';
 import Button from '../../../../components/Button';
 import IconButton from '../../../../components/IconButton';
 import BackButton from '../../../../components/BackButton';
+import Preloader from '../../../../components/Preloader';
 
-const AddCardCollection = () => {
+const AddCardCollection = ({edit = false}) => {
     const [name, setName] = React.useState("");
     const [withDescription, setWithDescription] = React.useState(false);
     const [description, setDescription] = React.useState("");
@@ -26,8 +28,10 @@ const AddCardCollection = () => {
     const [answer, setAnswer] = React.useState("");
 
     const {alertNotify} = useNotify();
-    const {createCollection} = useTraining();
+    const {isLoading, createCollection, getCollectionById, updateCollection} = useTraining();
     const navigate = useNavigate();
+    const {id} = useParams();
+    const {collection} = useSelector(state => state.training);
 
     const addNewPair = () => {
         if(!question || !answer){
@@ -88,7 +92,21 @@ const AddCardCollection = () => {
             return alertNotify("Предупреждение", "Не все поля заполнены", "warn");
         }
 
-        createCollection(name, description, anonimCollection, newPairs, () => navigate("../memo"));
+        if(!withDescription){
+            var desc = "";
+        }
+
+        desc = description;
+
+        createCollection(name, desc, anonimCollection, newPairs, () => navigate("../memo"));
+    }
+
+    const editCollectionHandler = () => {
+        if(pairs.length < 2){
+            return alertNotify("Предупреждение", "Нельзя создать коллекцию, в которой меньше 2-х пар", "warn");
+        }
+
+        updateCollection(id, name, description, anonimCollection, pairs, () => navigate("../memo"));
     }
 
     const swapElementsInArray = (id) => {
@@ -109,13 +127,45 @@ const AddCardCollection = () => {
         setAnswer(tempQuestion);
     }
 
+    React.useEffect(() => {
+        if(!edit){
+            return;
+        }
+
+        if(!id || isNaN(id)){
+            return navigate("../memo");
+        }
+
+        getCollectionById(id);
+    }, [id]);
+
+    React.useEffect(() => {
+        if(!edit || Object.keys(collection).length === 0){
+            return;
+        }
+
+        const {collection: colName, description: colDescription, isPrivate, QAPairs} = collection;
+
+        setName(colName);
+        if(colDescription){
+            setWithDescription(true);
+            setDescription(colDescription);
+        }
+        setAnonimCollection(isPrivate);
+        setPairs([...QAPairs]);
+    }, [collection]);
+
+    if(isLoading){
+        return <Preloader page />
+    }
+
     return (
         <div className={styles.addCardCollection}>
             <div className={styles.addCardCollectionWrapper}>
                 <div className={styles.addCardCollectionTitleInner}>
                     <BackButton />
 
-                    <p className={typography.h3}>Создание коллекции</p>
+                    <p className={typography.h3}>{edit ? "Редактирование" : "Создание"} коллекции</p>
                 </div>
             </div>
 
@@ -168,9 +218,13 @@ const AddCardCollection = () => {
                     </Button>
                 </div>
 
-                <Button auto type="light" onClick={createCollectionHandler}>
-                    Создать
+                {edit
+                ? <Button auto type="light" onClick={editCollectionHandler}>
+                    Сохранить
                 </Button>
+                : <Button auto type="light" onClick={createCollectionHandler}>
+                    Создать
+                </Button>}
             </div>
         </div>
     )

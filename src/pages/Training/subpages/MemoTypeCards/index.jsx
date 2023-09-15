@@ -97,7 +97,7 @@ const MemoTypeCards = () => {
                 </div>
 
                 <div className={`${styles.typeCardsResult}${currentIdCard === collection.pairsCount ? ` ${styles.active}` : ""}`}>
-                    <p className={typography.h3}>Ай красавчик!</p>
+                    <p className={typography.h3}>Отлично!</p>
 
                     <p className={typography.text}>Твой результат:</p>
 

@@ -74,7 +74,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                         <p className={styles.userLvlPoint}>{level || 1}</p>
 
                         <div className={styles.userLvlProgressTotal}>
-                            <div className={styles.userLvlProgressLine} style={{width: xp / xpLimit}}></div>
+                            <div className={styles.userLvlProgressLine} style={{width: `${(xp / xpLimit) * 100}%`}}></div>
 
                             <p className={`${typography.text3} ${styles.userLvlExp}`}>{xp || 0} / {xpLimit || 0}</p>
                         </div>
