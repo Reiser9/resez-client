@@ -61,11 +61,15 @@ const AddCardCollection = ({edit = false}) => {
     const handleChange = (index, e, name) => {
         const newValues = [...pairs];
 
-        newValues[index][name] = e.target.value;
+        newValues[index] = {
+            ...newValues[index],
+            [name]: e.target.value
+        }
+
         setPairs(newValues);
     };
 
-    const createCollectionHandler = () => {
+    const validateHandler = () => {
         let newPairs = pairs;
 
         if(question && answer){
@@ -92,21 +96,19 @@ const AddCardCollection = ({edit = false}) => {
             return alertNotify("Предупреждение", "Не все поля заполнены", "warn");
         }
 
-        if(!withDescription){
-            var desc = "";
-        }
+        return newPairs;
+    }
 
-        desc = description;
+    const createCollectionHandler = () => {
+        const newPairs = validateHandler();
 
-        createCollection(name, desc, anonimCollection, newPairs, () => navigate("../memo"));
+        createCollection(name, withDescription ? description : "", anonimCollection, newPairs, () => navigate("../memo"));
     }
 
     const editCollectionHandler = () => {
-        if(pairs.length < 2){
-            return alertNotify("Предупреждение", "Нельзя создать коллекцию, в которой меньше 2-х пар", "warn");
-        }
+        const newPairs = validateHandler();
 
-        updateCollection(id, name, description, anonimCollection, pairs, () => navigate("../memo"));
+        updateCollection(id, name, withDescription ? description : "", anonimCollection, newPairs, () => navigate("../memo"));
     }
 
     const swapElementsInArray = (id) => {
@@ -185,8 +187,8 @@ const AddCardCollection = ({edit = false}) => {
                 <div className={styles.addCardCollectionPairs}>
                     {pairs.map((data, id) => <div key={id} className={styles.addCardCollectionPair}>
                         <div className={styles.addCardCollectionPairWrap}>
-                            <Input placeholder="Вопрос" value={data.question} onChange={e => handleChange(id, e, "question")} wrapperClass={styles.addCardCollectionPairInput} />
-                            <Input placeholder="Ответ" value={data.answer} onChange={e => handleChange(id, e, "answer")} wrapperClass={styles.addCardCollectionPairInput} />
+                            <Input placeholder="Вопрос" lengthLimit={250} value={data.question} onChange={e => handleChange(id, e, "question")} wrapperClass={styles.addCardCollectionPairInput} />
+                            <Input placeholder="Ответ" lengthLimit={250} value={data.answer} onChange={e => handleChange(id, e, "answer")} wrapperClass={styles.addCardCollectionPairInput} />
 
                             <button className={styles.addCardCollectionPairSwap} onClick={() => swapElementsInArray(id)}>
                                 <Swap />

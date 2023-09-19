@@ -5,7 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 
-import {addCollection, initCollection, initCollections, removeCollection, setCollectionIsLoading, setCollections} from '../redux/slices/training';
+import {addCollection, editCollection, initCollection, initCollections, removeCollection, setCollectionIsLoading, setCollections} from '../redux/slices/training';
 
 import useRequest from './useRequest';
 import useError from './useError';
@@ -33,7 +33,7 @@ const useTraining = () => {
 
             if(requestDataIsError(response)){
                 setError(true);
-
+                
                 return errorController(response, () => loadCollections(offset, limit, reload));
             }
 
@@ -57,7 +57,7 @@ const useTraining = () => {
                 return errorController(response, () => getCollections(offset, limit));
             }
 
-            dispatch(setCollections(response.data));
+            dispatch(setCollections(response.data.collections));
         }
     }
 
@@ -85,7 +85,7 @@ const useTraining = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => createCollection(collection, description, QAPairs, successCallback));
+            return errorController(response, () => createCollection(collection, description, isPrivate, QAPairs, successCallback));
         }
 
         dispatch(addCollection(response.data.collection));
@@ -134,9 +134,9 @@ const useTraining = () => {
             return errorController(response, () => updateCollection(id, collection, description, isPrivate, QAPairs, successCallback));
         }
         
+        dispatch(editCollection(response.data.collection))
         alertNotify("Успешно", "Коллекция обновлена", "success");
         successCallback();
-        // Обновление коллекции
     }
 
     const getCollectionById = async (id, notFoundCallback = () => {}) => {

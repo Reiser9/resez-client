@@ -1,6 +1,7 @@
 .collectionItem{
     width: calc(100% / 3 - 24px / 3);
     height: 175px;
+    display: flex;
 }
 
 @media (max-width: 1150px) {

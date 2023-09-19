@@ -48,7 +48,7 @@ const Header = ({empty = false}) => {
     }
 
     const logoutHandler = () => {
-        logout(() => navigate("/"));
+        logout(() => navigate("../../../"));
     }
   
     const handleOutsideClick = (e) => {

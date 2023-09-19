@@ -6,15 +6,15 @@ import Preloader from '../../Preloader';
 
 const NoAuthWrapper = ({children}) => {
     const {appIsLoading} = useSelector(state => state.app);
-    const {isAuth} = useSelector(state => state.auth);
+    const {authIsLoading, isAuth} = useSelector(state => state.auth);
     const location = useLocation();
 
-    if(appIsLoading){
+    if(appIsLoading || authIsLoading){
         return <Preloader fill />
     }
 
     if(isAuth){
-        return <Navigate to={`${location.state?.redirect || "/"}`} replace />
+        return <Navigate to={location.state?.redirect || "/"} replace state={null} />
     }
 
     return children;

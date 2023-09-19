@@ -57,7 +57,7 @@ const Users = () => {
                     <UserItem
                         key={data.id}
                         data={data}
-                        loading={userIsLoading.includes(data.id)}
+                        loading={userIsLoading?.includes(data.id)}
                         userBlock={() => userBlock(data.id)}
                         userUnblock={() => userUnblock(data.id)}
                     />

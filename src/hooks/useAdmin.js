@@ -123,7 +123,7 @@ const useAdmin = () => {
             return errorController(response, () => userBlock(userId, successCallback));
         }
         
-        dispatch(setUser(response.data));
+        dispatch(setUser(response.data.user));
         alertNotify("Успешно", "Пользователь разблокирован", "success");
         successCallback();
     }
@@ -162,7 +162,7 @@ const useAdmin = () => {
                 return errorController(response, () => getAllThemes(offset, limit));
             }
 
-            dispatch(setThemes(response.data));
+            dispatch(setThemes(response.data.themes));
         }
     }
 
@@ -223,7 +223,7 @@ const useAdmin = () => {
             return errorController(response, () => editTheme(id, primary, light, isRatingEnabled, successCallback));
         }
 
-        dispatch(changeTheme({id, theme: response.data.theme}));
+        dispatch(changeTheme(response.data.theme));
         alertNotify("Успешно", "Тема изменена", "success");
         successCallback();
     }

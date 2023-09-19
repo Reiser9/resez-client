@@ -21,15 +21,31 @@ export const trainingSlice = createSlice({
 
             state.collections = {
                 ...action.payload,
-                collections: [...currentCollections, ...action.payload.collections]
+                collections: currentCollections ? [...currentCollections, ...action.payload] : [...action.payload]
             };
         },
         initCollection: (state, action) => {
             state.collection = action.payload
         },
         addCollection: (state, action) => {
-            state.collections.collections = [action.payload, ...state.collections.collections];
-            state.collections.totalCount++;
+            const currentCollections = state.collections?.collections;
+
+            if(!currentCollections){
+                return;
+            }
+
+            state.collections = {
+                ...state.collections,
+                collections: [action.payload, ...currentCollections],
+                totalCount: state.collections.totalCount + 1,
+            };
+        },
+        editCollection: (state, action) => {
+            const index = state.collections?.collections?.findIndex(obj => obj.id === action.payload.id);
+
+            if(index !== -1){
+                state.collections?.collections?.splice(index, 1, action.payload);
+            }
         },
         removeCollection: (state, action) => {
             state.collections.collections = state.collections.collections.filter(obj => obj.id !== action.payload.id);
@@ -45,6 +61,7 @@ export const {
     setCollections,
     initCollection,
     addCollection,
+    editCollection,
     removeCollection,
     setDataTraining
 } = trainingSlice.actions;

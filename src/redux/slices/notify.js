@@ -27,22 +27,31 @@ export const notifySlice = createSlice({
             
             state.notifies = {
                 ...action.payload,
-                notifies: [...currentNotifies, ...action.payload?.notifies]
+                notifies: currentNotifies ? [...currentNotifies, ...action.payload.notifies] : [...action.payload.notifies]
             };
         },
         readNotifyById: (state, action) => {
-            const index = state.notifies?.notifies?.findIndex(obj => obj.id === action.payload?.notify?.id);
+            const index = state.notifies?.notifies?.findIndex(obj => obj.id === action.payload?.id);
 
             if(index !== -1){
-                state.notifies?.notifies?.splice(index, 1, action.payload?.notify);
+                state.notifies?.notifies?.splice(index, 1, action.payload);
             }
         },
         deleteNotifyById: (state, action) => {
-            state.notifies.notifies = state.notifies?.notifies?.filter(item => item.id != action.payload?.notify?.id);
+            state.notifies.notifies = state.notifies?.notifies?.filter(item => item.id != action.payload?.id);
             state.notifies.totalCount--;
         },
         addNotifyInStart: (state, action) => {
-            state.notifies.notifies = state.notifies?.notifies?.length > 0 ? [action.payload, ...state.notifies.notifies] : [action.payload];
+            const oldArray = state.notifies?.notifies;
+            
+            if(!oldArray){
+                return;
+            }
+
+            state.notifies = {
+                ...state.notifies,
+                notifies: [action.payload, ...state.notifies.notifies]
+            };
         },
         setDataNotify: () => initialState
     }

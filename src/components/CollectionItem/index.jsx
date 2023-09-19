@@ -51,7 +51,7 @@ const CollectionItem = ({data, deleteCollection = () => {}}) => {
                         <div className={styles.collectionItemAuthorImgInner}>
                             {avatar
                                 ? <img src={avatar} alt="avatar" className={styles.collectionItemAuthorImg} />
-                                : <p className={styles.collectionItemAuthorWord}>{nickname[0].toUpperCase()}</p>}
+                                : <p className={styles.collectionItemAuthorWord}>{nickname[0]}</p>}
                         </div>
 
                         <p className={styles.collectionItemAuthorName}>{nickname}</p>

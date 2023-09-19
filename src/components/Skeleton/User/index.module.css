@@ -1,6 +1,7 @@
 .userAdminItem{
     width: calc(100% / 3 - 24px / 3);
     height: 411px;
+    display: flex;
 }
 
 @media (max-width: 1230px) {

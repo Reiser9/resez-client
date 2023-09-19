@@ -45,7 +45,7 @@ const Appearance = () => {
                 </div>
 
                 <Button disabled={themesIsLoading} type="light" auto to="theme/add">
-                    Добавить
+                    Создать
                 </Button>
             </div>
 

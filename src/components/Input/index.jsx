@@ -16,7 +16,7 @@ const Input = ({
     password = false,
     disabled = false,
     trackLength = false,
-    lengthLimit = 0,
+    lengthLimit = 9999,
     onPaste,
     className,
     wrapperClass,
@@ -77,7 +77,7 @@ const Input = ({
                     className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""}`}
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    maxLength={lengthLimit !== 0 ? lengthLimit : 9999}
+                    maxLength={lengthLimit}
                     placeholder={placeholder}
                     type={typeInput}
                     onPaste={pasteHandler()}

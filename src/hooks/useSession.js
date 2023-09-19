@@ -59,7 +59,7 @@ const useSession = () => {
                 return errorController(response, () => getAllSessions(sessions?.other?.length, limit));
             }
             
-            dispatch(setSessions(response.data));
+            dispatch(setSessions(response.data.other));
         }
     }
 

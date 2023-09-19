@@ -21,7 +21,7 @@ export const themeSlice = createSlice({
 
             state.themes = {
                 ...action.payload,
-                themes: [...currentThemes, ...action.payload?.themes]
+                themes: currentThemes ? [...currentThemes, ...action.payload] : [...action.payload]
             };
         },
         setDataTheme: (state) => {

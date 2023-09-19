@@ -81,10 +81,10 @@ const useNotify = () => {
         alertNotify("Успешно", "Уведомление прочитано", "success");
 
         if(unread){
-            dispatch(deleteNotifyById(response.data));
+            dispatch(deleteNotifyById(response.data.notify));
         }
         else{
-            dispatch(readNotifyById(response.data));
+            dispatch(readNotifyById(response.data.notify));
         }
 
         dispatch(decrementUreadNotifyCount());

@@ -11,7 +11,7 @@ const Textarea = ({
     title,
     disabled = false,
     trackLength = false,
-    lengthLimit = 0,
+    lengthLimit = 9999,
     className,
     children,
     ...props

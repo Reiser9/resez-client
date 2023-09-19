@@ -22,7 +22,7 @@ export const adminSlice = createSlice({
 
             state.users = {
                 ...action.payload,
-                users: [...currentOther, ...action.payload]
+                users: currentOther ? [...currentOther, ...action.payload.users] : [...action.payload.users]
             };
         },
         setUser: (state, action) => {
@@ -43,21 +43,27 @@ export const adminSlice = createSlice({
 
             state.themes = {
                 ...action.payload,
-                themes: [...currentThemes, ...action.payload.themes]
+                themes: currentThemes ? [...currentThemes, ...action.payload.themes] : [...action.payload.themes]
             };
         },
         addNewTheme: (state, action) => {
-            state.themes.themes = [...state.themes.themes, action.payload];
-            state.themes.totalCount++;
+            const currentThemes = state.themes.themes;
+
+            if(!currentThemes){
+                return;
+            }
+
+            state.themes = {
+                themes: [...currentThemes, action.payload],
+                totalCount: state.themes.totalCount + 1
+            };
         },
         changeTheme: (state, action) => {
-            state.themes.themes = state.themes.themes.map((obj) => {
-                if(obj.id == action.payload.id){
-                    return action.payload.theme;
-                }
+            const index = state.themes?.themes?.findIndex(obj => obj.id === action.payload.id);
 
-                return obj;
-            });
+            if(index !== -1){
+                state.themes?.themes?.splice(index, 1, action.payload);
+            }
         },
         deleteTheme: (state, action) => {
             state.themes.themes = state.themes?.themes?.filter((item) => item.id !== action.payload.id);

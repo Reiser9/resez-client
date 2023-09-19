@@ -21,22 +21,10 @@ const useAuth = () => {
     const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
-    const {request, getHealthServer, clearLocalData, noAuthController} = useRequest();
+    const {request, clearLocalData, noAuthController} = useRequest();
     const {errorController} = useError();
     const {alertNotify} = useAlert();
     const {getShortInfo} = useUser();
-
-    const reload = async () => {
-        dispatch(setAppIsLoading(true));
-
-        const response = await getHealthServer();
-
-        if(response){
-            checkAuth();
-        }
-
-        dispatch(setAppIsLoading(false));
-    }
 
     const checkAuth = async () => {
         setError(false);
@@ -53,22 +41,20 @@ const useAuth = () => {
         const response = await request(REQUEST_TYPE.AUTH, "/check-auth", HTTP_METHODS.GET, true);
 
         dispatch(setAppIsLoading(false));
+        dispatch(setAuthIsLoading(false));
 
         if(requestDataIsError(response)){
             setError(true);
-            dispatch(setAuthIsLoading(false));
             
-            return errorController(response, () => checkAuth(), "", "", async () => {
-                dispatch(setAuthIsLoading(true));
-                await noAuthController(checkAuth);
-                return dispatch(setAuthIsLoading(false));
-            });
+            return errorController(response, checkAuth);
         }
 
+        dispatch(setAuthIsLoading(true));
         const {data} = await getShortInfo() || "";
+        dispatch(setAuthIsLoading(false));
 
         if(!data){
-            return dispatch(setAuthIsLoading(false));
+            return;
         }
 
         const {primary, light} = data?.theme || {};
@@ -77,7 +63,6 @@ const useAuth = () => {
         dispatch(setIsAuth(true));
         dispatch(initUser(data.user));
         dispatch(initSessionId(data.sessionId));
-        dispatch(setAuthIsLoading(false));
     }
 
     const logout = async (successCallback = () => {}) => {
@@ -366,7 +351,6 @@ const useAuth = () => {
     return {
         isLoading,
         error,
-        reload,
         checkAuth,
         logout,
         login,

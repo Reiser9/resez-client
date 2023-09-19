@@ -5,11 +5,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
+import { Return } from '../../../../components/Icons';
+
 import Card from '../../../../components/TrainingCard/Card';
 import BackButton from '../../../../components/BackButton';
 import Button from '../../../../components/Button';
 import IconButton from '../../../../components/IconButton';
-import { Return } from '../../../../components/Icons';
 
 const MemoTypeCards = () => {
     const [currentIdCard, setCurrentIdCard] = React.useState(0);
