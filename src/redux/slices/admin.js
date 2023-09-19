@@ -54,6 +54,7 @@ export const adminSlice = createSlice({
             }
 
             state.themes = {
+                ...state.themes,
                 themes: [...currentThemes, action.payload],
                 totalCount: state.themes.totalCount + 1
             };

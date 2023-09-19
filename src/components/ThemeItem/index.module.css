@@ -90,8 +90,14 @@
     gap: 20px;
 }
 
-.appearanceItemTheme{
+.appearanceItemThemeContent{
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.appearanceItemTheme{
     display: flex;
     justify-content: center;
 }
@@ -118,13 +124,6 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
-}
-
-.appearanceItemButtons{
-    width: 100%;
-    display: flex;
-    gap: 8px;
-    justify-content: center;
 }
 
 .apperanceItemStatsInner{

@@ -20,7 +20,7 @@ export const sessionSlice = createSlice({
 
             state.sessions = {
                 ...action.payload,
-                other: currentOther ? [...currentOther, ...action.payload] : [...action.payload]
+                other: currentOther ? [...currentOther, ...action.payload.other] : [...action.payload.other]
             };
         },
         endSessionById: (state, action) => {

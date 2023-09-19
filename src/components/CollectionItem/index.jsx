@@ -11,8 +11,9 @@ import IconButton from '../IconButton';
 import HoverMenu from '../HoverMenu';
 import MenuLink from '../HoverMenu/MenuLink';
 import ConfirmModal from '../Modal/ConfirmModal';
+import Preloader from '../Preloader';
 
-const CollectionItem = ({data, deleteCollection = () => {}}) => {
+const CollectionItem = ({data, loading = false, deleteCollection = () => {}}) => {
     const [collectionItemMenu, setCollectionItemMenu] = React.useState(false);
     const [deleteCollectionModal, setDeleteCollectionModal] = React.useState(false);
 
@@ -82,6 +83,10 @@ const CollectionItem = ({data, deleteCollection = () => {}}) => {
                         </MenuLink>
                     </HoverMenu>
                 </div>
+
+                {loading && <div className={styles.collectionItemLoader}>
+                    <Preloader small />
+                </div>}
             </div>
 
             <ConfirmModal

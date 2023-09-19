@@ -5,7 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 
-import {addCollection, editCollection, initCollection, initCollections, removeCollection, setCollectionIsLoading, setCollections} from '../redux/slices/training';
+import {addCollection, editCollection, initCollection, initCollections, removeCollection, setCollections, setCollectionsIsLoading} from '../redux/slices/training';
 
 import useRequest from './useRequest';
 import useError from './useError';
@@ -13,23 +13,25 @@ import useNotify from './useNotify';
 
 const useTraining = () => {
     const [isLoading, setIsLoading] = React.useState(false);
+    const [collectionByIdIsLoading, setCollectionByIdIsLoading] = React.useState(false);
+    const [collectionIsLoading, setCollectionIsLoading] = React.useState([]);
     const [error, setError] = React.useState(false);
 
     const {request} = useRequest();
     const {errorController} = useError();
     const {alertNotify} = useNotify();
     const dispatch = useDispatch();
-    const {collections, collection} = useSelector(state => state.training);
+    const {collections} = useSelector(state => state.training);
 
     const loadCollections = async (offset = 0, limit = 5, reload = false) => {
         setError(false);
 
         if(!collections.collections || reload){
-            dispatch(setCollectionIsLoading(true));
+            dispatch(setCollectionsIsLoading(true));
 
             const response = await request(REQUEST_TYPE.COLLECTION, `?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
-            dispatch(setCollectionIsLoading(false));
+            dispatch(setCollectionsIsLoading(false));
 
             if(requestDataIsError(response)){
                 setError(true);
@@ -96,11 +98,11 @@ const useTraining = () => {
     const deleteCollection = async (id, successCallback = () => {}) => {
         setError(false);
 
-        setIsLoading(true);
+        setCollectionIsLoading(prev => [...prev, id]);
 
         const response = await request(REQUEST_TYPE.COLLECTION, `/${id}`, HTTP_METHODS.DELETE, true);
 
-        setIsLoading(false);
+        setCollectionIsLoading(prev => prev.filter(item => item !== id));
 
         if(requestDataIsError(response)){
             setError(true);
@@ -142,11 +144,11 @@ const useTraining = () => {
     const getCollectionById = async (id, notFoundCallback = () => {}) => {
         setError(false);
 
-        setIsLoading(true);
+        setCollectionByIdIsLoading(true);
 
         const response = await request(REQUEST_TYPE.COLLECTION, `${id}`, HTTP_METHODS.GET, true);
 
-        setIsLoading(false);
+        setCollectionByIdIsLoading(false);
 
         if(requestDataIsError(response)){
             setError(true);
@@ -163,6 +165,8 @@ const useTraining = () => {
     return{
         error,
         isLoading,
+        collectionIsLoading,
+        collectionByIdIsLoading,
         loadCollections,
         getCollections,
         createCollection,

@@ -1,28 +1,61 @@
 import React from 'react';
 import { Tooltip } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 import styles from './index.module.css';
 
-import { Delete, Dislike, Edit, Id, Like, Star, User } from '../Icons';
+import { Delete, Dislike, DotsHorizontal, Edit, Id, Like, Star, User } from '../Icons';
 
 import TextPoint from '../TextPoint';
 import IconButton from '../IconButton';
 import ConfirmModal from '../Modal/ConfirmModal';
 import Preloader from '../Preloader';
+import HoverMenu from '../HoverMenu';
+import MenuLink from '../HoverMenu/MenuLink';
 
 const ThemeItemAdmin = ({data, themeDelete = () => {}, loading = false}) => {
     const {primary, light, id, likesCount, dislikesCount, usersCount, isRatingEnabled} = data;
 
+    const [eventMenu, setEventMenu] = React.useState(false);
     const [confirmDelete, setConfirmDelete] = React.useState(false);
+
+    const navigate = useNavigate();
 
     return (
         <>
             <div className={styles.appearanceItem}>
                 <div className={styles.appearanceItemWrapper}>
-                    {primary && light && <div className={styles.appearanceItemTheme}>
-                        <div className={styles.appearanceItemThemeMain} style={{background: primary, border: `1px solid ${primary}`}}></div>
-                        <div className={styles.appearanceItemThemeSecondary} style={{background: light, border: `1px solid ${primary}`}}></div>
-                    </div>}
+                    <div className={styles.appearanceItemThemeContent}>
+                        {primary && light && <div className={styles.appearanceItemTheme}>
+                            <div className={styles.appearanceItemThemeMain} style={{background: primary, border: `1px solid ${primary}`}}></div>
+                            <div className={styles.appearanceItemThemeSecondary} style={{background: light, border: `1px solid ${primary}`}}></div>
+                        </div>}
+
+                        <HoverMenu
+                            button={
+                                <IconButton small type="light" onClick={() => setEventMenu(prev => !prev)}>
+                                    <DotsHorizontal />
+                                </IconButton>
+                            }
+                            value={eventMenu}
+                            setValue={setEventMenu}
+                        >
+                            <MenuLink onClick={() => navigate(`theme/edit/${id}`)}>
+                                <Edit />
+
+                                Редактировать
+                            </MenuLink>
+
+                            <MenuLink danger onClick={() => {
+                                setConfirmDelete(true);
+                                setEventMenu(false);
+                            }}>
+                                <Delete />
+
+                                Удалить
+                            </MenuLink>
+                        </HoverMenu>
+                    </div>
 
                     <div className={styles.apperanceItemStatsInner}>
                         {id && <Tooltip title="ID">
@@ -70,20 +103,6 @@ const ThemeItemAdmin = ({data, themeDelete = () => {}, loading = false}) => {
                         <TextPoint title="Primary" text={primary || "---"} />
                         <TextPoint title="Lighten" text={light || "---"} />
                     </div>
-                </div>
-
-                <div className={styles.appearanceItemButtons}>
-                    <Tooltip title="Редактировать">
-                        <IconButton type="light" full to={`theme/edit/${id}`}>
-                            <Edit />
-                        </IconButton>
-                    </Tooltip>
-
-                    <Tooltip title="Удалить">
-                        <IconButton type="danger" full onClick={() => setConfirmDelete(true)}>
-                            <Delete />
-                        </IconButton>
-                    </Tooltip>
                 </div>
 
                 {loading && <div className={styles.appearanceItemLoader}>

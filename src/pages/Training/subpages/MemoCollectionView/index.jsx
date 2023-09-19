@@ -6,7 +6,7 @@ import { Tooltip } from 'antd';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { ArrowRightLong, Date, Delete, DotsHorizontal, Edit, Lock, TypesCards, TypesLearn, TypesSelection, TypesTest } from '../../../../components/Icons';
+import { ArrowRightLong, Date, Delete, DotsHorizontal, Edit, Lock, Settings, TypesCards, TypesLearn, TypesSelection, TypesTest } from '../../../../components/Icons';
 
 import {formatDate} from '../../../../utils/formatDate';
 
@@ -70,6 +70,12 @@ const CardCollectionView = () => {
                             </IconButton>
                         }
                     >
+                        <MenuLink onClick={() => navigate("settings")} disabled>
+                            <Settings />
+
+                            Настройки
+                        </MenuLink>
+
                         <MenuLink onClick={() => navigate("edit")}>
                             <Edit />
 

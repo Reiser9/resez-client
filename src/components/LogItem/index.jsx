@@ -10,7 +10,7 @@ import { formatDate } from '../../utils/formatDate';
 import { getLogTypeByType } from '../../utils/getLogTypeByType';
 
 const LogItem = ({data, loading}) => {
-    const {message, date, logType, user} = data;
+    const {message, date, logType, user, id} = data;
     const {nickname, avatar} = user;
 
     return (
@@ -37,7 +37,7 @@ const LogItem = ({data, loading}) => {
                 </div>
             </div>
 
-            <Link to="2" className={styles.logsItemArrow}>
+            <Link to={`${id}`} className={styles.logsItemArrow}>
                 <ArrowRightLong />
             </Link>
         </div>

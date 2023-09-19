@@ -18,8 +18,8 @@ import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggin
 const Cards = () => {
     const [collectionMoreLoading, setCollectionMoreLoading] = React.useState(false);
 
-    const {error, isLoading, loadCollections, getCollections, deleteCollection} = useTraining();
-    const {collectionIsLoading, collections} = useSelector(state => state.training);
+    const {error, collectionIsLoading, loadCollections, getCollections, deleteCollection} = useTraining();
+    const {collectionsIsLoading, collections} = useSelector(state => state.training);
 
     const loadMoreCollection = React.useCallback(async () => {
         setCollectionMoreLoading(true);
@@ -41,19 +41,19 @@ const Cards = () => {
         <div className={styles.cards}>
             <div className={styles.cardsWrapper}>
                 <div className={styles.cardsTitleInner}>
-                    <p className={typography.h3}>Коллекции {!collectionIsLoading && `(${collections.totalCount || 0})`}</p>
+                    <p className={typography.h3}>Коллекции {!collectionsIsLoading && `(${collections.totalCount || 0})`}</p>
 
-                    <ReloadButton loading={collectionIsLoading} onClick={() => loadCollections(0, 6, true)} />
+                    <ReloadButton loading={collectionsIsLoading} onClick={() => loadCollections(0, 6, true)} />
                 </div>
 
-                <Button disabled={collectionIsLoading} type="light" auto to="add">
+                <Button disabled={collectionsIsLoading} type="light" auto to="add">
                     Создать
                 </Button>
             </div>
 
             <BlockDataWithPaggination
                 error={error}
-                dataIsLoading={collectionIsLoading}
+                dataIsLoading={collectionsIsLoading}
                 dataMoreIsLoading={collectionMoreLoading}
                 dataLength={collections?.collections?.length}
                 Skeleton={CollectionItemSkeleton}
@@ -68,6 +68,7 @@ const Cards = () => {
                         key={id}
                         data={data}
                         deleteCollection={() => deleteCollection(data.id)}
+                        loading={collectionIsLoading.includes(data.id)}
                     />
                 )}
             </BlockDataWithPaggination>

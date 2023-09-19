@@ -23,7 +23,10 @@ const AddCardCollection = ({edit = false}) => {
     const [withDescription, setWithDescription] = React.useState(false);
     const [description, setDescription] = React.useState("");
     const [anonimCollection, setAnonimCollection] = React.useState(false);
-    const [pairs, setPairs] = React.useState([]);
+    const [pairs, setPairs] = React.useState([{
+        question: "",
+        answer: ""
+    }]);
     const [question, setQuestion] = React.useState("");
     const [answer, setAnswer] = React.useState("");
 
@@ -102,11 +105,19 @@ const AddCardCollection = ({edit = false}) => {
     const createCollectionHandler = () => {
         const newPairs = validateHandler();
 
+        if(!newPairs){
+            return;
+        }
+
         createCollection(name, withDescription ? description : "", anonimCollection, newPairs, () => navigate("../memo"));
     }
 
     const editCollectionHandler = () => {
         const newPairs = validateHandler();
+
+        if(!newPairs){
+            return;
+        }
 
         updateCollection(id, name, withDescription ? description : "", anonimCollection, newPairs, () => navigate("../memo"));
     }
@@ -156,10 +167,6 @@ const AddCardCollection = ({edit = false}) => {
         setAnonimCollection(isPrivate);
         setPairs([...QAPairs]);
     }, [collection]);
-
-    if(isLoading){
-        return <Preloader page />
-    }
 
     return (
         <div className={styles.addCardCollection}>
@@ -221,10 +228,10 @@ const AddCardCollection = ({edit = false}) => {
                 </div>
 
                 {edit
-                ? <Button auto type="light" onClick={editCollectionHandler}>
+                ? <Button auto type="light" loading={isLoading} onClick={editCollectionHandler}>
                     Сохранить
                 </Button>
-                : <Button auto type="light" onClick={createCollectionHandler}>
+                : <Button auto type="light" loading={isLoading} onClick={createCollectionHandler}>
                     Создать
                 </Button>}
             </div>

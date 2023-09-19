@@ -22,8 +22,8 @@
 }
 
 .logsItemArrow, .logsItemTypeInner{
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: var(--lighten);
     display: flex;
@@ -33,7 +33,7 @@
 }
 
 .logsItemArrow svg, .logsItemTypeInner svg{
-    width: 20px;
+    width: 24px;
 }
 
 .logsItemArrow svg path{
@@ -97,8 +97,8 @@
 }
 
 .logsItemUserImgInner{
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     flex-shrink: 0;
     border-radius: 50%;
     background: var(--lighten);

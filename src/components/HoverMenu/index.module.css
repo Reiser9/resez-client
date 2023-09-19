@@ -133,3 +133,9 @@
 .hoverMenuLink.delete:hover svg path{
     stroke: var(--error);
 }
+
+.disabled{
+    opacity: 0.6;
+    pointer-events: none;
+    filter: grayscale(1);
+}
