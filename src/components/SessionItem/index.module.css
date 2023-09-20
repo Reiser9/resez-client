@@ -1,35 +1,4 @@
-.sessions{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-}
-
-.sessionsTitleInner{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.sessionsTitleWrapper{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.sessionContent{
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
 .sessionItem{
-    width: calc(100% / 3 - 24px / 3);
     padding: 2rem;
     border-radius: 4px;
     background: var(--input);
@@ -40,29 +9,8 @@
     border: 1px solid transparent;
 }
 
-@media (max-width: 1130px) {
-    .sessionItem{
-        width: calc(100% / 2 - 12px / 2);
-    }
-}
-@media (max-width: 900px) {
-    .sessionItem{
-        width: 100%;
-    }
-}
-@media (max-width: 768px) {
-    .sessionItem{
-        width: calc(100% / 2 - 12px / 2);
-    }
-}
-@media (max-width: 640px) {
-    .sessionItem{
-        width: 100%;
-    }
-}
-
 .sessionItem.active{
-    animation: border 1s ease-in-out forwards;
+    animation: border 1.2s ease-in-out forwards;
 }
 
 @keyframes border {
@@ -82,6 +30,7 @@
 .sessionItemIcon{
     width: 48px;
     height: 48px;
+    flex-shrink: 0;
     border-radius: 50%;
     margin: 0 auto;
     display: flex;
@@ -92,7 +41,6 @@
 
 .sessionItemIcon svg{
     width: 28px;
-    flex-shrink: 0;
 }
 
 .sessionItemIcon svg path{
@@ -100,19 +48,7 @@
 }
 
 .sessionItemPoints{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
     margin-bottom: 2.4rem;
-}
-
-.sessionItemPoint{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
 }
 
 .sessionItemPointTitle{
@@ -164,6 +100,91 @@
     }
 }
 
-.sessionsMoreButton{
-    margin: 0 auto;
+/* Session Compact */
+.sessionItemCompact{
+    width: 100%;
+    padding: 0.8rem 1.6rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: var(--input);
+    border: 1px solid transparent;
+    transition: .2s linear;
+}
+
+@media (any-hover: hover) {
+    .sessionItemCompact{
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 375px){
+    .sessionItemCompact{
+        flex-direction: column;
+        padding: 1.6rem;
+    }
+}
+
+.sessionItemCompact:hover{
+    background: var(--lighten);
+    border: 1px solid var(--main);
+}
+
+.sessionItemCompact.disabled{
+    filter: grayscale(1);
+    opacity: 0.6;
+}
+
+.sessionItemCompact.disabled:hover{
+    border: 1px solid transparent;
+}
+
+.sessionItemContent{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (max-width: 375px) {
+    .sessionItemContent{
+        flex-direction: column;
+    }
+}
+
+.sessionItemCompactIcon{
+    width: 28px;
+    display: flex;
+    flex-shrink: 0;
+}
+
+.sessionItemCompactIcon svg{
+    width: 100%;
+}
+
+.sessionItemCompactIcon svg path{
+    stroke: var(--main);
+}
+
+.sessionItemWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+@media (max-width: 375px){
+    .sessionItemWrapper{
+        text-align: center;
+        align-items: center;
+    }
+}
+
+.sessionItemDate{
+    color: var(--grey);
+}
+
+.sessionActive{
+    color: var(--success);
 }

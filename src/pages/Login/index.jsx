@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
 import auth from '../../components/Wrapper/AuthFormsWrapper/index.module.css';
 
@@ -33,7 +34,7 @@ const Login = () => {
 
                         <p className={`${typography.text} ${auth.contentInnerText}`}>Все поля обязательны к заполнению</p>
 
-                        <div className={auth.contentWrapper}>
+                        <div className={`${auth.contentWrapper} ${base.baseWrapperGap12}`}>
                             <Input value={nickname} setValue={setNickname} placeholder="Имя пользователя" />
                             <Input value={password} setValue={setPassword} placeholder="Пароль" password />
                         </div>

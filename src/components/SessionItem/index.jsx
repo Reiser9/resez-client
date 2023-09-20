@@ -1,15 +1,16 @@
 import React from 'react';
 import { Tooltip } from 'antd';
 
+import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
-import styles from './subpages/Safe/index.module.css';
+import styles from './index.module.css';
 
 import {formatDate} from '../../utils/formatDate';
 import {getDeviceByName} from '../../utils/getDeviceByName';
 
-import Button from '../../components/Button';
-import ConfirmModal from '../../components/Modal/ConfirmModal';
-import TextPoint from '../../components/TextPoint';
+import Button from '../Button';
+import ConfirmModal from '../Modal/ConfirmModal';
+import TextPoint from '../TextPoint';
 
 const SessionItem = ({current = false, data, active, callback = () => {}, loading = false}) => {
     const {isActive, browser, deviceType, date, ip, country, city, browserVersion, os, platform, id} = data;
@@ -18,15 +19,15 @@ const SessionItem = ({current = false, data, active, callback = () => {}, loadin
 
     return (
         <>
-            <div data-session={id} className={`${styles.sessionItem}${!isActive ? ` ${styles.disabled}` : ""}${active ? ` ${styles.active}` : ""}`}>
+            <div data-session={id} className={`${base.item3} ${styles.sessionItem}${!isActive ? ` ${styles.disabled}` : ""}${active ? ` ${styles.active}` : ""}`}>
                 <Tooltip title={getDeviceByName(deviceType)?.name}>
                     <div className={styles.sessionItemIcon}>
                         {getDeviceByName(deviceType)?.icon}
                     </div>
                 </Tooltip>
 
-                <div className={styles.sessionItemPoints}>
-                    <div className={styles.sessionItemPoint}>
+                <div className={`${styles.sessionItemPoints} ${base.baseWrapperGap12}`}>
+                    <div className={base.baseWrapperGap0}>
                         <p className={`${typography.text3} ${styles.sessionItemPointTitle}`}>Статус</p>
 
                         {current

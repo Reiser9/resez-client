@@ -14,7 +14,7 @@ export const notifySlice = createSlice({
             state.notifiesIsLoading = action.payload;
         },
         addNotify: (state, action) => {
-            state.notifiesLocal = state.notifiesLocal.concat(action.payload);
+            state.notifiesLocal = [...state.notifiesLocal, action.payload];
         },
         removeNotify: (state, action) => {
             state.notifiesLocal = state.notifiesLocal.filter(item => item.id !== action.payload);
@@ -42,9 +42,9 @@ export const notifySlice = createSlice({
             state.notifies.totalCount--;
         },
         addNotifyInStart: (state, action) => {
-            const oldArray = state.notifies?.notifies;
+            const currentNotifies = state.notifies?.notifies;
             
-            if(!oldArray){
+            if(!currentNotifies){
                 return;
             }
 

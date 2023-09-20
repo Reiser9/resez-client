@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -17,8 +18,8 @@ const TrainingMain = () => {
                 </p>
             </div>
 
-            <div className={styles.trainingItems}>
-                <Link to="memo" className={styles.trainingItem}>
+            <div className={base.contentItems}>
+                <Link to="memo" className={`${base.item3} ${styles.trainingItem}`}>
                     <span className={styles.trainingItemTitleInner}>
                         <p className={typography.h4}>Тренировка памяти</p>
 

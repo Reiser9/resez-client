@@ -17,8 +17,8 @@ import useError from './useError';
 import useAlert from './useAlert';
 
 const useAuth = () => {
-    const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const dispatch = useDispatch();
     const {request, clearLocalData, noAuthController} = useRequest();
@@ -46,18 +46,22 @@ const useAuth = () => {
         if(requestDataIsError(response)){
             setError(true);
             
-            return errorController(response, checkAuth);
+            return errorController(response, "", "", "", async () => {
+                dispatch(setAuthIsLoading(true));
+                await noAuthController(checkAuth);
+                return dispatch(setAuthIsLoading(false));
+            });
         }
 
-        dispatch(setAuthIsLoading(true));
+        dispatch(setAuthIsLoading(true))
         const {data} = await getShortInfo() || "";
-        dispatch(setAuthIsLoading(false));
+        dispatch(setAuthIsLoading(false))
 
         if(!data){
             return;
         }
 
-        const {primary, light} = data?.theme || {};
+        const {primary, light} = data.user?.theme || {};
         setMainColors(primary, light);
 
         dispatch(setIsAuth(true));

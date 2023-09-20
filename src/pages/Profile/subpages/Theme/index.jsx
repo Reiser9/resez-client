@@ -10,11 +10,9 @@ const Theme = () => {
     return (
         <>
             <div className={profile.contentBlock}>
-                <div className={profile.contentBlockTitleInner}>
-                    <p className={typography.h3}>
-                        Основной цвет
-                    </p>
-                </div>
+                <p className={typography.h3}>
+                    Основной цвет
+                </p>
 
                 <ChangeTheme />
             </div>

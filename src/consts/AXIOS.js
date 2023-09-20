@@ -8,7 +8,7 @@ import {
     BASE_API_URL_NOTIFY,
     BASE_API_URL_ADMIN,
     BASE_API_URL_USER,
-    BASE_API_URL_COLLECTION
+    BASE_API_URL_COLLECTION,
 } from './API_URLS';
 
 export const authRequest = axios.create({

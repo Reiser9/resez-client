@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
 import auth from '../../components/Wrapper/AuthFormsWrapper/index.module.css';
 import styles from './index.module.css';
@@ -36,7 +37,7 @@ const Register = () => {
 
                         <p className={`${typography.text} ${auth.contentInnerText}`}>Все поля обязательны к заполнению</p>
 
-                        <div className={auth.contentWrapper}>
+                        <div className={`${auth.contentWrapper} ${base.baseWrapperGap12}`}>
                             <Input value={nickname} setValue={setNickname} placeholder="Имя пользователя" />
                             <Input value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" mask="+7(999) 999 99-99" onPaste="phone" />
                             <Input value={password} setValue={setPassword} placeholder="Пароль" password />

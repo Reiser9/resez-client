@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from '../../index.module.css';
+import base from '../../../../styles/base.module.css';
 
 import useUser from '../../../../hooks/useUser';
 
@@ -33,7 +33,7 @@ const ChangePassword = () => {
     }
 
     return (
-        <div className={styles.changePasswordWrapper}>
+        <div className={base.baseWrapperGap12}>
             {passwordChangeStep === 1 && <>
                 <Input password placeholder="Старый пароль" value={prevPassword} setValue={setPrevPassword} />
                 <Input password placeholder="Новый пароль" value={newPassword} setValue={setNewPassword} />

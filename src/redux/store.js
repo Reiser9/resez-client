@@ -10,6 +10,7 @@ import themeSlice from "./slices/theme";
 import adminSlice from "./slices/admin";
 import trainingSlice from "./slices/training";
 import logSlice from "./slices/log";
+import roleSlice from "./slices/role";
 
 export const store = configureStore({
     reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
         theme: themeSlice,
         admin: adminSlice,
         training: trainingSlice,
-        log: logSlice
+        log: logSlice,
+        role: roleSlice
     },
 });

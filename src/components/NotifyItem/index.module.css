@@ -1,5 +1,4 @@
 .notifyItem{
-    width: calc(100% / 2 - 12px / 2);
     border-radius: 4px;
     background: var(--input);
     padding: 1.6rem;
@@ -11,11 +10,6 @@
     gap: 12px;
 }
 
-@media (max-width: 1100px) {
-    .notifyItem{
-        width: 100%;
-    }
-}
 @media (max-width: 450px) {
     .notifyItem{
         padding: 1.2rem;

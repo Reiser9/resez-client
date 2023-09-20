@@ -1,5 +1,6 @@
 import React from 'react';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -7,7 +8,7 @@ import { Stats } from '../../../../components/Icons';
 
 const AdminMain = () => {
     return (
-        <div className={styles.admin}>
+        <div className={base.baseWrapperGap16}>
             <p className={typography.h3}>Статистика</p>
 
             <div className={styles.adminStats}>

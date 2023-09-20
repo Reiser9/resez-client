@@ -12,9 +12,9 @@ import useAlert from './useAlert';
 import useError from './useError';
 
 const useUser = () => {
+    const [error, setError] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const [profileInfoIsLoading, setProfileInfoIsLoading] = React.useState(false);
-    const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
     const {request} = useRequest();

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
 import auth from '../../components/Wrapper/AuthFormsWrapper/index.module.css';
 
@@ -45,20 +46,20 @@ const Recovery = () => {
                         <h2 className={typography.h2}>Восстановление пароля</h2>
                     </div>
 
-                    {step === 1 && <div className={auth.contentWrapper}>
-                        <Input mask="+7(999) 999 99-99" value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" onPaste="phone" />
-                    </div>}
+                    <div className={`${auth.contentWrapper} ${base.baseWrapperGap12}`}>
+                        {step === 1 &&<Input mask="+7(999) 999 99-99" value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" onPaste="phone" />}
 
-                    {step === 2 && <div className={auth.contentWrapper}>
-                        <Input mask="999999" value={code} setValue={setCode} placeholder="Код" />
+                        {step === 2 && <>
+                            <Input mask="999999" value={code} setValue={setCode} placeholder="Код" />
 
-                        <p className={typography.text}>Код отправлен по номеру: <span className={auth.contentBottomLink}>{phoneNumber}</span></p>
-                    </div>}
+                            <p className={typography.text}>Код отправлен по номеру: <span className={auth.contentBottomLink}>{phoneNumber}</span></p>
+                        </>}
 
-                    {step === 3 && <div className={auth.contentWrapper}>
-                        <Input value={password} setValue={setPassword} placeholder="Новый пароль" password />
-                        <Input value={passwordAgain} setValue={setPasswordAgain} placeholder="Подтвердите новый пароль" password />
-                    </div>}
+                        {step === 3 && <>
+                            <Input value={password} setValue={setPassword} placeholder="Новый пароль" password />
+                            <Input value={passwordAgain} setValue={setPasswordAgain} placeholder="Подтвердите новый пароль" password />
+                        </>}
+                    </div>
 
                     <div className={auth.contentBottomInner}>
                         {step === 1 && <Button loading={isLoading} className={auth.contentButton} onClick={getCode}>Восстановить</Button>}

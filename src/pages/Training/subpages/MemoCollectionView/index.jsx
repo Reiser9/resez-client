@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'antd';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -44,7 +45,7 @@ const CardCollectionView = () => {
     }
 
     return (
-        <div className={styles.memoCollection}>
+        <div className={base.baseWrapperGap16}>
             <div className={styles.memoCollectionTitleInner}>
                 <BackButton />
 
@@ -99,7 +100,7 @@ const CardCollectionView = () => {
                 </p>}
             </div>
 
-            <div className={styles.memoCollectionWrapper}>
+            <div className={base.titleInner}>
                 <div className={styles.memoCollectionAuthor}>
                     <div className={styles.memoCollectionAuthorImgInner}>
                         {user?.avatar
@@ -117,8 +118,8 @@ const CardCollectionView = () => {
                 </div>}
             </div>
 
-            <div className={styles.memoCollectionTypes}>
-                <Link to="cards" className={styles.memoCollectionTypesItem}>
+            <div className={`${base.contentItems} ${styles.memoCollectionTypes}`}>
+                <Link to="cards" className={`${base.item4} ${styles.memoCollectionTypesItem}`}>
                     <span className={styles.memoCollectionTypesItemWrapper}>
                         <p className={styles.memoCollectionTypeName}>Карточки</p>
 
@@ -130,7 +131,7 @@ const CardCollectionView = () => {
                     </span>
                 </Link>
 
-                <Link to="test" className={`${styles.memoCollectionTypesItem} ${styles.disabled}`}>
+                <Link to="test" className={`${base.item4} ${styles.memoCollectionTypesItem} ${styles.disabled}`}>
                     <span className={styles.memoCollectionTypesItemWrapper}>
                         <p className={styles.memoCollectionTypeName}>Тест</p>
 
@@ -142,7 +143,7 @@ const CardCollectionView = () => {
                     </span>
                 </Link>
 
-                <Link to="learn" className={`${styles.memoCollectionTypesItem} ${styles.disabled}`}>
+                <Link to="learn" className={`${base.item4} ${styles.memoCollectionTypesItem} ${styles.disabled}`}>
                     <span className={styles.memoCollectionTypesItemWrapper}>
                         <p className={styles.memoCollectionTypeName}>Заучивание</p>
 
@@ -154,7 +155,7 @@ const CardCollectionView = () => {
                     </span>
                 </Link>
 
-                <Link to="selection" className={`${styles.memoCollectionTypesItem} ${styles.disabled}`}>
+                <Link to="selection" className={`${base.item4} ${styles.memoCollectionTypesItem} ${styles.disabled}`}>
                     <span className={styles.memoCollectionTypesItemWrapper}>
                         <p className={styles.memoCollectionTypeName}>Подбор</p>
 
@@ -167,11 +168,11 @@ const CardCollectionView = () => {
                 </Link>
             </div>
 
-            <div className={styles.memoCollectionPairsInner}>
+            <div className={`${base.contentItems} ${styles.memoCollectionPairsInner}`}>
                 <p className={typography.h4}>Термины ({pairsCount || 0})</p>
 
-                <div className={styles.memoCollectionPairs}>
-                    {QAPairs?.map(data => <div key={data.id} className={styles.memoCollectionPair}>
+                <div className={base.contentItems}>
+                    {QAPairs?.map(data => <div key={data.id} className={`${base.item3} ${styles.memoCollectionPair}`}>
                         <TextPoint title="Вопрос" text={data.question} />
                         <TextPoint title="Ответ" text={data.answer} />
                     </div>)}

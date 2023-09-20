@@ -2,15 +2,15 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
-import styles from './index.module.css';
 
 import { Cross } from '../../../../components/Icons';
 
 import useSession from '../../../../hooks/useSession';
 import useAuth from '../../../../hooks/useAuth';
 
-import SessionItem from '../../SessionItem';
+import SessionItem from '../../../../components/SessionItem';
 import BackButton from '../../../../components/BackButton';
 import SessionItemFull from '../../../../components/Skeleton/Sessions/SessionItemFull';
 import ReloadButton from '../../../../components/ReloadButton';
@@ -51,9 +51,9 @@ const Sessions = () => {
     }, [sessions.other]);
 
     return (
-        <div className={styles.sessions}>
-            <div className={styles.sessionsTitleInner}>
-                <div className={styles.sessionsTitleWrapper}>
+        <div className={base.baseWrapperGap16}>
+            <div className={base.titleInner}>
+                <div className={base.titleWrapper}>
                     <BackButton />
                     
                     <p className={typography.h3}>Сеансы {!sessionsIsLoading && `(${sessions?.totalCount + 1 || 0})`}</p>
@@ -69,7 +69,7 @@ const Sessions = () => {
                 dataLength={sessions?.other?.length + 1}
                 Skeleton={SessionItemFull}
                 skeletonLoading={3}
-                containerClassName={styles.sessionContent}
+                containerClassName={base.contentItems}
                 errorContent={<NotContent text="Ошибка при загрузке сессий" icon={<Cross />} danger />}
                 notContent={<NotContent text="Сессии не найдены" />}
                 isLast={sessions?.isLast}

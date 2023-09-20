@@ -7,7 +7,6 @@ import { withSuspense } from '../../hoc/withSuspense';
 
 import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
-
 import SidebarLink from '../../components/SidebarLink';
 import InnerSidebar from '../../components/InnerSidebar';
 import AuthWrapper from '../../components/Wrapper/AuthWrapper';
@@ -29,9 +28,9 @@ const Training = () => {
                                 <Route index element={withSuspense(<TrainingMain />)} />
                                 <Route path="/memo" element={withSuspense(<Memo />)} />
                                 <Route path="/memo/add" element={withSuspense(<AddMemoCollection />)} />
+                                <Route path="/memo/:id/edit" element={withSuspense(<AddMemoCollection edit />)} />
                                 <Route path="/memo/:id" element={withSuspense(<MemoCollectionView />)} />
                                 <Route path="/memo/:id/cards" element={withSuspense(<MemoTypeCards />)} />
-                                <Route path="/memo/:id/edit" element={withSuspense(<AddMemoCollection edit />)} />
                                 <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>
                         </div>

@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
     mode: "light",
     themesIsLoading: false,
-    themes: []
+    themes: {}
 };
 
 export const themeSlice = createSlice({
@@ -26,7 +26,7 @@ export const themeSlice = createSlice({
         },
         setDataTheme: (state) => {
             state.themesIsLoading = false;
-            state.themes = [];
+            state.themes = {};
         }
     }
 });

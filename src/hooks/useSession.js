@@ -12,9 +12,9 @@ import useError from './useError';
 import { setSessionsIsLoading, initSessions, setSessions, endSessionById } from '../redux/slices/session';
 
 const useSession = () => {
+    const [error, setError] = React.useState(false);
     const [sessionIsLoading, setSessionIsLoading] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [error, setError] = React.useState(false);
 
     const {sessions} = useSelector(state => state.session);
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -76,7 +77,7 @@ const MemoTypeCards = () => {
     }, [currentIdCard, collection]);
 
     return (
-        <div className={styles.typeCards}>
+        <div className={base.baseWrapperGap16}>
             <div className={styles.typeCardsWrapper}>
                 <BackButton />
 

@@ -89,14 +89,6 @@
     right: 0px;
 }
 
-.userPoints{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-}
-
 .userRoles{
     width: 100%;
     display: flex;

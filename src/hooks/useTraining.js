@@ -12,10 +12,10 @@ import useError from './useError';
 import useNotify from './useNotify';
 
 const useTraining = () => {
+    const [error, setError] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const [collectionByIdIsLoading, setCollectionByIdIsLoading] = React.useState(false);
     const [collectionIsLoading, setCollectionIsLoading] = React.useState([]);
-    const [error, setError] = React.useState(false);
 
     const {request} = useRequest();
     const {errorController} = useError();

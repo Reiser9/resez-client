@@ -29,8 +29,8 @@ import { setMainColors } from '../utils/setMainColors';
 import { socket } from '../utils/socket';
 
 const useRequest = () => {
-    const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const dispatch = useDispatch();
     const {user, sessionId} = useSelector(state => state.user);

@@ -41,37 +41,31 @@ html{
     font-weight: 200;
     src: url('./assets/fonts/NunitoExtraLight.ttf');
 }
-
 @font-face{
     font-family: 'Nunito';
     font-weight: 300;
     src: url('./assets/fonts/NunitoLight.ttf');
 }
-
 @font-face{
     font-family: 'Nunito';
     font-weight: 400;
     src: url('./assets/fonts/NunitoRegular.ttf');
 }
-
 @font-face{
     font-family: 'Nunito';
     font-weight: 600;
     src: url('./assets/fonts/NunitoSemiBold.ttf');
 }
-
 @font-face{
     font-family: 'Nunito';
     font-weight: 700;
     src: url('./assets/fonts/NunitoBold.ttf');
 }
-
 @font-face{
     font-family: 'Nunito';
     font-weight: 800;
     src: url('./assets/fonts/NunitoExtraBold.ttf');
 }
-
 @font-face{
     font-family: 'Nunito';
     font-weight: 900;
@@ -455,4 +449,38 @@ input::placeholder{
 
 .ant-qrcode-expired{
     color: var(--text)!important;
+}
+
+/* Custom tree ant */
+.ant-tree{
+    width: 100%;
+    background: var(--input);
+    padding: 1.2rem;
+    border-radius: 4px;
+}
+
+.ant-tree-title{
+    color: var(--text);
+}
+
+.ant-tree-checkbox-inner{
+    background: var(--input)!important;
+}
+
+.ant-tree-switcher-icon svg path{
+    fill: var(--text);
+}
+
+.ant-tree .ant-tree-checkbox .ant-tree-checkbox-inner:after{
+    border: 2px solid var(--main)!important;
+    border-top: 0!important;
+    border-left: 0!important;
+}
+
+.ant-tree .ant-tree-checkbox + span:hover{
+    background: var(--hover)!important;
+}
+
+.ant-tree-checkbox-checked:not(.ant-tree-checkbox-disabled):hover .ant-tree-checkbox-inner{
+    border: 1px solid var(--main)!important;
 }

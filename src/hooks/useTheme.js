@@ -13,9 +13,9 @@ import useNotify from "./useNotify";
 import useError from "./useError";
 
 const useTheme = () => {
+    const [error, setError] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const [themeIsLoading, setThemeIsLoading] = React.useState(false);
-    const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
     const {mode, themes} = useSelector(state => state.theme);

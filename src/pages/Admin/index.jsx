@@ -17,6 +17,7 @@ const Users = React.lazy(() => import("./subpages/Users"));
 const Appearance = React.lazy(() => import("./subpages/Appearance"));
 const AddTheme = React.lazy(() => import("./subpages/AddTheme"));
 const Roles = React.lazy(() => import("./subpages/Roles"));
+const AddRole = React.lazy(() => import("./subpages/AddRole"));
 const Logs = React.lazy(() => import("./subpages/Logs"));
 
 const Admin = () => {
@@ -34,6 +35,8 @@ const Admin = () => {
                                 <Route path="/appearance/theme/add" element={withSuspense(<AddTheme />)} />
                                 <Route path="/appearance/theme/edit/:id" element={withSuspense(<AddTheme edit />)} />
                                 <Route path="/roles/*" element={withSuspense(<Roles />)} />
+                                <Route path="/roles/add" element={withSuspense(<AddRole />)} />
+                                <Route path="/roles/:id" element={withSuspense(<AddRole edit />)} />
                                 <Route path="/logs/*" element={withSuspense(<Logs />)} />
                                 <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>

@@ -1,8 +1,8 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
-import styles from './index.module.css';
 
 import useTraining from '../../../../hooks/useTraining';
 
@@ -38,9 +38,9 @@ const Cards = () => {
     }, [collections?.collections, collections?.isLast]);
 
     return (
-        <div className={styles.cards}>
-            <div className={styles.cardsWrapper}>
-                <div className={styles.cardsTitleInner}>
+        <div className={base.baseWrapperGap16}>
+            <div className={base.titleInner}>
+                <div className={base.titleWrapper}>
                     <p className={typography.h3}>Коллекции {!collectionsIsLoading && `(${collections.totalCount || 0})`}</p>
 
                     <ReloadButton loading={collectionsIsLoading} onClick={() => loadCollections(0, 6, true)} />
@@ -57,7 +57,7 @@ const Cards = () => {
                 dataMoreIsLoading={collectionMoreLoading}
                 dataLength={collections?.collections?.length}
                 Skeleton={CollectionItemSkeleton}
-                containerClassName={styles.collectionsContent}
+                containerClassName={base.contentItems}
                 errorContent={<NotContent text="Ошибка при загрузке коллекций" icon={<Cross />} danger />}
                 notContent={<NotContent text="Коллекций не найдено" />}
                 isLast={collections?.isLast}

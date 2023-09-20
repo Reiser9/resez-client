@@ -12,7 +12,7 @@ const useError = () => {
             case APP_STATUSES.SERVER_NOT_AVAILABLE:
                 return;
             case APP_STATUSES.YOUR_BLOCKED:
-                return;
+                return alertNotify("Ошибка", "Доступ ограничен", "error");
             case APP_STATUSES.NOT_AUTH:
                 if(notAuthCallback){
                     return notAuthCallback();

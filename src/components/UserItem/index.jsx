@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tooltip } from 'antd';
 
+import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -16,7 +17,7 @@ import Button from '../Button';
 import IconButton from '../IconButton';
 import TextPoint from '../TextPoint';
 import ModalConfirm from '../Modal/ConfirmModal';
-import Preloader from '../Preloader';
+import LoaderForItem from '../LoaderForItem';
 
 const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = () => {}}) => {
     const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName, status} = data;
@@ -57,7 +58,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                     </div>
                 </div>
 
-                <div className={styles.userPoints}>
+                <div className={base.baseWrapperGap12}>
                     {id && <TextPoint title="ID" text={id} />}
                     {status && <TextPoint title="Статус" text={status} />}
                     {phoneNumber && <TextPoint title="Номер телефона" text={maskPhone(phoneNumber)} />}
@@ -109,9 +110,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                     <Button onClick={() => setConfirmUnblock(true)}>Разблокировать</Button>
                 </div>}
 
-                {loading && <div className={styles.userItemLoader}>
-                    <Preloader small />
-                </div>}
+                {loading && <LoaderForItem />}
             </div>
 
             <ModalConfirm

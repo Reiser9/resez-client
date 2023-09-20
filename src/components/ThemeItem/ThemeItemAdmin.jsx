@@ -2,6 +2,7 @@ import React from 'react';
 import { Tooltip } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
+import base from '../../styles/base.module.css';
 import styles from './index.module.css';
 
 import { Delete, Dislike, DotsHorizontal, Edit, Id, Like, Star, User } from '../Icons';
@@ -9,7 +10,7 @@ import { Delete, Dislike, DotsHorizontal, Edit, Id, Like, Star, User } from '../
 import TextPoint from '../TextPoint';
 import IconButton from '../IconButton';
 import ConfirmModal from '../Modal/ConfirmModal';
-import Preloader from '../Preloader';
+import LoaderForItem from '../LoaderForItem';
 import HoverMenu from '../HoverMenu';
 import MenuLink from '../HoverMenu/MenuLink';
 
@@ -23,8 +24,8 @@ const ThemeItemAdmin = ({data, themeDelete = () => {}, loading = false}) => {
 
     return (
         <>
-            <div className={styles.appearanceItem}>
-                <div className={styles.appearanceItemWrapper}>
+            <div className={`${base.item4} ${styles.appearanceItem}`}>
+                <div className={base.baseWrapperGap20}>
                     <div className={styles.appearanceItemThemeContent}>
                         {primary && light && <div className={styles.appearanceItemTheme}>
                             <div className={styles.appearanceItemThemeMain} style={{background: primary, border: `1px solid ${primary}`}}></div>
@@ -99,15 +100,13 @@ const ThemeItemAdmin = ({data, themeDelete = () => {}, loading = false}) => {
                         </Tooltip>
                     </div>
 
-                    <div className={styles.appearanceItemPoints}>
+                    <div className={base.baseWrapperGap12}>
                         <TextPoint title="Primary" text={primary || "---"} />
                         <TextPoint title="Lighten" text={light || "---"} />
                     </div>
                 </div>
 
-                {loading && <div className={styles.appearanceItemLoader}>
-                    <Preloader small />
-                </div>}
+                {loading && <LoaderForItem />}
             </div>
 
             <ConfirmModal value={confirmDelete} setValue={setConfirmDelete} text="Вы действительно хотите удалить данную тему?" callback={themeDelete} />

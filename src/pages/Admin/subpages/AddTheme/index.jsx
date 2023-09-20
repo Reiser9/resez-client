@@ -3,6 +3,7 @@ import { Checkbox, ColorPicker } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -53,7 +54,7 @@ const AddTheme = ({edit = false}) => {
         editTheme(id, mainHexString, !customSecondColor ? secondHexString : convertHexToOpacityHex(mainHexString), themeRating, () => navigate("/admin/appearance"));
     }
 
-    const getCurrentTheme = async (id) => {
+    const getCurrentTheme = React.useCallback(async (id) => {
         const theme = await getThemeById(id);
 
         if(!theme){
@@ -63,7 +64,7 @@ const AddTheme = ({edit = false}) => {
         setMainColor(theme?.primary);
         setSecondColor(theme?.light);
         setThemeRating(theme?.isRatingEnabled);
-    }
+    }, []);
 
     React.useEffect(() => {
         if(preview){
@@ -89,22 +90,22 @@ const AddTheme = ({edit = false}) => {
         if(edit && id){
             getCurrentTheme(id);
         }
-    }, [id]);
+    }, [id, getCurrentTheme]);
 
     if(themeByIdIsLoading){
         return <Preloader page />
     }
 
     return (
-        <div className={styles.appearance}>
-            <div className={styles.appearanceTitleInner}>
+        <div className={base.baseWrapperGap16}>
+            <div className={base.titleWrapper}>
                 <BackButton />
 
-                <p className={typography.h3}>{edit ? "Редактировать тему" : "Создать тему"}</p>
+                <p className={typography.h3}>{edit ? "Редактирование темы" : "Создание темы"}</p>
             </div>
 
             <div className={styles.appearanceThemeForm}>
-                <ColorPicker onChangeComplete={() => setMainPickEnd(prev => !prev)} value={mainColor} onChange={setMainColor} format={mainColorFormatHex} className={styles.appearanceColorPicker} onFormatChange={setMainColorFormatHex}>
+                <ColorPicker onChangeComplete={() => setMainPickEnd(prev => !prev)} value={mainColor} onChange={setMainColor} format={mainColorFormatHex} onFormatChange={setMainColorFormatHex}>
                     <Input readOnly value={mainHexString} title="Выберите основной цвет">
                         <div className={styles.appearanceThemeColorView} style={{background: mainHexString}}></div>
                     </Input>
@@ -114,7 +115,7 @@ const AddTheme = ({edit = false}) => {
                     Сгенировать цвет автоматически
                 </Checkbox>
 
-                {!customSecondColor && <ColorPicker onChangeComplete={() => setSecondPickEnd(prev => !prev)} value={secondColor} onChange={setSecondColor} format={secondColorFormatHex} className={styles.appearanceColorPicker} onFormatChange={setSecondColorFormatHex}>
+                {!customSecondColor && <ColorPicker onChangeComplete={() => setSecondPickEnd(prev => !prev)} value={secondColor} onChange={setSecondColor} format={secondColorFormatHex} onFormatChange={setSecondColorFormatHex}>
                     <Input readOnly value={secondHexString} title="Выберите фоновый цвет">
                         <div className={styles.appearanceThemeColorView} style={{background: secondHexString}}></div>
                     </Input>

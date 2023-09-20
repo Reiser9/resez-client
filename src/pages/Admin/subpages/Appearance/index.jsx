@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from '../AddTheme/index.module.css';
 
@@ -19,11 +20,11 @@ const Appearance = () => {
     const {themesIsLoading, themes} = useSelector(state => state.admin);
     const {themeIsLoading, error, loadAllThemes, getAllThemes, removeTheme} = useAdmin();
 
-    const loadMoreThemes = React.useCallback(async () => {
+    const loadMoreThemes = async () => {
         setThemesMoreLoading(true);
         await getAllThemes(themes?.themes?.length, 8);
         setThemesMoreLoading(false);
-    }, [themes.themes]);
+    };
 
     React.useEffect(() => {
         loadAllThemes(0, 8);
@@ -36,9 +37,9 @@ const Appearance = () => {
     }, [themes?.themes, themes?.isLast]);
 
     return (
-        <div className={styles.appearance}>
-            <div className={styles.appearanceWrapper}>
-                <div className={styles.appearanceTitleInner}>
+        <div className={base.baseWrapperGap16}>
+            <div className={base.titleInner}>
+                <div className={base.titleWrapper}>
                     <p className={typography.h3}>Темы {!themesIsLoading && `(${themes.totalCount || 0})`}</p>
 
                     <ReloadButton loading={themesIsLoading} onClick={() => loadAllThemes(0, 8, true)} />
@@ -57,7 +58,7 @@ const Appearance = () => {
                 Skeleton={ThemeItemAdminSkeleton}
                 skeletonLoading={8}
                 skeletonMoreLoading={4}
-                containerClassName={styles.appearanceContent}
+                containerClassName={base.contentItems}
                 errorContent={<NotContent text="Ошибка при загрузке тем" icon={<Cross />} danger />}
                 notContent={<NotContent text="Тем не найдено" />}
                 isLast={themes?.isLast}

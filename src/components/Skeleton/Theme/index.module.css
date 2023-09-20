@@ -1,0 +1,19 @@
+.appearanceItem, .colorItem{
+    display: flex;
+    height: 242px;
+}
+
+.colorItem{
+    width: calc(100% / 5 - 48px / 5);
+}
+
+@media (max-width: 1300px) {
+    .colorItem{
+        width: calc(100% / 4 - 36px / 4);
+    }
+}
+@media (max-width: 375px) {
+    .colorItem{
+        width: calc(100% / 3 - 24px / 3);
+    }
+}

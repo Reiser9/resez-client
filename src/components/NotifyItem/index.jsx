@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'antd';
 
+import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -30,7 +31,7 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
 
     return (
         <>
-            <div className={`${styles.notifyItem}${!isRead ? ` ${styles.unread}` : ""}`}>
+            <div className={`${base.item2} ${styles.notifyItem}${!isRead ? ` ${styles.unread}` : ""}`}>
                 <span className={styles.notifyItemWrapper}>
                     {type && <span className={`${styles.notifyItemIconInner}${getNotifyType(type)?.name === "session" ? ` ${styles.session}` : ""}`}>
                         {getNotifyType(type)?.icon}

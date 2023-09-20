@@ -18,11 +18,11 @@ export const adminSlice = createSlice({
             state.users = action.payload;
         },
         setUsers: (state, action) => {
-            const currentOther = state.users.users;
+            const currentUsers = state.users.users;
 
             state.users = {
                 ...action.payload,
-                users: currentOther ? [...currentOther, ...action.payload.users] : [...action.payload.users]
+                users: currentUsers ? [...currentUsers, ...action.payload.users] : [...action.payload.users]
             };
         },
         setUser: (state, action) => {

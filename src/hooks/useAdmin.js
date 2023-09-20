@@ -270,7 +270,9 @@ const useAdmin = () => {
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            return errorController(response, () => sendNotify(title, sender, userIDs, date, content));
+            setError(true);
+
+            return errorController(response, () => sendNotify(title, sender, userIDs, date, content, type, successCallback));
         }
 
         alertNotify("Успешно", "Уведомление отправлено", "success");

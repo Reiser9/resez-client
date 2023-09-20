@@ -34,6 +34,8 @@ const ChangeTheme = () => {
                     В магазин
                 </Button>
             </NotContent>}
+
+            {/* ПАГИНАЦИЯ, НО СНАЧАЛА БЕК */}
         </div>
     )
 }

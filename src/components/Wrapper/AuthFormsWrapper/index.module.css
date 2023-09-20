@@ -48,11 +48,6 @@
 }
 
 .contentWrapper{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
     margin-top: 2.4rem;
 }
 
@@ -63,6 +58,9 @@
 .contentBottomInner{
     width: 100%;
     margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .contentBottom{

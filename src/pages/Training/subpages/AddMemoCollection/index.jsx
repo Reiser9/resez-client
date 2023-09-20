@@ -3,6 +3,7 @@ import { Checkbox } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -16,7 +17,6 @@ import Textarea from '../../../../components/Textarea';
 import Button from '../../../../components/Button';
 import IconButton from '../../../../components/IconButton';
 import BackButton from '../../../../components/BackButton';
-import Preloader from '../../../../components/Preloader';
 
 const AddCardCollection = ({edit = false}) => {
     const [name, setName] = React.useState("");
@@ -169,16 +169,16 @@ const AddCardCollection = ({edit = false}) => {
     }, [collection]);
 
     return (
-        <div className={styles.addCardCollection}>
+        <div className={base.baseWrapperGap16}>
             <div className={styles.addCardCollectionWrapper}>
-                <div className={styles.addCardCollectionTitleInner}>
+                <div className={base.titleWrapper}>
                     <BackButton />
 
                     <p className={typography.h3}>{edit ? "Редактирование" : "Создание"} коллекции</p>
                 </div>
             </div>
 
-            <div className={styles.addCardCollectionForm}>
+            <div className={`${base.baseWrapperGap16} ${styles.addCardCollectionForm} ${base.aic}`}>
                 <Input value={name} setValue={setName} placeholder="Название" lengthLimit={75} trackLength />
 
                 <Checkbox checked={withDescription} onChange={e => setWithDescription(e.target.checked)}>
@@ -191,7 +191,7 @@ const AddCardCollection = ({edit = false}) => {
                     Скрыть от других пользователей
                 </Checkbox>
 
-                <div className={styles.addCardCollectionPairs}>
+                <div className={`${base.baseWrapperGap12} ${base.aic}`}>
                     {pairs.map((data, id) => <div key={id} className={styles.addCardCollectionPair}>
                         <div className={styles.addCardCollectionPairWrap}>
                             <Input placeholder="Вопрос" lengthLimit={250} value={data.question} onChange={e => handleChange(id, e, "question")} wrapperClass={styles.addCardCollectionPairInput} />

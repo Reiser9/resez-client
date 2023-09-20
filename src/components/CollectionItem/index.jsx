@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Tooltip } from 'antd';
 
+import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -11,7 +12,7 @@ import IconButton from '../IconButton';
 import HoverMenu from '../HoverMenu';
 import MenuLink from '../HoverMenu/MenuLink';
 import ConfirmModal from '../Modal/ConfirmModal';
-import Preloader from '../Preloader';
+import LoaderForItem from '../LoaderForItem';
 
 const CollectionItem = ({data, loading = false, deleteCollection = () => {}}) => {
     const [collectionItemMenu, setCollectionItemMenu] = React.useState(false);
@@ -24,7 +25,7 @@ const CollectionItem = ({data, loading = false, deleteCollection = () => {}}) =>
 
     return (
         <>
-            <div className={styles.collectionItem}>
+            <div className={`${base.item3} ${styles.collectionItem}`}>
                 <Link to={`${id}`} className={styles.collectionItemInfoInner}>
                     <span className={styles.collectionItemInfo}>
                         <p className={styles.collectionItemName}>{collection}</p>
@@ -84,9 +85,7 @@ const CollectionItem = ({data, loading = false, deleteCollection = () => {}}) =>
                     </HoverMenu>
                 </div>
 
-                {loading && <div className={styles.collectionItemLoader}>
-                    <Preloader small />
-                </div>}
+                {loading && <LoaderForItem />}
             </div>
 
             <ConfirmModal

@@ -18,19 +18,31 @@ export const userSlice = createSlice({
             state.profileData = action.payload || {};
         },
         initCodeData: (state, action) => {
-            state.verificationCodeData = action.payload;
+            state.verificationCodeData = action.payload || {};
         },
         changeThemeUser: (state, action) => {
-            state.user.theme = {...action.payload}
+            state.user = {
+                ...state.user,
+                theme: action.payload
+            }
         },
         previewThemeUser: (state, action) => {
-            state.user.previewTheme = {...action.payload}
+            state.user = {
+                ...state.user,
+                previewTheme: action.payload
+            }
         },
         isPreviewTheme: (state, action) => {
-            state.user.isPreviewTheme = action.payload;
+            state.user = {
+                ...state.user,
+                isPreviewTheme: action.payload
+            }
         },
         setUreadNotifyCount: (state, action) => {
-            state.user.unreadNotifiesCount = action.payload;
+            state.user = {
+                ...state.user,
+                unreadNotifiesCount: action.payload
+            }
         },
         decrementUreadNotifyCount: (state) => {
             state.user.unreadNotifiesCount--;
@@ -39,7 +51,10 @@ export const userSlice = createSlice({
             state.user.unreadNotifiesCount++;
         },
         setUserBlocked: (state, action) => {
-            state.user.isBlocked = action.payload;
+            state.user = {
+                ...state.user,
+                isBlocked: action.payload
+            }
         },
         initSessionId: (state, action) => {
             state.sessionId = action.payload;

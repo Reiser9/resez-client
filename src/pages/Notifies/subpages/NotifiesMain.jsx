@@ -1,10 +1,10 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 
+import base from '../../../styles/base.module.css';
 import typography from '../../../styles/typography.module.css';
-import styles from '../index.module.css';
 
-import {Notify as NotifyIcon} from '../../../components/Icons';
+import {Cross, Notify as NotifyIcon} from '../../../components/Icons';
 
 import useNotify from '../../../hooks/useNotify';
 
@@ -13,11 +13,12 @@ import NotifyItem from '../../../components/NotifyItem';
 import ReloadButton from '../../../components/ReloadButton';
 import NotContent from '../../../components/NotContent';
 import Notify from '../../../components/Skeleton/Notify';
+import BlockDataWithPaggination from '../../../components/BlockDataWithPaggination';
 
 const NotifiesMain = ({unread = false}) => {
     const [notifiesMoreLoading, setNotifiesMoreLoading] = React.useState(false);
 
-    const {isLoading, error, notifyIsLoading, loadNotify, getAllNotify, readNotify, readAllNotifies} = useNotify();
+    const {error, isLoading, notifyIsLoading, loadNotify, getAllNotify, readNotify, readAllNotifies} = useNotify();
     const {notifiesIsLoading, notifies} = useSelector(state => state.notify);
     const {user} = useSelector(state => state.user);
 
@@ -40,9 +41,9 @@ const NotifiesMain = ({unread = false}) => {
     const notifiesNotLoadingAndNotEmpty = !notifiesIsLoading && notifies.totalCount !== 0;
 
     return (
-        <div className={styles.content}>
-            <div className={styles.titleInner}>
-                <div className={styles.titleWrapper}>
+        <div className={base.baseWrapperGap16}>
+            <div className={base.titleInner}>
+                <div className={base.titleWrapper}>
                     <p className={typography.h3}>Уведомления {notifiesNotLoadingAndNotEmpty && `(${notifies.totalCount || 0})`}</p>
 
                     <ReloadButton loading={notifiesIsLoading} onClick={() => loadNotify(0, 6, unread)} />
@@ -53,14 +54,21 @@ const NotifiesMain = ({unread = false}) => {
                 </Button>}
             </div>
 
-            {notifiesIsLoading
-            ? <div className={styles.notifiesContent}>
-                {[...Array(4)].map((_, id) => <Notify key={id} />)}
-            </div>
-            : error ? <NotContent text="Ошибка при загрузке уведомлений" />
-            : notifies.totalCount === 0
-                ? <NotContent text={unread ? "Все уведомления прочитаны" : "Уведомлений не найдено"} icon={<NotifyIcon />} />
-                : <div className={styles.notifiesContent}>
+            <BlockDataWithPaggination
+                error={error}
+                dataIsLoading={notifiesIsLoading}
+                dataMoreIsLoading={notifiesMoreLoading}
+                dataLength={notifies?.notifies?.length}
+                Skeleton={Notify}
+                skeletonLoading={4}
+                skeletonMoreLoading={2}
+                containerClassName={base.contentItems}
+                errorContent={<NotContent text="Ошибка при загрузке уведомлений" icon={<Cross />} danger />}
+                notContent={<NotContent text={unread ? "Все уведомления прочитаны" : "Уведомлений не найдено"} />}
+                isLast={notifies?.isLast}
+                loadMoreData={loadMoreNotifies}
+            >
+                <div className={base.contentItems}>
                     {notifies?.notifies
                     ?.map(data => <NotifyItem
                         key={data.id}
@@ -69,15 +77,7 @@ const NotifiesMain = ({unread = false}) => {
                         loading={notifyIsLoading.includes(data.id)}
                     />)}
                 </div>
-            }
-
-            {notifiesMoreLoading && <div className={styles.notifiesContent}>
-                {[...Array(2)].map((_, id) => <Notify key={id} />)}
-            </div>}
-
-            {Object.keys(notifies).length !== 0 && !notifiesIsLoading && !notifies?.isLast && <Button loading={notifiesMoreLoading} type="empty" auto className={styles.notifiesMoreButton} onClick={loadMoreNotifies}>
-                Показать еще
-            </Button>}
+            </BlockDataWithPaggination>
         </div>
     )
 }

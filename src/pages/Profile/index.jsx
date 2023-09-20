@@ -15,6 +15,7 @@ const ProfileMain = React.lazy(() => import("./subpages/ProfileMain"));
 const Theme = React.lazy(() => import("./subpages/Theme"));
 const Data = React.lazy(() => import("./subpages/Data"));
 const Safe = React.lazy(() => import("./subpages/Safe"));
+const Sessions = React.lazy(() => import("./subpages/Sessions"));
 const Achievments = React.lazy(() => import("./subpages/Achievments"));
 const Settings = React.lazy(() => import("./subpages/Settings"));
 
@@ -27,11 +28,12 @@ const Profile = () => {
                         <div className={pws.content}>
                             <Routes>
                                 <Route index element={withSuspense(<ProfileMain />)} />
-                                <Route path="/theme/*" element={withSuspense(<Theme />)} />
-                                <Route path="/data" element={withSuspense(<Data />)} />
-                                <Route path="/safe/*" element={withSuspense(<Safe />)} />
-                                <Route path="/achievments/*" element={withSuspense(<Achievments />)} />
-                                <Route path="/settings" element={withSuspense(<Settings />)} />
+                                <Route path="theme/*" element={withSuspense(<Theme />)} />
+                                <Route path="data" element={withSuspense(<Data />)} />
+                                <Route path="safe/*" element={withSuspense(<Safe />)} />
+                                <Route path="safe/sessions" element={withSuspense(<Sessions />)} />
+                                <Route path="achievments/*" element={withSuspense(<Achievments />)} />
+                                <Route path="settings" element={withSuspense(<Settings />)} />
                                 <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>
                         </div>

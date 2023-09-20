@@ -2,6 +2,7 @@ import React from 'react';
 import { Tooltip } from 'antd';
 import { useSelector } from 'react-redux';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -47,8 +48,8 @@ const ProfileMain = () => {
     const {firstName, lastName} = profileData;
 
     return (
-        <div className={styles.content}>
-            <div className={styles.profileWrapper}>
+        <div className={base.baseWrapperGap16}>
+            <div className={base.baseWrapperGap0}>
                 <div className={styles.profileBannerInner}> 
                     {/* <img src="/assets/img/banner.jpg" alt="banner" className={styles.profileBanner} /> */}
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Checkbox } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
@@ -82,7 +83,7 @@ const Notifies = () => {
                 }
     
                 setTypeOptions(types.data.notifyTypes);
-            });;
+            });
         }
     }
 
@@ -99,7 +100,7 @@ const Notifies = () => {
     }, [searchValue]);
 
     return (
-        <div className={styles.notifies}>
+        <div className={base.baseWrapperGap16}>
             <p className={typography.h3}>Отправка уведомления</p>
 
             <div className={styles.notifiesForm}>

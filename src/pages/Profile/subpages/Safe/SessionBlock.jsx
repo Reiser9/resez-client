@@ -2,14 +2,16 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
-import styles from '../../index.module.css';
+
+import { Cross } from '../../../../components/Icons';
 
 import useSession from '../../../../hooks/useSession';
 
 import Button from '../../../../components/Button';
 import SessionsSkeleton from '../../../../components/Skeleton/Sessions';
-import SessionItemCompact from '../../SessionItemCompact';
+import SessionItemCompact from '../../../../components/SessionItem/SessionItemCompact';
 import NotContent from '../../../../components/NotContent';
 import ConfirmModal from '../../../../components/Modal/ConfirmModal';
 
@@ -33,9 +35,9 @@ const SessionBlock = () => {
             {sessionsIsLoading
             ? <SessionsSkeleton />
             : error
-                ? <NotContent text="Ошибка при загрузке сеансов" />
+                ? <NotContent text="Ошибка при загрузке сеансов" icon={<Cross />} danger />
                 : <>
-                    <div className={styles.sessionWrapper}>
+                    <div className={base.baseWrapperGap8}>
                         <p className={typography.text}>Текущий сеанс</p>
 
                         <SessionItemCompact current data={sessions?.current || {}} onClick={() => seeSessionFull(sessions?.current?.id)} />
@@ -45,7 +47,7 @@ const SessionBlock = () => {
                         </Button>}
                     </div>
 
-                    {sessions?.totalCount > 0 && <div className={styles.sessionWrapper}>
+                    {sessions?.totalCount > 0 && <div className={base.baseWrapperGap8}>
                         <p className={typography.text}>Все сеансы ({sessions?.totalCount + 1 || 0})</p>
                         
                         {sessions?.other?.slice(0, 3).map(data => <SessionItemCompact key={data.id} data={data} onClick={() => seeSessionFull(data.id)} />)}

@@ -23,7 +23,7 @@ const Notifies = () => {
                             <Routes>
                                 <Route index element={withSuspense(<NotifiesMain />)} />
                                 <Route path="unread" element={withSuspense(<NotifiesMain unread />)} />
-                                <Route path="*" element={<Navigate to={""} />} />
+                                <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>
                         </div>
 

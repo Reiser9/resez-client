@@ -1,18 +1,43 @@
 import React from 'react';
-import {Routes, Route} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
-import { withSuspense } from '../../../../hoc/withSuspense';
+import base from '../../../../styles/base.module.css';
+import typography from '../../../../styles/typography.module.css';
+import styles from '../../index.module.css';
 
-const SafeMain = React.lazy(() => import("./SafeMain"));
-const Sessions = React.lazy(() => import("./Sessions"));
+import useSession from '../../../../hooks/useSession';
 
-const Safe = () => {
+import ReloadButton from '../../../../components/ReloadButton';
+import SessionBlock from './SessionBlock';
+import ChangePassword from './ChangePassword';
+
+const SafeMain = () => {
+    const {loadSessions} = useSession();
+    const {sessionsIsLoading} = useSelector(state => state.session);
+
     return (
-        <Routes>
-            <Route index element={withSuspense(<SafeMain />)} />
-            <Route path="/sessions" element={withSuspense(<Sessions />)} />
-        </Routes>
+        <>
+            <div className={styles.contentBlock}>
+                <div className={base.titleInner}>
+                    <p className={typography.h3}>
+                        Активность
+                    </p>
+
+                    <ReloadButton loading={sessionsIsLoading} onClick={() => loadSessions(0, 5, true)} />
+                </div>
+
+                <SessionBlock />
+            </div>
+            
+            <div className={styles.contentBlock}>
+                <p className={typography.h3}>
+                    Смена пароля
+                </p>
+
+                <ChangePassword />
+            </div>
+        </>
     )
 }
 
-export default Safe;
+export default SafeMain;

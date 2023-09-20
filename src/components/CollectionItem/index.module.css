@@ -1,5 +1,4 @@
 .collectionItem{
-    width: calc(100% / 3 - 24px / 3);
     padding: 1.2rem;
     border-radius: 4px;
     background: var(--input);
@@ -8,27 +7,6 @@
     align-items: flex-start;
     gap: 16px;
     position: relative;
-}
-
-@media (max-width: 1150px) {
-    .collectionItem{
-        width: calc(100% / 2 - 12px / 2);
-    }
-}
-@media (max-width: 920px) {
-    .collectionItem{
-        width: 100%;
-    }
-}
-@media (max-width: 768px) {
-    .collectionItem{
-        width: calc(100% / 2 - 12px / 2);
-    }
-}
-@media (max-width: 650px) {
-    .collectionItem{
-        width: 100%;
-    }
 }
 
 .collectionItemInfoInner{
@@ -169,19 +147,4 @@
     font-weight: 600;
     font-size: 1.8rem;
     text-transform: uppercase;
-}
-
-.collectionItemLoader{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 4px;
-    background: var(--input);
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
 }

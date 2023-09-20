@@ -2,8 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
-import styles from './index.module.css';
+import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
+import styles from './index.module.css';
 
 import useUser from '../../../../hooks/useUser';
 
@@ -50,10 +51,10 @@ const Data = () => {
     }
 
     return (
-        <div className={styles.data}>
+        <div className={base.baseWrapperGap16}>
             <p className={typography.h3}>Личные данные</p>
 
-            <div className={styles.dataContent}>
+            <div className={base.contentItems}>
                 <Input value={name} setValue={setName} wrapperClass={styles.dataItem} title="Имя" lengthLimit={20} trackLength />
                 <Input value={surname} setValue={setSurname} wrapperClass={styles.dataItem} title="Фамилия" lengthLimit={30} trackLength />
                 <DatePicker placeholder="Дата рождения" value={birthday} setValue={setBirthday} className={styles.dataItem} />

@@ -10,9 +10,9 @@ const SessionItemCompact = ({current = false, data, ...props}) => {
     const {isActive, browser, deviceType, date} = data;
 
     return (
-        <div className={`${styles.sessionItem} ${!isActive ? ` ${styles.disabled}` : ""}`} {...props}>
+        <div className={`${styles.sessionItemCompact} ${!isActive ? ` ${styles.disabled}` : ""}`} {...props}>
             <div className={styles.sessionItemContent}>
-                <div className={styles.sessionItemIcon}>
+                <div className={styles.sessionItemCompactIcon}>
                     {getDeviceByName(deviceType)?.icon}
                 </div>
 

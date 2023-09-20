@@ -13,9 +13,9 @@ import useError from './useError';
 import useAlert from './useAlert';
 
 const useNotify = () => {
+    const [error, setError] = React.useState(false);
     const [notifyIsLoading, setNotifyIsLoading] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [error, setError] = React.useState(false);
 
     const dispatch = useDispatch();
     const {notifies} = useSelector(state => state.notify);
