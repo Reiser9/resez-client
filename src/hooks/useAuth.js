@@ -21,10 +21,22 @@ const useAuth = () => {
     const [isLoading, setIsLoading] = React.useState(false);
 
     const dispatch = useDispatch();
-    const {request, clearLocalData, noAuthController} = useRequest();
+    const {request, clearLocalData, noAuthController, getHealthServer} = useRequest();
     const {errorController} = useError();
     const {alertNotify} = useAlert();
     const {getShortInfo} = useUser();
+
+    const reload = async () => {
+        dispatch(setAppIsLoading(true));
+
+        const response = await getHealthServer();
+
+        if(response){
+            checkAuth();
+        }
+
+        dispatch(setAppIsLoading(false));
+    }
 
     const checkAuth = async () => {
         setError(false);
@@ -355,6 +367,7 @@ const useAuth = () => {
     return {
         isLoading,
         error,
+        reload,
         checkAuth,
         logout,
         login,

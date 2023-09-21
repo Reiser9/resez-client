@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, ColorPicker, Tree } from 'antd';
+import { Checkbox, Tree } from 'antd';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -17,6 +17,7 @@ import BackButton from '../../../../components/BackButton';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import Preloader from '../../../../components/Preloader';
+import ColorPickerInput from '../../../../components/ColorPickerInput';
 
 const AddRole = ({edit = false}) => {
     const [name, setName] = React.useState("");
@@ -35,7 +36,7 @@ const AddRole = ({edit = false}) => {
     const [currentPermissions, setCurrentPermissions] = React.useState([]);
     const [permission, setPermission] = React.useState([]);
 
-    const {isLoading, roleByIdIsLoading, getAllPermissions, createRole, getRoleById} = useRoles();
+    const {isLoading, roleByIdIsLoading, getAllPermissions, createRole, updateRole, getRoleById} = useRoles();
     const {permissionsIsLoading, permissions} = useSelector(state => state.role);
     const navigate = useNavigate();
     const {id} = useParams();
@@ -50,13 +51,19 @@ const AddRole = ({edit = false}) => {
         createRole(name, permission, textHexString, backbroundTextColor, () => navigate("../roles"));
     }
 
+    const updateRoleHandler = () => {
+        const backbroundTextColor = backgroundColorAuto ? convertHexToOpacityHex(textHexString) : backgroundHexString;
+
+        updateRole(id, name, permission, textHexString, backbroundTextColor, () => navigate("../roles"));
+    }
+
     const formatArrayToTree = (arr) => arr.map(item => ({
         title: item.permission,
         key: item.id.toString(),
         children: formatArrayToTree(item.childrens) ?? []
     }));
 
-    const getCurrentRole = React.useCallback(async (id) => {
+    const getCurrentRole = async (id) => {
         const role = await getRoleById(id);
 
         if(!role){
@@ -69,7 +76,7 @@ const AddRole = ({edit = false}) => {
 
         const perm = role?.permissions.map(data => data.id.toString());
         setPermission(perm);
-    }, [id]);
+    };
 
     React.useEffect(() => {
         getAllPermissions();
@@ -88,7 +95,7 @@ const AddRole = ({edit = false}) => {
         if(edit && id){
             getCurrentRole(id);
         }
-    }, [edit, id, getCurrentRole]);
+    }, [edit, id]);
 
     if(permissionsIsLoading || roleByIdIsLoading){
         return <Preloader page />
@@ -113,21 +120,27 @@ const AddRole = ({edit = false}) => {
 
                 <Input value={name} setValue={setName} title="Название роли" placeholder="Админ, модератор, хелпер.." trackLength lengthLimit={30} />
 
-                <ColorPicker value={textColor} onChange={setTextColor} format={textColorFormatHex} onFormatChange={setTextColorFormatHex}>
-                    <Input readOnly value={textHexString} title="Выберите цвет текста">
-                        <div className={styles.colorView} style={{background: textHexString}}></div>
-                    </Input>
-                </ColorPicker>
+                <ColorPickerInput
+                    title="Выберите цвет текста"
+                    hexString={textHexString}
+                    value={textColor}
+                    format={textColorFormatHex}
+                    onFormatChange={setTextColorFormatHex}
+                    onChangeComplete={(e) => setTextColor(e)}
+                />
 
                 <Checkbox checked={backgroundColorAuto} onChange={e => setBackgroundColorAuto(e.target.checked)}>
                     Сгенировать фоновый цвет автоматически
                 </Checkbox>
 
-                {!backgroundColorAuto && <ColorPicker value={backgroundColor} onChange={setBackgroundColor} format={backgroundColorFormatHex} onFormatChange={setBackgroundColorFormatHex}>
-                    <Input readOnly value={backgroundHexString} title="Выберите цвет фона">
-                        <div className={styles.colorView} style={{background: backgroundHexString}}></div>
-                    </Input>
-                </ColorPicker>}
+                {!backgroundColorAuto && <ColorPickerInput
+                    title="Выберите цвет фона"
+                    hexString={backgroundHexString}
+                    value={backgroundColor}
+                    format={backgroundColorFormatHex}
+                    onFormatChange={setBackgroundColorFormatHex}
+                    onChangeComplete={(e) => setBackgroundColor(e)}
+                />}
 
                 <div className={styles.roleTree}>
                     <Tree
@@ -140,7 +153,7 @@ const AddRole = ({edit = false}) => {
                     />
                 </div>
 
-                {edit ? <Button type="light" auto loading={isLoading}>
+                {edit ? <Button type="light" auto onClick={updateRoleHandler} loading={isLoading}>
                     Сохранить
                 </Button>
                 : <Button type="light" auto onClick={createRoleHandler} loading={isLoading}>

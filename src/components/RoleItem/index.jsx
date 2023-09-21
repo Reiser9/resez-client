@@ -14,7 +14,7 @@ import ConfirmModal from '../Modal/ConfirmModal';
 import LoaderForItem from '../LoaderForItem';
 
 const RoleItem = ({data, loading = false, deleteRole = () => {}}) => {
-    const {id, role, permissionsCount, textColor, backgroundColor} = data || {};
+    const {id, role, permissionsCount, usersCount, textColor, backgroundColor} = data || {};
 
     const [actionMenu, setActionMenu] = React.useState(false);
     const [confirmDelete, setConfirmDelete] = React.useState(false);
@@ -27,6 +27,8 @@ const RoleItem = ({data, loading = false, deleteRole = () => {}}) => {
                 {role && <p className={styles.roleItemName} style={{background: backgroundColor, color: textColor}}>
                     {role}
                 </p>}
+
+                <TextPoint title="Используют" text={usersCount || 0} />
 
                 <div className={styles.roleItemInfoInner}>
                     <TextPoint title="Привилегий" text={permissionsCount || 0} />

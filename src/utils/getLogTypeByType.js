@@ -5,7 +5,7 @@ import { Block, Enter, Planet, Reload, Unknown } from "../components/Icons"
 export const getLogTypeByType = (type) => {
     switch(type){
         case "Регистрация":
-        case "Вход":
+        case "Вход с нового устройства":
             return {
                 icon: <Enter />,
                 class: styles.success
@@ -16,7 +16,6 @@ export const getLogTypeByType = (type) => {
                 class: styles.info
             }
         case "Смена пароля":
-        case "Восстановление пароля":
             return {
                 icon: <Reload />,
                 class: styles.warn

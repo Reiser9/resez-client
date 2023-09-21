@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, ColorPicker } from 'antd';
+import { Checkbox } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,14 +17,11 @@ import { setMainColors } from '../../../../utils/setMainColors';
 import useAdmin from '../../../../hooks/useAdmin';
 
 import BackButton from '../../../../components/BackButton';
-import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import Preloader from '../../../../components/Preloader';
+import ColorPickerInput from '../../../../components/ColorPickerInput';
 
 const AddTheme = ({edit = false}) => {
-    const [mainPickEnd, setMainPickEnd] = React.useState(false);
-    const [secondPickEnd, setSecondPickEnd] = React.useState(false);
-
     const [mainColor, setMainColor] = React.useState(CONFIG.BASE_COLOR);
     const [mainColorFormatHex, setMainColorFormatHex] = React.useState('hex');
 
@@ -54,7 +51,7 @@ const AddTheme = ({edit = false}) => {
         editTheme(id, mainHexString, !customSecondColor ? secondHexString : convertHexToOpacityHex(mainHexString), themeRating, () => navigate("/admin/appearance"));
     }
 
-    const getCurrentTheme = React.useCallback(async (id) => {
+    const getCurrentTheme = async (id) => {
         const theme = await getThemeById(id);
 
         if(!theme){
@@ -64,7 +61,7 @@ const AddTheme = ({edit = false}) => {
         setMainColor(theme?.primary);
         setSecondColor(theme?.light);
         setThemeRating(theme?.isRatingEnabled);
-    }, []);
+    };
 
     React.useEffect(() => {
         if(preview){
@@ -84,13 +81,13 @@ const AddTheme = ({edit = false}) => {
             setMainColors(user?.theme?.primary, user?.theme?.light);
             dispatch(isPreviewTheme(false))
         };
-    }, [preview, mainPickEnd, secondPickEnd, customSecondColor]);
+    }, [preview, mainHexString, secondHexString, customSecondColor]);
 
     React.useEffect(() => {
         if(edit && id){
             getCurrentTheme(id);
         }
-    }, [id, getCurrentTheme]);
+    }, [edit, id]);
 
     if(themeByIdIsLoading){
         return <Preloader page />
@@ -105,21 +102,27 @@ const AddTheme = ({edit = false}) => {
             </div>
 
             <div className={styles.appearanceThemeForm}>
-                <ColorPicker onChangeComplete={() => setMainPickEnd(prev => !prev)} value={mainColor} onChange={setMainColor} format={mainColorFormatHex} onFormatChange={setMainColorFormatHex}>
-                    <Input readOnly value={mainHexString} title="Выберите основной цвет">
-                        <div className={styles.appearanceThemeColorView} style={{background: mainHexString}}></div>
-                    </Input>
-                </ColorPicker>
+                <ColorPickerInput
+                    title="Выберите основной цвет"
+                    hexString={mainHexString}
+                    value={mainColor}
+                    format={mainColorFormatHex}
+                    onFormatChange={setMainColorFormatHex}
+                    onChangeComplete={(e) => setMainColor(e)}
+                />
 
                 <Checkbox checked={customSecondColor} onChange={e => setCustomSecondColor(e.target.checked)}>
                     Сгенировать цвет автоматически
                 </Checkbox>
 
-                {!customSecondColor && <ColorPicker onChangeComplete={() => setSecondPickEnd(prev => !prev)} value={secondColor} onChange={setSecondColor} format={secondColorFormatHex} onFormatChange={setSecondColorFormatHex}>
-                    <Input readOnly value={secondHexString} title="Выберите фоновый цвет">
-                        <div className={styles.appearanceThemeColorView} style={{background: secondHexString}}></div>
-                    </Input>
-                </ColorPicker>}
+                {!customSecondColor && <ColorPickerInput
+                    title="Выберите фоновый цвет"
+                    hexString={secondHexString}
+                    value={secondColor}
+                    format={secondColorFormatHex}
+                    onFormatChange={setSecondColorFormatHex}
+                    onChangeComplete={(e) => setSecondColor(e)}
+                />}
 
                 <Checkbox checked={themeRating} onChange={e => setThemeRating(e.target.checked)}>
                     Оценка темы пользователями

@@ -16,7 +16,7 @@ import NotContent from '../../../../components/NotContent';
 import RoleItemSkeleton from '../../../../components/Skeleton/RoleItem';
 
 const Roles = () => {
-    const {error, loadRoles, getAllRoles} = useRoles();
+    const {error, roleIsLoading, loadRoles, getAllRoles, deleteRole} = useRoles();
 
     const [rolesMoreLoading, setRolesMoreLoading] = React.useState(false);
     const {rolesIsLoading, roles} = useSelector(state => state.role);
@@ -69,8 +69,8 @@ const Roles = () => {
                     <RoleItem
                         key={id}
                         data={data}
-                        // themeDelete={() => removeTheme(data.id)}
-                        // loading={themeIsLoading.includes(data.id)}
+                        deleteRole={() => deleteRole(data.id)}
+                        loading={roleIsLoading.includes(data.id)}
                     />
                 )}
             </BlockDataWithPaggination>
