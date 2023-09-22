@@ -150,6 +150,10 @@
     word-break: break-word;
 }
 
+.modalText img{
+    max-width: 100%;
+}
+
 @media (max-width: 520px) {
     .modalText{
         overflow-y: auto;

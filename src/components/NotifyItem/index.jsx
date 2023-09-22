@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'antd';
+import parse from 'html-react-parser';
 
 import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
@@ -53,7 +54,7 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
                 </span>
 
                 {content && <div className={`${typography.text} ${styles.notifyItemTextContent}`}>
-                    {content}
+                    {parse(content)}
                 </div>}
 
                 <div className={styles.notifyItemButtonInner}>
@@ -72,7 +73,7 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
             </div>
 
             <Modal value={modal} setValue={setModal} title={title} subtitle={formatDate(date)}>
-                {content}
+                {parse(content)}
 
                 {getNotifyType(type)?.name === "session" && <p className={typography.text}>
                     <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности

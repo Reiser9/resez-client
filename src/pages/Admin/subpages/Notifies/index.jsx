@@ -1,34 +1,28 @@
 import React from 'react';
 import { Checkbox } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { createReactEditorJS } from 'react-editor-js';
 
 import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import {EDITOR_TOOLS} from '../../../../consts/EDITOR_TOOLS'; 
-
 import { formatDate } from '../../../../utils/formatDate';
 import {isDateTimePast} from '../../../../utils/isDateTimePast';
+import {getHtmlInEditor} from '../../../../utils/getHtmlInEditor';
 
 import useAdmin from '../../../../hooks/useAdmin';
 import useAlert from '../../../../hooks/useAlert';
 
 import Input from '../../../../components/Input';
-import Textarea from '../../../../components/Textarea';
 import Button from '../../../../components/Button';
 import Select from '../../../../components/Select';
 import DatePicker from '../../../../components/DatePicker';
 import TimePicker from '../../../../components/TimePicker';
-
-const ReactEditorJS = createReactEditorJS();
+import Editor from '../../../../components/Editor';
 
 const Notifies = () => {
     const [title, setTitle] = React.useState("");
     const [author, setAuthor] = React.useState("");
-    const [text, setText] = React.useState("");
-    const [textEditor, setTextEditor] = React.useState("");
     const [date, setDate] = React.useState("");
     const [time, setTime] = React.useState("");
 
@@ -49,8 +43,9 @@ const Notifies = () => {
     const navigate = useNavigate();
 
     const searchUsersRef = React.useRef(null);
+    const editorRef = React.useRef(null);
 
-    const createNotify = () => {
+    const createNotify = async () => {
         if((!date || !time) && delayedSend && !isDateTimePast(date, time)){
             return alertNotify("Ошибка", "Нельзя отправить уведомление в прошедшую дату", "error");
         }
@@ -59,7 +54,10 @@ const Notifies = () => {
             var newDate = formatDate(`${date?.format("YYYY-MM-DD")}T${time?.format("HH:mm:ss")}`, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
         }
 
-        sendNotify(title, author, userIDs, newDate, text, type, () => navigate("/admin"));
+        const savedData = await editorRef.current.save();
+        const content = getHtmlInEditor(savedData.blocks);
+
+        sendNotify(title, author, userIDs, newDate, content, type, () => navigate("/admin"));
     }
 
     const searchUsersHandler = () => {
@@ -163,15 +161,11 @@ const Notifies = () => {
                         }
                     })}
                 />
-
-                <Textarea value={text} setValue={setText} placeholder="Сообщение" />
                 
-                <div className={styles.notifiesEditor}>
-                    <ReactEditorJS
-                        defaultValue={textEditor}
-                        tools={EDITOR_TOOLS}
-                    />
-                </div>
+                <Editor
+                    placeholder="Сообщение"
+                    ref={editorRef}
+                />
 
                 <Button auto type="light" onClick={createNotify} loading={isLoading}>
                     Отправить

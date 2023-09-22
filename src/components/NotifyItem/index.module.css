@@ -98,6 +98,10 @@
     word-break: break-word;
 }
 
+.notifyItemTextContent img{
+    display: none;
+}
+
 @media (max-width: 480px) {
     .notifyItemTextContent{
         line-clamp: 1;

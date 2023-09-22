@@ -9,6 +9,7 @@
 .inputInner{
     width: 100%;
     position: relative;
+    display: flex;
 }
 
 .input{

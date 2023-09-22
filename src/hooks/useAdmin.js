@@ -296,6 +296,46 @@ const useAdmin = () => {
         return response;
     }
 
+    const uploadImageOnServerFile = async (imageData) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, "/upload-image", HTTP_METHODS.POST, true, imageData, {
+            'Content-type': 'multipart/form-data'
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => uploadImageOnServerFile(imageData));
+        }
+
+        return response.data;
+    }
+
+    const uploadImageOnServerUrl = async (url) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, "/upload-image-by-url", HTTP_METHODS.POST, true, {
+            url
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => uploadImageOnServerUrl(url));
+        }
+
+        return response.data;
+    }
+
     return {
         error,
         isLoading,
@@ -316,7 +356,9 @@ const useAdmin = () => {
         editTheme,
         removeTheme,
         sendNotify,
-        getNotifyTypes
+        getNotifyTypes,
+        uploadImageOnServerFile,
+        uploadImageOnServerUrl
     }
 }
 
