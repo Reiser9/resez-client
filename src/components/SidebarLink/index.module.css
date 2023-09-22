@@ -19,6 +19,12 @@
     }
 }
 
+.disabled{
+    opacity: 0.6;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
 .sidebarLink:hover, .sidebarLink.active{
     background: var(--lighten);
     color: var(--main);

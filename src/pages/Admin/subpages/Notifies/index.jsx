@@ -1,10 +1,13 @@
 import React from 'react';
 import { Checkbox } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { createReactEditorJS } from 'react-editor-js';
 
 import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
+
+import {EDITOR_TOOLS} from '../../../../consts/EDITOR_TOOLS'; 
 
 import { formatDate } from '../../../../utils/formatDate';
 import {isDateTimePast} from '../../../../utils/isDateTimePast';
@@ -19,10 +22,13 @@ import Select from '../../../../components/Select';
 import DatePicker from '../../../../components/DatePicker';
 import TimePicker from '../../../../components/TimePicker';
 
+const ReactEditorJS = createReactEditorJS();
+
 const Notifies = () => {
     const [title, setTitle] = React.useState("");
     const [author, setAuthor] = React.useState("");
     const [text, setText] = React.useState("");
+    const [textEditor, setTextEditor] = React.useState("");
     const [date, setDate] = React.useState("");
     const [time, setTime] = React.useState("");
 
@@ -159,6 +165,13 @@ const Notifies = () => {
                 />
 
                 <Textarea value={text} setValue={setText} placeholder="Сообщение" />
+                
+                <div className={styles.notifiesEditor}>
+                    <ReactEditorJS
+                        defaultValue={textEditor}
+                        tools={EDITOR_TOOLS}
+                    />
+                </div>
 
                 <Button auto type="light" onClick={createNotify} loading={isLoading}>
                     Отправить
