@@ -16,6 +16,11 @@
     text-align: center;
 }
 
+.small{
+    padding: .4rem 1.6rem;
+    min-height: 38px;
+}
+
 @media (any-hover: hover) {
     .button{
         cursor: pointer;

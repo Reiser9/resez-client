@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
-import styles from '../AddTheme/index.module.css';
 
 import useAdmin from '../../../../hooks/useAdmin';
 
@@ -45,7 +44,7 @@ const Appearance = () => {
                     <ReloadButton loading={themesIsLoading} onClick={() => loadAllThemes(0, 8, true)} />
                 </div>
 
-                <Button disabled={themesIsLoading} type="light" auto to="theme/add">
+                <Button disabled={themesIsLoading} type="light" auto to="theme/create">
                     Создать
                 </Button>
             </div>

@@ -90,7 +90,7 @@ const Header = ({empty = false}) => {
                             <div className={`${styles.headerProfileImgInner}${unreadNotifiesCount > 0 ? ` ${styles.unread}` : ""}`}>
                                 {isAuth ? avatar
                                 ? <img src={avatar} alt="avatar" className={styles.headerProfileImg} />
-                                : nickname && <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>
+                                : nickname && <p className={styles.headerProfileName}>{nickname[0]}</p>
                                 : <Enter />}
                             </div>
 
@@ -109,7 +109,7 @@ const Header = ({empty = false}) => {
                                             <div className={styles.headerProfileMenuImgInner}>
                                                 {avatar
                                                 ? <img src={avatar} alt="avatar" className={styles.headerProfileMenuImg} />
-                                                : nickname && <p className={styles.headerProfileName}>{nickname[0].toUpperCase()}</p>}
+                                                : nickname && <p className={styles.headerProfileName}>{nickname[0]}</p>}
                                             </div>
 
                                             <div className={styles.headerProfileMenuNameInner}>

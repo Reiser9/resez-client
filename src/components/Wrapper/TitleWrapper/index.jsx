@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TitleWrpapper = ({pageTitle, children}) => {
+const TitleWrapper = ({pageTitle, children}) => {
     React.useEffect(() => {
         document.title = pageTitle || "ResEz";
         window.scrollTo(0, 0);
@@ -9,4 +9,4 @@ const TitleWrpapper = ({pageTitle, children}) => {
     return children;
 }
 
-export default TitleWrpapper;
+export default TitleWrapper;

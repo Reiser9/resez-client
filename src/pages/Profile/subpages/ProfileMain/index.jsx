@@ -58,7 +58,7 @@ const ProfileMain = () => {
 
                         {avatar
                         ? <img src={avatar} alt="avatar" className={styles.profileAvatar} />
-                        : <p className={`${typography.h1} ${styles.profileAvatarEmpty}`}>{nickname && nickname[0].toUpperCase()}</p>}
+                        : <p className={`${typography.h1} ${styles.profileAvatarEmpty}`}>{nickname && nickname[0]}</p>}
 
                         <Tooltip title="Тема пользователя" placement="bottom">
                             <div className={styles.profileInfoTheme} style={{background: theme?.primary || CONFIG.BASE_COLOR}}></div>

@@ -5,13 +5,13 @@ import styles from "./index.module.css";
 
 import { Practice, Study, Theme, Messager } from "../../components/Icons";
 
-import TitleWrpapper from "../../components/Wrapper/TitleWrapper";
+import TitleWrapper from "../../components/Wrapper/TitleWrapper";
 import WithSidebarWrapper from "../../components/Wrapper/WithSidebarWrapper";
 import Block from "./Block";
 
 const Main = () => {
     return (
-        <TitleWrpapper pageTitle="ResEz">
+        <TitleWrapper pageTitle="ResEz">
             <WithSidebarWrapper container="full">
                 <div className={styles.mainBlocks}>
                     <Block
@@ -78,7 +78,7 @@ const Main = () => {
                     </div>
                 </div>
             </WithSidebarWrapper>
-        </TitleWrpapper>
+        </TitleWrapper>
     );
 };
 

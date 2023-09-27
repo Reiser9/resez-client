@@ -177,6 +177,7 @@
     font-size: 2.4rem;
     font-weight: 600;
     color: var(--main);
+    text-transform: uppercase;
 }
 
 .userItemBlock{

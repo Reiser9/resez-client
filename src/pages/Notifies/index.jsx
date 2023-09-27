@@ -6,7 +6,7 @@ import pws from '../../styles/pageWithSidebar.module.css';
 import {withSuspense} from '../../hoc/withSuspense';
 
 import AuthWrapper from '../../components/Wrapper/AuthWrapper';
-import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
+import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
 import SidebarLink from '../../components/SidebarLink';
 import InnerSidebar from '../../components/InnerSidebar';
@@ -16,7 +16,7 @@ const NotifiesMain = React.lazy(() => import("./subpages/NotifiesMain"));
 const Notifies = () => {
     return (
         <AuthWrapper>
-            <TitleWrpapper pageTitle="ResEz - Уведомления">
+            <TitleWrapper pageTitle="ResEz - Уведомления">
                 <WithSidebarWrapper>
                     <div className={pws.wrapper}>
                         <div className={pws.content}>
@@ -33,7 +33,7 @@ const Notifies = () => {
                         </InnerSidebar>
                     </div>
                 </WithSidebarWrapper>
-            </TitleWrpapper>
+            </TitleWrapper>
         </AuthWrapper>
     )
 }

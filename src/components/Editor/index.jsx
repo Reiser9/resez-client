@@ -20,6 +20,7 @@ const ReactEditorJS = createReactEditorJS();
 
 const Editor = React.forwardRef(({
     placeholder = "",
+    id = "",
     minHeight = 60,
     ...props
 }, ref) => {
@@ -67,11 +68,11 @@ const Editor = React.forwardRef(({
             onInitialize={handleInitialize}
             tools={EDITOR_TOOLS}
             minHeight={minHeight}
-            holder="customEditor"
+            holder={id}
             placeholder={placeholder}
             {...props}
         >
-            <div id="customEditor" className={styles.editor}></div>
+            <div id={id} className={styles.editor}></div>
         </ReactEditorJS>
     )
 })

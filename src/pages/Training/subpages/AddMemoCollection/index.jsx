@@ -17,6 +17,7 @@ import Textarea from '../../../../components/Textarea';
 import Button from '../../../../components/Button';
 import IconButton from '../../../../components/IconButton';
 import BackButton from '../../../../components/BackButton';
+import CreatePageDefault from '../../../../components/CreatePageDefault';
 
 const AddCardCollection = ({edit = false}) => {
     const [name, setName] = React.useState("");
@@ -169,15 +170,7 @@ const AddCardCollection = ({edit = false}) => {
     }, [collection]);
 
     return (
-        <div className={base.baseWrapperGap16}>
-            <div className={styles.addCardCollectionWrapper}>
-                <div className={base.titleWrapper}>
-                    <BackButton />
-
-                    <p className={typography.h3}>{edit ? "Редактирование" : "Создание"} коллекции</p>
-                </div>
-            </div>
-
+        <CreatePageDefault title={`${edit ? "Редактирование" : "Создание"} коллекции`}>
             <div className={`${base.baseWrapperGap16} ${styles.addCardCollectionForm} ${base.aic}`}>
                 <Input value={name} setValue={setName} placeholder="Название" lengthLimit={75} trackLength />
 
@@ -235,7 +228,7 @@ const AddCardCollection = ({edit = false}) => {
                     Создать
                 </Button>}
             </div>
-        </div>
+        </CreatePageDefault>
     )
 }
 

@@ -4,8 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
-import typography from '../../../../styles/typography.module.css';
-import styles from './index.module.css';
 
 import { CONFIG } from '../../../../consts/CONFIG';
 
@@ -16,10 +14,10 @@ import { setMainColors } from '../../../../utils/setMainColors';
 
 import useAdmin from '../../../../hooks/useAdmin';
 
-import BackButton from '../../../../components/BackButton';
 import Button from '../../../../components/Button';
 import Preloader from '../../../../components/Preloader';
 import ColorPickerInput from '../../../../components/ColorPickerInput';
+import CreatePageDefault from '../../../../components/CreatePageDefault';
 
 const AddTheme = ({edit = false}) => {
     const [mainColor, setMainColor] = React.useState(CONFIG.BASE_COLOR);
@@ -94,14 +92,8 @@ const AddTheme = ({edit = false}) => {
     }
 
     return (
-        <div className={base.baseWrapperGap16}>
-            <div className={base.titleWrapper}>
-                <BackButton />
-
-                <p className={typography.h3}>{edit ? "Редактирование темы" : "Создание темы"}</p>
-            </div>
-
-            <div className={styles.appearanceThemeForm}>
+        <CreatePageDefault title={`${edit ? "Редактирование" : "Создание"} темы`}>
+            <div className={base.form}>
                 <ColorPickerInput
                     title="Выберите основной цвет"
                     hexString={mainHexString}
@@ -140,7 +132,7 @@ const AddTheme = ({edit = false}) => {
                     Создать
                 </Button>}
             </div>
-        </div>
+        </CreatePageDefault>
     )
 }
 

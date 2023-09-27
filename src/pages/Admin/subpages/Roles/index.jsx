@@ -46,8 +46,8 @@ const Roles = () => {
                     <ReloadButton loading={rolesIsLoading} onClick={() => loadRoles(0, 8, true)} />
                 </div>
 
-                <Button type="light" disabled={rolesIsLoading} auto to="add">
-                    Добавить
+                <Button type="light" disabled={rolesIsLoading} auto to="create">
+                    Создать
                 </Button>
             </div>
 

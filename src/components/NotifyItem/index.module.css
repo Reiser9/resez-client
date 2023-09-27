@@ -98,7 +98,7 @@
     word-break: break-word;
 }
 
-.notifyItemTextContent img{
+.notifyItemTextContent img, .notifyItemTextContent table{
     display: none;
 }
 

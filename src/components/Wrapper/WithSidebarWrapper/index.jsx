@@ -28,7 +28,7 @@ const WithSidebarWrapper = ({container = "basic", children}) => {
         <div className={styles.wrapper}>
             <Sidebar>
                 <SidebarLink onClick={hideSidebar} text="Тренинг" icon={<Training />} to="/training" />
-                <SidebarLink onClick={hideSidebar} text="Тесты" icon={<Tests />} to="/tests" disabled />
+                <SidebarLink onClick={hideSidebar} text="Тесты" icon={<Tests />} to="/tests" />
                 <SidebarLink onClick={hideSidebar} text="Мессенджер" icon={<Message />} to="/message" disabled />
                 <SidebarLink onClick={hideSidebar} text="Полезная информация" icon={<Fire />} to="/info" disabled />
                 <SidebarLink onClick={hideSidebar} text="Магазин" icon={<Store />} to="/store" disabled />

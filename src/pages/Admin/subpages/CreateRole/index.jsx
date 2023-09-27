@@ -13,11 +13,11 @@ import { convertHexToOpacityHex } from '../../../../utils/convertColor';
 
 import useRoles from '../../../../hooks/useRoles';
 
-import BackButton from '../../../../components/BackButton';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import Preloader from '../../../../components/Preloader';
 import ColorPickerInput from '../../../../components/ColorPickerInput';
+import CreatePageDefault from '../../../../components/CreatePageDefault';
 
 const AddRole = ({edit = false}) => {
     const [name, setName] = React.useState("");
@@ -102,14 +102,8 @@ const AddRole = ({edit = false}) => {
     }
 
     return (
-        <div className={base.baseWrapperGap16}>
-            <div className={base.titleWrapper}>
-                <BackButton />
-
-                <p className={typography.h3}>{edit ? "Редактирование" : "Создание"} роли</p>
-            </div>
-
-            <div className={styles.roleForm}>
+        <CreatePageDefault title={`${edit ? "Редактирование" : "Создание"} роли`}>
+            <div className={base.form}>
                 <div className={styles.rolePreview}>
                     <p className={typography.text2}>Предпросмотр:</p>
 
@@ -160,7 +154,7 @@ const AddRole = ({edit = false}) => {
                     Создать
                 </Button>}
             </div>
-        </div>
+        </CreatePageDefault>
     )
 }
 

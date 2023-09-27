@@ -7,7 +7,7 @@
     max-width: 1200px;
 }
 
-.baseWrapperGap12, .baseWrapperGap16, .baseWrapperGap8, .baseWrapperGap20, .baseWrapperGap0{
+.baseWrapperGap12, .baseWrapperGap16, .baseWrapperGap8, .baseWrapperGap4, .baseWrapperGap20, .baseWrapperGap0{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -25,6 +25,10 @@
 
 .baseWrapperGap20{
     gap: 20px;
+}
+
+.baseWrapperGap4{
+    gap: 4px;
 }
 
 .baseWrapperGap0{
@@ -106,4 +110,18 @@
     .item4{
         width: 100%;
     }
+}
+
+.form, .formMedium{
+    width: 100%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin: 0 auto;
+}
+
+.formMedium{
+    max-width: 550px;
 }

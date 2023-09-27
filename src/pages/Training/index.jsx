@@ -5,7 +5,7 @@ import pws from '../../styles/pageWithSidebar.module.css';
 
 import { withSuspense } from '../../hoc/withSuspense';
 
-import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
+import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
 import SidebarLink from '../../components/SidebarLink';
 import InnerSidebar from '../../components/InnerSidebar';
@@ -20,7 +20,7 @@ const MemoTypeCards = React.lazy(() => import("./subpages/MemoTypeCards"));
 const Training = () => {
     return (
         <AuthWrapper>
-            <TitleWrpapper pageTitle="ResEz - Тренинг">
+            <TitleWrapper pageTitle="ResEz - Тренинг">
                 <WithSidebarWrapper>
                     <div className={pws.wrapper}>
                         <div className={pws.content}>
@@ -41,7 +41,7 @@ const Training = () => {
                         </InnerSidebar>
                     </div>
                 </WithSidebarWrapper>
-            </TitleWrpapper>
+            </TitleWrapper>
         </AuthWrapper>
     )
 }

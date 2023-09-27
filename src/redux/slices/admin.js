@@ -4,7 +4,9 @@ const initialState = {
     usersIsLoading: false,
     users: [],
     themesIsLoading: false,
-    themes: []
+    themes: [],
+    subjectsIsLoading: false,
+    subjects: []
 };
 
 export const adminSlice = createSlice({
@@ -67,8 +69,31 @@ export const adminSlice = createSlice({
             }
         },
         deleteTheme: (state, action) => {
-            state.themes.themes = state.themes?.themes?.filter((item) => item.id !== action.payload.id);
+            state.themes.themes = state.themes?.themes?.filter(item => item.id !== action.payload.id);
             state.themes.totalCount--;
+        },
+        setSubjectsIsLoading: (state, action) => {
+            state.subjectsIsLoading = action.payload;
+        },
+        initSubjects: (state, action) => {
+            state.subjects = action.payload;
+        },
+        addNewSubject: (state, action) => {
+            const currentSubjects = state.subjects.subjects;
+
+            if(!currentSubjects){
+                return;
+            }
+
+            state.subjects = {
+                ...state.subjects,
+                subjects: [...currentSubjects, action.payload],
+                totalCount: state.subjects.totalCount + 1
+            };
+        },
+        deleteSubject: (state, action) => {
+            state.subjects.subjects = state.subjects?.subjects?.filter(item => item.id !== action.payload.id);
+            state.subjects.totalCount--;
         },
         setDataAdmin: () => initialState
     }
@@ -85,6 +110,10 @@ export const {
     addNewTheme,
     changeTheme,
     deleteTheme,
+    setSubjectsIsLoading,
+    initSubjects,
+    addNewSubject,
+    deleteSubject,
     setDataAdmin
 } = adminSlice.actions;
 

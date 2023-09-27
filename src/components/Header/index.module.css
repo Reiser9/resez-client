@@ -97,6 +97,7 @@
     font-weight: 500;
     font-size: 2rem;
     position: relative;
+    text-transform: uppercase;
 }
 
 .headerProfileImg, .headerProfileMenuImg{

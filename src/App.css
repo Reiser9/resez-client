@@ -492,19 +492,18 @@ input::placeholder{
 
 ::selection{
     background: var(--hover)!important;
-    color: var(--text)!important;
 }
 
 .ce-header{
     padding: 0!important;
 }
 
-#customEditor a{
+.codex-editor a{
     text-decoration: none;
     color: var(--main);
 }
 
-#customEditor path, #customEditor line, #customEditor rect, #customEditor circle{
+.codex-editor path, .codex-editor line, .codex-editor rect, .codex-editor circle{
     stroke: var(--main)!important;
 }
 
@@ -617,4 +616,8 @@ input::placeholder{
     .tc-toolbox__toggler:hover{
         color: var(--main)!important;
     }
+}
+
+.ant-tooltip .ant-tooltip-inner{
+    text-align: center;
 }

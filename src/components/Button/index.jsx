@@ -22,6 +22,7 @@ const Button = ({
     auto = false,
     loading = false,
     disabled = false,
+    small = false,
     type = "fill",
     theme = "primary",
     to = "",
@@ -31,17 +32,17 @@ const Button = ({
 }) => {
     return (
         <div className={`${styles.buttonInner}${className ? ` ${className}` : ""}${auto ? ` ${styles.auto}` : ""}`}>
-            {disabled ? <button className={`${styles.button} ${styles.disabled} ${typesButton[type]} ${themesButton[theme]}`}>
+            {disabled ? <button className={`${styles.button} ${styles.disabled} ${typesButton[type]} ${themesButton[theme]}${small ? ` ${styles.small}` : ""}`}>
                 {text}
                 {children}
             </button>
-            : to ? <Link to={to} className={`${styles.button} ${typesButton[type]} ${themesButton[theme]}`} {...props}>
+            : to ? <Link to={to} className={`${styles.button} ${typesButton[type]} ${themesButton[theme]}${small ? ` ${styles.small}` : ""}`} {...props}>
                 {text}
                 {children}
             </Link>
             : (loading
-                ? <button className={`${styles.button} ${styles.disabled} ${typesButton[type]} ${themesButton[theme]}`}></button>
-                : <button className={`${styles.button} ${typesButton[type]} ${themesButton[theme]}`} {...props}>
+                ? <button className={`${styles.button} ${styles.disabled} ${typesButton[type]} ${themesButton[theme]}${small ? ` ${styles.small}` : ""}`}></button>
+                : <button className={`${styles.button} ${typesButton[type]} ${themesButton[theme]}${small ? ` ${styles.small}` : ""}`} {...props}>
                     {text}
                     {children}
                 </button>)}

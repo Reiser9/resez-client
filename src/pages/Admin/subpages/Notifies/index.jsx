@@ -107,7 +107,7 @@ const Notifies = () => {
         <div className={base.baseWrapperGap16}>
             <p className={typography.h3}>Отправка уведомления</p>
 
-            <div className={styles.notifiesForm}>
+            <div className={base.formMedium}>
                 <Input value={title} setValue={setTitle} placeholder="Заголовок" lengthLimit={100} trackLength />
 
                 <Checkbox checked={sendAnonim} onChange={e => setSendAnonim(e.target.checked)}>
@@ -165,6 +165,7 @@ const Notifies = () => {
                 <Editor
                     placeholder="Сообщение"
                     ref={editorRef}
+                    id="notifyEditor"
                 />
 
                 <Button auto type="light" onClick={createNotify} loading={isLoading}>

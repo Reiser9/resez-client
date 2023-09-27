@@ -35,7 +35,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                         {avatar
                         ? <img src={avatar} alt="avatar" className={styles.userAvatar} />
                         : nickname
-                            ? <p className={styles.userAvatarName}>{nickname[0].toUpperCase()}</p>
+                            ? <p className={styles.userAvatarName}>{nickname[0]}</p>
                             : <p className={styles.userAvatarName}>Unk</p>}
 
                         {theme && <Tooltip title="Тема пользователя">

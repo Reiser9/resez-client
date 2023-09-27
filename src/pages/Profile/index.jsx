@@ -6,7 +6,7 @@ import pws from '../../styles/pageWithSidebar.module.css';
 import {withSuspense} from '../../hoc/withSuspense';
 
 import AuthWrapper from '../../components/Wrapper/AuthWrapper';
-import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
+import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
 import SidebarLink from '../../components/SidebarLink';
 import InnerSidebar from '../../components/InnerSidebar';
@@ -22,17 +22,17 @@ const Settings = React.lazy(() => import("./subpages/Settings"));
 const Profile = () => {
     return (
         <AuthWrapper>
-            <TitleWrpapper pageTitle="ResEz - Профиль">
+            <TitleWrapper pageTitle="ResEz - Профиль">
                 <WithSidebarWrapper>
                     <div className={pws.wrapper}>
                         <div className={pws.content}>
                             <Routes>
                                 <Route index element={withSuspense(<ProfileMain />)} />
-                                <Route path="theme/*" element={withSuspense(<Theme />)} />
+                                <Route path="theme" element={withSuspense(<Theme />)} />
                                 <Route path="data" element={withSuspense(<Data />)} />
-                                <Route path="safe/*" element={withSuspense(<Safe />)} />
+                                <Route path="safe" element={withSuspense(<Safe />)} />
                                 <Route path="safe/sessions" element={withSuspense(<Sessions />)} />
-                                <Route path="achievments/*" element={withSuspense(<Achievments />)} />
+                                <Route path="achievments" element={withSuspense(<Achievments />)} />
                                 <Route path="settings" element={withSuspense(<Settings />)} />
                                 <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>
@@ -48,7 +48,7 @@ const Profile = () => {
                         </InnerSidebar>
                     </div>
                 </WithSidebarWrapper>
-            </TitleWrpapper>
+            </TitleWrapper>
         </AuthWrapper>
     )
 }

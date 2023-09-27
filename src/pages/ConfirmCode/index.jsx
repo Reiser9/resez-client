@@ -11,7 +11,7 @@ import useAuth from '../../hooks/useAuth';
 import useAlert from '../../hooks/useAlert';
 import {socket} from '../../utils/socket';
 
-import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
+import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import AuthFormsWrapper from '../../components/Wrapper/AuthFormsWrapper';
 import Button from '../../components/Button';
 
@@ -68,7 +68,7 @@ const ConfirmCode = () => {
     }, [verificationCodeData]);
 
     return (
-        <TitleWrpapper pageTitle="Код подтверждения">
+        <TitleWrapper pageTitle="Код подтверждения">
             <AuthFormsWrapper>
                 <h2 className={typography.h2}>Верификация аккаунта</h2>
 
@@ -95,7 +95,7 @@ const ConfirmCode = () => {
                     <Button loading={isLoading} theme="danger" type="empty" className={auth.contentButton} onClick={() => logout()}>Выйти</Button>
                 </div>
             </AuthFormsWrapper>
-        </TitleWrpapper>
+        </TitleWrapper>
     )
 }
 

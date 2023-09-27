@@ -7,7 +7,7 @@ import auth from '../../components/Wrapper/AuthFormsWrapper/index.module.css';
 
 import useAuth from '../../hooks/useAuth';
 
-import TitleWrpapper from '../../components/Wrapper/TitleWrapper';
+import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import NoAuthWrapper from '../../components/Wrapper/NoAuthWrapper';
 import AuthFormsWrapper from '../../components/Wrapper/AuthFormsWrapper';
 import Input from '../../components/Input';
@@ -37,7 +37,7 @@ const Recovery = () => {
     }
 
     return (
-        <TitleWrpapper pageTitle="Восстановление пароля">
+        <TitleWrapper pageTitle="Восстановление пароля">
             <NoAuthWrapper>
                 <AuthFormsWrapper>
                     <div className={auth.titleInner}>
@@ -74,7 +74,7 @@ const Recovery = () => {
                     </div>
                 </AuthFormsWrapper>
             </NoAuthWrapper>
-        </TitleWrpapper>
+        </TitleWrapper>
     )
 }
 
