@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
@@ -15,6 +16,8 @@ const TestMain = () => {
     const [scroll, setScroll] = React.useState(0);
     const [scrollBlock, setScrollBlock] = React.useState(0);
     const scrollContainerRef = React.useRef(null);
+
+    const {isAuth} = useSelector(state => state.auth);
   
     const handleScroll = (e) => {
         const scrollLeft = e.target.scrollLeft;
@@ -98,10 +101,14 @@ const TestMain = () => {
                         <p className={typography.text2}>
                             Пройдите или создайте свой уникальный тест, выбирая задания из предложенных вариантов. Узнайте свой уровень знаний, составляя набор заданий, который соответствует вашим интересам и целям. Начните свой путь к успеху уже сегодня!
                         </p>
-
-                        <Button auto type="light" small className={styles.testWelcomeButton}>
+                        
+                        {isAuth
+                        ? <Button to="create" auto type="light" small className={styles.testWelcomeButton}>
                             Создать вариант
                         </Button>
+                        : <Button to="/login" auto type="light" small className={styles.testWelcomeButton}>
+                            Авторизуйтесь
+                        </Button>}
                     </div>
 
                     <TypesTest className={styles.testWelcomeIcon} />

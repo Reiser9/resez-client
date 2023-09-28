@@ -53,51 +53,12 @@
     flex-shrink: 0;
 }
 
-.memoCollectionAuthor{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.memoCollectionAuthorImgInner{
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    position: relative;
-    background: var(--lighten);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    flex-shrink: 0;
-}
-
-@media (max-width: 480px) {
-    .memoCollectionAuthorImgInner{
-        width: 40px;
-        height: 40px;
-    }
-}
-
-.memoCollectionAuthorImg{
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.memoCollectionAuthorLetter{
-    text-transform: uppercase;
-    color: var(--main);
-    font-size: 1.8rem;
-    font-weight: 600;
-}
-
 .memoCollectionDateInner{
     display: flex;
     align-items: center;
     gap: 4px;
     font-size: 1.4rem;
+    color: var(--textGrey);
 }
 
 .memoCollectionDateInner svg{
@@ -126,72 +87,4 @@
     .memoCollectionTypes, .memoCollectionPairsInner{
         margin-top: .8rem;
     }
-}
-
-.memoCollectionTypesItem{
-    padding: 1.2rem;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    background: var(--input);
-    border: 1px solid transparent;
-}
-
-.memoCollectionTypesItem.disabled{
-    pointer-events: none;
-    filter: grayscale(1);
-    opacity: 0.6;
-}
-
-.memoCollectionTypesItem:hover{
-    border: 1px solid var(--main);
-}
-
-.memoCollectionTypesItemWrapper{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.memoCollectionTypeName{
-    font-weight: 600;
-}
-
-@media (any-hover: hover) {
-    .memoCollectionTypesItemWrapper svg{
-        opacity: 0;
-        transform: translateX(-12px);
-    }
-
-    .memoCollectionTypesItem:hover svg{
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.memoCollectionTypesItemWrapper svg{
-    width: 24px;
-    flex-shrink: 0;
-    transition: .2s linear;
-}
-
-.memoCollectionTypesItemWrapper svg path{
-    stroke: var(--main);
-}
-
-.memoCollectionTypeImgInner{
-    width: 100%;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.memoCollectionTypeImgInner svg{
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
 }

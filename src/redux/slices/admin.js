@@ -6,13 +6,16 @@ const initialState = {
     themesIsLoading: false,
     themes: [],
     subjectsIsLoading: false,
-    subjects: []
+    subjects: [],
+    tasksIsLoading: false,
+    tasks: [],
 };
 
 export const adminSlice = createSlice({
     name: 'admin',
     initialState,
     reducers: {
+        // Пользователи
         setUsersIsLoading: (state, action) => {
             state.usersIsLoading = action.payload;
         },
@@ -34,6 +37,7 @@ export const adminSlice = createSlice({
                 state.users?.users?.splice(index, 1, action.payload);
             }
         },
+        // Темы
         setThemesIsLoading: (state, action) => {
             state.themesIsLoading = action.payload;
         },
@@ -72,6 +76,7 @@ export const adminSlice = createSlice({
             state.themes.themes = state.themes?.themes?.filter(item => item.id !== action.payload.id);
             state.themes.totalCount--;
         },
+        // Предметы
         setSubjectsIsLoading: (state, action) => {
             state.subjectsIsLoading = action.payload;
         },
@@ -91,9 +96,48 @@ export const adminSlice = createSlice({
                 totalCount: state.subjects.totalCount + 1
             };
         },
+        changeSubject: (state, action) => {
+            const index = state.subjects?.subjects?.findIndex(obj => obj.id === action.payload.id);
+
+            if(index !== -1){
+                state.subjects?.subjects?.splice(index, 1, action.payload);
+            }
+        },
         deleteSubject: (state, action) => {
             state.subjects.subjects = state.subjects?.subjects?.filter(item => item.id !== action.payload.id);
             state.subjects.totalCount--;
+        },
+        // Задания
+        setTasksIsLoading: (state, action) => {
+            state.tasksIsLoading = action.payload;
+        },
+        initTasks: (state, action) => {
+            state.tasks = action.payload;
+        },
+        setTasks: (state, action) => {
+            const currentTasks = state.tasks.tasks;
+
+            state.tasks = {
+                ...action.payload,
+                tasks: currentTasks ? [...currentTasks, ...action.payload.tasks] : [...action.payload.tasks]
+            };
+        },
+        addNewTask: (state, action) => {
+            const currentTasks = state.tasks.tasks;
+
+            if(!currentTasks){
+                return;
+            }
+
+            state.tasks = {
+                ...state.tasks,
+                tasks: [...currentTasks, action.payload],
+                totalCount: state.tasks.totalCount + 1
+            };
+        },
+        deleteTask: (state, action) => {
+            state.tasks.tasks = state.tasks?.tasks?.filter(item => item.id !== action.payload.id);
+            state.tasks.totalCount--;
         },
         setDataAdmin: () => initialState
     }
@@ -113,7 +157,13 @@ export const {
     setSubjectsIsLoading,
     initSubjects,
     addNewSubject,
+    changeSubject,
     deleteSubject,
+    setTasksIsLoading,
+    initTasks,
+    setTasks,
+    addNewTask,
+    deleteTask,
     setDataAdmin
 } = adminSlice.actions;
 

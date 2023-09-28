@@ -7,7 +7,8 @@
     max-width: 1200px;
 }
 
-.baseWrapperGap12, .baseWrapperGap16, .baseWrapperGap8, .baseWrapperGap4, .baseWrapperGap20, .baseWrapperGap0{
+.baseWrapperGap12, .baseWrapperGap16, .baseWrapperGap8, .baseWrapperGap4, .baseWrapperGap20, .baseWrapperGap0,
+.baseWrapperGap40{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -35,17 +36,25 @@
     gap: 0;
 }
 
+.baseWrapperGap40{
+    gap: 40px;
+}
+
 .aic{
     align-items: center;
 }
 
-.titleInner{
+.titleInner, .titleInnerNowrap{
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
     flex-wrap: wrap;
+}
+
+.titleInnerNowrap{
+    flex-wrap: nowrap;
 }
 
 .titleWrapper{
@@ -124,4 +133,54 @@
 
 .formMedium{
     max-width: 550px;
+}
+
+.circle32, .circle36, .circle40, .circle44{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--lighten);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--main);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.circle36{
+    width: 36px;
+    height: 36px;
+}
+
+.circle40{
+    width: 40px;
+    height: 40px;
+}
+
+.circle44{
+    width: 44px;
+    height: 44px;
+}
+
+.circleAvatar{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.format{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.format img{
+    max-width: 100%;
 }

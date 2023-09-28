@@ -1,0 +1,105 @@
+.test{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.testContent{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.testInfo{
+    width: 100%;
+    max-width: 310px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0px;
+    border-radius: 4px;
+    padding: 1.2rem;
+    background: var(--input);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+}
+
+@media (max-width: 1100px) {
+    .testInfo{
+        max-width: 240px;
+    }
+}
+@media (max-width: 768px) {
+    .testInfo{
+        display: none;
+    }
+}
+
+.testInfoContent{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.testInfoWrapper{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+div.testInfoItem{
+    width: calc(100% / 2 - 12px / 2);
+}
+
+@media (max-width: 998px) {
+    div.testInfoItem{
+        width: 100%;
+    }
+}
+
+.testInfoButtons{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+/* Вынести */
+.testInfoButton{
+    width: 100%;
+    padding: 0.8rem 3.6rem;
+    border-radius: 4px;
+    background: var(--lighten);
+    color: var(--main);
+    position: relative;
+}
+
+.testInfoButton svg{
+    width: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 8px;
+}
+
+.testInfoButton svg path{
+    stroke: var(--main);
+}
+
+.danger{
+    background: var(--errorB);
+    color: var(--error);
+}
+
+.danger svg path{
+    stroke: var(--error);
+}
+/* //Вынести */

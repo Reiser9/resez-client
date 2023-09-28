@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'antd';
 
@@ -7,7 +7,7 @@ import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { ArrowRightLong, Date, Delete, DotsHorizontal, Edit, Lock, Settings, TypesCards, TypesLearn, TypesSelection, TypesTest } from '../../../../components/Icons';
+import { Date, Delete, DotsHorizontal, Edit, Lock, Settings, TypesCards, TypesLearn, TypesSelection, TypesTest } from '../../../../components/Icons';
 
 import {formatDate} from '../../../../utils/formatDate';
 
@@ -20,6 +20,7 @@ import IconButton from '../../../../components/IconButton';
 import TextPoint from '../../../../components/TextPoint';
 import Preloader from '../../../../components/Preloader';
 import ConfirmModal from '../../../../components/Modal/ConfirmModal';
+import CardLink from '../../../../components/CardLink';
 
 const CardCollectionView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
@@ -38,7 +39,8 @@ const CardCollectionView = () => {
         getCollectionById(id, () => navigate("../memo"));
     }, [id]);
 
-    const {collection: name, pairsCount, description, isPrivate, user, QAPairs, date} = collection;
+    const {collection: name, pairsCount, description, isPrivate, user, QAPairs, date} = collection || {};
+    const {nickname, avatar} = user || {};
 
     if(isLoading){
         return <Preloader page />
@@ -66,7 +68,7 @@ const CardCollectionView = () => {
                         value={actionMenu}
                         setValue={setActionMenu}
                         button={
-                            <IconButton onClick={() => setActionMenu(prev => !prev)}>
+                            <IconButton type="light" small onClick={() => setActionMenu(prev => !prev)}>
                                 <DotsHorizontal />
                             </IconButton>
                         }
@@ -101,14 +103,14 @@ const CardCollectionView = () => {
             </div>
 
             <div className={base.titleInner}>
-                <div className={styles.memoCollectionAuthor}>
-                    <div className={styles.memoCollectionAuthorImgInner}>
-                        {user?.avatar
-                            ? <img src={user?.avatar} alt="avatar" className={styles.memoCollectionAuthorImg} />
-                            : <p className={styles.memoCollectionAuthorLetter}>{user?.nickname[0]}</p>}
+                <div className={base.titleWrapper}>
+                    <div className={base.circle40}>
+                        {avatar
+                            ? <img src={avatar} alt="avatar" className={base.circleAvatar} />
+                            : nickname && nickname[0]}
                     </div>
 
-                    <p className={typography.text}>{user?.nickname}</p>
+                    <p className={typography.text}>{nickname}</p>
                 </div>
 
                 {date && <div className={styles.memoCollectionDateInner}>
@@ -119,53 +121,21 @@ const CardCollectionView = () => {
             </div>
 
             <div className={`${base.contentItems} ${styles.memoCollectionTypes}`}>
-                <Link to="cards" className={`${base.item4} ${styles.memoCollectionTypesItem}`}>
-                    <span className={styles.memoCollectionTypesItemWrapper}>
-                        <p className={styles.memoCollectionTypeName}>Карточки</p>
+                <CardLink title="Карточки" to="cards">
+                    <TypesCards />
+                </CardLink>
 
-                        <ArrowRightLong />
-                    </span>
+                <CardLink title="Тест" to="test" disabled>
+                    <TypesTest />
+                </CardLink>
 
-                    <span className={styles.memoCollectionTypeImgInner}>
-                        <TypesCards />
-                    </span>
-                </Link>
+                <CardLink title="Заучивание" to="learn" disabled>
+                    <TypesLearn />
+                </CardLink>
 
-                <Link to="test" className={`${base.item4} ${styles.memoCollectionTypesItem} ${styles.disabled}`}>
-                    <span className={styles.memoCollectionTypesItemWrapper}>
-                        <p className={styles.memoCollectionTypeName}>Тест</p>
-
-                        <ArrowRightLong />
-                    </span>
-
-                    <span className={styles.memoCollectionTypeImgInner}>
-                        <TypesTest />
-                    </span>
-                </Link>
-
-                <Link to="learn" className={`${base.item4} ${styles.memoCollectionTypesItem} ${styles.disabled}`}>
-                    <span className={styles.memoCollectionTypesItemWrapper}>
-                        <p className={styles.memoCollectionTypeName}>Заучивание</p>
-
-                        <ArrowRightLong />
-                    </span>
-
-                    <span className={styles.memoCollectionTypeImgInner}>
-                        <TypesLearn />
-                    </span>
-                </Link>
-
-                <Link to="selection" className={`${base.item4} ${styles.memoCollectionTypesItem} ${styles.disabled}`}>
-                    <span className={styles.memoCollectionTypesItemWrapper}>
-                        <p className={styles.memoCollectionTypeName}>Подбор</p>
-
-                        <ArrowRightLong />
-                    </span>
-
-                    <span className={styles.memoCollectionTypeImgInner}>
-                        <TypesSelection />
-                    </span>
-                </Link>
+                <CardLink title="Подбор" to="selection" disabled>
+                    <TypesSelection />
+                </CardLink>
             </div>
 
             <div className={`${base.contentItems} ${styles.memoCollectionPairsInner}`}>

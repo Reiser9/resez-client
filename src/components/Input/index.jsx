@@ -60,7 +60,7 @@ const Input = ({
         <div className={`${styles.inputWrapper}${wrapperClass ? ` ${wrapperClass}` : ""}`}>
             {(title || trackLength) && <div className={styles.inputTitleWrapper}>
                 {title && <p className={typography.text3}>{title}</p>}
-                {trackLength && <p className={`${typography.text3} ${styles.limitText} ${value.length >= lengthLimit ? ` ${styles.limit}` : ""}`}>{value.length}{lengthLimit ? ` / ${lengthLimit}` : ""}</p>}
+                {trackLength && <p className={`${typography.text3} ${styles.limitText} ${value?.length >= lengthLimit ? ` ${styles.limit}` : ""}`}>{value?.length}{lengthLimit ? ` / ${lengthLimit}` : ""}</p>}
             </div>}
 
             <div className={styles.inputInner}>

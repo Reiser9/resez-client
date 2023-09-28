@@ -203,7 +203,7 @@ input::placeholder{
     background: var(--input)!important;
 }
 
-.ant-checkbox-wrapper-checked .ant-checkbox-inner{
+.ant-checkbox-checked .ant-checkbox-inner{
     background: var(--main)!important;
 }
 
@@ -620,4 +620,8 @@ input::placeholder{
 
 .ant-tooltip .ant-tooltip-inner{
     text-align: center;
+}
+
+#taskEditor .codex-editor{
+    z-index: 2;
 }

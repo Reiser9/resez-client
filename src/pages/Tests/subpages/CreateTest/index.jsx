@@ -11,6 +11,9 @@ import Select from '../../../../components/Select';
 const CreateTest = ({
     edit = false
 }) => {
+    const [generateVariant, setGenerateVariant] = React.useState(false);
+    const [isPrivate, setIsPrivate] = React.useState(false);
+
     return (
         <CreatePageDefault title={`${edit ? "Редактирование" : "Создание"} теста`}>
             <div className={base.formMedium}>
@@ -33,11 +36,11 @@ const CreateTest = ({
                     ]}
                 />
 
-                <Checkbox>
-                    Автоматически сгенерировать тест
+                <Checkbox value={generateVariant} onChange={e => setGenerateVariant(e.target.checked)}>
+                    Сгенерировать вариант ЕГЭ
                 </Checkbox>
 
-                <Checkbox>
+                <Checkbox value={isPrivate} onChange={e => setIsPrivate(e.target.checked)}>
                     Скрыть от других пользователей
                 </Checkbox>
 

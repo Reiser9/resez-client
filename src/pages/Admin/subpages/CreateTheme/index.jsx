@@ -53,13 +53,15 @@ const AddTheme = ({edit = false}) => {
         const theme = await getThemeById(id);
 
         if(!theme){
-            navigate("/admin/appearance");
+            return navigate("/admin/appearance");
         }
 
-        setMainColor(theme?.primary);
-        setSecondColor(theme?.light);
-        setThemeRating(theme?.isRatingEnabled);
-    };
+        const {primary, light, isRatingEnabled} = theme || {};
+
+        setMainColor(primary);
+        setSecondColor(light);
+        setThemeRating(isRatingEnabled);
+    }
 
     React.useEffect(() => {
         if(preview){

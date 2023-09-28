@@ -14,6 +14,7 @@ import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 const TestsMain = React.lazy(() => import("./subpages/TestsMain"));
 const MyTests = React.lazy(() => import("./subpages/MyTests"));
 const CreateTest = React.lazy(() => import("./subpages/CreateTest"));
+const TestView = React.lazy(() => import("./subpages/TestView"));
 
 const Tests = () => {
     return (
@@ -25,6 +26,7 @@ const Tests = () => {
                             <Route index element={withSuspense(<TestsMain />)} />
                             <Route path="/my" element={withSuspense(<MyTests />)} />
                             <Route path="/create" element={withSuspense(<CreateTest />)} />
+                            <Route path="/:id" element={withSuspense(<TestView />)} />
                             <Route path="*" element={<Navigate to={""} replace />} />
                         </Routes>
                     </div>

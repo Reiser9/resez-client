@@ -26,10 +26,11 @@
 }
 
 .typeCardsContent{
-    width: 100%;
-    max-width: 350px;
+    max-width: 100%;
     aspect-ratio: 3 / 4;
     position: relative;
+    min-height: 350px;
+    height: 100%;
 }
 
 .typeCardsResult{

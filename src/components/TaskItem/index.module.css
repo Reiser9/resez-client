@@ -1,0 +1,57 @@
+.taskItem{
+    width: 100%;
+    padding: 1.2rem;
+    border-radius: 4px;
+    background: var(--input);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    position: relative;
+}
+
+.taskItemContent{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.taskItemContent img{
+    max-width: 100%;
+}
+
+.taskItemWrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.taskTheme{
+    padding-left: 1.4rem;
+    position: relative;
+}
+
+.taskTheme:before{
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--main);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.taskItemDate{
+    color: var(--textGrey);
+}
+
+.taskItemInner{
+    align-items: flex-start;
+}

@@ -1,0 +1,57 @@
+@media (any-hover: hover) {
+    .testId{
+        cursor: pointer;
+    }
+}
+
+.testTags{
+    display: flex;
+    gap: 8px;
+}
+
+.testTag, .testTagIcon{
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    background: var(--lighten);
+    color: var(--main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.testTagIcon{
+    padding: 0;
+    width: 34px;
+    height: 34px;
+}
+
+.testTagIcon svg{
+    width: 20px;
+}
+
+.testTagIcon svg path{
+    stroke: var(--main);
+}
+
+.testDateInner{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 1.4rem;
+    color: var(--textGrey);
+}
+
+.testDateInner svg{
+    width: 20px;
+}
+
+.testDateInner svg path{
+    stroke: var(--main);
+}
+
+.testQuestionItem{
+    width: 100%;
+    border-radius: 4px;
+    padding: 1.2rem;
+    background: var(--input);
+}

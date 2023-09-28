@@ -29,7 +29,7 @@ const CreateSubject = ({edit = false}) => {
 
     const [subTheme, setSubTheme] = React.useState("");
 
-    const {isLoading, createSubject, getSubjectById} = useTest();
+    const {isLoading, createSubject, editSubject, getSubjectById} = useTest();
     const {alertNotify} = useAlert();
     const navigate = useNavigate();
     const {id} = useParams();
@@ -45,7 +45,7 @@ const CreateSubject = ({edit = false}) => {
                 theme,
                 primaryScore,
                 isDetailedAnswer,
-                subThemes: trimSubTheme ? [...subThemes, trimSubTheme] : subThemes
+                subThemes: trimSubTheme ? [...subThemes, {subTheme: trimSubTheme}] : subThemes
             }]
         }
 
@@ -53,7 +53,20 @@ const CreateSubject = ({edit = false}) => {
     }
 
     const editSubjectHandler = () => {
-        // Редактирование
+        let updatedTasks = [...tasks];
+
+        if(theme && primaryScore && (subThemes.length > 0 || subTheme)){
+            const trimSubTheme = subTheme.trim();
+
+            updatedTasks = [...updatedTasks, {
+                theme,
+                primaryScore,
+                isDetailedAnswer,
+                subThemes: trimSubTheme ? [...subThemes, {subTheme: trimSubTheme}] : subThemes
+            }]
+        }
+        
+        editSubject(id, name, isPublished, updatedTasks, () => navigate("../test"));
     }
 
     const addTask = () => {
@@ -73,7 +86,7 @@ const CreateSubject = ({edit = false}) => {
             theme,
             primaryScore,
             isDetailedAnswer,
-            subThemes: trimSubTheme ? [...subThemes, trimSubTheme] : subThemes
+            subThemes: trimSubTheme ? [...subThemes, {subTheme: trimSubTheme}] : subThemes
         };
 
         setTasks(prev => [...prev, newTask]);
@@ -101,13 +114,15 @@ const CreateSubject = ({edit = false}) => {
     const addCreatedSubTheme = (id) => {
         const updatedSubThemes = [...tasks];
         const temp = updatedSubThemes[id].subThemes;
-        updatedSubThemes[id].subThemes = [...temp, ""];
+        updatedSubThemes[id].subThemes = [...temp, {
+            subTheme: ""
+        }];
         setTasks(updatedSubThemes);
     }
 
     const updateCreatedSubTheme = (taskId, themeId, value) => {
         const updatedSubThemes = [...tasks];
-        updatedSubThemes[taskId].subThemes[themeId] = value;
+        updatedSubThemes[taskId].subThemes[themeId].subTheme = value;
         setTasks(updatedSubThemes);
     }
 
@@ -119,12 +134,19 @@ const CreateSubject = ({edit = false}) => {
 
     const updateSubTheme = (id, value) => {
         const subthemes = [...subThemes];
-        subthemes[id] = value;
+        subthemes[id].subTheme = value;
         setSubThemes(subthemes);
     }
 
     const addSubTheme = () => {
-        setSubThemes(prev => [...prev, subTheme]);
+        const tempSubTheme = subTheme.trim();
+        if(!tempSubTheme){
+            return alertNotify("Предупреждение", "Подтема не может быть пустой", "warn");
+        }
+        
+        setSubThemes(prev => [...prev, {
+            subTheme: subTheme
+        }]);
         setSubTheme("");
     }
 
@@ -134,9 +156,23 @@ const CreateSubject = ({edit = false}) => {
         setSubThemes(updatedSubThemes);
     }
 
+    const getCurrentSubject = async (id) => {
+        const currentSubject = await getSubjectById(id);
+
+        if(!currentSubject){
+            return navigate("/admin/test");
+        }
+
+        const {subject, isPublished, subjectTasks} = currentSubject || {};
+
+        setName(subject);
+        setIsPublished(isPublished);
+        setTasks([...subjectTasks]);
+    }
+
     React.useEffect(() => {
         if(edit && id){
-            getSubjectById(id);
+            getCurrentSubject(id);
         }
     }, [id, edit]);
 
@@ -175,7 +211,6 @@ const CreateSubject = ({edit = false}) => {
                                     value={task.primaryScore}
                                     onChange={e => updateCreatedTask(taskId, "primaryScore", e.target.value)}
                                     title="Первичный балл"
-                                    trackLength
                                     lengthLimit={2}
                                 />
 
@@ -185,9 +220,9 @@ const CreateSubject = ({edit = false}) => {
 
                                 {task.subThemes.map((theme, subThemeId) => <div className={styles.subjectItemDeleteInner} key={subThemeId}>
                                     <Input
-                                        value={theme}
+                                        value={theme.subTheme}
                                         onChange={e => updateCreatedSubTheme(taskId, subThemeId, e.target.value)}
-                                        title="Подтема"
+                                        title={`Подтема (${theme.tasksCount || 0})`}
                                         trackLength
                                         lengthLimit={75}
                                     />
@@ -224,7 +259,6 @@ const CreateSubject = ({edit = false}) => {
                                 value={primaryScore}
                                 setValue={setPrimaryScore}
                                 title="Первичный балл"
-                                trackLength
                                 lengthLimit={2}
                             />
 
@@ -234,7 +268,7 @@ const CreateSubject = ({edit = false}) => {
 
                             {subThemes.map((subTheme, id) => <div className={styles.subjectItemDeleteInner} key={id}>
                                 <Input
-                                    value={subTheme}
+                                    value={subTheme.subTheme}
                                     onChange={e => updateSubTheme(id, e.target.value)}
                                     title="Подтема"
                                     trackLength
