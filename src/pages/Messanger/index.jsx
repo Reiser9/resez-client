@@ -176,6 +176,7 @@ const Messanger = () => {
                                         name="Алексей Зубков"
                                         from="Эльман"
                                         lastMessage="И распределить"
+                                        mute
                                     />
 
                                     <DialogItem

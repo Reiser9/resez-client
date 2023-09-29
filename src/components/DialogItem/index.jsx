@@ -1,12 +1,11 @@
 import React from 'react';
+import { Tooltip } from 'antd';
 
 import base from '../../styles/base.module.css';
 import styles from './index.module.css';
 
 import { Archive, Delete, DotsHorizontal, Enter, Mute, Pin } from '../Icons';
-
-import HoverMenu from '../HoverMenu';
-import MenuLink from '../HoverMenu/MenuLink';
+import IconButton from '../IconButton';
 
 const DialogItem = ({
     date,
@@ -15,67 +14,63 @@ const DialogItem = ({
     from = "",
     lastMessage
 }) => {
-    const [actionMenu, setActionMenu] = React.useState(false);
-
     return (
-        <div className={styles.messangerDialogElement}>
+        <div className={styles.dialogItem}>
             <div className={base.circle50}>
                 {name[0]}
             </div>
 
-            <div className={styles.messangerDialogElementTextInner}>
+            <div className={styles.dialogItemTextInner}>
                 <div className={base.titleInner}>
                     <div className={base.titleWrapper}>
-                        <p className={styles.messangerDialogElementName}>{name}</p>
+                        <p className={styles.dialogItemName}>{name}</p>
 
-                        {mute && <Mute className={styles.messageDialogElementMute} />}
+                        {mute && <Mute className={styles.dialogItemMute} />}
                     </div>
 
-                    <p className={styles.messangerDialogElementDate}>{date}</p>
+                    <p className={styles.dialogItemDate}>{date}</p>
                 </div>
 
                 <div className={base.titleInnerNowrap}>
-                    <div className={styles.messangerDialogElementMessageInner}>
+                    <div className={styles.dialogItemMessageInner}>
                         {from && <div className={base.circle25}>
                             {from[0]}
                         </div>}
 
-                        <p className={styles.messangerDialogElementMessage}>{lastMessage}</p>
+                        <p className={styles.dialogItemMessage}>{lastMessage}</p>
                     </div>
 
-                    <HoverMenu
-                        button={
-                            <button className={styles.messangerDialogElementMore} onClick={() => setActionMenu(prev => !prev)}>
-                                <DotsHorizontal />
-                            </button>
-                        }
-                        value={actionMenu}
-                        setValue={setActionMenu}
-                    >
-                        <MenuLink>
-                            <Pin />
+                    <div className={styles.dialogItemMoreInner}>
+                        <button className={styles.dialogItemMore}>
+                            <DotsHorizontal />
+                        </button>
 
-                            Закрепить
-                        </MenuLink>
+                        <div className={styles.dialogItemActions}>
+                            <Tooltip title="Закрепить">
+                                <IconButton small type="light">
+                                    <Pin />
+                                </IconButton>
+                            </Tooltip>
 
-                        <MenuLink>
-                            <Archive />
+                            <Tooltip title="В архив">
+                                <IconButton small type="light">
+                                    <Archive />
+                                </IconButton>
+                            </Tooltip>
 
-                            В архив
-                        </MenuLink>
+                            <Tooltip title="Очистить историю сообщений">
+                                <IconButton small type="danger">
+                                    <Delete />
+                                </IconButton>
+                            </Tooltip>
 
-                        <MenuLink danger>
-                            <Delete />
-
-                            Удалить переписку
-                        </MenuLink>
-
-                        <MenuLink danger>
-                            <Enter />
-
-                            Выйти из беседы
-                        </MenuLink>
-                    </HoverMenu>
+                            <Tooltip title="Выйти из беседы">
+                                <IconButton small type="danger">
+                                    <Enter />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

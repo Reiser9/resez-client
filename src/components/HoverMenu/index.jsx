@@ -18,7 +18,7 @@ const HoverMenu = ({
         if(menuRef.current && !menuRef.current.contains(e.target)){
             closeMenu();
         }
-    };
+    }
   
     React.useEffect(() => {
         document.addEventListener("click", handleOutsideClick);

@@ -5,6 +5,7 @@
 .messanger{
     width: 100%;
     display: flex;
+    height: calc(100dvh - 65px - 99px - 48px);
 }
 
 .messangerContent{
@@ -12,13 +13,11 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    height: calc(100dvh - 65px - 99px - 48px);
 }
 
 .messangerSidebar{
     width: 100%;
     max-width: 420px;
-    height: calc(100dvh - 65px - 99px - 48px);
     flex-shrink: 0;
     border-radius: 4px;
     background: var(--input);
@@ -27,6 +26,8 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+    position: relative;
+    z-index: 9;
 }
 
 .messangerTopBar{
