@@ -7,10 +7,12 @@ import styles from './index.module.css';
 const DialogMessageItem = ({
     name,
     time,
-    text
+    text,
+    isSelected = false,
+    ...props
 }) => {
     return (
-        <div className={styles.messangerDialogItem}>
+        <div className={`${styles.messangerDialogItem} ${isSelected ? ` ${styles.selected}` : ""}`} {...props}>
             <div className={base.circle40}>
                 {name && name[0]}
             </div>

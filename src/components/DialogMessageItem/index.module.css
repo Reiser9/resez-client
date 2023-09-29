@@ -5,9 +5,10 @@
     gap: 12px;
     transition: .2s linear;
     padding: 0.8rem 2.4rem;
+    cursor: pointer;
 }
 
-.messangerDialogItem:hover{
+.messangerDialogItem:hover, .selected{
     background: var(--lighten);
 }
 

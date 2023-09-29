@@ -1,0 +1,91 @@
+.messangerDialogElement{
+    width: 100%;
+    border-radius: 4px;
+    padding: 0.8rem 1.2rem;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: .2s linear;
+}
+
+@media (any-hover: hover) {
+    .messangerDialogElement{
+        cursor: pointer;
+    }
+}
+
+.messangerDialogElementDate{
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--textGrey);
+}
+
+.messangerDialogElementName{
+    font-weight: 600;
+}
+
+.messageDialogElementMute{
+    width: 20px;
+    flex-shrink: 0;
+}
+
+.messageDialogElementMute path{
+    stroke: var(--main);
+}
+
+.messangerDialogElementMore{
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    background: var(--lighten);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+@media (any-hover: hover) {
+    .messangerDialogElementMore{
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .messangerDialogElement:hover .messangerDialogElementMore{
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+.messangerDialogElementMore svg{
+    width: 20px;
+}
+
+.messangerDialogElementMore svg path{
+    stroke: var(--main);
+}
+
+.messangerDialogElementTextInner{
+    width: calc(100% - 58px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.messangerDialogElementMessageInner{
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: hidden;
+    min-height: 28px;
+}
+
+.messangerDialogElementMessage{
+    max-width: 100%;
+    font-size: 1.4rem;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,11 +1,12 @@
 import React from 'react';
+import { Tooltip } from 'antd';
 
 import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
 import pws from '../../styles/pageWithSidebar.module.css';
 import styles from './index.module.css';
 
-import { Block, Clip, Delete, DotsHorizontal, Microphone, Mobile, Send } from '../../components/Icons';
+import { Block, Clip, Cross, Delete, DotsHorizontal, Microphone, Mobile, Plus, Search, Send } from '../../components/Icons';
 
 import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
@@ -15,10 +16,13 @@ import IconButton from '../../components/IconButton';
 import MenuLink from '../../components/HoverMenu/MenuLink';
 import DialogMessageItem from '../../components/DialogMessageItem';
 import Input from '../../components/Input';
+import Button from '../../components/Button';
+import DialogItem from '../../components/DialogItem';
 
 const Messanger = () => {
     const [message, setMessage] = React.useState("");
     const [actionMenu, setActionMenu] = React.useState(false);
+    const [messageSelected, setMessageSelected] = React.useState(false);
 
     return (
         <TitleWrapper pageTitle="ResEz - Мессенджер">
@@ -28,9 +32,17 @@ const Messanger = () => {
                         <div className={styles.messanger}>
                             <div className={styles.messangerContent}>
                                 <div className={styles.messangerTopBar}>
-                                    <BackButton />
+                                    <div className={base.titleWrapper}>
+                                        <BackButton />
 
-                                    <div className={styles.messangerTopBarInfo}>
+                                        {messageSelected && <div className={styles.selectedMessages}>
+                                            <p className={styles.selectedMessagesText}>Выделено: 1</p>
+
+                                            <Cross />
+                                        </div>}
+                                    </div>
+
+                                    {!messageSelected && <div className={styles.messangerTopBarInfo}>
                                         <p className={typography.h4}>Ветров Егор</p>
 
                                         <div className={styles.messangerTopBarOnline}>
@@ -38,29 +50,41 @@ const Messanger = () => {
 
                                             <Mobile />
                                         </div>
+                                    </div>}
+
+                                    <div className={base.titleWrapper}>
+                                        {messageSelected && <>
+                                            <Button type="light" small>
+                                                Ответить
+                                            </Button>
+
+                                            <Button type="light" small>
+                                                Переслать
+                                            </Button>
+                                        </>}
+
+                                        <HoverMenu
+                                            button={
+                                                <IconButton small type="light" onClick={() => setActionMenu(prev => !prev)}>
+                                                    <DotsHorizontal />
+                                                </IconButton>
+                                            }
+                                            value={actionMenu}
+                                            setValue={setActionMenu}
+                                        >
+                                            <MenuLink danger>
+                                                <Delete />
+
+                                                Удалить переписку
+                                            </MenuLink>
+
+                                            <MenuLink danger>
+                                                <Block />
+
+                                                Заблокировать
+                                            </MenuLink>
+                                        </HoverMenu>
                                     </div>
-
-                                    <HoverMenu
-                                        button={
-                                            <IconButton small type="light" onClick={() => setActionMenu(prev => !prev)}>
-                                                <DotsHorizontal />
-                                            </IconButton>
-                                        }
-                                        value={actionMenu}
-                                        setValue={setActionMenu}
-                                    >
-                                        <MenuLink danger>
-                                            <Delete />
-
-                                            Удалить переписку
-                                        </MenuLink>
-
-                                        <MenuLink danger>
-                                            <Block />
-
-                                            Заблокировать
-                                        </MenuLink>
-                                    </HoverMenu>
                                 </div>
 
                                 <div className={styles.messangerDialog}>
@@ -80,7 +104,7 @@ const Messanger = () => {
                                     <DialogMessageItem name="Эльман" time="14:55" text="Пон, в дс то пойдем?" />
                                     <DialogMessageItem name="Егор" time="14:55" text="ну го" />
                                     <DialogMessageItem name="Эльман" time="14:55" text="Гоооооо" />
-                                    <DialogMessageItem name="Егор" time="14:55" text="Звоню" />
+                                    <DialogMessageItem onClick={() => setMessageSelected(prev => !prev)} name="Егор" time="14:55" text="Звоню" />
                                     <DialogMessageItem name="Эльман" time="14:55" text="Принимаю" />
                                 </div>
 
@@ -100,7 +124,67 @@ const Messanger = () => {
                             </div>
 
                             <div className={styles.messangerSidebar}>
-                                
+                                <div className={styles.searchInputInner}>
+                                    <input type="text" className={styles.searchInput} placeholder="Поиск" />
+
+                                    <Search className={styles.searchInputIcon} />
+
+                                    <Tooltip title="Создать">
+                                        <button className={styles.searchInputButton}>
+                                            <Plus />
+                                        </button>
+                                    </Tooltip>
+                                </div>
+
+                                <div className={styles.messangerSidebarDialogsContent}>
+                                    <DialogItem
+                                        date="11:17"
+                                        name="Егор Ветров"
+                                        lastMessage="го"
+                                    />
+
+                                    <DialogItem
+                                        date="Вчера"
+                                        name="Алексей Зубков"
+                                        from="Эльман"
+                                        lastMessage="И распределить"
+                                    />
+
+                                    <DialogItem
+                                        date="Вчера"
+                                        name="Алексей Зубков"
+                                        from="Эльман"
+                                        lastMessage="И распределить"
+                                    />
+
+                                    <DialogItem
+                                        date="Вчера"
+                                        name="Алексей Зубков"
+                                        from="Эльман"
+                                        lastMessage="И распределить"
+                                    />
+
+                                    <DialogItem
+                                        date="Вчера"
+                                        name="Алексей Зубков"
+                                        from="Эльман"
+                                        lastMessage="И распределить"
+                                    />
+
+                                    <DialogItem
+                                        date="Вчера"
+                                        name="Алексей Зубков"
+                                        from="Эльман"
+                                        lastMessage="И распределить"
+                                    />
+
+                                    <DialogItem
+                                        date="Вчера"
+                                        name="Алексей Зубков"
+                                        from="Эльман"
+                                        lastMessage="И распределить все по полочкам, понимаешь да типо вот так"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
