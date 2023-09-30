@@ -8,7 +8,7 @@
     cursor: pointer;
 }
 
-.messangerDialogItem:hover, .selected{
+.selected{
     background: var(--lighten);
 }
 
@@ -19,4 +19,60 @@
 .messangerDialogItemTime{
     font-size: 1.4rem;
     color: var(--textGrey);
+}
+
+.messangerDialogItemVoice{
+    width: calc(100% - 44px);
+    margin-top: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.6rem .8rem;
+    border-radius: 4px;
+    transition: .2s linear;
+}
+
+.messangerDialogItemVoice audio{
+    display: none;
+}
+
+.messangerDialogItemVoice:hover{
+    background: var(--input);
+}
+
+.messangerDialogItemVoicePlay{
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--lighten);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.messangerDialogItemVoicePlay svg{
+    width: 18px;
+}
+
+.messangerDialogItemVoicePlay svg path{
+    stroke: var(--main);
+}
+
+.messangerDialogItemVoiceLine{
+    flex-grow: 1;
+    height: 4px;
+    border-radius: 50px;
+    background: var(--lighten);
+    position: relative;
+}
+
+.messangerDialogItemVoiceProgress{
+    height: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50px;
+    background: var(--main);
+    transition: .1s linear;
 }

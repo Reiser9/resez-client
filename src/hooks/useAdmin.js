@@ -26,7 +26,8 @@ const useAdmin = () => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [notifyTypesIsLoading, setNotifyTypesIsLoading] = React.useState(false);
     const [themeByIdIsLoading, setThemeByIdIsLoading] = React.useState(false);
-    const [serchUsersLoading, setSerchUsersLoading] = React.useState(false);
+    const [searchUsersLoading, setSearchUsersLoading] = React.useState(false);
+    const [logTypesLoading, setLogTypesLoading] = React.useState(false);
     const [userIsLoading, setUserIsLoading] = React.useState([]);
     const [themeIsLoading, setThemeIsLoading] = React.useState([]);
 
@@ -71,21 +72,21 @@ const useAdmin = () => {
         }
     }
 
-    const serchUsers = async (query = "", isShortInfo = false) => {
+    const searchUsers = async (query = "", isShortInfo = false) => {
         setError(false);
-        setSerchUsersLoading(true);
+        setSearchUsersLoading(true);
 
         const response = await request(REQUEST_TYPE.ADMIN, `/user?search=${query}&isShortInfo=${isShortInfo}`, HTTP_METHODS.GET, true);
 
-        setSerchUsersLoading(false);
+        setSearchUsersLoading(false);
 
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => serchUsers(query, isShortInfo));
+            return errorController(response, () => searchUsers(query, isShortInfo));
         }
 
-        return response;
+        return response.data;
     }
 
     const userBlock = async (userId, successCallback = () => {}) => {
@@ -336,17 +337,35 @@ const useAdmin = () => {
         return response.data;
     }
 
+    const getLogTypes = async () => {
+        setError(false);
+        setLogTypesLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, "/log-type", HTTP_METHODS.GET, true);
+
+        setLogTypesLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => getLogTypes());
+        }
+
+        return response.data;
+    }
+
     return {
         error,
         isLoading,
         notifyTypesIsLoading,
         themeByIdIsLoading,
-        serchUsersLoading,
+        searchUsersLoading,
+        logTypesLoading,
         userIsLoading,
         themeIsLoading,
         loadUsers,
         getAllUsers,
-        serchUsers,
+        searchUsers,
         userBlock,
         userUnblock,
         loadAllThemes,
@@ -358,7 +377,8 @@ const useAdmin = () => {
         sendNotify,
         getNotifyTypes,
         uploadImageOnServerFile,
-        uploadImageOnServerUrl
+        uploadImageOnServerUrl,
+        getLogTypes
     }
 }
 

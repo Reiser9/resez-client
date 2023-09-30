@@ -106,6 +106,7 @@ const Messanger = () => {
                                     <DialogMessageItem name="Эльман" time="14:55" text="Гоооооо" />
                                     <DialogMessageItem onClick={() => setMessageSelected(prev => !prev)} name="Егор" time="14:55" text="Звоню" />
                                     <DialogMessageItem name="Эльман" time="14:55" text="Принимаю" />
+                                    <DialogMessageItem name="Эльман" time="14:56" audio="/assets/img/murad.mp3" />
                                 </div>
 
                                 <form className={styles.messangerDialogSendInner} onSubmit={e => e.preventDefault()}>
@@ -140,7 +141,8 @@ const Messanger = () => {
                                     <DialogItem
                                         date="11:17"
                                         name="Егор Ветров"
-                                        lastMessage="го"
+                                        from="Эльман"
+                                        lastMessage="Голосовое сообщение"
                                     />
 
                                     <DialogItem

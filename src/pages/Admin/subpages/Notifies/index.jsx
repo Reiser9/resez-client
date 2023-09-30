@@ -38,7 +38,7 @@ const Notifies = () => {
     const [sendForOne, setSendForOne] = React.useState(false);
     const [delayedSend, setDelayedSend] = React.useState(false);
 
-    const {isLoading, serchUsersLoading, notifyTypesIsLoading, sendNotify, serchUsers, getNotifyTypes} = useAdmin();
+    const {isLoading, searchUsersLoading, notifyTypesIsLoading, sendNotify, searchUsers, getNotifyTypes} = useAdmin();
     const {alertNotify} = useAlert();
     const navigate = useNavigate();
 
@@ -62,14 +62,14 @@ const Notifies = () => {
 
     const searchUsersHandler = () => {
         setUserOptions([]);
-        serchUsers(searchValue, true).then(users => {
+        searchUsers(searchValue, true).then(users => {
             if(!users){
                 return;
             }
 
-            setUserOptions(users.data.users);
+            setUserOptions(users.users);
         });
-    };
+    }
 
     const handleDropdownVisibleUsersChange = (open) => {
         setUserSelectOpen(open);
@@ -126,7 +126,7 @@ const Notifies = () => {
                     mode="multiple"
                     maxTagCount="responsive"
                     notContentText="Пользователей не найдено"
-                    loading={serchUsersLoading}
+                    loading={searchUsersLoading}
                     onSearch={value => setSearchValue(value.trim())}
                     onDropdownVisibleChange={handleDropdownVisibleUsersChange}
                     onChange={value => setUserIDs(value)}

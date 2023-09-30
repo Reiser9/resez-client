@@ -5,22 +5,35 @@ import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { Cross } from '../../../../components/Icons';
+import { Cross, Filter } from '../../../../components/Icons';
 
 import useLogs from '../../../../hooks/useLogs';
+import useAdmin from '../../../../hooks/useAdmin';
 
 import ReloadButton from '../../../../components/ReloadButton';
 import LogItem from '../../../../components/LogItem';
 import LogItemSkeleton from '../../../../components/Skeleton/LogItem';
 import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
 import NotContent from '../../../../components/NotContent';
+import IconButton from '../../../../components/IconButton';
+import Select from '../../../../components/Select';
 
 const Logs = () => {
     const [logsMoreLoading, setLogsMoreLoading] = React.useState(false);
+    const [logsFilter, setLogsFilter] = React.useState(false);
+    const [log, setLog] = React.useState("");
+    const [user, setUser] = React.useState("");
+    const [userSelectOpen, setUserSelectOpen] = React.useState(false);
+    const [userOptions, setUserOptions] = React.useState([]);
+    const [typeOptions, setTypeOptions] = React.useState([]);
+    const [userSearchValue, setUserSearchValue] = React.useState("");
 
     const {logsIsLoading, logs} = useSelector(state => state.log);
 
-    const {error, setLogIsLoading, loadLogs, getAllLogs} = useLogs();
+    const {error, setLogIsLoading, loadLogs, getAllLogs, filterLogs} = useLogs();
+    const {searchUsersLoading, logTypesLoading, getLogTypes, searchUsers} = useAdmin();
+
+    const searchUsersRef = React.useRef(null);
 
     const loadMoreLogs = async () => {
         setLogsMoreLoading(true);
@@ -28,16 +41,106 @@ const Logs = () => {
         setLogsMoreLoading(false);
     }
 
+    const searchUsersHandler = () => {
+        setUserOptions([]);
+        searchUsers(userSearchValue, true).then(users => {
+            if(!users){
+                return;
+            }
+
+            setUserOptions(users.users);
+        });
+    }
+
+    const dropdownUsers = (open) => {
+        setUserSelectOpen(open);
+
+        if(open && userOptions.length === 0){
+            searchUsersHandler();
+        }
+    }
+
+    const dropdownLogTypes = (open) => {
+        if(open && typeOptions.length === 0){
+            getLogTypes().then(types => {
+                if(!types){
+                    return;
+                }
+    
+                setTypeOptions(types.logTypes);
+            });
+        }
+    }
+
     React.useEffect(() => {
-        loadLogs();
+        loadLogs(0, 8);
     }, []);
+
+    React.useEffect(() => {
+        if(!userSelectOpen){
+            return;
+        }
+
+        searchUsersRef.current = setTimeout(searchUsersHandler, 500);
+
+        return () => {
+            clearTimeout(searchUsersRef.current);
+        }
+    }, [userSearchValue]);
+
+    React.useEffect(() => {
+        if(user || log){
+            filterLogs(user, log);
+        }
+    }, [user, log]);
 
     return (
         <div className={base.baseWrapperGap16}>
             <div className={base.titleInner}>
                 <p className={typography.h3}>Логирование {!logsIsLoading && `(${logs?.totalCount || 0})`}</p>
 
-                <ReloadButton loading={logsIsLoading} onClick={() => loadLogs()} />
+                <div className={base.titleWrapper}>
+                    <IconButton small type="light" onClick={() => setLogsFilter(prev => !prev)}>
+                        <Filter />
+                    </IconButton>
+                    
+                    <ReloadButton loading={logsIsLoading} onClick={() => loadLogs(0, 8, true)} />
+                </div>
+            </div>
+
+            <div className={styles.filterInner}>
+                <Select
+                    placeholder="Пользователь"
+                    className={styles.filterItem}
+                    loading={searchUsersLoading}
+                    showSearch
+                    notContentText="Пользователей не найдено"
+                    onSearch={value => setUserSearchValue(value.trim())}
+                    onDropdownVisibleChange={dropdownUsers}
+                    onChange={value => setUser(value)}
+                    filterOption={false}
+                    options={userOptions.map(data => {
+                        return {
+                            label: data.nickname,
+                            value: data.id
+                        }
+                    })}
+                />
+
+                <Select
+                    placeholder="Тип лога"
+                    className={styles.filterItem}
+                    loading={logTypesLoading}
+                    notContentText="Типов не найдено"
+                    onDropdownVisibleChange={dropdownLogTypes}
+                    onChange={value => setLog(value)}
+                    options={typeOptions.map(data => {
+                        return {
+                            label: data.type,
+                            value: data.id
+                        }
+                    })}
+                />
             </div>
 
             <BlockDataWithPaggination
