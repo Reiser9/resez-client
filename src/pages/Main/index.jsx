@@ -12,28 +12,15 @@ import { Practice, Study, Theme, Messager } from "../../components/Icons";
 import TitleWrapper from "../../components/Wrapper/TitleWrapper";
 import WithSidebarWrapper from "../../components/Wrapper/WithSidebarWrapper";
 import Block from "./Block";
+import { useSelector } from "react-redux";
 
 const Main = () => {
-    const [rooms, setRooms] = React.useState([]);
-    const rootNode = React.useRef(null);
-
-    React.useEffect(() => {
-        socket.on("share-rooms", ({rooms}) => {
-            console.log("Ку", rooms);
-            if(rootNode.current){
-                setRooms(rooms);
-            }
-        });
-
-        return () => {
-            socket.off("share-rooms");
-        }
-    }, []);
+    const {rooms} = useSelector(state => state.server);
 
     return (
         <TitleWrapper pageTitle="ResEz">
             <WithSidebarWrapper container="full">
-                <div className={styles.mainBlocks} ref={rootNode}>
+                <div className={styles.mainBlocks}>
                     <Block
                         title="Подготовиться к ЕГЭ? <span>Легко!</span>"
                         text="<span>ResEz</span> создан для вашей комфортной подготовки, расскажем все, что вас будет ждать на действующем экзамене."
@@ -57,7 +44,7 @@ const Main = () => {
 
                 {rooms.map(roomId => <div key={roomId}>
                     <p>{roomId}</p>
-                    <Link to={`/room/${roomId}`}>Join</Link>
+                    <Link to={`/call/${roomId}`}>Join</Link>
                 </div>)}
 
                 <div className={styles.benefits}>

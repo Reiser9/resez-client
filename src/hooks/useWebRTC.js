@@ -31,6 +31,7 @@ const useWebRTC = (roomId) => {
 
     React.useEffect(() => {
         const handleNewPeer = async ({peerId, createOffer}) => {
+            console.log("Нью пир");
             if(peerId in peerConnections.current){
                 return console.warn(`Уже подключены к ${peerId}`);
             }
@@ -153,7 +154,7 @@ const useWebRTC = (roomId) => {
             });
         }
 
-        startCapture().then(() => socket.emit(ACTIONS.JOIN, {room: roomId})).catch(e => console.error("Ошибка получения userMedia:", e));
+        startCapture().then(() => socket.emit(ACTIONS.CALL, {room: roomId})).catch(e => console.error("Ошибка получения userMedia:", e));
 
         return () =>  {
             localMediaStream.current.getTracks().forEach(track => track.stop());

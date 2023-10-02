@@ -8,6 +8,7 @@ import useNotify from './useNotify';
 
 import { incrementUreadNotifyCount, setUserBlocked } from '../redux/slices/user';
 import { addNotifyInStart } from '../redux/slices/notify';
+import { setRooms } from '../redux/slices/server';
 
 const useSocket = () => {
     const {user, sessionId} = useSelector(state => state.user);
@@ -45,12 +46,17 @@ const useSocket = () => {
             dispatch(setUserBlocked(false));
         });
 
+        socket.on("share-rooms", ({rooms}) => {
+            dispatch(setRooms(rooms));
+        });
+
         return () => {
             socket.off("notify");
             socket.off("message");
             socket.off("blocked");
             socket.off("unblocked");
             socket.off("endSession");
+            socket.off("share-rooms");
         };
     }, []);
 }
