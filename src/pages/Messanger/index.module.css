@@ -1,11 +1,34 @@
 .messangerWrapper{
     padding: 2.4rem 2.4rem 2.4rem 0;
+    position: relative;
+}
+
+@media (max-width: 998px) {
+    .messangerWrapper{
+        padding: 1.6rem 0;
+    }
+}
+@media (max-width: 500px) {
+    .messangerWrapper{
+        padding: .8rem 0;
+    }
 }
 
 .messanger{
     width: 100%;
     display: flex;
-    height: calc(100dvh - 65px - 99px - 48px);
+    height: calc(100dvh - 65px - 64px - 48px);
+}
+
+@media (max-width: 998px) {
+    .messanger{
+        height: calc(100dvh - 65px - 64px - 32px);
+    }
+}
+@media (max-width: 500px) {
+    .messanger{
+        height: calc(100dvh - 65px - 52px - 16px);
+    }
 }
 
 .messangerContent{
@@ -13,6 +36,22 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    transition: .3s ease-in-out;
+}
+
+@media (max-width: 998px) {
+    .messangerContent{
+        opacity: 0;
+        pointer-events: none;
+        position: relative;
+        right: -40px;
+    }
+
+    .messangerContent.show{
+        opacity: 1;
+        pointer-events: all;
+        right: 0;
+    }
 }
 
 .messangerSidebar{
@@ -28,6 +67,32 @@
     gap: 8px;
     position: relative;
     z-index: 9;
+    opacity: 1;
+    transform: translateX(0px);
+    pointer-events: all;
+    transition: .3s ease-in-out;
+}
+
+@media (max-width: 1100px) {
+    .messangerSidebar{
+        max-width: 340px;
+    }
+}
+@media (max-width: 998px) {
+    .messangerSidebar{
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        height: 100%;
+        background: var(--white);
+    }
+
+    .messangerSidebar.hide{
+        opacity: 0;
+        transform: translateX(-40px);
+        pointer-events: none;
+    }
 }
 
 .messangerTopBar{
@@ -38,6 +103,12 @@
     justify-content: space-between;
     padding: 0 2.4rem .8rem 2.4rem;
     border-bottom: 1px solid var(--input);
+}
+
+@media (max-width: 768px) {
+    .messangerTopBar{
+        padding: 0 .8rem .8rem .8rem;
+    }
 }
 
 .messangerTopBarInfo{
@@ -79,6 +150,12 @@
     gap: 8px;
     padding: 0.8rem 2.4rem 0 2.4rem;
     border-top: 1px solid var(--input);
+}
+
+@media (max-width: 768px) {
+    .messangerDialogSendInner{
+        padding: 0.8rem .8rem 0 .8rem;
+    }
 }
 
 .messangerDialogSendInner button{
@@ -142,6 +219,12 @@
     border-radius: 4px;
 }
 
+@media (max-width: 998px) {
+    .searchInput{
+        background: var(--input);
+    }
+}
+
 .searchInput::placeholder{
     color: var(--textGrey);
 }
@@ -194,19 +277,14 @@
     gap: 8px;
     overflow-y: auto;
     flex-grow: 1;
-    padding-right: 0.4rem;
 }
 
-.messangerSidebarDialogsContent::-webkit-scrollbar{
-    width: 2px;
+button.dialogBack{
+    display: none;
 }
 
-.messangerSidebarDialogsContent::-webkit-scrollbar-thumb{
-    background: var(--main);
-    border-radius: 50px;
-}
-
-.messangerSidebarDialogsContent::-webkit-scrollbar-track{
-    background: var(--lighten);
-    border-radius: 50px;
+@media (max-width: 998px) {
+    button.dialogBack{
+        display: flex;
+    }
 }

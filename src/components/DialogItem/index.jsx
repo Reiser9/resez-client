@@ -12,10 +12,11 @@ const DialogItem = ({
     name,
     mute = false,
     from = "",
-    lastMessage
+    lastMessage,
+    ...props
 }) => {
     return (
-        <div className={styles.dialogItem}>
+        <div className={styles.dialogItem} {...props}>
             <div className={base.circle50}>
                 {name[0]}
             </div>
@@ -40,7 +41,7 @@ const DialogItem = ({
                         <p className={styles.dialogItemMessage}>{lastMessage}</p>
                     </div>
 
-                    <div className={styles.dialogItemMoreInner}>
+                    <div className={styles.dialogItemMoreInner} onClick={e => e.stopPropagation()}>
                         <button className={styles.dialogItemMore}>
                             <DotsHorizontal />
                         </button>

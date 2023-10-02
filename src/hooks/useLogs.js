@@ -20,13 +20,13 @@ const useLogs = () => {
     const dispatch = useDispatch();
     const {logs} = useSelector(state => state.log);
 
-    const loadLogs = async (offset = 0, limit = 5, reload = false) => {
+    const loadLogs = async (offset = 0, limit = 5, userId = "", logTypeId = "", reload = false) => {
         setError(false);
 
         if(!logs.logs || reload){
             dispatch(setLogsIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.ADMIN, `/log?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/log?offfset=${offset}&limit=${limit}&userId=${userId}&logTypeId=${logTypeId}`, HTTP_METHODS.GET, true);
 
             dispatch(setLogsIsLoading(false));
 
@@ -56,27 +56,12 @@ const useLogs = () => {
         }
     }
 
-    const filterLogs = async (userId = "", logTypeId = "") => {
-        setError(false);
-
-        const response = await request(REQUEST_TYPE.ADMIN, `/log?userId=${userId}&logTypeId=${logTypeId}`, HTTP_METHODS.GET, true);
-
-        if(requestDataIsError(response)){
-            setError(true);
-
-            return errorController(response, () => filterLogs(userId, logTypeId));
-        }
-        
-        dispatch(initLogs(response.data));
-    }
-
     return{
         error,
         loading,
         logIsLoading,
         loadLogs,
-        getAllLogs,
-        filterLogs
+        getAllLogs
     }
 }
 

@@ -9,6 +9,12 @@
     transition: .2s linear;
 }
 
+@media (max-width: 480px) {
+    .voice{
+        width: 100%;
+    }
+}
+
 .voice audio{
     display: none;
 }

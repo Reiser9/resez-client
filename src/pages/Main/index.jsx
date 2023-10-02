@@ -1,4 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { v4 } from "uuid";
+
+import { socket } from "../../utils/socket";
 
 import typography from '../../styles/typography.module.css';
 import styles from "./index.module.css";
@@ -10,10 +14,26 @@ import WithSidebarWrapper from "../../components/Wrapper/WithSidebarWrapper";
 import Block from "./Block";
 
 const Main = () => {
+    const [rooms, setRooms] = React.useState([]);
+    const rootNode = React.useRef(null);
+
+    React.useEffect(() => {
+        socket.on("share-rooms", ({rooms}) => {
+            console.log("Ку", rooms);
+            if(rootNode.current){
+                setRooms(rooms);
+            }
+        });
+
+        return () => {
+            socket.off("share-rooms");
+        }
+    }, []);
+
     return (
         <TitleWrapper pageTitle="ResEz">
             <WithSidebarWrapper container="full">
-                <div className={styles.mainBlocks}>
+                <div className={styles.mainBlocks} ref={rootNode}>
                     <Block
                         title="Подготовиться к ЕГЭ? <span>Легко!</span>"
                         text="<span>ResEz</span> создан для вашей комфортной подготовки, расскажем все, что вас будет ждать на действующем экзамене."
@@ -32,6 +52,13 @@ const Main = () => {
                         titleTag="h2"
                     />
                 </div>
+
+                <Link to={`/call/${v4()}`}>Создать звонок</Link>
+
+                {rooms.map(roomId => <div key={roomId}>
+                    <p>{roomId}</p>
+                    <Link to={`/room/${roomId}`}>Join</Link>
+                </div>)}
 
                 <div className={styles.benefits}>
                     <h3 className={`${typography.h1} ${styles.benefitsTitle}`}>Что крутого у нас есть?</h3>

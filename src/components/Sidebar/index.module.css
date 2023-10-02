@@ -22,7 +22,7 @@
         top: -1px;
         left: 0;
         height: calc(100% + 1px);
-        z-index: 5;
+        z-index: 10;
         overflow-x: hidden;
     }
 }

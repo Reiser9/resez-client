@@ -5,7 +5,18 @@
     gap: 12px;
     transition: .2s linear;
     padding: 0.8rem 2.4rem;
-    cursor: pointer;
+}
+
+@media (any-hover: hover) {
+    .messangerDialogItem{
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 768px) {
+    .messangerDialogItem{
+        padding: 0.8rem 1.2rem;
+    }
 }
 
 .selected{

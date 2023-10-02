@@ -6,7 +6,7 @@ import typography from '../../styles/typography.module.css';
 import pws from '../../styles/pageWithSidebar.module.css';
 import styles from './index.module.css';
 
-import { Block, Clip, Cross, Delete, DotsHorizontal, Microphone, Mobile, Plus, Search, Send } from '../../components/Icons';
+import { ArrowLeft, Block, Clip, Cross, Delete, DotsHorizontal, Microphone, Mobile, Phone, Plus, Search, Send } from '../../components/Icons';
 
 import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
@@ -23,6 +23,7 @@ const Messanger = () => {
     const [message, setMessage] = React.useState("");
     const [actionMenu, setActionMenu] = React.useState(false);
     const [messageSelected, setMessageSelected] = React.useState(false);
+    const [mobileShowDialog, setMobileShowDialog] = React.useState(false);
 
     return (
         <TitleWrapper pageTitle="ResEz - Мессенджер">
@@ -30,10 +31,12 @@ const Messanger = () => {
                 <div className={pws.wrapper}>
                     <div className={`${pws.contentFull} ${styles.messangerWrapper}`}>
                         <div className={styles.messanger}>
-                            <div className={styles.messangerContent}>
+                            <div className={`${styles.messangerContent}${mobileShowDialog ? ` ${styles.show}` : ""}`}>
                                 <div className={styles.messangerTopBar}>
-                                    <div className={base.titleWrapper}>
-                                        <BackButton />
+                                    <div className={base.titleWrapper} style={{minWidth: 38}}>
+                                        <IconButton className={styles.dialogBack} small type="light" onClick={() => setMobileShowDialog(false)}>
+                                            <ArrowLeft />
+                                        </IconButton>
 
                                         {messageSelected && <div className={styles.selectedMessages}>
                                             <p className={styles.selectedMessagesText}>Выделено: 1</p>
@@ -72,6 +75,12 @@ const Messanger = () => {
                                             value={actionMenu}
                                             setValue={setActionMenu}
                                         >
+                                            <MenuLink>
+                                                <Phone />
+
+                                                Звонок
+                                            </MenuLink>
+                                            
                                             <MenuLink danger>
                                                 <Delete />
 
@@ -125,7 +134,7 @@ const Messanger = () => {
                                 </form>
                             </div>
 
-                            <div className={styles.messangerSidebar}>
+                            <div className={`${styles.messangerSidebar}${mobileShowDialog ? ` ${styles.hide}` : ""}`}>
                                 <div className={styles.searchInputInner}>
                                     <input type="text" className={styles.searchInput} placeholder="Поиск" />
 
@@ -144,49 +153,7 @@ const Messanger = () => {
                                         name="Егор Ветров"
                                         from="Эльман"
                                         lastMessage="Голосовое сообщение"
-                                    />
-
-                                    <DialogItem
-                                        date="Вчера"
-                                        name="Алексей Зубков"
-                                        from="Эльман"
-                                        lastMessage="И распределить"
-                                    />
-
-                                    <DialogItem
-                                        date="Вчера"
-                                        name="Алексей Зубков"
-                                        from="Эльман"
-                                        lastMessage="И распределить"
-                                    />
-
-                                    <DialogItem
-                                        date="Вчера"
-                                        name="Алексей Зубков"
-                                        from="Эльман"
-                                        lastMessage="И распределить"
-                                    />
-
-                                    <DialogItem
-                                        date="Вчера"
-                                        name="Алексей Зубков"
-                                        from="Эльман"
-                                        lastMessage="И распределить"
-                                    />
-
-                                    <DialogItem
-                                        date="Вчера"
-                                        name="Алексей Зубков"
-                                        from="Эльман"
-                                        lastMessage="И распределить"
-                                        mute
-                                    />
-
-                                    <DialogItem
-                                        date="Вчера"
-                                        name="Алексей Зубков"
-                                        from="Эльман"
-                                        lastMessage="И распределить все по полочкам, понимаешь да типо вот так"
+                                        onClick={() => setMobileShowDialog(true)}
                                     />
                                 </div>
                             </div>

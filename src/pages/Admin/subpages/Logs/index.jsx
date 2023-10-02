@@ -17,12 +17,13 @@ import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggin
 import NotContent from '../../../../components/NotContent';
 import IconButton from '../../../../components/IconButton';
 import Select from '../../../../components/Select';
+import Button from '../../../../components/Button';
 
 const Logs = () => {
     const [logsMoreLoading, setLogsMoreLoading] = React.useState(false);
     const [logsFilter, setLogsFilter] = React.useState(false);
-    const [log, setLog] = React.useState("");
-    const [user, setUser] = React.useState("");
+    const [log, setLog] = React.useState();
+    const [user, setUser] = React.useState();
     const [userSelectOpen, setUserSelectOpen] = React.useState(false);
     const [userOptions, setUserOptions] = React.useState([]);
     const [typeOptions, setTypeOptions] = React.useState([]);
@@ -30,7 +31,7 @@ const Logs = () => {
 
     const {logsIsLoading, logs} = useSelector(state => state.log);
 
-    const {error, setLogIsLoading, loadLogs, getAllLogs, filterLogs} = useLogs();
+    const {error, setLogIsLoading, loadLogs, getAllLogs} = useLogs();
     const {searchUsersLoading, logTypesLoading, getLogTypes, searchUsers} = useAdmin();
 
     const searchUsersRef = React.useRef(null);
@@ -72,6 +73,12 @@ const Logs = () => {
         }
     }
 
+    const resetFilter = () => {
+        setUser();
+        setLog();
+        loadLogs(0, 8, "", "", true);
+    }
+
     React.useEffect(() => {
         loadLogs(0, 8);
     }, []);
@@ -90,7 +97,7 @@ const Logs = () => {
 
     React.useEffect(() => {
         if(user || log){
-            filterLogs(user, log);
+            loadLogs(0, 8, user, log, true);
         }
     }, [user, log]);
 
@@ -104,7 +111,7 @@ const Logs = () => {
                         <Filter />
                     </IconButton>
                     
-                    <ReloadButton loading={logsIsLoading} onClick={() => loadLogs(0, 8, true)} />
+                    <ReloadButton loading={logsIsLoading} onClick={() => loadLogs(0, 8, user, log, true)} />
                 </div>
             </div>
 
@@ -119,6 +126,7 @@ const Logs = () => {
                     onDropdownVisibleChange={dropdownUsers}
                     onChange={value => setUser(value)}
                     filterOption={false}
+                    value={user}
                     options={userOptions.map(data => {
                         return {
                             label: data.nickname,
@@ -134,6 +142,7 @@ const Logs = () => {
                     notContentText="Типов не найдено"
                     onDropdownVisibleChange={dropdownLogTypes}
                     onChange={value => setLog(value)}
+                    value={log}
                     options={typeOptions.map(data => {
                         return {
                             label: data.type,
@@ -141,6 +150,10 @@ const Logs = () => {
                         }
                     })}
                 />
+
+                <Button small auto onClick={resetFilter}>
+                    Сбросить фильтры
+                </Button>
             </div>
 
             <BlockDataWithPaggination

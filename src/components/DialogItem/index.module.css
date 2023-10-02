@@ -84,6 +84,12 @@
     pointer-events: none;
 }
 
+@media (max-width: 998px) {
+    .dialogItem, .dialogItemActions{
+        background: var(--input);
+    }
+}
+
 .dialogItemActions button{
     transform: scale(.5);
     opacity: 0;
