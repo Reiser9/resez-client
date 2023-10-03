@@ -3,18 +3,29 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {socket} from '../utils/socket';
 
-import useRequest from './useRequest';
-import useNotify from './useNotify';
+import { ACTIONS } from '../consts/ACTIONS';
 
 import { incrementUreadNotifyCount, setUserBlocked } from '../redux/slices/user';
 import { addNotifyInStart } from '../redux/slices/notify';
-import { setRooms } from '../redux/slices/server';
+
+import useRequest from './useRequest';
+import useNotify from './useNotify';
+import useCalls from './useCalls';
 
 const useSocket = () => {
     const {user, sessionId} = useSelector(state => state.user);
     const dispatch = useDispatch();
     const {clearLocalData} = useRequest();
     const {alertNotify} = useNotify();
+    const {
+        requestCallHandler,
+        calledUserInfoHandler,
+        callAcceptHandler,
+        handleRemovePeer,
+        iceCandidateHandler,
+        setRemoteMedia,
+        handleNewPeer
+    } = useCalls();
 
     React.useEffect(() => {
         if(!user.id || !sessionId){
@@ -27,7 +38,7 @@ const useSocket = () => {
     React.useEffect(() => {
         socket.connect();
         
-        socket.on("notify", (data) => {
+        socket.on("notify", data => {
             dispatch(addNotifyInStart(data.notify));
             dispatch(incrementUreadNotifyCount());
             alertNotify("Информация", "Новое уведомление", "info", "/notifies", 4000);
@@ -46,9 +57,13 @@ const useSocket = () => {
             dispatch(setUserBlocked(false));
         });
 
-        socket.on("share-rooms", ({rooms}) => {
-            dispatch(setRooms(rooms));
-        });
+        socket.on(ACTIONS.CALL_REQUEST, requestCallHandler);
+        socket.on(ACTIONS.CALLED_USER_INFO, calledUserInfoHandler);
+        socket.on(ACTIONS.CALL_ACCEPT, callAcceptHandler);
+        socket.on(ACTIONS.REMOVE_PEER, handleRemovePeer);
+        socket.on(ACTIONS.ICE_CANDIDATE, iceCandidateHandler);
+        socket.on(ACTIONS.SESSION_DESCRIPTION, setRemoteMedia);
+        socket.on(ACTIONS.ADD_PEER, handleNewPeer);
 
         return () => {
             socket.off("notify");
@@ -56,7 +71,13 @@ const useSocket = () => {
             socket.off("blocked");
             socket.off("unblocked");
             socket.off("endSession");
-            socket.off("share-rooms");
+            socket.off(ACTIONS.CALL_REQUEST);
+            socket.off(ACTIONS.CALLED_USER_INFO);
+            socket.off(ACTIONS.CALL_ACCEPT);
+            socket.off(ACTIONS.REMOVE_PEER);
+            socket.off(ACTIONS.ICE_CANDIDATE);
+            socket.off(ACTIONS.SESSION_DESCRIPTION);
+            socket.off(ACTIONS.ADD_PEER);
         };
     }, []);
 }

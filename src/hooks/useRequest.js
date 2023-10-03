@@ -23,6 +23,7 @@ import { setDataNotify } from '../redux/slices/notify';
 import { setDataTheme } from '../redux/slices/theme';
 import { setDataAdmin } from '../redux/slices/admin';
 import { setDataTraining } from '../redux/slices/training';
+import { setDataCall } from '../redux/slices/call';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 import { setMainColors } from '../utils/setMainColors';
@@ -61,6 +62,7 @@ const useRequest = () => {
         dispatch(setDataTheme());
         dispatch(setDataAdmin());
         dispatch(setDataTraining());
+        dispatch(setDataCall());
 
         setMainColors();
 

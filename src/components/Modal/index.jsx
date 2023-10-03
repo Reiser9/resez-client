@@ -16,7 +16,15 @@ const modalSize = (type) => {
     }
 }
 
-const Modal = ({value, setValue, title, subtitle, text, size = "default", children}) => {
+const Modal = ({
+    value,
+    setValue,
+    title,
+    subtitle,
+    text,
+    size = "default",
+    children
+}) => {
     return (
         <div className={`${styles.modalOverlay}${value ? ` ${styles.active}` : ""}`} onClick={() => setValue(false)}>
             <div className={`${styles.modalWrapper} ${modalSize(size)}`}>

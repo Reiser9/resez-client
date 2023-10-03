@@ -7,7 +7,7 @@ import styles from './index.module.css';
 
 import { CONFIG } from '../../consts/CONFIG';
 
-import { Notify, Stop, Verified } from '../Icons';
+import { Notify, Phone, Stop, Verified } from '../Icons';
 
 import { maskPhone } from '../../utils/formatPhone';
 
@@ -18,6 +18,7 @@ import IconButton from '../IconButton';
 import TextPoint from '../TextPoint';
 import ModalConfirm from '../Modal/ConfirmModal';
 import LoaderForItem from '../LoaderForItem';
+import useCalls from '../../hooks/useCalls';
 
 const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = () => {}}) => {
     const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName, status} = data;
@@ -26,6 +27,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
     const [confirmUnblock, setConfirmUnblock] = React.useState(false);
 
     const {copyTextWithNotify} = useUtils();
+    const {requestCall} = useCalls();
 
     return (
         <>
@@ -102,6 +104,10 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                             </Tooltip>
                         </>}
                     </div>
+
+                    <IconButton type="light" onClick={() => requestCall(id)}>
+                        <Phone />
+                    </IconButton>
                 </div>
 
                 {isBlocked && <div className={styles.userItemBlock}>

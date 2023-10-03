@@ -1,13 +1,13 @@
-const ACTIONS = {
-    CALL: "call",
+export const ACTIONS = {
+    CALL_REQUEST: "call-request",
+    CALL_ACCEPT: "call-accept",
     LEAVE: "leave",
-    SHARE_ROOMS: "share-rooms",
     ADD_PEER: "add-peer",
-    REMOVE_PEER: "remove-peer",
-    RELAY_SDP: "relay-sdp",
     RELAY_ICE: "relay-ice",
-    ICE_CANDIDATE: "ice-candidate",
-    SESSION_DESCRIPTION: "session-description"
+    RELAY_SDP: "relay-sdp",
+    SESSION_DESCRIPTION: "session-description",
+    CALLED_USER_INFO: "called-user-info",
+    START_CALL: "start-call",
+    REMOVE_PEER: "remove-peer",
+    ICE_CANDIDATE: "ice-candidate"
 }
-
-export default ACTIONS;

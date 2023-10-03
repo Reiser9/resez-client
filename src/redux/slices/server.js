@@ -1,8 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    serverAvailable: true,
-    rooms: []
+    serverAvailable: true
 };
 
 export const serverSlice = createSlice({
@@ -11,16 +10,12 @@ export const serverSlice = createSlice({
     reducers: {
         setServerAvailable: (state, action) => {
             state.serverAvailable = action.payload;
-        },
-        setRooms: (state, action) => {
-            state.rooms = action.payload;
         }
     }
 });
 
 export const {
-    setServerAvailable,
-    setRooms
+    setServerAvailable
 } = serverSlice.actions;
 
 export default serverSlice.reducer;

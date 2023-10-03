@@ -11,6 +11,7 @@ import adminSlice from "./slices/admin";
 import trainingSlice from "./slices/training";
 import logSlice from "./slices/log";
 import roleSlice from "./slices/role";
+import callSlice from "./slices/call";
 
 export const store = configureStore({
     reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
         admin: adminSlice,
         training: trainingSlice,
         log: logSlice,
-        role: roleSlice
+        role: roleSlice,
+        call: callSlice
     },
 });

@@ -21,7 +21,6 @@ const Tests = React.lazy(() => import("./pages/Tests"));
 const Test = React.lazy(() => import("./pages/Test"));
 const Messanger = React.lazy(() => import("./pages/Messanger"));
 const Admin = React.lazy(() => import("./pages/Admin"));
-const Call = React.lazy(() => import("./pages/Call"));
 
 const Register = React.lazy(() => import("./pages/Register"));
 const Login = React.lazy(() => import("./pages/Login"));
@@ -59,7 +58,6 @@ const App = () => {
                         <Route path="tests/:id/test" element={withSuspense(<Test />)} />
                         <Route path="messanger/*" element={withSuspense(<Messanger />)} />
                         <Route path="admin/*" element={withSuspense(<Admin />)} />
-                        <Route path="call/:id" element={withSuspense(<Call />)} />
                         <Route path="*" element={<Navigate to={"/404"} replace />} />
                     </Route>
 

@@ -1,8 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { v4 } from "uuid";
-
-import { socket } from "../../utils/socket";
 
 import typography from '../../styles/typography.module.css';
 import styles from "./index.module.css";
@@ -12,10 +8,14 @@ import { Practice, Study, Theme, Messager } from "../../components/Icons";
 import TitleWrapper from "../../components/Wrapper/TitleWrapper";
 import WithSidebarWrapper from "../../components/Wrapper/WithSidebarWrapper";
 import Block from "./Block";
-import { useSelector } from "react-redux";
+import Button from "../../components/Button";
+
+import { useDispatch } from "react-redux";
+import { CALL_STATUSES } from "../../consts/CALL_STATUSES";
+import { setCallStatus, setRingtonIsPlaying } from "../../redux/slices/call";
 
 const Main = () => {
-    const {rooms} = useSelector(state => state.server);
+    const dispatch = useDispatch();
 
     return (
         <TitleWrapper pageTitle="ResEz">
@@ -40,12 +40,17 @@ const Main = () => {
                     />
                 </div>
 
-                <Link to={`/call/${v4()}`}>Создать звонок</Link>
-
-                {rooms.map(roomId => <div key={roomId}>
-                    <p>{roomId}</p>
-                    <Link to={`/call/${roomId}`}>Join</Link>
-                </div>)}
+                <div style={{display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12}}>
+                    <Button auto onClick={() => {
+                        dispatch(setCallStatus(CALL_STATUSES.INCOMING));
+                        dispatch(setRingtonIsPlaying(true));
+                    }}>Входящий</Button>
+                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.OUTCOMING))}>Исходящий</Button>
+                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.PROCESS))}>Процесс</Button>
+                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.REJECTED))}>Отклонен</Button>
+                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.ENDED))}>Окончен</Button>
+                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.TALKING))}>Разговаривает</Button>
+                </div>
 
                 <div className={styles.benefits}>
                     <h3 className={`${typography.h1} ${styles.benefitsTitle}`}>Что крутого у нас есть?</h3>

@@ -16,6 +16,7 @@ html{
     --hover: rgba(0, 0, 0, .06);
     --lightLine: rgba(0, 0, 0, 0.05);
     --qrExpiredBg: rgba(255, 255, 255, .96);
+    --pulse: rgba(190, 210, 230, .2);
 
     /* Icons */
     --iconLightGrey: #fff;
@@ -83,7 +84,7 @@ body{
 
 body.dark{
     --white: #2d2c36;
-    --input: #232229;
+    --input: rgb(35, 34, 41);
     --inputDarken: #131316;
     --text: #E5E8EB;
     --infoB: #33333b;
@@ -97,6 +98,7 @@ body.dark{
     --lightLine: rgba(255, 255, 255, 0.05);
     --notifyRed: #33333b;
     --qrExpiredBg: rgba(23, 23, 23, .96);
+    --pulse: rgba(85, 92, 100, 0.2);
 
     /* Icons */
     --iconLightGrey: rgb(127 126 143);

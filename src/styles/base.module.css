@@ -135,7 +135,7 @@
     max-width: 550px;
 }
 
-.circle32, .circle36, .circle40, .circle44, .circle50, .circle25{
+.circle32, .circle36, .circle40, .circle44, .circle50, .circle25, .circle75{
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -183,6 +183,12 @@
     width: 25px;
     height: 25px;
     font-size: 1.4rem;
+}
+
+.circle75{
+    width: 75px;
+    height: 75px;
+    font-size: 3.2rem;
 }
 
 .circleAvatar{
