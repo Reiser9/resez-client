@@ -4,7 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 import { requestDataIsError } from '../utils/requestDataIsError';
 
-import { initSubjects, setSubjectsIsLoading, deleteSubject, addNewSubject, setTasksIsLoading, initTasks, setTasks, deleteTask, changeSubject, addNewTask } from '../redux/slices/admin';
+import {
+    initSubjects,
+    setSubjectsIsLoading,
+    deleteSubject,
+    addNewSubject,
+    setTasksIsLoading,
+    initTasks,
+    setTasks,
+    deleteTask,
+    changeSubject,
+    addNewTask
+} from '../redux/slices/admin';
+import { addNewTest, initTest, initTests, setTests, setTestsIsLoading } from '../redux/slices/test';
 
 import useRequest from './useRequest';
 import useAlert from './useAlert';
@@ -21,6 +33,7 @@ const useTest = () => {
     const {errorController} = useError();
     const dispatch = useDispatch();
     const {subjects, tasks} = useSelector(state => state.admin);
+    const {tests} = useSelector(state => state.test);
 
     // Предметы
     const loadSubjects = async (reload = false) => {
@@ -241,6 +254,88 @@ const useTest = () => {
         successCallback();
     }
 
+    // Тесты
+    const loadTests = async (offset = 0, limit = 5, reload = false) => {
+        setError(false);
+
+        if(!tests.tests || reload){
+            dispatch(setTestsIsLoading(true));
+
+            const response = await request(REQUEST_TYPE.TEST, `?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+
+            dispatch(setTestsIsLoading(false));
+
+            if(requestDataIsError(response)){
+                setError(true);
+                
+                return errorController(response, () => loadTests(offset, limit, reload));
+            }
+
+            dispatch(initTests(response.data));
+        }
+    }
+
+    const getTests = async (offset = 0, limit = 5) => {
+        setError(false);
+
+        if(tests?.tests?.length === 0 || tests?.tests?.length < offset + limit){
+            setIsLoading(true);
+
+            const response = await request(REQUEST_TYPE.TEST, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+
+            setIsLoading(false);
+
+            if(requestDataIsError(response)){
+                setError(true);
+
+                return errorController(response, () => getTests(offset, limit));
+            }
+
+            dispatch(setTests(response.data));
+        }
+    }
+
+    const getTestById = async (id) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.TEST, `/${id}`, HTTP_METHODS.GET, true);
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => getTestById(id));
+        }
+
+        dispatch(initTest(response.data.test));
+    }
+
+    const createTest = async (subjectId, isPrivate, successCallback = () => {}) => {
+        if(!subjectId){
+            return alertNotify("Предупреждение", "Сначала нужно выбрать предмет", "warn");
+        }
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.TEST, "generate-exam", HTTP_METHODS.POST, true, {
+            subjectId,
+            isPrivate
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => createTest(subjectId, isPrivate, successCallback));
+        }
+
+        dispatch(addNewTest(response.data.test));
+        alertNotify("Успешно", "Тест создан", "success");
+        successCallback();
+    }
+
     return{
         error,
         isLoading,
@@ -257,7 +352,11 @@ const useTest = () => {
         loadTasks,
         getAllTasks,
         removeTask,
-        createTask
+        createTask,
+        loadTests,
+        getTestById,
+        createTest,
+        getTests
     }
 }
 

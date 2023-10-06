@@ -1,12 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Tooltip } from 'antd';
+import { useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
 import useUtils from '../../../../hooks/useUtils';
+import useTest from '../../../../hooks/useTest';
 
 import { Date, Delete, DotsHorizontal, Edit, Lock, Settings, TypesVariantStart } from '../../../../components/Icons';
 
@@ -15,12 +17,24 @@ import HoverMenu from '../../../../components/HoverMenu';
 import MenuLink from '../../../../components/HoverMenu/MenuLink';
 import IconButton from '../../../../components/IconButton';
 import CardLink from '../../../../components/CardLink';
+import { formatDate } from '../../../../utils/formatDate';
 
 const TestView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
 
     const {id} = useParams();
     const {copyTextWithNotify} = useUtils();
+    const {getTestById} = useTest();
+    const {test} = useSelector(state => state.test);
+
+    React.useEffect(() => {
+        if(id){
+            getTestById(id);
+        }
+    }, [id]);
+
+    const {isOfficial, isPrivate, isExam, date, subject, tasksCount, user, tasks} = test || {};
+    const {nickname, avatar} = user || {};
 
     return (
         <div className={base.baseWrapperGap40}>
@@ -30,18 +44,18 @@ const TestView = () => {
                         <BackButton />
 
                         <div className={styles.testTag}>
-                            Математика
+                            {subject}
                         </div>
 
                         <div className={styles.testTag}>
-                            Вопросов: 27
+                            Вопросов: {tasksCount}
                         </div>
 
-                        <Tooltip title="Скрыта">
+                        {!isPrivate && <Tooltip title="Скрыта">
                             <div className={styles.testTagIcon}>
                                 <Lock />
                             </div>
-                        </Tooltip>
+                        </Tooltip>}
                     </div>
 
                     <div className={styles.testTags}>
@@ -82,17 +96,18 @@ const TestView = () => {
                 <div className={base.titleInner}>
                     <div className={base.titleWrapper}>
                         <div className={base.circle40}>
-                            2
+                            {avatar
+                            ? <img src={avatar} alt="avatar" className={base.circleAvatar} />
+                            : nickname ? nickname[0] : "No"}
                         </div>
 
-                        <p className={typography.text}>222</p>
+                        <p className={typography.text}>{nickname}</p>
                     </div>
 
                     <div className={styles.testDateInner}>
                         <Date />
 
-                        {/* {formatDate(date, "D MMMM YYYY")} */}
-                        17 сентября в 20:32
+                        {formatDate(date, "D MMMM YYYY")}
                     </div>
                 </div>
             </div>
@@ -104,7 +119,7 @@ const TestView = () => {
             </div>
 
             <div className={base.baseWrapperGap12}>
-                <p className={typography.h4}>Вопросы (27)</p>
+                <p className={typography.h4}>Вопросы ({tasksCount})</p>
 
                 <div className={base.contentItems}>
                     <div className={styles.testQuestionItem}>

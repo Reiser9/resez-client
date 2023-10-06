@@ -6,23 +6,31 @@ import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { ArrowLeft, ArrowRight, Stack, TypesTest } from '../../../../components/Icons';
+import { ArrowLeft, ArrowRight, Cross, Stack, TypesTest } from '../../../../components/Icons';
+
+import useTest from '../../../../hooks/useTest';
 
 import Button from '../../../../components/Button';
 import TestItem from '../../../../components/TestItem';
-import TestItemSkeleton from '../../../../components/Skeleton/TestItem';
+import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
+import TestSkeleton from '../../../../components/Skeleton/TestItem';
+import NotContent from '../../../../components/NotContent';
+import ReloadButton from '../../../../components/ReloadButton';
 
 const TestMain = () => {
     const [scroll, setScroll] = React.useState(0);
     const [scrollBlock, setScrollBlock] = React.useState(0);
     const scrollContainerRef = React.useRef(null);
 
+    const [testsThree, setTestsThree] = React.useState([]);
+
     const {isAuth} = useSelector(state => state.auth);
+    const {testsIsLoading, tests} = useSelector(state => state.test);
+    const {error, loadTests, getTests} = useTest();
   
     const handleScroll = (e) => {
         const scrollLeft = e.target.scrollLeft;
         setScroll(scrollLeft);
-        console.log(scrollLeft);
     }
 
     const scrollTo = (scroll) => {
@@ -57,9 +65,21 @@ const TestMain = () => {
         };
     }, []);
 
+    React.useEffect(() => {
+        loadTests(0, 6);
+    }, []);
+
+    React.useEffect(() => {
+        if(tests.tests){
+            const firstThree = tests.tests.slice(0, 3);
+            setTestsThree(firstThree);
+        }
+    }, [tests]);
+
     return (
         <div className={base.baseWrapperGap16}>
             <div className={styles.subjectsTags}>
+                {/* Компонент */}
                 <div className={`${styles.subjectsTagsContent} ${scroll >= 40 ? ` ${styles.arrowFade}` : ""}`} ref={scrollContainerRef} onScroll={handleScroll}>
                     <Link to="russian" className={styles.subjectsTag}>Русский язык</Link>
                     <Link to="russian" className={styles.subjectsTag}>Математика</Link>
@@ -116,32 +136,45 @@ const TestMain = () => {
             </div>
 
             <div className={`${base.baseWrapperGap16} ${styles.testBlock}`}>
-                <div className={base.titleInner}>
-                    <p className={typography.h3}>Рекомендованные тесты</p>
-
-                    <Button auto type="light" to="recommended">
-                        Смотреть все
-                    </Button>
-                </div>
+                <p className={typography.h3}>Рекомендованные тесты</p>
 
                 <div className={base.contentItems}>
                     <TestItem data={{subject: "Английский язык"}} />
-                    {/* <TestItemSkeleton /> */}
                 </div>
             </div>
 
             <div className={`${base.baseWrapperGap16} ${styles.testBlock}`}>
                 <div className={base.titleInner}>
-                    <p className={typography.h3}>Мои тесты (5)</p>
+                    <div className={base.titleWrapper}>
+                        <p className={typography.h3}>Мои тесты ({testsThree?.length})</p>
 
-                    <Button auto type="light" to="my">
+                        <ReloadButton loading={testsIsLoading} onClick={() => loadTests(0, 6, true)} />
+                    </div>
+
+                    {!testsIsLoading && <Button auto type="light" to="my">
                         Смотреть все
-                    </Button>
+                    </Button>}
                 </div>
 
-                <div className={base.contentItems}>
-                    <TestItem data={{subject: "Информатика"}} />
-                </div>
+                <BlockDataWithPaggination
+                    error={error}
+                    dataIsLoading={testsIsLoading}
+                    dataLength={testsThree?.length}
+                    Skeleton={TestSkeleton}
+                    skeletonLoading={3}
+                    containerClassName={base.contentItems}
+                    errorContent={<NotContent text="Ошибка при загрузке тестов" icon={<Cross />} danger />}
+                    notContent={<NotContent text={"Тестов не найдено"} />}
+                >
+                    <div className={base.contentItems}>
+                        {testsThree
+                        ?.map(data => <TestItem
+                            key={data.id}
+                            data={data}
+                            //loading={testIsLoading.includes(data.id)}
+                        />)}
+                    </div>
+                </BlockDataWithPaggination>
             </div>
         </div>
     )

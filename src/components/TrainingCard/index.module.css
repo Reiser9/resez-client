@@ -130,3 +130,8 @@
     border: 2px solid var(--success);
     color: var(--success);
 }
+
+.cardText{
+    width: 100%;
+    text-align: center;
+}

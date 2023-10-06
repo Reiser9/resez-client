@@ -6,6 +6,7 @@ export const playSound = async (url) => {
 
     const source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
+    source.loop = true;
     source.connect(audioContext.destination);
     source.start();
 }

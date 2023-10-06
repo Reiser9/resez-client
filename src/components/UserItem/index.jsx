@@ -12,13 +12,13 @@ import { Notify, Phone, Stop, Verified } from '../Icons';
 import { maskPhone } from '../../utils/formatPhone';
 
 import useUtils from '../../hooks/useUtils';
+import useCalls from '../../hooks/useCalls';
 
 import Button from '../Button';
 import IconButton from '../IconButton';
 import TextPoint from '../TextPoint';
 import ModalConfirm from '../Modal/ConfirmModal';
 import LoaderForItem from '../LoaderForItem';
-import useCalls from '../../hooks/useCalls';
 
 const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = () => {}}) => {
     const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName, status} = data;
@@ -27,7 +27,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
     const [confirmUnblock, setConfirmUnblock] = React.useState(false);
 
     const {copyTextWithNotify} = useUtils();
-    const {requestCall} = useCalls();
+    const {callRequest} = useCalls();
 
     return (
         <>
@@ -105,7 +105,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                         </>}
                     </div>
 
-                    <IconButton type="light" onClick={() => requestCall(id)}>
+                    <IconButton type="light" onClick={() => callRequest(id)}>
                         <Phone />
                     </IconButton>
                 </div>

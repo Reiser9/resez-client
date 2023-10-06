@@ -8,15 +8,8 @@ import { Practice, Study, Theme, Messager } from "../../components/Icons";
 import TitleWrapper from "../../components/Wrapper/TitleWrapper";
 import WithSidebarWrapper from "../../components/Wrapper/WithSidebarWrapper";
 import Block from "./Block";
-import Button from "../../components/Button";
-
-import { useDispatch } from "react-redux";
-import { CALL_STATUSES } from "../../consts/CALL_STATUSES";
-import { setCallStatus, setRingtonIsPlaying } from "../../redux/slices/call";
 
 const Main = () => {
-    const dispatch = useDispatch();
-
     return (
         <TitleWrapper pageTitle="ResEz">
             <WithSidebarWrapper container="full">
@@ -38,18 +31,6 @@ const Main = () => {
                         icon={<Practice />}
                         titleTag="h2"
                     />
-                </div>
-
-                <div style={{display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12}}>
-                    <Button auto onClick={() => {
-                        dispatch(setCallStatus(CALL_STATUSES.INCOMING));
-                        dispatch(setRingtonIsPlaying(true));
-                    }}>Входящий</Button>
-                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.OUTCOMING))}>Исходящий</Button>
-                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.PROCESS))}>Процесс</Button>
-                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.REJECTED))}>Отклонен</Button>
-                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.ENDED))}>Окончен</Button>
-                    <Button auto onClick={() => dispatch(setCallStatus(CALL_STATUSES.TALKING))}>Разговаривает</Button>
                 </div>
 
                 <div className={styles.benefits}>

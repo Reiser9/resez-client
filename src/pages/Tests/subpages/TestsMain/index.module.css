@@ -23,11 +23,21 @@
 }
 
 .next{
-    right: -8px;
+    right: -18px;
 }
 
 .prev{
-    left: -8px;
+    left: -18px;
+}
+
+@media (max-width: 440px) {
+    .next{
+        right: -8px;
+    }
+    
+    .prev{
+        left: -8px;
+    }
 }
 
 .arrowFade{

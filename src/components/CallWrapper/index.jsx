@@ -9,7 +9,7 @@ import { CALL_STATUSES } from '../../consts/CALL_STATUSES';
 
 import { Cross, Desktop, Microphone, Phone, Video } from '../Icons';
 
-import useCalls, { LOCAL_VIDEO } from '../../hooks/useCalls';
+import useCalls from '../../hooks/useCalls';
 
 import IconButton from '../IconButton';
 
@@ -17,9 +17,9 @@ const CallWrapper = () => {
     const [isCollapse, setIsCollapse] = React.useState(false);
 
     const {callStatus, callInfo} = useSelector(state => state.call);
-    const {clients, provideMediaRef, endCall, acceptCall} = useCalls();
+    const {medias, acceptCall} = useCalls();
 
-    const {user, callId} = callInfo || {};
+    const {user, callId} = callInfo;
     const {id, nickname, avatar, firstName, lastName} = user || {};
 
     return (
@@ -43,23 +43,15 @@ const CallWrapper = () => {
                     {callStatus === CALL_STATUSES.ENDED && <p className={styles.subText}>Вызов завершен</p>}
                     {callStatus === CALL_STATUSES.TALKING && <p className={styles.subText}>Пользователь разговаривает</p>}
 
-                    {callStatus === CALL_STATUSES.PROCESS && clients.map(clientId => 
-                        <div key={clientId}>
-                            <video
-                                ref={instance => {
-                                    provideMediaRef(clientId, instance)
-                                }}
-                                autoPlay
-                                playsInline
-                                muted={clientId === LOCAL_VIDEO}
-                            />
-                        </div>)}
+                    {callStatus === CALL_STATUSES.PROCESS && <>
+                        
+                    </>}
 
                     {callStatus === CALL_STATUSES.INCOMING && <>
                         <p className={styles.subText}>Входящий звонок</p>
 
                         <div className={styles.callButtons}>
-                            <IconButton type="light" onClick={() => acceptCall(id, callId)}>
+                            <IconButton type="light" onClick={() => acceptCall(callId, id)}>
                                 <Phone />
                             </IconButton>
 
@@ -82,7 +74,7 @@ const CallWrapper = () => {
                             <Desktop />
                         </IconButton>
 
-                        <IconButton type="danger" onClick={() => endCall()}>
+                        <IconButton type="danger">
                             <Cross />
                         </IconButton>
                     </div>}

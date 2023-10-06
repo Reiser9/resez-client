@@ -77,7 +77,7 @@ const MemoTypeCards = () => {
     }, [currentIdCard, collection]);
 
     return (
-        <div className={base.baseWrapperGap16}>
+        <div className={`${base.baseWrapperGap16} ${styles.typeCardsOuter}`}>
             <div className={styles.typeCardsWrapper}>
                 <BackButton />
 

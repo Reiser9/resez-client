@@ -112,6 +112,7 @@ const useNotify = () => {
                 unreadNotifiesCount: 0,
                 isLast: true
             }));
+            dispatch(setUreadNotifyCount(0));
         }
         else{
             dispatch(initNotifies(response.data));

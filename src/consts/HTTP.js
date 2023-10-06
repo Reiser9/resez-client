@@ -14,5 +14,6 @@ export const REQUEST_TYPE = {
     NOTIFY: 'notify',
     ADMIN: 'admin',
     COLLECTION: 'collection',
-    EMPTY: 'empty'
+    EMPTY: 'empty',
+    TEST: "test"
 };

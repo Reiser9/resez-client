@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tooltip } from 'antd';
+import { Link } from 'react-router-dom';
 
 import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
@@ -11,11 +12,13 @@ import HoverMenu from '../HoverMenu';
 import IconButton from '../IconButton';
 import MenuLink from '../HoverMenu/MenuLink';
 import TextPoint from '../TextPoint';
+import LoaderForItem from '../LoaderForItem';
 
 const TestItem = ({
-    data
+    data,
+    loading = false
 }) => {
-    const {subject} = data || {};
+    const {subject, tasksCount, isExam, isPrivate, isOfficial, id} = data || {};
 
     const [actionMenu, setActionMenu] = React.useState(false);
 
@@ -23,13 +26,9 @@ const TestItem = ({
         <div className={`${base.item3} ${styles.testItem}`}>
             <div className={styles.testItemWrapper}>
                 <div className={styles.testItemTitleWrapper}>
-                    <div className={styles.testItemTitleInner}>
-                        <div className={styles.testItemAvatar}>
-                            {subject ? subject[0] : "No"}
-                        </div>
-
-                        {subject && <p className={styles.testItemName}>{subject}</p>}
-                    </div>
+                    {subject && <Link to={`${id}`}>
+                        <p className={styles.testItemName}>{subject}</p>
+                    </Link>}
 
                     <HoverMenu
                         button={
@@ -55,11 +54,11 @@ const TestItem = ({
                 </div>
 
                 <div className={styles.testItemInfo}>
-                    <TextPoint title="Заданий" text="22" className={styles.testItemInfoItem} />
-                    <TextPoint title="ID теста" text="634523" className={styles.testItemInfoItem} />
+                    <TextPoint title="Заданий" text={tasksCount} className={styles.testItemInfoItem} />
+                    <TextPoint title="ID теста" text={id} className={styles.testItemInfoItem} />
                 </div>
 
-                <div className={styles.testItemScore}>
+                {/* <div className={styles.testItemScore}>
                     <p className={`${typography.text2} ${styles.testItemScoreTitle}`}>Прогресс решения</p>
 
                     <div className={styles.testItemScoreContent}>
@@ -89,34 +88,36 @@ const TestItem = ({
                     <div className={styles.testItemLockResult}>
                         Решите тест полностью, чтобы увидеть результат
                     </div>
-                </div>
+                </div> */}
             </div>
 
             <div className={styles.testItemTags}>
-                <Tooltip title="Тест разработан командой ResEz" placement="bottomLeft">
+                {isOfficial && <Tooltip title="Тест разработан командой ResEz" placement="bottomLeft">
                     <div className={styles.testItemTag}>
                         ResEz
                     </div>
-                </Tooltip>
+                </Tooltip>}
 
-                <Tooltip title="Тест создан пользователем, но мы проверили его" placement="bottomLeft">
+                {/* <Tooltip title="Тест создан пользователем, но мы проверили его" placement="bottomLeft">
                     <div className={styles.testItemTag}>
                         <Verified />
                     </div>
-                </Tooltip>
+                </Tooltip> */}
 
-                <Tooltip title="Тест скрыт для других пользователей" placement="bottomLeft">
+                {isPrivate && <Tooltip title="Тест скрыт для других пользователей" placement="bottomLeft">
                     <div className={styles.testItemTag}>
                         <Lock />
                     </div>
-                </Tooltip>
+                </Tooltip>}
 
-                <Tooltip title="Вариант ЕГЭ" placement="bottomLeft">
+                {isExam && <Tooltip title="Вариант ЕГЭ" placement="bottomLeft">
                     <div className={styles.testItemTag}>
                         ЕГЭ
                     </div>
-                </Tooltip>
+                </Tooltip>}
             </div>
+            
+            {loading && <LoaderForItem />}
         </div>
     )
 }

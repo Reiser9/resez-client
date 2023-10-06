@@ -28,7 +28,7 @@ const CardPart = ({
                 {isSpeaking ? <Pause /> : <Volume />}
             </button>}
 
-            {text}
+            <p className={styles.cardText}>{text}</p>
         </div>
     )
 }

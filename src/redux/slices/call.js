@@ -5,7 +5,7 @@ import {CALL_STATUSES} from '../../consts/CALL_STATUSES';
 const initialState = {
     callInfo: {},
     callStatus: CALL_STATUSES.DEFAULT,
-    ringtonIsPlaying: false
+    localStream: null
 };
 
 export const callSlice = createSlice({
@@ -18,8 +18,8 @@ export const callSlice = createSlice({
         setCallStatus: (state, action) => {
             state.callStatus = action.payload;
         },
-        setRingtonIsPlaying: (state, action) => {
-            state.ringtonIsPlaying = action.payload;
+        setLocalStream: (state, action) => {
+            state.localStream = action.payload;
         },
         setDataCall: () => initialState
     }
@@ -28,7 +28,7 @@ export const callSlice = createSlice({
 export const {
     setCallInfo,
     setCallStatus,
-    setRingtonIsPlaying,
+    setLocalStream,
     setDataCall
 } = callSlice.actions;
 

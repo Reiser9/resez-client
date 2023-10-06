@@ -50,14 +50,14 @@ export const getHtmlInEditor = (blocks = []) => {
                 html += block.data.html;
                 break;
             case 'checklist':
-                html += `<ul>`;
+                html += `<ol>`;
 
                 block.data.items.forEach(item => {
                     const checked = item.checked ? 'checked' : '';
                     html += `<li><input type="checkbox" ${checked} disabled>${item.text}</li>`;
                 });
 
-                html += `</ul>`;
+                html += `</ol>`;
                 break;
             case 'image':
                 html += `<img src="${block.data.file.url}" alt="${block.data.caption}">`

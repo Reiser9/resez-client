@@ -7,6 +7,7 @@ const BASE_API_URL_ADMIN = `${process.env.REACT_APP_API}/admin`;
 const BASE_API_URL_EMPTY = `${process.env.REACT_APP_API}`;
 const BASE_API_URL_COLLECTION = `${process.env.REACT_APP_API}/collection`;
 const BASE_API_URL_ROLE = `${process.env.REACT_APP_API}/role`;
+const BASE_API_URL_TEST = `${process.env.REACT_APP_API}/test`;
 
 export {
     BASE_API_URL_AUTH,
@@ -17,5 +18,6 @@ export {
     BASE_API_URL_ADMIN,
     BASE_API_URL_EMPTY,
     BASE_API_URL_COLLECTION,
-    BASE_API_URL_ROLE
+    BASE_API_URL_ROLE,
+    BASE_API_URL_TEST
 }

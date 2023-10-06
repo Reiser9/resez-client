@@ -18,7 +18,7 @@ const BlockDataWithPaggination = ({
     containerClassName = "",
     errorContent,
     notContent,
-    isLast = false,
+    isLast = true,
     loadMoreData = () => {},
     moreButtonText = "Показать еще",
     children

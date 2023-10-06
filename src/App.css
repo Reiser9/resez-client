@@ -128,7 +128,7 @@ a{
     cursor: default;
 }
 
-ul{
+ul, ol{
 	margin: 0;
 	padding: 0;
 }
@@ -577,6 +577,7 @@ input::placeholder{
     color: var(--text);
     border-radius: 4px;
     padding: 2px 0!important;
+    background: #ffff003d;
 }
 
 .inline-code{

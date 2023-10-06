@@ -9,6 +9,7 @@ import {
     BASE_API_URL_ADMIN,
     BASE_API_URL_USER,
     BASE_API_URL_COLLECTION,
+    BASE_API_URL_TEST
 } from './API_URLS';
 
 export const authRequest = axios.create({
@@ -48,5 +49,10 @@ export const emptyRequest = axios.create({
 
 export const collectionRequest = axios.create({
     baseURL: BASE_API_URL_COLLECTION,
+    withCredentials: true
+});
+
+export const testRequest = axios.create({
+    baseURL: BASE_API_URL_TEST,
     withCredentials: true
 });

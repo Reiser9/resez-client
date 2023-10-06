@@ -7,6 +7,10 @@
     position: relative;
 }
 
+.typeCardsOuter{
+    height: 100%;
+}
+
 .typeCardsWrapper{
     width: 100%;
     display: flex;
@@ -29,7 +33,7 @@
     max-width: 100%;
     aspect-ratio: 3 / 4;
     position: relative;
-    min-height: 350px;
+    min-height: 250px;
     height: 100%;
 }
 

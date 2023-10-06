@@ -53,7 +53,7 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
                     </span>
                 </span>
 
-                {content && <div className={`${typography.text} ${styles.notifyItemTextContent}`}>
+                {content && <div className={`${typography.text} ${styles.notifyItemTextContent} ${base.format}`}>
                     {parse(content)}
                 </div>}
 
@@ -73,11 +73,13 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
             </div>
 
             <Modal value={modal} setValue={setModal} title={title} subtitle={formatDate(date)}>
-                {parse(content)}
+                <div className={base.format}>
+                    {parse(content)}
 
-                {getNotifyType(type)?.name === "session" && <p className={typography.text}>
-                    <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности
-                </p>}
+                    {getNotifyType(type)?.name === "session" && <p className={typography.text}>
+                        <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности
+                    </p>}
+                </div>
             </Modal>
         </>
     )
