@@ -6,7 +6,7 @@ import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { ArrowLeft, ArrowRight, Cross, Stack, TypesTest } from '../../../../components/Icons';
+import { Cross, Stack, TypesTest } from '../../../../components/Icons';
 
 import useTest from '../../../../hooks/useTest';
 
@@ -16,53 +16,29 @@ import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggin
 import TestSkeleton from '../../../../components/Skeleton/TestItem';
 import NotContent from '../../../../components/NotContent';
 import ReloadButton from '../../../../components/ReloadButton';
+import ScrollWithArrows from '../../../../components/ScrollWithArrows';
+import InfoBlock from '../../../../components/InfoBlock';
+import ScrollSkeleton from '../../../../components/Skeleton/Scroll';
 
 const TestMain = () => {
-    const [scroll, setScroll] = React.useState(0);
-    const [scrollBlock, setScrollBlock] = React.useState(0);
-    const scrollContainerRef = React.useRef(null);
-
+    const [subjectsIsLoading, setSubjectsIsLoading] = React.useState(false);
+    const [subjects, setSubjects] = React.useState([]);
     const [testsThree, setTestsThree] = React.useState([]);
 
     const {isAuth} = useSelector(state => state.auth);
     const {testsIsLoading, tests} = useSelector(state => state.test);
-    const {error, loadTests, getTests} = useTest();
-  
-    const handleScroll = (e) => {
-        const scrollLeft = e.target.scrollLeft;
-        setScroll(scrollLeft);
-    }
-
-    const scrollTo = (scroll) => {
-        scrollContainerRef.current.scrollBy({
-            left: scroll,
-            behavior: 'smooth',
-        });
-    }
-
-    const updateMaxScroll = () => {
-        const block = scrollContainerRef.current;
-    
-        if(block){
-            const maxScrollAmount = block.scrollWidth - block.clientWidth;
-            setScrollBlock(maxScrollAmount);
-        }
-    }
+    const {error, subjectIsLoading, getShortSubjects, loadTests, removeTest} = useTest();
 
     React.useEffect(() => {
-        updateMaxScroll();
-    
-        const block = scrollContainerRef.current;
+        setSubjectsIsLoading(true);
+        getShortSubjects().then(subjects => {
+            setSubjectsIsLoading(false);
+            if(!subjects){
+                return;
+            }
 
-        const observer = new MutationObserver(updateMaxScroll);
-
-        if (block) {
-            observer.observe(block, { attributes: true, childList: true, subtree: true });
-        }
-
-        return () => {
-            observer.disconnect();
-        };
+            setSubjects(subjects);
+        });
     }, []);
 
     React.useEffect(() => {
@@ -78,62 +54,25 @@ const TestMain = () => {
 
     return (
         <div className={base.baseWrapperGap16}>
-            <div className={styles.subjectsTags}>
-                {/* Компонент */}
-                <div className={`${styles.subjectsTagsContent} ${scroll >= 40 ? ` ${styles.arrowFade}` : ""}`} ref={scrollContainerRef} onScroll={handleScroll}>
-                    <Link to="russian" className={styles.subjectsTag}>Русский язык</Link>
-                    <Link to="russian" className={styles.subjectsTag}>Математика</Link>
-                    <Link to="russian" className={styles.subjectsTag}>Физика</Link>
-                    <Link to="russian" className={styles.subjectsTag}>Литература</Link>
-                    <Link to="russian" className={styles.subjectsTag}>Информатика</Link>
-                    <Link to="russian" className={styles.subjectsTag}>Обществознание</Link>
-                    <Link to="russian" className={styles.subjectsTag}>Химия</Link>
-                    <Link to="russian" className={styles.subjectsTag}>Биология</Link>
-                    <Link to="russian" className={styles.subjectsTag}>Английский язык</Link>
-                    <Link to="russian" className={styles.subjectsTag}>История</Link>
-                    <Link to="russian" className={styles.subjectsTag}>География</Link>
-                </div>
+            {subjects?.length > 0 && (subjectsIsLoading
+            ? <ScrollSkeleton />
+            : <ScrollWithArrows>
+                {subjects?.map(data => <Link key={data.id} to={`subject/${data.id}`} className={base.tag}>{data.subject}</Link>)}
+            </ScrollWithArrows>)}
 
-                {scrollBlock > 0 && <>
-                    <div className={`${styles.subjectsTagsArrowInner} ${styles.prev}${scroll > 0 ? ` ${styles.arrowFade}` : ""}`}>
-                        <div className={styles.subjectsTagsArrow} onClick={() => scrollTo(-200)}>
-                            <ArrowLeft />
-                        </div>
-                    </div>
-
-                    <div className={`${styles.subjectsTagsArrowInner} ${styles.next}${scroll < scrollBlock ? ` ${styles.arrowFade}` : ""}`}>
-                        <div className={styles.subjectsTagsArrow} onClick={() => scrollTo(200)}>
-                            <ArrowRight />
-                        </div>
-                    </div>
-                </>}
-            </div>
-
-            <div className={styles.testWelcomeWrapper}>
-                <div className={styles.testWelcome}>
-                    <div className={styles.testWelcomeIconInner}>
-                        <Stack />
-                    </div>
-
-                    <div className={styles.testWelcomeTextInner}>
-                        <p className={typography.h4}>Создайте свой вариант из заданных заданий</p>
-
-                        <p className={typography.text2}>
-                            Пройдите или создайте свой уникальный тест, выбирая задания из предложенных вариантов. Узнайте свой уровень знаний, составляя набор заданий, который соответствует вашим интересам и целям. Начните свой путь к успеху уже сегодня!
-                        </p>
-                        
-                        {isAuth
-                        ? <Button to="create" auto type="light" small className={styles.testWelcomeButton}>
-                            Создать вариант
-                        </Button>
-                        : <Button to="/login" auto type="light" small className={styles.testWelcomeButton}>
-                            Авторизуйтесь
-                        </Button>}
-                    </div>
-
-                    <TypesTest className={styles.testWelcomeIcon} />
-                </div>
-            </div>
+            <InfoBlock
+                icon={<Stack />}
+                title="Создайте свой вариант из заданных заданий"
+                text="Пройдите или создайте свой уникальный тест, выбирая задания из предложенных вариантов. Узнайте свой уровень знаний, составляя набор заданий, который соответствует вашим интересам и целям. Начните свой путь к успеху уже сегодня!"
+                button={isAuth
+                    ? <Button to="create" auto type="light" small className={styles.testWelcomeButton}>
+                        Создать вариант
+                    </Button>
+                    : <Button to="/login" auto type="light" small className={styles.testWelcomeButton}>
+                        Авторизуйтесь
+                    </Button>}
+                image={<TypesTest />}
+            />
 
             <div className={`${base.baseWrapperGap16} ${styles.testBlock}`}>
                 <p className={typography.h3}>Рекомендованные тесты</p>
@@ -146,14 +85,17 @@ const TestMain = () => {
             <div className={`${base.baseWrapperGap16} ${styles.testBlock}`}>
                 <div className={base.titleInner}>
                     <div className={base.titleWrapper}>
-                        <p className={typography.h3}>Мои тесты ({testsThree?.length})</p>
+                        <p className={typography.h3}>Мои тесты {!testsIsLoading && `(${testsThree?.length})`}</p>
 
                         <ReloadButton loading={testsIsLoading} onClick={() => loadTests(0, 6, true)} />
                     </div>
 
-                    {!testsIsLoading && <Button auto type="light" to="my">
+                    {!testsIsLoading && (testsThree?.length > 0 ? <Button auto type="light" to="my">
                         Смотреть все
-                    </Button>}
+                    </Button>
+                    : <Button auto type="light" to="create">
+                        Создать
+                    </Button>)}
                 </div>
 
                 <BlockDataWithPaggination
@@ -171,7 +113,8 @@ const TestMain = () => {
                         ?.map(data => <TestItem
                             key={data.id}
                             data={data}
-                            //loading={testIsLoading.includes(data.id)}
+                            loading={subjectIsLoading.includes(data.id)}
+                            deleteCallback={() => removeTest(data.id)}
                         />)}
                     </div>
                 </BlockDataWithPaggination>

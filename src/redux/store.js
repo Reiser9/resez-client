@@ -13,6 +13,7 @@ import logSlice from "./slices/log";
 import roleSlice from "./slices/role";
 import callSlice from "./slices/call";
 import testSlice from "./slices/test";
+import infoSlice from "./slices/info";
 
 export const store = configureStore({
     reducer: {
@@ -28,6 +29,7 @@ export const store = configureStore({
         log: logSlice,
         role: roleSlice,
         call: callSlice,
-        test: testSlice
+        test: testSlice,
+        info: infoSlice
     }
 });

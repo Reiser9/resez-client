@@ -1,0 +1,53 @@
+.pointTableInner{
+    width: 100%;
+    background: var(--input);
+    border-radius: 4px;
+    padding: 1.2rem;
+    display: flex;
+}
+
+.pointTable{
+    width: 100%;
+    padding: 1.2rem;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    border-radius: 4px;
+}
+
+.pointItem{
+    width: 100%;
+    display: flex;
+    gap: 8px;
+}
+
+.pointItemHead, .pointItemCell, .pointItemHeadId, .pointItemCellId{
+    width: calc(100% / 2 - 8px / 2);
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.pointItemCell, .pointItemCellId{
+    border-radius: 4px;
+    background: var(--input);
+    padding: 0.4rem;
+    font-size: 1.6rem;
+}
+
+.pointItemError .pointItemCell, .pointItemError .pointItemCellId{
+    background: var(--errorB);
+    color: var(--error);
+}
+
+.pointItemSuccess .pointItemCell, .pointItemSuccess .pointItemCellId{
+    background: var(--successB);
+    color: var(--success);
+}
+
+.pointItemHeadId, .pointItemCellId{
+    width: 90px;
+    flex-shrink: 0;
+}

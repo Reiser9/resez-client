@@ -33,7 +33,7 @@ const BlockDataWithPaggination = ({
             : dataLength > 0 ? <div className={containerClassName}>
                 {children}
             </div>
-            : notContent ? notContent : <NotContent text="Данных не найдено" />}
+            : !dataMoreIsLoading && (notContent ? notContent : <NotContent text="Данных не найдено" />)}
 
             {dataMoreIsLoading && <div className={containerClassName}>
                 {[...Array(skeletonMoreLoading)].map((_, id) => <Skeleton key={id} />)}

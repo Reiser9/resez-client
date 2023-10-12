@@ -12,19 +12,22 @@ import useTest from '../../../../hooks/useTest';
 
 import { Date, Delete, DotsHorizontal, Edit, Lock, Settings, TypesVariantStart } from '../../../../components/Icons';
 
+import { formatDate } from '../../../../utils/formatDate';
+
 import BackButton from '../../../../components/BackButton';
 import HoverMenu from '../../../../components/HoverMenu';
 import MenuLink from '../../../../components/HoverMenu/MenuLink';
 import IconButton from '../../../../components/IconButton';
 import CardLink from '../../../../components/CardLink';
-import { formatDate } from '../../../../utils/formatDate';
+import TestQuestionItem from '../../../../components/TestQuestionItem';
+import Preloader from '../../../../components/Preloader';
 
 const TestView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
 
     const {id} = useParams();
     const {copyTextWithNotify} = useUtils();
-    const {getTestById} = useTest();
+    const {isLoading, getTestById} = useTest();
     const {test} = useSelector(state => state.test);
 
     React.useEffect(() => {
@@ -35,6 +38,10 @@ const TestView = () => {
 
     const {isOfficial, isPrivate, isExam, date, subject, tasksCount, user, tasks} = test || {};
     const {nickname, avatar} = user || {};
+
+    if(isLoading){
+        return <Preloader page />
+    }
 
     return (
         <div className={base.baseWrapperGap40}>
@@ -51,7 +58,7 @@ const TestView = () => {
                             Вопросов: {tasksCount}
                         </div>
 
-                        {!isPrivate && <Tooltip title="Скрыта">
+                        {isPrivate && <Tooltip title="Скрыта">
                             <div className={styles.testTagIcon}>
                                 <Lock />
                             </div>
@@ -122,11 +129,10 @@ const TestView = () => {
                 <p className={typography.h4}>Вопросы ({tasksCount})</p>
 
                 <div className={base.contentItems}>
-                    <div className={styles.testQuestionItem}>
-
-                    </div>
-
-
+                    {tasks?.map(data => <TestQuestionItem
+                        key={data.id}
+                        data={data}
+                    />)}
                 </div>
             </div>
         </div>

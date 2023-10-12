@@ -73,7 +73,7 @@ const NotifiesMain = ({unread = false}) => {
                     ?.map(data => <NotifyItem
                         key={data.id}
                         data={data}
-                        callback={() => readNotify(data.id, unread)}
+                        callback={() => readNotify(data.id)}
                         loading={notifyIsLoading.includes(data.id)}
                     />)}
                 </div>

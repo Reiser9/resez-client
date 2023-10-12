@@ -28,6 +28,12 @@
     }
 }
 
+.textarea{
+    resize: none;
+    height: 120px;
+    outline: none;
+}
+
 .disabled{
     opacity: 0.6;
     pointer-events: none;

@@ -1,0 +1,32 @@
+.testQuestionItem{
+    width: 100%;
+    border-radius: 4px;
+    padding: 1.2rem;
+    background: var(--input);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.testQuestionTask{
+    width: 100%;
+}
+
+.testQuestionTheme{
+    padding-left: 1.4rem;
+    position: relative;
+}
+
+.testQuestionTheme:before{
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    background: var(--main);
+}

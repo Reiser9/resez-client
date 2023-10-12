@@ -30,7 +30,7 @@ const TaskItem = ({
         <>
             <div className={styles.taskItem}>
                 <div className={base.baseWrapperGap8}>
-                    <div className={`${base.titleInnerNowrap} ${styles.taskItemInner}`}>
+                    <div className={`${base.titleInnerNowrap} ${base.aifs}`}>
                         <div className={styles.taskItemWrapper}>
                             <div className={base.titleWrapper}>
                                 <div className={base.circle32}>

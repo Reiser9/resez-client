@@ -12,7 +12,8 @@ import {
     adminRequest,
     collectionRequest,
     notifyRequest,
-    testRequest
+    testRequest,
+    subjectRequest
 } from '../consts/AXIOS';
 
 import { setDataUser } from '../redux/slices/user';
@@ -26,6 +27,7 @@ import { setDataAdmin } from '../redux/slices/admin';
 import { setDataTraining } from '../redux/slices/training';
 import { setDataCall } from '../redux/slices/call';
 import { setDataTests } from '../redux/slices/test';
+import { setDataInfo } from '../redux/slices/info';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 import { setMainColors } from '../utils/setMainColors';
@@ -47,7 +49,8 @@ const useRequest = () => {
         [REQUEST_TYPE.ADMIN, adminRequest],
         [REQUEST_TYPE.COLLECTION, collectionRequest],
         [REQUEST_TYPE.EMPTY, emptyRequest],
-        [REQUEST_TYPE.TEST, testRequest]
+        [REQUEST_TYPE.TEST, testRequest],
+        [REQUEST_TYPE.SUBJECT, subjectRequest]
     ]);
 
     const clearLocalData = () => {
@@ -67,6 +70,7 @@ const useRequest = () => {
         dispatch(setDataTraining());
         dispatch(setDataCall());
         dispatch(setDataTests());
+        dispatch(setDataInfo());
 
         setMainColors();
 

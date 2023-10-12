@@ -14,7 +14,7 @@ const TrainingMain = () => {
                 <p className={typography.h3}>Тренинг для развития умственных способностей</p>
 
                 <p className={typography.text}>
-                    Здесь вы найдете разнообразные тренировки, которые помогут вам улучшить память, концентрацию, логическое мышление и другие когнитивные функции. Наши тренинги помогут вам стать более эффективным в учебе.
+                    Здесь вы найдете разнообразные тренировки, которые помогут вам улучшить память, концентрацию, логическое мышление и другие когнитивные функции. Наши тренинги помогут вам стать более эффективным в учебе
                 </p>
             </div>
 
@@ -29,7 +29,21 @@ const TrainingMain = () => {
                     </span>
 
                     <p className={typography.text2}>
-                        Изучение материала эффективно и интерактивно, запоминай легко!
+                        Изучение материала эффективно и интерактивно, запоминай легко
+                    </p>
+                </Link>
+
+                <Link to="battle" className={`${base.item3} ${styles.trainingItem}`}>
+                    <span className={styles.trainingItemTitleInner}>
+                        <p className={typography.h4}>Битва знатоков</p>
+
+                        <span className={styles.trainingItemArrow}>
+                            <ArrowRightLong />
+                        </span>
+                    </span>
+
+                    <p className={typography.text2}>
+                        Соревнуйтесь в заданиях между пользователями сайта
                     </p>
                 </Link>
             </div>

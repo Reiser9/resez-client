@@ -6,7 +6,8 @@ const HoverMenu = ({
     value,
     setValue = () => {},
     button,
-    children
+    children,
+    ...props
 }) => {
     const menuRef = React.useRef(null);
     
@@ -29,7 +30,7 @@ const HoverMenu = ({
     }, []);
 
     return (
-        <div className={styles.hoverMenuWrapper} ref={menuRef}>
+        <div className={styles.hoverMenuWrapper} ref={menuRef} {...props}>
             {button}
 
             <div className={`${styles.hoverMenuOverlay}${value ? ` ${styles.active}` : ""}`} onClick={closeMenu}>

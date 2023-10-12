@@ -13,7 +13,6 @@ import {formatDate} from '../../utils/formatDate';
 import { getNotifyType } from '../../utils/getNotifyType';
 
 import Button from '../Button';
-import IconButton from '../IconButton';
 import Modal from '../Modal';
 
 const NotifyItem = ({data, loading = false, callback = () => {}}) => {
@@ -23,16 +22,16 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
 
     const readNotify = (e) => {
         e.preventDefault();
-        callback();
-    }
-
-    const readMore = () => {
         setModal(true);
+
+        if(!isRead){
+            callback();
+        }
     }
 
     return (
         <>
-            <div className={`${base.item2} ${styles.notifyItem}${!isRead ? ` ${styles.unread}` : ""}`}>
+            <div className={`${base.item2} ${styles.notifyItem}${isRead ? ` ${styles.readed}` : ""}`}>
                 <span className={styles.notifyItemWrapper}>
                     {type && <span className={`${styles.notifyItemIconInner}${getNotifyType(type)?.name === "session" ? ` ${styles.session}` : ""}`}>
                         {getNotifyType(type)?.icon}
@@ -59,15 +58,9 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
 
                 <div className={styles.notifyItemButtonInner}>
                     <div className={styles.notifyItemButtonWrap}>
-                        <Button auto type="light" onClick={readMore} className={styles.notifyItemButtonMore}>
+                        <Button auto type="light" onClick={readNotify} className={styles.notifyItemButtonMore} disabled={loading}>
                             Подробнее
                         </Button>
-
-                        {!isRead && <Tooltip title="Пометить как прочитанное">
-                            <IconButton type="light" onClick={readNotify} disabled={loading}>
-                                <Eye />
-                            </IconButton>
-                        </Tooltip>}
                     </div>
                 </div>
             </div>

@@ -15,5 +15,6 @@ export const REQUEST_TYPE = {
     ADMIN: 'admin',
     COLLECTION: 'collection',
     EMPTY: 'empty',
-    TEST: "test"
+    TEST: "test",
+    SUBJECT: "subject"
 };

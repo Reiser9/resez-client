@@ -37,6 +37,10 @@ export const testSlice = createSlice({
                 totalCount: state.tests.totalCount + 1
             };
         },
+        deleteTest: (state, action) => {
+            state.tests.tests = state.tests?.tests?.filter(item => item.id !== action.payload.id);
+            state.tests.totalCount--;
+        },
         initTest: (state, action) => {
             state.test = action.payload;
         },
@@ -49,6 +53,7 @@ export const {
     setTestsIsLoading,
     initTests,
     setTests,
+    deleteTest,
     initTest,
     setDataTests
 } = testSlice.actions;

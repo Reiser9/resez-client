@@ -20,7 +20,7 @@ const MyTests = () => {
     const [testsMoreLoading, setTestsMoreLoading] = React.useState(false);
 
     const {testsIsLoading, tests} = useSelector(state => state.test);
-    const {error, loadTests, getTests} = useTest();
+    const {error, subjectIsLoading, loadTests, getTests, removeTest} = useTest();
 
     const loadMoreTests = React.useCallback(async () => {
         setTestsMoreLoading(true);
@@ -31,6 +31,12 @@ const MyTests = () => {
     React.useEffect(() => {
         loadTests(0, 6);
     }, []);
+
+    React.useEffect(() => {
+        if(tests?.tests?.length === 0 && !tests?.isLast){
+            loadMoreTests();
+        }
+    }, [tests?.tests, tests?.isLast]);
 
     return (
         <div className={base.baseWrapperGap16}>
@@ -65,7 +71,8 @@ const MyTests = () => {
                     ?.map(data => <TestItem
                         key={data.id}
                         data={data}
-                        //loading={testIsLoading.includes(data.id)}
+                        loading={subjectIsLoading.includes(data.id)}
+                        deleteCallback={() => removeTest(data.id)}
                     />)}
                 </div>
             </BlockDataWithPaggination>

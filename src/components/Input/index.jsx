@@ -9,6 +9,7 @@ import {Eye, Blind} from '../Icons';
 import {cleanPhoneNumber} from '../../utils/formatPhone';
 
 const Input = ({
+    type = "input",
     value,
     setValue = () => {},
     placeholder,
@@ -56,6 +57,7 @@ const Input = ({
         }
     }, [show, password]);
 
+    // Отрефакторить(?)
     return (
         <div className={`${styles.inputWrapper}${wrapperClass ? ` ${wrapperClass}` : ""}`}>
             {(title || trackLength) && <div className={styles.inputTitleWrapper}>
@@ -64,25 +66,40 @@ const Input = ({
             </div>}
 
             <div className={styles.inputInner}>
-                {disabled
-                ? <InputMask
-                    maskChar={""}
-                    className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""} ${styles.disabled}`}
-                    placeholder={placeholder}
-                    type={typeInput}
-                    {...props}
-                />
-                : <InputMask
-                    maskChar={""}
-                    className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""}`}
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    maxLength={lengthLimit}
-                    placeholder={placeholder}
-                    type={typeInput}
-                    onPaste={pasteHandler()}
-                    {...props}
-                />}
+                {type === "input"
+                    ? disabled
+                    ? <InputMask
+                        maskChar={""}
+                        className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""} ${styles.disabled}`}
+                        placeholder={placeholder}
+                        type={typeInput}
+                        {...props}
+                    />
+                    : <InputMask
+                        maskChar={""}
+                        className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""}`}
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        maxLength={lengthLimit}
+                        placeholder={placeholder}
+                        type={typeInput}
+                        onPaste={pasteHandler()}
+                        {...props}
+                    />
+                    : disabled
+                    ? <textarea
+                        placeholder={placeholder}
+                        className={`${styles.input} ${styles.textarea}${className ? ` ${className}` : ""} ${styles.disabled}`}
+                        {...props}
+                    ></textarea>
+                    : <textarea
+                        value={value}
+                        placeholder={placeholder}
+                        onChange={e => setValue(e.target.value)}
+                        className={`${styles.input} ${styles.textarea}${className ? ` ${className}` : ""}`}
+                        maxLength={lengthLimit}
+                        {...props}
+                    ></textarea>}
 
                 {password && <div className={styles.inputShow} onClick={() => setShow(prev => !prev)}>
                     {show ? <Blind /> : <Eye />}

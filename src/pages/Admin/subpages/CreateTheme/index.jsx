@@ -94,7 +94,16 @@ const AddTheme = ({edit = false}) => {
     }
 
     return (
-        <CreatePageDefault title={`${edit ? "Редактирование" : "Создание"} темы`}>
+        <CreatePageDefault
+            title={`${edit ? "Редактирование" : "Создание"} темы`}
+            button={edit
+                ? <Button auto type="light" loading={isLoading} onClick={editThemeHandler}>
+                    Сохранить
+                </Button>
+                : <Button auto type="light" loading={isLoading} onClick={createThemeHandler}>
+                    Создать
+                </Button>}
+        >
             <div className={base.form}>
                 <ColorPickerInput
                     title="Выберите основной цвет"
@@ -125,14 +134,6 @@ const AddTheme = ({edit = false}) => {
                 <Checkbox checked={preview} onChange={e => setPreview(e.target.checked)}>
                     Предпросмотр
                 </Checkbox>
-
-                {edit
-                ? <Button auto type="light" loading={isLoading} onClick={editThemeHandler}>
-                    Сохранить
-                </Button>
-                : <Button auto type="light" loading={isLoading} onClick={createThemeHandler}>
-                    Создать
-                </Button>}
             </div>
         </CreatePageDefault>
     )

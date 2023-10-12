@@ -71,3 +71,9 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.subjectSteps{
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 2.4rem;
+}

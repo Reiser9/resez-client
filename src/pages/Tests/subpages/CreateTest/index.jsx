@@ -47,7 +47,16 @@ const CreateTest = ({
     }
 
     return (
-        <CreatePageDefault title={`${edit ? "Редактирование" : "Создание"} теста`}>
+        <CreatePageDefault
+            title={`${edit ? "Редактирование" : "Создание"} теста`}
+            button={edit
+                ? <Button type="light" auto>
+                    Сохранить
+                </Button>
+                : <Button type="light" auto onClick={createTestHandler}>
+                    Создать
+                </Button>}
+        >
             <div className={base.formMedium}>
                 <Select
                     placeholder="Предмет"
@@ -71,14 +80,6 @@ const CreateTest = ({
                 <Checkbox checked={isPrivate} onChange={e => setIsPrivate(e.target.checked)}>
                     Скрыть от других пользователей
                 </Checkbox>
-
-                {edit
-                ? <Button type="light" auto>
-                    Сохранить
-                </Button>
-                : <Button type="light" auto onClick={createTestHandler}>
-                    Создать
-                </Button>}
             </div>
         </CreatePageDefault>
     )

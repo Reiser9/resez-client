@@ -7,14 +7,19 @@ import BackButton from '../BackButton';
 
 const CreatePageDefault = ({
     title,
+    button,
     children
 }) => {
     return (
         <div className={base.baseWrapperGap16}>
-            <div className={base.titleWrapper}>
-                <BackButton />
+            <div className={base.titleInner}>
+                <div className={base.titleWrapper}>
+                    <BackButton />
 
-                <p className={typography.h3}>{title}</p>
+                    <p className={typography.h3}>{title}</p>
+                </div>
+
+                {button && button}
             </div>
 
             {children}

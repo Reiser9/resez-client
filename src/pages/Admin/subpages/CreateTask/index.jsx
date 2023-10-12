@@ -104,7 +104,16 @@ const CreateTask = ({
     }, [theme]);
 
     return (
-        <CreatePageDefault title={`${edit ? "Редактирование" : "Создание"} задания`}>
+        <CreatePageDefault
+            title={`${edit ? "Редактирование" : "Создание"} задания`}
+            button={subTheme && (edit
+                ? <Button type="light" auto loading={isLoading}>
+                    Сохранить
+                </Button>
+                : <Button type="light" auto onClick={createTaskHandler} loading={isLoading}>
+                    Создать
+                </Button>)}
+        >
             <div className={base.formMedium}>
                 <Select
                     placeholder="Предмет"
@@ -157,14 +166,6 @@ const CreateTask = ({
                     <Editor placeholder="Решение" ref={solutionRef} id="answerEditor" />
 
                     <Input title="Ответ" value={answer} setValue={setAnswer} />
-
-                    {edit
-                    ? <Button type="light" auto loading={isLoading}>
-                        Сохранить
-                    </Button>
-                    : <Button type="light" auto onClick={createTaskHandler} loading={isLoading}>
-                        Создать
-                    </Button>}
                 </>}
             </div>
         </CreatePageDefault>

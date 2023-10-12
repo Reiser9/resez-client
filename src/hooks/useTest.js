@@ -16,7 +16,8 @@ import {
     changeSubject,
     addNewTask
 } from '../redux/slices/admin';
-import { addNewTest, initTest, initTests, setTests, setTestsIsLoading } from '../redux/slices/test';
+import { addNewTest, deleteTest, initTest, initTests, setTests, setTestsIsLoading } from '../redux/slices/test';
+import { initTableScore, setTableIsLoading } from '../redux/slices/info';
 
 import useRequest from './useRequest';
 import useAlert from './useAlert';
@@ -74,48 +75,73 @@ const useTest = () => {
         return response.data.subject;
     }
 
-    const createSubject = async (subject, isPublished, subjectTasks, successCallback = () => {}) => {
-        setIsLoading(true);
-
+    const createSubject = async (subject, isPublished, subjectTasks, isMark, durationMinutes, successCallback = () => {}) => {
         if(!subject){
             return alertNotify("Предупреждение", "Название предмета не может быть пустым", "warn");
         }
+        if(!durationMinutes){
+            return alertNotify("Предупреждение", "Введите длительность экзамена", "warn");
+        }
+
+        setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.ADMIN, "subject", HTTP_METHODS.POST, true, {
             subject,
             isPublished,
-            subjectTasks
+            subjectTasks,
+            isMark,
+            durationMinutes
         });
 
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            return errorController(response, () => createSubject(subject, isPublished, subjectTasks, successCallback));
+            return errorController(response, () => createSubject(subject, isPublished, subjectTasks, isMark, durationMinutes, successCallback));
         }
 
         dispatch(addNewSubject(response.data.subject));
-        alertNotify("Успешно", "Предмет создан", "success");
         successCallback();
+
+        return response.data.subject.id; //Возвращаем id предмета, чтобы создать для нее таблицу
     }
 
-    const editSubject = async (id, subject, isPublished, subjectTasks, successCallback = () => {}) => {
+    const editSubject = async (id, subject, isPublished, subjectTasks, isMark, durationMinutes, successCallback = () => {}) => {
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.ADMIN, "subject", HTTP_METHODS.PUT, true, {
             id,
             subject,
             isPublished,
-            subjectTasks
+            subjectTasks,
+            isMark,
+            durationMinutes
         });
 
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            return errorController(response, () => editSubject(id, subject, isPublished, subjectTasks, successCallback));
+            return errorController(response, () => editSubject(id, subject, isPublished, subjectTasks, isMark, durationMinutes, successCallback));
         }
 
         dispatch(changeSubject(response.data.subject));
-        alertNotify("Успешно", "Предмет изменен", "success");
+        successCallback();
+    }
+
+    const createTablePoints = async (subjectId, scoreConversion, successCallback = () => {}) => {
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, "score-conversion", HTTP_METHODS.POST, true, {
+            subjectId,
+            scoreConversion
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => createTablePoints(subjectId, scoreConversion, successCallback));
+        }
+
+        alertNotify("Успешно", "Предмет создан", "success");
         successCallback();
     }
 
@@ -165,6 +191,20 @@ const useTest = () => {
         }
 
         return response.data.subThemes;
+    }
+
+    const getPointsBySubjectId = async (subjectId) => {
+        dispatch(setTableIsLoading(true));
+
+        const response = await request(REQUEST_TYPE.SUBJECT, `/${subjectId}/score-conversion`, HTTP_METHODS.GET);
+
+        dispatch(setTableIsLoading(false));
+
+        if(requestDataIsError(response)){
+            return errorController(response);
+        }
+
+        dispatch(initTableScore(response.data));
     }
 
     // Задания
@@ -336,6 +376,24 @@ const useTest = () => {
         successCallback();
     }
 
+    const removeTest = async (id, successCallback = () => {}) => {
+        setError(false);
+
+        setSubjectIsLoading(prev => [...prev, id]);
+
+        const response = await request(REQUEST_TYPE.TEST, `/${id}`, HTTP_METHODS.DELETE, true);
+
+        setSubjectIsLoading(prev => prev.filter(item => item !== id));
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => removeTest(id, successCallback));
+        }
+
+        dispatch(deleteTest(response.data.test));
+        alertNotify("Успешно", "Тест удален", "success");
+        successCallback();
+    }
+
     return{
         error,
         isLoading,
@@ -345,18 +403,21 @@ const useTest = () => {
         getSubjectById,
         createSubject,
         editSubject,
+        createTablePoints,
         removeSubject,
         getShortSubjects,
         getThemesBySubject,
         getSubThemesByTheme,
+        getPointsBySubjectId,
         loadTasks,
         getAllTasks,
         removeTask,
         createTask,
         loadTests,
         getTestById,
+        getTests,
         createTest,
-        getTests
+        removeTest
     }
 }
 

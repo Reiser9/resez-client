@@ -7,6 +7,7 @@
 .testTags{
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .testTag, .testTagIcon{
@@ -47,11 +48,4 @@
 
 .testDateInner svg path{
     stroke: var(--main);
-}
-
-.testQuestionItem{
-    width: 100%;
-    border-radius: 4px;
-    padding: 1.2rem;
-    background: var(--input);
 }

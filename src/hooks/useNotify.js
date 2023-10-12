@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
-import {deleteNotifyById, initNotifies, readNotifyById, setNotifies, setNotifiesIsLoading} from '../redux/slices/notify';
+import {initNotifies, readNotifyById, setNotifies, setNotifiesIsLoading} from '../redux/slices/notify';
 import { decrementUreadNotifyCount, setUreadNotifyCount } from '../redux/slices/user';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
@@ -63,7 +63,7 @@ const useNotify = () => {
         }
     }
 
-    const readNotify = async (notifyId, unread = false) => {
+    const readNotify = async (notifyId) => {
         setError(false);
 
         setNotifyIsLoading(prev => [...prev, notifyId]);
@@ -77,16 +77,8 @@ const useNotify = () => {
         if(requestDataIsError(response)){
             return errorController(response, () => readNotify(notifyId));
         }
-        
-        alertNotify("Успешно", "Уведомление прочитано", "success");
 
-        if(unread){
-            dispatch(deleteNotifyById(response.data.notify));
-        }
-        else{
-            dispatch(readNotifyById(response.data.notify));
-        }
-
+        dispatch(readNotifyById(response.data.notify));
         dispatch(decrementUreadNotifyCount());
     }
 

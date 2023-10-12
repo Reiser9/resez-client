@@ -10,6 +10,10 @@
     gap: 12px;
 }
 
+.readed{
+    opacity: 0.6;
+}
+
 @media (max-width: 450px) {
     .notifyItem{
         padding: 1.2rem;
@@ -70,19 +74,6 @@
     white-space: nowrap;
     position: relative;
     padding-right: 1.2rem;
-}
-
-.unread .notifyItemTitle:before{
-    content: "";
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--error);
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0;
 }
 
 .notifyItemDate{

@@ -51,7 +51,3 @@
 .taskItemDate{
     color: var(--textGrey);
 }
-
-.taskItemInner{
-    align-items: flex-start;
-}

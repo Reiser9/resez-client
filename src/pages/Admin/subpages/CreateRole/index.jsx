@@ -102,7 +102,16 @@ const AddRole = ({edit = false}) => {
     }
 
     return (
-        <CreatePageDefault title={`${edit ? "Редактирование" : "Создание"} роли`}>
+        <CreatePageDefault
+            title={`${edit ? "Редактирование" : "Создание"} роли`}
+            button={edit
+                ? <Button type="light" auto onClick={updateRoleHandler} loading={isLoading}>
+                    Сохранить
+                </Button>
+                : <Button type="light" auto onClick={createRoleHandler} loading={isLoading}>
+                    Создать
+                </Button>}
+        >
             <div className={base.form}>
                 <div className={styles.rolePreview}>
                     <p className={typography.text2}>Предпросмотр:</p>
@@ -146,13 +155,6 @@ const AddRole = ({edit = false}) => {
                         treeData={currentPermissions}
                     />
                 </div>
-
-                {edit ? <Button type="light" auto onClick={updateRoleHandler} loading={isLoading}>
-                    Сохранить
-                </Button>
-                : <Button type="light" auto onClick={createRoleHandler} loading={isLoading}>
-                    Создать
-                </Button>}
             </div>
         </CreatePageDefault>
     )

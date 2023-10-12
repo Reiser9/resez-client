@@ -13,10 +13,8 @@ import useNotify from '../../../../hooks/useNotify';
 import useTraining from '../../../../hooks/useTraining';
 
 import Input from '../../../../components/Input';
-import Textarea from '../../../../components/Textarea';
 import Button from '../../../../components/Button';
 import IconButton from '../../../../components/IconButton';
-import BackButton from '../../../../components/BackButton';
 import CreatePageDefault from '../../../../components/CreatePageDefault';
 
 const AddCardCollection = ({edit = false}) => {
@@ -89,7 +87,7 @@ const AddCardCollection = ({edit = false}) => {
 
         let hasEmptyField = false;
 
-        for (let i = 0; i < pairs.length; i++) {
+        for(let i = 0; i < pairs.length; i++){
             if(pairs[i].question === "" || pairs[i].answer === ""){
                 hasEmptyField = true;
                 break;
@@ -170,7 +168,17 @@ const AddCardCollection = ({edit = false}) => {
     }, [collection]);
 
     return (
-        <CreatePageDefault title={`${edit ? "Редактирование" : "Создание"} коллекции`}>
+        <CreatePageDefault
+            title={`${edit ? "Редактирование" : "Создание"} коллекции`}
+            button={edit
+                    ? <Button auto type="light" loading={isLoading} onClick={editCollectionHandler}>
+                        Сохранить
+                    </Button>
+                    : <Button auto type="light" loading={isLoading} onClick={createCollectionHandler}>
+                        Создать
+                    </Button>
+            }
+        >
             <div className={`${base.baseWrapperGap16} ${styles.addCardCollectionForm} ${base.aic}`}>
                 <Input value={name} setValue={setName} placeholder="Название" lengthLimit={75} trackLength />
 
@@ -178,7 +186,7 @@ const AddCardCollection = ({edit = false}) => {
                     Добавить описание
                 </Checkbox>
 
-                {withDescription && <Textarea value={description} setValue={setDescription} placeholder="Описание" lengthLimit={500} trackLength />}
+                {withDescription && <Input type="textarea" value={description} setValue={setDescription} placeholder="Описание" lengthLimit={500} trackLength />}
 
                 <Checkbox checked={anonimCollection} onChange={e => setAnonimCollection(e.target.checked)}>
                     Скрыть от других пользователей
@@ -219,14 +227,6 @@ const AddCardCollection = ({edit = false}) => {
                         Добавить
                     </Button>
                 </div>
-
-                {edit
-                ? <Button auto type="light" loading={isLoading} onClick={editCollectionHandler}>
-                    Сохранить
-                </Button>
-                : <Button auto type="light" loading={isLoading} onClick={createCollectionHandler}>
-                    Создать
-                </Button>}
             </div>
         </CreatePageDefault>
     )
