@@ -41,6 +41,12 @@
     border: 1px solid var(--main);
 }
 
+.trainingItem.disabled{
+    filter: grayscale(1);
+    pointer-events: none;
+    opacity: 0.6;
+}
+
 .trainingItemTitleInner{
     width: 100%;
     display: flex;

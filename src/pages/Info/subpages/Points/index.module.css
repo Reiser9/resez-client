@@ -12,6 +12,12 @@
     font-weight: 600;
 }
 
+@media (max-width: 768px) {
+    .pointsText{
+        font-size: 1.4rem;
+    }
+}
+
 .pointsText:before{
     content: "";
     width: 8px;
@@ -44,4 +50,14 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+}
+
+@media (max-width: 1050px) {
+    .pointContent{
+        gap: 16px;
+    }
+
+    .pointWrapper{
+        width: 100%;
+    }
 }

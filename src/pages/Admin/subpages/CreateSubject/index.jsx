@@ -222,10 +222,10 @@ const CreateSubject = ({edit = false}) => {
             title={`${edit ? "Редактирование" : "Создание"} ${step === 0 ? "предмета" : "таблицы"}`}
             button={step === 0
                 ? <Button type="light" auto onClick={subjectHandler} loading={isLoading}>
-                    Далее
+                    {edit ? "Сохранить" : "Далее"}
                 </Button>
                 : <Button type="light" auto onClick={tableHandler} loading={isLoading}>
-                    {edit ? "Создать" : "Сохранить"}
+                    {edit ? "Сохранить" : "Создать"}
                 </Button>}
         >
             <div className={base.formMedium}>
@@ -234,6 +234,9 @@ const CreateSubject = ({edit = false}) => {
                     size="small"
                     items={[{title: "Предмет"}, {title: "Таблица баллов"}]}
                     className={styles.subjectSteps}
+                    onChange={edit ? (data) => {
+                        setStep(data);
+                    } : false}
                 />
 
                 {step === 0 && <>
@@ -382,6 +385,8 @@ const CreateSubject = ({edit = false}) => {
                     green={green}
                     setRed={setRed}
                     setGreen={setGreen}
+                    edit={edit}
+                    subjectId={subjectId}
                 />}
             </div>
         </CreatePageDefault>

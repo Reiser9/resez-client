@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
@@ -29,6 +29,8 @@ const TestMain = () => {
     const {testsIsLoading, tests} = useSelector(state => state.test);
     const {error, subjectIsLoading, getShortSubjects, loadTests, removeTest} = useTest();
 
+    const {subject} = useParams();
+
     React.useEffect(() => {
         setSubjectsIsLoading(true);
         getShortSubjects().then(subjects => {
@@ -52,12 +54,18 @@ const TestMain = () => {
         }
     }, [tests]);
 
+    React.useEffect(() => {
+        if(subject){
+            console.log(subject);
+        }
+    }, [subject]);
+
     return (
         <div className={base.baseWrapperGap16}>
             {subjects?.length > 0 && (subjectsIsLoading
             ? <ScrollSkeleton />
             : <ScrollWithArrows>
-                {subjects?.map(data => <Link key={data.id} to={`subject/${data.id}`} className={base.tag}>{data.subject}</Link>)}
+                {subjects?.map(data => <Link key={data.id} to={`/tests/subject/${data.id}`} className={`${base.tag}${subject == data.id ? ` ${base.active}` : ""}`}>{data.subject}</Link>)}
             </ScrollWithArrows>)}
 
             <InfoBlock
@@ -65,7 +73,7 @@ const TestMain = () => {
                 title="Создайте свой вариант из заданных заданий"
                 text="Пройдите или создайте свой уникальный тест, выбирая задания из предложенных вариантов. Узнайте свой уровень знаний, составляя набор заданий, который соответствует вашим интересам и целям. Начните свой путь к успеху уже сегодня!"
                 button={isAuth
-                    ? <Button to="create" auto type="light" small className={styles.testWelcomeButton}>
+                    ? <Button to="/tests/create" auto type="light" small className={styles.testWelcomeButton}>
                         Создать вариант
                     </Button>
                     : <Button to="/login" auto type="light" small className={styles.testWelcomeButton}>
@@ -74,15 +82,7 @@ const TestMain = () => {
                 image={<TypesTest />}
             />
 
-            <div className={`${base.baseWrapperGap16} ${styles.testBlock}`}>
-                <p className={typography.h3}>Рекомендованные тесты</p>
-
-                <div className={base.contentItems}>
-                    <TestItem data={{subject: "Английский язык"}} />
-                </div>
-            </div>
-
-            <div className={`${base.baseWrapperGap16} ${styles.testBlock}`}>
+            {/* <div className={`${base.baseWrapperGap16} ${styles.testBlock}`}>
                 <div className={base.titleInner}>
                     <div className={base.titleWrapper}>
                         <p className={typography.h3}>Мои тесты {!testsIsLoading && `(${testsThree?.length})`}</p>
@@ -118,7 +118,7 @@ const TestMain = () => {
                         />)}
                     </div>
                 </BlockDataWithPaggination>
-            </div>
+            </div> */}
         </div>
     )
 }

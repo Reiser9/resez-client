@@ -1,13 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Tooltip } from 'antd';
 import parse from 'html-react-parser';
 
 import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
-
-import { Eye } from '../Icons';
 
 import {formatDate} from '../../utils/formatDate';
 import { getNotifyType } from '../../utils/getNotifyType';

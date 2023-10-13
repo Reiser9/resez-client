@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
 import styles from './index.module.css';
+
+import { Tests } from '../../../../components/Icons';
 
 import useTest from '../../../../hooks/useTest';
 
@@ -13,6 +15,7 @@ import Table from '../../../../components/Table';
 import TableItem from '../../../../components/Table/TableItem';
 import ScrollSkeleton from '../../../../components/Skeleton/Scroll';
 import Preloader from '../../../../components/Preloader';
+import NotContent from '../../../../components/NotContent';
 
 const Points = () => {
     const [subjectsIsLoading, setSubjectsIsLoading] = React.useState(false);
@@ -21,6 +24,7 @@ const Points = () => {
     const {getPointsBySubjectId, getShortSubjects} = useTest();
     const {id} = useParams();
     const {tableIsLoading, tableInfo} = useSelector(state => state.info);
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         setSubjectsIsLoading(true);
@@ -39,20 +43,24 @@ const Points = () => {
             getPointsBySubjectId(id);
         }
     }, [id]);
-    
-    if(tableIsLoading){
-        return <Preloader page />
-    }
+
+    React.useEffect(() => {
+        if(!id && subjects?.length > 0){
+            navigate(`/info/points/${subjects[0].id}`, {replace: true});
+        }
+    }, [id, subjects]);
 
     return (
         <div className={base.baseWrapperGap24}>
-            {subjects?.length > 0 && (subjectsIsLoading
+            {subjectsIsLoading
             ? <ScrollSkeleton />
-            : <ScrollWithArrows>
-                {subjects?.map(data => <Link key={data.id} to={`/info/points/${data.id}`} className={`${base.tag}${id == data.id ? ` ${base.active}` : ""}`}>{data.subject}</Link>)}
-            </ScrollWithArrows>)}
+            : subjects?.length > 0 && <ScrollWithArrows>
+                {subjects?.map(data => <Link key={data.id} to={`/info/points/${data.id}`} replace className={`${base.tag}${id == data.id ? ` ${base.active}` : ""}`}>{data.subject}</Link>)}
+            </ScrollWithArrows>}
 
-            {id && <>
+            {tableIsLoading || subjectsIsLoading
+            ? <Preloader />
+            : id ? <>
                 <div className={styles.pointsTextInner}>
                     <p className={`${styles.pointsText} ${styles.pointsTextRed}`}>Красным обозначен минимальный порог для получения аттестата</p>
                     <p className={`${styles.pointsText} ${styles.pointsTextGreen}`}>Зелёным отмечена область, в которой ученик получает оценку "отлично"</p>
@@ -89,7 +97,8 @@ const Points = () => {
                         </Spoiler>
                     </div>
                 </div>
-            </>}
+            </>
+            : subjects.length <= 0 && <NotContent text="Предметов не найдено" icon={<Tests />} />}
         </div>
     )
 }

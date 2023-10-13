@@ -33,7 +33,7 @@ const TrainingMain = () => {
                     </p>
                 </Link>
 
-                <Link to="battle" className={`${base.item3} ${styles.trainingItem}`}>
+                <Link to="battle" className={`${base.item3} ${styles.trainingItem} ${styles.disabled}`}>
                     <span className={styles.trainingItemTitleInner}>
                         <p className={typography.h4}>Битва знатоков</p>
 

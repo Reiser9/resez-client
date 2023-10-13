@@ -1,4 +1,4 @@
-import { Warn, News, Gift, Unknown } from "../components/Icons"
+import { Warn, News, Gift, Unknown, Vote, Added } from "../components/Icons"
 
 export const getNotifyType = (type) => {
     switch(type){
@@ -16,6 +16,16 @@ export const getNotifyType = (type) => {
             return {
                 icon: <Gift />,
                 name: "gift"
+            }
+        case "Голосование":
+            return {
+                icon: <Vote />,
+                name: "vote"
+            }
+        case "Добавление":
+            return {
+                icon: <Added />,
+                name: "added"
             }
         default:
             return {

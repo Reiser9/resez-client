@@ -663,3 +663,7 @@ input::placeholder{
 .ant-steps-icon{
     color: var(--text)!important;
 }
+
+.ant-steps-item:last-child .ant-steps-item-content{
+    min-height: unset!important;
+}

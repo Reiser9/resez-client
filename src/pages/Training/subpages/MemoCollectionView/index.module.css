@@ -88,3 +88,9 @@
         margin-top: .8rem;
     }
 }
+
+.memoCollectionsShowAnswers{
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--main);
+}

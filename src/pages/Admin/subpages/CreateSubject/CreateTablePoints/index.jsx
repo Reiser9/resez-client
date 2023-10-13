@@ -12,7 +12,8 @@ const CreateTablePoints = ({
     green,
     setGreen,
     elements,
-    setElements
+    setElements,
+    edit = false
 }) => {
     const setRedHandler = (id) => {
         setGreen(prev => {

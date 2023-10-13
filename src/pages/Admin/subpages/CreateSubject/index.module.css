@@ -77,3 +77,10 @@
     max-width: 350px;
     margin-bottom: 2.4rem;
 }
+
+@media (max-width: 575px) {
+    .subjectSteps{
+        margin-bottom: 1.2rem;
+        max-width: 100%;
+    }
+}

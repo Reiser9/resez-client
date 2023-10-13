@@ -8,3 +8,7 @@
 .userPointTitle{
     color: var(--textGrey);
 }
+
+.blur{
+    filter: blur(4px);
+}

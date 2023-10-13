@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
@@ -6,7 +7,27 @@ import styles from './index.module.css';
 
 import { Stats } from '../../../../components/Icons';
 
+import {socket} from '../../../../utils/socket';
+
+import { setAdminStats } from '../../../../redux/slices/admin';
+
 const AdminMain = () => {
+    const {adminStats} = useSelector(state => state.admin);
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        socket.emit("stats");
+        socket.on("stats", (data) => {
+            dispatch(setAdminStats(data));
+        });
+
+        return () => {
+            socket.off("stats");
+        }
+    }, []);
+
+    const {accountsCount, blockedAccountsCount, adminsCount, online} = adminStats || {};
+
     return (
         <div className={base.baseWrapperGap16}>
             <p className={typography.h3}>Статистика</p>
@@ -19,7 +40,7 @@ const AdminMain = () => {
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
-                                    423
+                                    {accountsCount || 0}
                                 </p>
                             </div>
 
@@ -33,7 +54,7 @@ const AdminMain = () => {
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
-                                    34
+                                    {online || 0}
                                 </p>
                             </div>
 
@@ -47,7 +68,7 @@ const AdminMain = () => {
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
-                                    12
+                                    {blockedAccountsCount || 0}
                                 </p>
                             </div>
 
@@ -61,7 +82,7 @@ const AdminMain = () => {
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
-                                    2
+                                    {adminsCount || 0}
                                 </p>
                             </div>
 

@@ -25,6 +25,7 @@ import CardLink from '../../../../components/CardLink';
 const CardCollectionView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
     const [deleteCollectionModal, setDeleteCollectionModal] = React.useState(false);
+    const [showAnswers, setShowAnswers] = React.useState(false);
 
     const {isLoading, getCollectionById, deleteCollection} = useTraining();
     const navigate = useNavigate();
@@ -139,12 +140,18 @@ const CardCollectionView = () => {
             </div>
 
             <div className={`${base.contentItems} ${styles.memoCollectionPairsInner}`}>
-                <p className={typography.h4}>Термины ({pairsCount || 0})</p>
+                <div className={base.titleInner}>
+                    <p className={typography.h4}>Термины ({pairsCount || 0})</p>
+
+                    <button className={styles.memoCollectionsShowAnswers} onClick={() => setShowAnswers(prev => !prev)}>
+                        {showAnswers ? "Скрыть ответы" : "Показать ответы"}
+                    </button>
+                </div>
 
                 <div className={base.contentItems}>
                     {QAPairs?.map(data => <div key={data.id} className={`${base.item3} ${styles.memoCollectionPair}`}>
                         <TextPoint title="Вопрос" text={data.question} />
-                        <TextPoint title="Ответ" text={data.answer} />
+                        <TextPoint blur={!showAnswers} title="Ответ" text={data.answer} />
                     </div>)}
                 </div>
             </div>

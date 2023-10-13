@@ -32,7 +32,7 @@ const Training = () => {
                                 <Route path="/memo/:id/edit" element={withSuspense(<AddMemoCollection edit />)} />
                                 <Route path="/memo/:id" element={withSuspense(<MemoCollectionView />)} />
                                 <Route path="/memo/:id/cards" element={withSuspense(<MemoTypeCards />)} />
-                                <Route path="/battle" element={withSuspense(<Battle />)} />
+                                {/* <Route path="/battle" element={withSuspense(<Battle />)} /> */}
                                 <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>
                         </div>
@@ -40,7 +40,7 @@ const Training = () => {
                         <InnerSidebar>
                             <SidebarLink text="Главная" to="" end />
                             <SidebarLink text="Тренировка памяти" to="memo" />
-                            <SidebarLink text="Битва знатоков" to="battle" />
+                            <SidebarLink text="Битва знатоков" to="battle" disabled />
                         </InnerSidebar>
                     </div>
                 </WithSidebarWrapper>

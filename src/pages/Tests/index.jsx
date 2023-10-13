@@ -24,10 +24,10 @@ const Tests = () => {
                     <div className={pws.content}>
                         <Routes>
                             <Route index element={withSuspense(<TestsMain />)} />
+                            <Route path="/subject/:subject" element={withSuspense(<TestsMain />)} />
                             <Route path="/my" element={withSuspense(<MyTests />)} />
                             <Route path="/create" element={withSuspense(<CreateTest />)} />
                             <Route path="/:id" element={withSuspense(<TestView />)} />
-                            {/* <Route path="/subject/:subject" element={withSuspense(<TestSubject />)} /> */}
                             <Route path="*" element={<Navigate to={""} replace />} />
                         </Routes>
                     </div>

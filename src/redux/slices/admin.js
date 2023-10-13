@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
+    adminStats: {},
     usersIsLoading: false,
     users: [],
     themesIsLoading: false,
@@ -15,6 +16,10 @@ export const adminSlice = createSlice({
     name: 'admin',
     initialState,
     reducers: {
+        // Статистика
+        setAdminStats: (state, action) => {
+            state.adminStats = action.payload;
+        },
         // Пользователи
         setUsersIsLoading: (state, action) => {
             state.usersIsLoading = action.payload;
@@ -144,6 +149,7 @@ export const adminSlice = createSlice({
 });
 
 export const {
+    setAdminStats,
     setUsersIsLoading,
     initUsers,
     setUsers,
