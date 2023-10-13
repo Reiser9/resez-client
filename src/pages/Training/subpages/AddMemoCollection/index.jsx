@@ -16,6 +16,7 @@ import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import IconButton from '../../../../components/IconButton';
 import CreatePageDefault from '../../../../components/CreatePageDefault';
+import Preloader from '../../../../components/Preloader';
 
 const AddCardCollection = ({edit = false}) => {
     const [name, setName] = React.useState("");
@@ -30,7 +31,7 @@ const AddCardCollection = ({edit = false}) => {
     const [answer, setAnswer] = React.useState("");
 
     const {alertNotify} = useNotify();
-    const {isLoading, createCollection, getCollectionById, updateCollection} = useTraining();
+    const {isLoading, collectionByIdIsLoading, createCollection, getCollectionById, updateCollection} = useTraining();
     const navigate = useNavigate();
     const {id} = useParams();
     const {collection} = useSelector(state => state.training);
@@ -171,15 +172,17 @@ const AddCardCollection = ({edit = false}) => {
         <CreatePageDefault
             title={`${edit ? "Редактирование" : "Создание"} коллекции`}
             button={edit
-                    ? <Button auto type="light" loading={isLoading} onClick={editCollectionHandler}>
+                    ? <Button auto type="light" loading={isLoading || collectionByIdIsLoading} onClick={editCollectionHandler}>
                         Сохранить
                     </Button>
-                    : <Button auto type="light" loading={isLoading} onClick={createCollectionHandler}>
+                    : <Button auto type="light" loading={isLoading || collectionByIdIsLoading} onClick={createCollectionHandler}>
                         Создать
                     </Button>
             }
         >
-            <div className={`${base.baseWrapperGap16} ${styles.addCardCollectionForm} ${base.aic}`}>
+            {collectionByIdIsLoading
+            ? <Preloader />
+            : <div className={`${base.baseWrapperGap16} ${styles.addCardCollectionForm} ${base.aic}`}>
                 <Input value={name} setValue={setName} placeholder="Название" lengthLimit={75} trackLength />
 
                 <Checkbox checked={withDescription} onChange={e => setWithDescription(e.target.checked)}>
@@ -227,7 +230,7 @@ const AddCardCollection = ({edit = false}) => {
                         Добавить
                     </Button>
                 </div>
-            </div>
+            </div>}
         </CreatePageDefault>
     )
 }

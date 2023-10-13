@@ -14,7 +14,9 @@ import {
     setTasks,
     deleteTask,
     changeSubject,
-    addNewTask
+    addNewTask,
+    setTaskCatalogIsLoading,
+    initTaskCatalog
 } from '../redux/slices/admin';
 import { addNewTest, deleteTest, initTest, initTests, setTests, setTestsIsLoading } from '../redux/slices/test';
 import { initTableScore, setTableIsLoading } from '../redux/slices/info';
@@ -172,22 +174,20 @@ const useTest = () => {
     }
 
     const getThemesBySubject = async (id) => {
-        const response = await request(REQUEST_TYPE.ADMIN, `/subject/${id}/subject-task`, HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.SUBJECT, `/${id}/subject-task`, HTTP_METHODS.GET);
 
-        // Поменять на запрос без авторизации
         if(requestDataIsError(response)){
-            return errorController(response, () => getThemesBySubject(id), "", () => {});
+            return errorController(response);
         }
 
         return response.data.subjectTasks;
     }
 
     const getSubThemesByTheme = async (id) => {
-        const response = await request(REQUEST_TYPE.ADMIN, `/subject-task/${id}/sub-theme`, HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.EMPTY, `/subject-task/${id}/sub-theme`, HTTP_METHODS.GET);
 
-        // Поменять на запрос без авторизации
         if(requestDataIsError(response)){
-            return errorController(response, () => getSubThemesByTheme(id), "", () => {});
+            return errorController(response);
         }
 
         return response.data.subThemes;
@@ -292,6 +292,22 @@ const useTest = () => {
         dispatch(addNewTask(response.data.task));
         alertNotify("Успешно", "Задание создано", "success");
         successCallback();
+    }
+
+    const getTasksBySubject = async (id) => {
+        setError(false);
+
+        dispatch(setTaskCatalogIsLoading(true));
+
+        const response = await request(REQUEST_TYPE.SUBJECT, `/${id}/task-info`, HTTP_METHODS.GET);
+
+        dispatch(setTaskCatalogIsLoading(false));
+
+        if(requestDataIsError(response)){
+            return errorController(response);
+        }
+
+        dispatch(initTaskCatalog(response.data.subjectTasks));
     }
 
     // Тесты
@@ -413,6 +429,7 @@ const useTest = () => {
         getAllTasks,
         removeTask,
         createTask,
+        getTasksBySubject,
         loadTests,
         getTestById,
         getTests,

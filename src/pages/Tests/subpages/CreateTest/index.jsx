@@ -21,7 +21,7 @@ const CreateTest = ({
     const [subjects, setSubjects] = React.useState([]);
     const [subjectsIsLoading, setSubjectsIsLoading] = React.useState(false);
 
-    const {getShortSubjects, createTest} = useTest();
+    const {isLoading, getShortSubjects, createTest} = useTest();
     const navigate = useNavigate();
 
     const subjectsDropdown = (open) => {
@@ -50,10 +50,10 @@ const CreateTest = ({
         <CreatePageDefault
             title={`${edit ? "Редактирование" : "Создание"} теста`}
             button={edit
-                ? <Button type="light" auto>
+                ? <Button type="light" auto loading={isLoading}>
                     Сохранить
                 </Button>
-                : <Button type="light" auto onClick={createTestHandler}>
+                : <Button type="light" auto onClick={createTestHandler} loading={isLoading}>
                     Создать
                 </Button>}
         >

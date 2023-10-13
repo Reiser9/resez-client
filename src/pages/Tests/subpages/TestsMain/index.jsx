@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
@@ -19,6 +19,8 @@ import ReloadButton from '../../../../components/ReloadButton';
 import ScrollWithArrows from '../../../../components/ScrollWithArrows';
 import InfoBlock from '../../../../components/InfoBlock';
 import ScrollSkeleton from '../../../../components/Skeleton/Scroll';
+import CatalogItem from '../../../../components/CatalogItem';
+import Preloader from '../../../../components/Preloader';
 
 const TestMain = () => {
     const [subjectsIsLoading, setSubjectsIsLoading] = React.useState(false);
@@ -27,8 +29,10 @@ const TestMain = () => {
 
     const {isAuth} = useSelector(state => state.auth);
     const {testsIsLoading, tests} = useSelector(state => state.test);
-    const {error, subjectIsLoading, getShortSubjects, loadTests, removeTest} = useTest();
+    const {taskCatalogIsLoading, taskCatalog} = useSelector(state => state.admin);
+    const {error, subjectIsLoading, getShortSubjects, loadTests, removeTest, getTasksBySubject} = useTest();
 
+    const navigate = useNavigate();
     const {subject} = useParams();
 
     React.useEffect(() => {
@@ -47,26 +51,32 @@ const TestMain = () => {
         loadTests(0, 6);
     }, []);
 
-    React.useEffect(() => {
-        if(tests.tests){
-            const firstThree = tests.tests.slice(0, 3);
-            setTestsThree(firstThree);
-        }
-    }, [tests]);
+    // React.useEffect(() => {
+    //     if(tests.tests){
+    //         const firstThree = tests.tests.slice(0, 3);
+    //         setTestsThree(firstThree);
+    //     }
+    // }, [tests]);
 
     React.useEffect(() => {
         if(subject){
-            console.log(subject);
+            getTasksBySubject(subject);
         }
     }, [subject]);
 
+    React.useEffect(() => {
+        if(!subject && subjects?.length > 0){
+            navigate(`/tests/subject/${subjects[0].id}`, {replace: true});
+        }
+    }, [subject, subjects]);
+
     return (
         <div className={base.baseWrapperGap16}>
-            {subjects?.length > 0 && (subjectsIsLoading
+            {subjectsIsLoading
             ? <ScrollSkeleton />
-            : <ScrollWithArrows>
-                {subjects?.map(data => <Link key={data.id} to={`/tests/subject/${data.id}`} className={`${base.tag}${subject == data.id ? ` ${base.active}` : ""}`}>{data.subject}</Link>)}
-            </ScrollWithArrows>)}
+            : subjects?.length > 0 && <ScrollWithArrows>
+                {subjects?.map(data => <Link key={data.id} to={`/tests/subject/${data.id}`} replace className={`${base.tag}${subject == data.id ? ` ${base.active}` : ""}`}>{data.subject}</Link>)}
+            </ScrollWithArrows>}
 
             <InfoBlock
                 icon={<Stack />}
@@ -81,6 +91,16 @@ const TestMain = () => {
                     </Button>}
                 image={<TypesTest />}
             />
+
+            {taskCatalogIsLoading
+            ? <Preloader />
+            :<div className={base.baseWrapperGap12}>
+                <p className={typography.h4}>Каталог заданий</p>
+
+                <div className={base.contentItems}>
+                    {taskCatalog?.map(data => <CatalogItem key={data.id} data={data} />)}
+                </div>
+            </div>}
 
             {/* <div className={`${base.baseWrapperGap16} ${styles.testBlock}`}>
                 <div className={base.titleInner}>

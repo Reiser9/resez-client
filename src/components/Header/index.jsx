@@ -6,7 +6,7 @@ import { Switch } from 'antd';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { ArrowBottom, Cross, Enter, Exit, Menu, Moon, Notify, User } from '../Icons';
+import { ArrowBottom, Cross, Enter, Exit, Menu, Moon, Notify, Trophy, User } from '../Icons';
 
 import { setSidebarShow } from '../../redux/slices/app';
 
@@ -136,6 +136,12 @@ const Header = ({empty = false}) => {
                                         Уведомления
 
                                         {unreadNotifiesCount > 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 9 ? "9+" : unreadNotifiesCount}</span>}
+                                    </Link>
+
+                                    <Link to="/achievments" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
+                                        <Trophy />
+
+                                        Достижения
                                     </Link>
                                 </> :
                                 <Link to="/login" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>

@@ -11,4 +11,5 @@
 
 .blur{
     filter: blur(4px);
+    user-select: none;
 }

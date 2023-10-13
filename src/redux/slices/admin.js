@@ -10,6 +10,8 @@ const initialState = {
     subjects: [],
     tasksIsLoading: false,
     tasks: [],
+    taskCatalogIsLoading: false,
+    taskCatalog: []
 };
 
 export const adminSlice = createSlice({
@@ -144,6 +146,12 @@ export const adminSlice = createSlice({
             state.tasks.tasks = state.tasks?.tasks?.filter(item => item.id !== action.payload.id);
             state.tasks.totalCount--;
         },
+        setTaskCatalogIsLoading: (state, action) => {
+            state.taskCatalogIsLoading = action.payload;
+        },
+        initTaskCatalog: (state, action) => {
+            state.taskCatalog = action.payload;
+        },
         setDataAdmin: () => initialState
     }
 });
@@ -170,6 +178,8 @@ export const {
     setTasks,
     addNewTask,
     deleteTask,
+    setTaskCatalogIsLoading,
+    initTaskCatalog,
     setDataAdmin
 } = adminSlice.actions;
 

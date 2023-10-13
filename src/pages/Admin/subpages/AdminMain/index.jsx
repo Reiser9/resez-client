@@ -26,7 +26,7 @@ const AdminMain = () => {
         }
     }, []);
 
-    const {accountsCount, blockedAccountsCount, adminsCount, online} = adminStats || {};
+    const {accountsCount, blockedAccountsCount, adminsCount, totalOnline, authUsersOnline} = adminStats || {};
 
     return (
         <div className={base.baseWrapperGap16}>
@@ -35,6 +35,34 @@ const AdminMain = () => {
             <div className={styles.adminStats}>
                 <div className={styles.adminStatsContent}>
                     <div className={styles.adminStatsItems}>
+                        <div className={styles.adminStatsItem}>
+                            <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
+                                <div className={styles.adminStatsCircle}></div>
+
+                                <p className={styles.adminStatsNumber}>
+                                    {totalOnline || 0}
+                                </p>
+                            </div>
+
+                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                                Общий онлайн
+                            </p>
+                        </div>
+
+                        <div className={styles.adminStatsItem}>
+                            <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
+                                <div className={styles.adminStatsCircle}></div>
+
+                                <p className={styles.adminStatsNumber}>
+                                    {authUsersOnline || 0}
+                                </p>
+                            </div>
+
+                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                                Онлайн авторизованных
+                            </p>
+                        </div>
+
                         <div className={styles.adminStatsItem}>
                             <div className={`${styles.adminStatsNumberInner} ${styles.info}`}>
                                 <div className={styles.adminStatsCircle}></div>
@@ -46,20 +74,6 @@ const AdminMain = () => {
 
                             <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
                                 Зарегистрировано аккаунтов
-                            </p>
-                        </div>
-
-                        <div className={styles.adminStatsItem}>
-                            <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
-                                <div className={styles.adminStatsCircle}></div>
-
-                                <p className={styles.adminStatsNumber}>
-                                    {online || 0}
-                                </p>
-                            </div>
-
-                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
-                                Онлайн
                             </p>
                         </div>
 
