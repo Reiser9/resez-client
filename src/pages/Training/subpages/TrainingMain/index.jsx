@@ -6,6 +6,7 @@ import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
 import {ArrowRightLong} from '../../../../components/Icons';
+import LinkBlock from '../../../../components/LinkBlock';
 
 const TrainingMain = () => {
     return (
@@ -19,33 +20,8 @@ const TrainingMain = () => {
             </div>
 
             <div className={base.contentItems}>
-                <Link to="memo" className={`${base.item3} ${styles.trainingItem}`}>
-                    <span className={styles.trainingItemTitleInner}>
-                        <p className={typography.h4}>Тренировка памяти</p>
-
-                        <span className={styles.trainingItemArrow}>
-                            <ArrowRightLong />
-                        </span>
-                    </span>
-
-                    <p className={typography.text2}>
-                        Изучение материала эффективно и интерактивно, запоминай легко
-                    </p>
-                </Link>
-
-                <Link to="battle" className={`${base.item3} ${styles.trainingItem} ${styles.disabled}`}>
-                    <span className={styles.trainingItemTitleInner}>
-                        <p className={typography.h4}>Битва знатоков</p>
-
-                        <span className={styles.trainingItemArrow}>
-                            <ArrowRightLong />
-                        </span>
-                    </span>
-
-                    <p className={typography.text2}>
-                        Соревнуйтесь в заданиях между пользователями сайта
-                    </p>
-                </Link>
+                <LinkBlock to="memo" title="Тренировка памяти" text="Изучение материала эффективно и интерактивно, запоминай легко" />
+                <LinkBlock to="battle" title="Битва знатоков" text="Соревнуйтесь в заданиях между пользователями сайта" disabled />
             </div>
         </div>
     )

@@ -40,7 +40,14 @@ const Points = () => {
 
     React.useEffect(() => {
         if(id){
-            getPointsBySubjectId(id);
+            getPointsBySubjectId(id, () => {
+                if(!id && subjects?.length > 0){
+                    navigate(`/info/points/${subjects[0].id}`, {replace: true});
+                }
+                else{
+                    navigate("/info", {replace: true});
+                }
+            });
         }
     }, [id]);
 

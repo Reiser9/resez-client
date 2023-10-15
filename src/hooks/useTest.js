@@ -193,7 +193,7 @@ const useTest = () => {
         return response.data.subThemes;
     }
 
-    const getPointsBySubjectId = async (subjectId) => {
+    const getPointsBySubjectId = async (subjectId, errorCallback = () => {}) => {
         dispatch(setTableIsLoading(true));
 
         const response = await request(REQUEST_TYPE.SUBJECT, `/${subjectId}/score-conversion`, HTTP_METHODS.GET);
@@ -201,7 +201,9 @@ const useTest = () => {
         dispatch(setTableIsLoading(false));
 
         if(requestDataIsError(response)){
-            return errorController(response);
+            errorCallback();
+
+            return errorController(response, () => {}, "Предмет не найден");
         }
 
         dispatch(initTableScore(response.data));
@@ -294,7 +296,7 @@ const useTest = () => {
         successCallback();
     }
 
-    const getTasksBySubject = async (id) => {
+    const getTasksBySubject = async (id, errorCallback = () => {}) => {
         setError(false);
 
         dispatch(setTaskCatalogIsLoading(true));
@@ -304,7 +306,8 @@ const useTest = () => {
         dispatch(setTaskCatalogIsLoading(false));
 
         if(requestDataIsError(response)){
-            return errorController(response);
+            errorCallback();
+            return errorController(response, () => {}, "", () => {});
         }
 
         dispatch(initTaskCatalog(response.data.subjectTasks));
@@ -351,7 +354,7 @@ const useTest = () => {
         }
     }
 
-    const getTestById = async (id) => {
+    const getTestById = async (id, errorCallback = () => {}) => {
         setError(false);
 
         setIsLoading(true);
@@ -362,8 +365,9 @@ const useTest = () => {
 
         if(requestDataIsError(response)){
             setError(true);
+            errorCallback();
 
-            return errorController(response, () => getTestById(id));
+            return errorController(response, () => getTestById(id, errorCallback), "Тест не найден");
         }
 
         dispatch(initTest(response.data.test));

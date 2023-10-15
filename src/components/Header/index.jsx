@@ -138,7 +138,7 @@ const Header = ({empty = false}) => {
                                         {unreadNotifiesCount > 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 9 ? "9+" : unreadNotifiesCount}</span>}
                                     </Link>
 
-                                    <Link to="/achievments" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
+                                    <Link to="/profile/achievements" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
                                         <Trophy />
 
                                         Достижения

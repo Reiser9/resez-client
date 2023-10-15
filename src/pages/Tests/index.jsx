@@ -27,13 +27,13 @@ const Tests = () => {
                             <Route path="/subject/:subject" element={withSuspense(<TestsMain />)} />
                             <Route path="/my" element={withSuspense(<MyTests />)} />
                             <Route path="/create" element={withSuspense(<CreateTest />)} />
-                            <Route path="/:id" element={withSuspense(<TestView />)} />
+                            <Route path="/exam/:id" element={withSuspense(<TestView />)} />
                             <Route path="*" element={<Navigate to={""} replace />} />
                         </Routes>
                     </div>
 
                     <InnerSidebar>
-                        <SidebarLink text="Главная" to="" end />
+                        <SidebarLink text="Главная" to="subject" />
                         <SidebarLink text="Мои тесты" to="my" />
                     </InnerSidebar>
                 </div>

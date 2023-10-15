@@ -60,7 +60,14 @@ const TestMain = () => {
 
     React.useEffect(() => {
         if(subject){
-            getTasksBySubject(subject);
+            getTasksBySubject(subject, () => {
+                if(!subject && subjects?.length > 0){
+                    navigate(`/tests/subject/${subjects[0].id}`, {replace: true});
+                }
+                else{
+                    navigate("/tests", {replace: true});
+                }
+            });
         }
     }, [subject]);
 

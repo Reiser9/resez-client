@@ -27,7 +27,7 @@ const Info = () => {
 
                     <InnerSidebar>
                         <SidebarLink text="Главная" to="" end />
-                        <SidebarLink text="Темы" to="themes" />
+                        <SidebarLink text="Темы" to="themes" disabled />
                     </InnerSidebar>
                 </div>
             </WithSidebarWrapper>

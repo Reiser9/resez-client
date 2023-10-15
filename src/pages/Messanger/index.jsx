@@ -6,30 +6,31 @@ import typography from '../../styles/typography.module.css';
 import pws from '../../styles/pageWithSidebar.module.css';
 import styles from './index.module.css';
 
-import { ArrowLeft, Block, Clip, Cross, Delete, DotsHorizontal, Microphone, Mobile, Phone, Plus, Search, Send } from '../../components/Icons';
+//import { ArrowLeft, Block, Clip, Cross, Delete, DotsHorizontal, Microphone, Mobile, Phone, Plus, Search, Send } from '../../components/Icons';
+import { Build } from '../../components/Icons';
 
 import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
-import BackButton from '../../components/BackButton';
-import HoverMenu from '../../components/HoverMenu';
-import IconButton from '../../components/IconButton';
-import MenuLink from '../../components/HoverMenu/MenuLink';
-import DialogMessageItem from '../../components/DialogMessageItem';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
-import DialogItem from '../../components/DialogItem';
+import PageIsBuild from '../../components/PageIsBuild';
+// import HoverMenu from '../../components/HoverMenu';
+// import IconButton from '../../components/IconButton';
+// import MenuLink from '../../components/HoverMenu/MenuLink';
+// import DialogMessageItem from '../../components/DialogMessageItem';
+// import Input from '../../components/Input';
+// import Button from '../../components/Button';
+// import DialogItem from '../../components/DialogItem';
 
 const Messanger = () => {
-    const [message, setMessage] = React.useState("");
-    const [actionMenu, setActionMenu] = React.useState(false);
-    const [messageSelected, setMessageSelected] = React.useState(false);
-    const [mobileShowDialog, setMobileShowDialog] = React.useState(false);
+    // const [message, setMessage] = React.useState("");
+    // const [actionMenu, setActionMenu] = React.useState(false);
+    // const [messageSelected, setMessageSelected] = React.useState(false);
+    // const [mobileShowDialog, setMobileShowDialog] = React.useState(false);
 
     return (
         <TitleWrapper pageTitle="ResEz - Мессенджер">
             <WithSidebarWrapper>
                 <div className={pws.wrapper}>
-                    <div className={`${pws.contentFull} ${styles.messangerWrapper}`}>
+                    {/* <div className={`${pws.contentFull} ${styles.messangerWrapper}`}>
                         <div className={styles.messanger}>
                             <div className={`${styles.messangerContent}${mobileShowDialog ? ` ${styles.show}` : ""}`}>
                                 <div className={styles.messangerTopBar}>
@@ -124,7 +125,6 @@ const Messanger = () => {
                                         <Clip />
                                     </IconButton>
                                     
-                                    {/* Сделать кастомный инпут, не компонент */}
                                     <Input value={message} setValue={setMessage} placeholder="Напишите сообщение" />
 
                                     <IconButton className={styles.sendButton}>
@@ -157,7 +157,16 @@ const Messanger = () => {
                                     />
                                 </div>
                             </div>
-                        </div>
+                        </div> 
+
+
+                    </div> */}
+
+                    <div className={pws.contentFull}>
+                        <PageIsBuild
+                            title="Страница находится в разработке.."
+                            text="В следующем обновлении сайта она обязательно появится, запаситесь терпения и возвращайтесь чуть позже"
+                        />
                     </div>
                 </div>
             </WithSidebarWrapper>

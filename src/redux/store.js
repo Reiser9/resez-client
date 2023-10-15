@@ -14,6 +14,7 @@ import roleSlice from "./slices/role";
 import callSlice from "./slices/call";
 import testSlice from "./slices/test";
 import infoSlice from "./slices/info";
+import taskSlice from "./slices/task";
 
 export const store = configureStore({
     reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
         role: roleSlice,
         call: callSlice,
         test: testSlice,
-        info: infoSlice
+        info: infoSlice,
+        task: taskSlice
     }
 });

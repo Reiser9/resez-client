@@ -22,7 +22,7 @@ const CatalogItem = ({
 
             <div className={styles.catalogItemSubthemes}>
                 {subThemes.map(data => data.tasksCount !== 0
-                    ? <Link key={data.id} to={`/subtheme/${data.id}`} className={styles.catalogItemLink}>({data.tasksCount}) {data.subTheme}</Link>
+                    ? <Link key={data.id} to={`/task/subtheme/${data.id}`} className={styles.catalogItemLink}>({data.tasksCount}) {data.subTheme}</Link>
                     : <p key={data.id} className={styles.catalogItemText}>({data.tasksCount}) {data.subTheme}</p>)}
             </div>
         </div>

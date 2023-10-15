@@ -6,7 +6,7 @@ import styles from './index.module.css';
 
 import ReloadButton from '../../../../components/ReloadButton';
 
-const Achievments = () => {
+const Achievements = () => {
     return (
         <div className={base.baseWrapperGap16}>
             <div className={base.titleInner}>
@@ -20,4 +20,4 @@ const Achievments = () => {
     )
 }
 
-export default Achievments;
+export default Achievements;

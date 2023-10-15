@@ -16,6 +16,10 @@ import {
     subjectRequest
 } from '../consts/AXIOS';
 
+import { requestDataIsError } from '../utils/requestDataIsError';
+import { setMainColors } from '../utils/setMainColors';
+import { socket } from '../utils/socket';
+
 import { setDataUser } from '../redux/slices/user';
 import { setDataAuth, setIsAuth } from '../redux/slices/auth';
 import { setDataApp } from '../redux/slices/app';
@@ -28,10 +32,7 @@ import { setDataTraining } from '../redux/slices/training';
 import { setDataCall } from '../redux/slices/call';
 import { setDataTests } from '../redux/slices/test';
 import { setDataInfo } from '../redux/slices/info';
-
-import { requestDataIsError } from '../utils/requestDataIsError';
-import { setMainColors } from '../utils/setMainColors';
-import { socket } from '../utils/socket';
+import { setDataTask } from '../redux/slices/task';
 
 const useRequest = () => {
     const [error, setError] = React.useState(false);
@@ -71,6 +72,7 @@ const useRequest = () => {
         dispatch(setDataCall());
         dispatch(setDataTests());
         dispatch(setDataInfo());
+        dispatch(setDataTask());
 
         setMainColors();
 

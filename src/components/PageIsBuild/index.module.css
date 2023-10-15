@@ -1,0 +1,22 @@
+.messangerBuildContent{
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+
+.messangerBuildContent svg{
+    width: 90%;
+    max-width: 380px;
+}
+
+.messangerBuildTitle, .messangerBuildText{
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.messangerBuildText{
+    margin-top: 1.2rem;
+}

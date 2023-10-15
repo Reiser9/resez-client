@@ -31,6 +31,7 @@ const Info = () => {
                     <InnerSidebar>
                         <SidebarLink text="Главная" to="" end />
                         <SidebarLink text="Баллы ЕГЭ" to="points" />
+                        <SidebarLink text="Разбор заданий" to="analysis" disabled />
                     </InnerSidebar>
                 </div>
             </WithSidebarWrapper>

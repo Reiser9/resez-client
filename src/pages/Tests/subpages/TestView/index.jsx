@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import { useSelector } from 'react-redux';
 
@@ -26,13 +26,14 @@ const TestView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
 
     const {id} = useParams();
+    const navigate = useNavigate();
     const {copyTextWithNotify} = useUtils();
     const {isLoading, getTestById} = useTest();
     const {test} = useSelector(state => state.test);
 
     React.useEffect(() => {
         if(id){
-            getTestById(id);
+            getTestById(id, () => navigate("/tests", {replace: true}));
         }
     }, [id]);
 
@@ -96,7 +97,7 @@ const TestView = () => {
                     </div>
                 </div>
 
-                <p className={`${typography.h4} ${styles.testId}`} onClick={() => copyTextWithNotify(id, "ID варианта скопировано")}>
+                <p className={`${typography.h4} ${styles.testId}`} onClick={() => copyTextWithNotify(id, "ID теста скопировано")}>
                     ID: {id}
                 </p>
 
