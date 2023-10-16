@@ -59,6 +59,18 @@ export const userSlice = createSlice({
         initSessionId: (state, action) => {
             state.sessionId = action.payload;
         },
+        updateUserSettings: (state, action) => {
+            const currentUserSettings = state.user.settings;
+
+            if(!currentUserSettings){
+                return;
+            }
+
+            state.user = {
+                ...state.user,
+                settings: {...action.payload}
+            }
+        },
         setDataUser: () => initialState
     }
 });
@@ -75,6 +87,7 @@ export const {
     incrementUreadNotifyCount,
     setUserBlocked,
     initSessionId,
+    updateUserSettings,
     setDataUser
 } = userSlice.actions;
 

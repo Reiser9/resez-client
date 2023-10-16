@@ -30,6 +30,7 @@ const useTest = () => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [subjectIsLoading, setSubjectIsLoading] = React.useState([]);
     const [taskIsLoading, setTaskIsLoading] = React.useState([]);
+    const [testCheckIsLoading, setTestCheckIsLoading] = React.useState(false);
 
     const {alertNotify} = useAlert();
     const {request} = useRequest();
@@ -201,9 +202,7 @@ const useTest = () => {
         dispatch(setTableIsLoading(false));
 
         if(requestDataIsError(response)){
-            errorCallback();
-
-            return errorController(response, () => {}, "Предмет не найден");
+            return errorController(response, () => {}, "Предмет не найден", errorCallback);
         }
 
         dispatch(initTableScore(response.data));
@@ -306,8 +305,7 @@ const useTest = () => {
         dispatch(setTaskCatalogIsLoading(false));
 
         if(requestDataIsError(response)){
-            errorCallback();
-            return errorController(response, () => {}, "", () => {});
+            return errorController(response, () => {}, "", errorCallback);
         }
 
         dispatch(initTaskCatalog(response.data.subjectTasks));
@@ -365,9 +363,8 @@ const useTest = () => {
 
         if(requestDataIsError(response)){
             setError(true);
-            errorCallback();
 
-            return errorController(response, () => getTestById(id, errorCallback), "Тест не найден");
+            return errorController(response, () => getTestById(id, errorCallback), "Тест не найден", errorCallback);
         }
 
         dispatch(initTest(response.data.test));
@@ -414,11 +411,34 @@ const useTest = () => {
         successCallback();
     }
 
+    const checkTest = async (id, spentSeconds, tasksWithoutDetailedAnswer, tasksWithDetailedAnswer, successCallback = () => {}) => {
+        setError(false);
+
+        setTestCheckIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.TEST, "/check", HTTP_METHODS.POST, false, {
+            id,
+            spentSeconds,
+            tasksWithoutDetailedAnswer,
+            tasksWithDetailedAnswer
+        });
+
+        setTestCheckIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response);
+        }
+
+        successCallback();
+        return response.data;
+    }
+
     return{
         error,
         isLoading,
         subjectIsLoading,
         taskIsLoading,
+        testCheckIsLoading,
         loadSubjects,
         getSubjectById,
         createSubject,
@@ -438,7 +458,8 @@ const useTest = () => {
         getTestById,
         getTests,
         createTest,
-        removeTest
+        removeTest,
+        checkTest
     }
 }
 

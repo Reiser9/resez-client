@@ -23,11 +23,23 @@
     gap: 8px;
 }
 
+@media (max-width: 600px) {
+    .pointItem{
+        gap: 4px;
+    }
+}
+
 .pointItemHead, .pointItemCell, .pointItemHeadId, .pointItemCellId{
     width: calc(100% / 2 - 8px / 2);
     font-size: 1.4rem;
     text-align: center;
     font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .pointItemHead, .pointItemCell, .pointItemHeadId, .pointItemCellId{
+        width: calc(100% / 2 - 4px / 2);
+    }
 }
 
 .pointItemCell, .pointItemCellId{
@@ -47,7 +59,22 @@
     color: var(--success);
 }
 
+.pointItemWarn .pointItemCell, .pointItemWarn .pointItemCellId{
+    background: var(--warnB);
+    color: var(--warn);
+}
+
 .pointItemHeadId, .pointItemCellId{
     width: 90px;
     flex-shrink: 0;
+}
+
+@media (max-width: 650px) {
+    .pointItemHeadId, .pointItemCellId{
+        width: 60px;
+    }
+    
+    .pointItemCell, .pointItemCellId{
+        font-size: 1.4rem;
+    }
 }

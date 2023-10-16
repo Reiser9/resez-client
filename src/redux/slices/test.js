@@ -33,7 +33,7 @@ export const testSlice = createSlice({
 
             state.tests = {
                 ...state.tests,
-                tests: [...currentTests, action.payload],
+                tests: [action.payload, ...currentTests],
                 totalCount: state.tests.totalCount + 1
             };
         },

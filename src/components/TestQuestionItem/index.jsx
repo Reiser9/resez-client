@@ -1,7 +1,9 @@
 import React from 'react';
-import { Tooltip } from 'antd';
 import parse from 'html-react-parser'
+import { Link } from 'react-router-dom';
+import { Tooltip } from 'antd';
 
+import typography from '../../styles/typography.module.css';
 import base from '../../styles/base.module.css';
 import styles from './index.module.css';
 
@@ -10,15 +12,17 @@ import { Swap } from '../Icons';
 import IconButton from '../IconButton';
 
 const TestQuestionItem = ({data}) => {
-    const {number, theme, subTheme, task} = data || {};
+    const {id, number, theme, subTheme, task} = data || {};
 
     return (
         <div className={styles.testQuestionItem}>
-            <div className={base.titleInner}>
-                <div className={base.titleWrapper}>
-                    <div className={base.circle32}>
+            <div className={base.titleInnerNowrap}>
+                <Link to={`/task/${id}`} className={styles.taskItemWrapper}>
+                    <span className={base.circle32}>
                         {number}
-                    </div>
+                    </span>
+
+                    <p className={typography.h4}>Задание</p>
 
                     {theme && <p className={styles.testQuestionTheme}>
                         {theme}
@@ -27,18 +31,18 @@ const TestQuestionItem = ({data}) => {
                     {subTheme && <p className={styles.testQuestionTheme}>
                         {subTheme}
                     </p>}
-                </div>
+                </Link>
 
                 <Tooltip title="Заменить">
-                    <IconButton small type="light">
+                    <IconButton small type="light" disabled>
                         <Swap />
                     </IconButton>
                 </Tooltip>
             </div>
 
-            <div className={`${base.format} ${styles.testQuestionTask}`}>
+            {task && <div className={`${base.format} ${styles.testQuestionTask}`}>
                 {parse(task)}
-            </div>
+            </div>}
         </div>
     )
 }

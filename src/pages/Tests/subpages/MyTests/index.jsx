@@ -47,7 +47,7 @@ const MyTests = () => {
                     <ReloadButton onClick={() => loadTests(0, 6, true)} loading={testsIsLoading} />
                 </div>
 
-                {!testsIsLoading && <Button auto type="light" to="../create">
+                {!testsIsLoading && <Button auto type="light" to="create">
                     Создать
                 </Button>}
             </div>

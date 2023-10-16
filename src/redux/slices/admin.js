@@ -68,7 +68,7 @@ export const adminSlice = createSlice({
 
             state.themes = {
                 ...state.themes,
-                themes: [...currentThemes, action.payload],
+                themes: [action.payload, ...currentThemes],
                 totalCount: state.themes.totalCount + 1
             };
         },
@@ -99,7 +99,7 @@ export const adminSlice = createSlice({
 
             state.subjects = {
                 ...state.subjects,
-                subjects: [...currentSubjects, action.payload],
+                subjects: [action.payload, ...currentSubjects],
                 totalCount: state.subjects.totalCount + 1
             };
         },
@@ -138,7 +138,7 @@ export const adminSlice = createSlice({
 
             state.tasks = {
                 ...state.tasks,
-                tasks: [...currentTasks, action.payload],
+                tasks: [action.payload, ...currentTasks],
                 totalCount: state.tasks.totalCount + 1
             };
         },

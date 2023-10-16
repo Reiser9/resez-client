@@ -58,7 +58,7 @@ const App = () => {
                         <Route path="notifies/*" element={withSuspense(<Notifies />)} />
                         <Route path="training/*" element={withSuspense(<Training />)} />
                         <Route path="tests/*" element={withSuspense(<Tests />)} />
-                        <Route path="tests/:id/test" element={withSuspense(<Test />)} />
+                        <Route path="tests/exam/:id/test" element={withSuspense(<Test />)} />
                         <Route path="messanger/*" element={withSuspense(<Messanger />)} />
                         <Route path="info/*" element={withSuspense(<Info />)} />
                         <Route path="store/*" element={withSuspense(<Store />)} />

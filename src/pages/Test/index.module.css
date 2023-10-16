@@ -103,3 +103,85 @@ div.testInfoItem{
     stroke: var(--error);
 }
 /* //Вынести */
+
+.taskInner{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.taskSidebar{
+    width: 100%;
+    max-width: 310px;
+    border-radius: 4px;
+    padding: 1.2rem;
+    background: var(--input);
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+}
+
+@media (max-width: 998px) {
+    .taskSidebar{
+        max-width: 100%;
+        padding: 4rem 1.6rem 2.4rem 1.6rem!important;
+    }
+}
+
+.taskContent{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.taskTestButtons{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.testResult{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.testResultTitle{
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .testResultTitle{
+        font-size: 1.8rem;
+    }
+}
+
+.testResultTitle span{
+    color: var(--main);
+}
+
+.testResultWrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.testResultSubtitle{
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+}

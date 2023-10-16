@@ -1,6 +1,6 @@
 import styles from '../components/LogItem/index.module.css';
 
-import { Block, Enter, Notify, Planet, Reload, Unknown } from "../components/Icons"
+import { Block, Crown, Enter, Notify, Planet, Reload, Unknown } from "../components/Icons"
 
 export const getLogTypeByType = (type) => {
     switch(type){
@@ -29,6 +29,11 @@ export const getLogTypeByType = (type) => {
         case "Уведомления":
             return {
                 icon: <Notify />,
+                class: styles.info
+            }
+        case "Роли":
+            return {
+                icon: <Crown />,
                 class: styles.info
             }
         default:

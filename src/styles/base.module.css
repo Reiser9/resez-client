@@ -271,6 +271,13 @@
     padding: 0.8rem;
 }
 
+@media (max-width: 600px) {
+    .format td, .format th{
+        padding: 0.4rem;
+        font-size: 1.4rem;
+    }
+}
+
 .format a{
     color: var(--main);
 }

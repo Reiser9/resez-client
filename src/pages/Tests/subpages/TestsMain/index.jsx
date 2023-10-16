@@ -60,14 +60,7 @@ const TestMain = () => {
 
     React.useEffect(() => {
         if(subject){
-            getTasksBySubject(subject, () => {
-                if(!subject && subjects?.length > 0){
-                    navigate(`/tests/subject/${subjects[0].id}`, {replace: true});
-                }
-                else{
-                    navigate("/tests", {replace: true});
-                }
-            });
+            getTasksBySubject(subject, () => navigate("/tests", {replace: true}));
         }
     }, [subject]);
 
@@ -90,7 +83,7 @@ const TestMain = () => {
                 title="Создайте свой вариант из заданных заданий"
                 text="Пройдите или создайте свой уникальный тест, выбирая задания из предложенных вариантов. Узнайте свой уровень знаний, составляя набор заданий, который соответствует вашим интересам и целям. Начните свой путь к успеху уже сегодня!"
                 button={isAuth
-                    ? <Button to="/tests/create" auto type="light" small className={styles.testWelcomeButton}>
+                    ? <Button to="/tests/my/create" auto type="light" small className={styles.testWelcomeButton}>
                         Создать вариант
                     </Button>
                     : <Button to="/login" auto type="light" small className={styles.testWelcomeButton}>

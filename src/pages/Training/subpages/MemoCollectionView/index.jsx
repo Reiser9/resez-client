@@ -31,6 +31,9 @@ const CardCollectionView = () => {
     const navigate = useNavigate();
     const {id} = useParams();
     const {collection} = useSelector(state => state.training);
+    const {user: userData} = useSelector(state => state.user);
+    const {settings, id: userId} = userData || {};
+    const {isShowAvatars} = settings || {};
 
     React.useEffect(() => {
         if(isNaN(id)){
@@ -41,7 +44,7 @@ const CardCollectionView = () => {
     }, [id]);
 
     const {collection: name, pairsCount, description, isPrivate, user, QAPairs, date} = collection || {};
-    const {nickname, avatar} = user || {};
+    const {id: authorId, nickname, avatar} = user || {};
 
     if(isLoading){
         return <Preloader page />
@@ -106,7 +109,7 @@ const CardCollectionView = () => {
             <div className={base.titleInner}>
                 <div className={base.titleWrapper}>
                     <div className={base.circle40}>
-                        {avatar
+                        {avatar && !isShowAvatars || userId === authorId
                             ? <img src={avatar} alt="avatar" className={base.circleAvatar} />
                             : nickname && nickname[0]}
                     </div>

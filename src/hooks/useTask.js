@@ -31,9 +31,8 @@ const useTask = () => {
 
         if(requestDataIsError(response)){
             setError(true);
-            errorCallback();
 
-            return errorController(response);
+            return errorController(response, () => {}, "", errorCallback);
         }
 
         dispatch(initTasks(response.data));
@@ -50,9 +49,8 @@ const useTask = () => {
 
         if(requestDataIsError(response)){
             setError(true);
-            errorCallback();
 
-            return errorController(response);
+            return errorController(response, () => {}, "", errorCallback);
         }
 
         dispatch(initTasks(response.data));

@@ -15,7 +15,7 @@ const CreateTest = ({
     edit = false
 }) => {
     const [subject, setSubject] = React.useState();
-    const [generateVariant, setGenerateVariant] = React.useState(false);
+    const [generateVariant, setGenerateVariant] = React.useState(true); //Поменять на false
     const [isPrivate, setIsPrivate] = React.useState(false);
 
     const [subjects, setSubjects] = React.useState([]);
@@ -73,7 +73,7 @@ const CreateTest = ({
                     })}
                 />
 
-                <Checkbox checked={generateVariant} onChange={e => setGenerateVariant(e.target.checked)}>
+                <Checkbox disabled checked={generateVariant} onChange={e => setGenerateVariant(e.target.checked)}>
                     Сгенерировать вариант ЕГЭ
                 </Checkbox>
 

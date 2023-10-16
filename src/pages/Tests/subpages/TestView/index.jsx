@@ -21,15 +21,20 @@ import IconButton from '../../../../components/IconButton';
 import CardLink from '../../../../components/CardLink';
 import TestQuestionItem from '../../../../components/TestQuestionItem';
 import Preloader from '../../../../components/Preloader';
+import ConfirmModal from '../../../../components/Modal/ConfirmModal';
 
 const TestView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
+    const [confirmDelete, setConfirmDelete] = React.useState(false);
 
     const {id} = useParams();
     const navigate = useNavigate();
     const {copyTextWithNotify} = useUtils();
-    const {isLoading, getTestById} = useTest();
+    const {isLoading, getTestById, removeTest} = useTest();
     const {test} = useSelector(state => state.test);
+    const {user: userData} = useSelector(state => state.user);
+    const {settings, id: userId} = userData || {};
+    const {isShowAvatars} = settings || {};
 
     React.useEffect(() => {
         if(id){
@@ -37,106 +42,115 @@ const TestView = () => {
         }
     }, [id]);
 
-    const {isOfficial, isPrivate, isExam, date, subject, tasksCount, user, tasks} = test || {};
-    const {nickname, avatar} = user || {};
+    const {id: testId, isOfficial, isPrivate, isExam, date, subject, tasksCount, user, tasks} = test || {};
+    const {id: authorId, nickname, avatar} = user || {};
 
     if(isLoading){
         return <Preloader page />
     }
 
     return (
-        <div className={base.baseWrapperGap40}>
-            <div className={base.baseWrapperGap16}>
-                <div className={base.titleInnerNowrap}>
-                    <div className={styles.testTags}>
-                        <BackButton />
+        <>
+            <div className={base.baseWrapperGap40}>
+                <div className={base.baseWrapperGap16}>
+                    <div className={base.titleInnerNowrap}>
+                        <div className={styles.testTags}>
+                            <BackButton />
 
-                        <div className={styles.testTag}>
-                            {subject}
-                        </div>
-
-                        <div className={styles.testTag}>
-                            Вопросов: {tasksCount}
-                        </div>
-
-                        {isPrivate && <Tooltip title="Скрыта">
-                            <div className={styles.testTagIcon}>
-                                <Lock />
+                            <div className={styles.testTag}>
+                                {subject}
                             </div>
-                        </Tooltip>}
-                    </div>
 
-                    <div className={styles.testTags}>
-                        <HoverMenu
-                            value={actionMenu}
-                            setValue={setActionMenu}
-                            button={
-                                <IconButton type="light" small onClick={() => setActionMenu(prev => !prev)}>
-                                    <DotsHorizontal />
-                                </IconButton>
-                            }
-                        >
-                            <MenuLink disabled>
-                                <Settings />
+                            <div className={styles.testTag}>
+                                Вопросов: {tasksCount}
+                            </div>
 
-                                Настройки
-                            </MenuLink>
-
-                            <MenuLink>
-                                <Edit />
-
-                                Редактировать
-                            </MenuLink>
-
-                            <MenuLink danger>
-                                <Delete />
-
-                                Удалить
-                            </MenuLink>
-                        </HoverMenu>
-                    </div>
-                </div>
-
-                <p className={`${typography.h4} ${styles.testId}`} onClick={() => copyTextWithNotify(id, "ID теста скопировано")}>
-                    ID: {id}
-                </p>
-
-                <div className={base.titleInner}>
-                    <div className={base.titleWrapper}>
-                        <div className={base.circle40}>
-                            {avatar
-                            ? <img src={avatar} alt="avatar" className={base.circleAvatar} />
-                            : nickname ? nickname[0] : "No"}
+                            {isPrivate && <Tooltip title="Скрыта">
+                                <div className={styles.testTagIcon}>
+                                    <Lock />
+                                </div>
+                            </Tooltip>}
                         </div>
 
-                        <p className={typography.text}>{nickname}</p>
+                        <div className={styles.testTags}>
+                            <HoverMenu
+                                value={actionMenu}
+                                setValue={setActionMenu}
+                                button={
+                                    <IconButton type="light" small onClick={() => setActionMenu(prev => !prev)}>
+                                        <DotsHorizontal />
+                                    </IconButton>
+                                }
+                            >
+                                <MenuLink disabled>
+                                    <Settings />
+
+                                    Настройки
+                                </MenuLink>
+
+                                <MenuLink disabled>
+                                    <Edit />
+
+                                    Редактировать
+                                </MenuLink>
+
+                                <MenuLink danger onClick={() => setConfirmDelete(true)}>
+                                    <Delete />
+
+                                    Удалить
+                                </MenuLink>
+                            </HoverMenu>
+                        </div>
                     </div>
 
-                    <div className={styles.testDateInner}>
-                        <Date />
+                    <p className={`${typography.h4} ${styles.testId}`} onClick={() => copyTextWithNotify(id, "ID теста скопировано")}>
+                        ID: {id}
+                    </p>
 
-                        {formatDate(date, "D MMMM YYYY")}
+                    <div className={base.titleInner}>
+                        <div className={base.titleWrapper}>
+                            <div className={base.circle40}>
+                                {avatar && !isShowAvatars || userId === authorId
+                                ? <img src={avatar} alt="avatar" className={base.circleAvatar} />
+                                : nickname ? nickname[0] : "No"}
+                            </div>
+
+                            <p className={typography.text}>{nickname}</p>
+                        </div>
+
+                        <div className={styles.testDateInner}>
+                            <Date />
+
+                            {formatDate(date, "D MMMM YYYY")}
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div className={base.contentItems}>
-                <CardLink title="Решать" to="test">
-                    <TypesVariantStart />
-                </CardLink>
-            </div>
-
-            <div className={base.baseWrapperGap12}>
-                <p className={typography.h4}>Вопросы ({tasksCount})</p>
 
                 <div className={base.contentItems}>
-                    {tasks?.map(data => <TestQuestionItem
-                        key={data.id}
-                        data={data}
-                    />)}
+                    <CardLink title="Решать" to="test">
+                        <TypesVariantStart />
+                    </CardLink>
+                </div>
+
+                <div className={base.baseWrapperGap12}>
+                    <p className={typography.h4}>Вопросы ({tasksCount})</p>
+
+                    <div className={base.contentItems}>
+                        {tasks?.map(data => <TestQuestionItem
+                            key={data.id}
+                            data={data}
+                        />)}
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <ConfirmModal
+                value={confirmDelete}
+                setValue={setConfirmDelete}
+                text="Вы действительно хотите удалить тест?"
+                callback={() => removeTest(testId, () => navigate("/tests", {replace: true}))}
+            />
+        </>
     )
 }
 

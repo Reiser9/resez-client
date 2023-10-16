@@ -1,5 +1,7 @@
 import React from 'react';
 import parse from 'html-react-parser';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
@@ -20,8 +22,12 @@ const TaskItem = ({
     deleteTask = () => {},
     loading = false
 }) => {
-    const {date, subject, theme, subTheme, user, task, number} = data || {};
-    const {nickname, avatar} = user || {};
+    const {id, date, subject, theme, subTheme, user, task, number} = data || {};
+    const {id: authorId, nickname, avatar} = user || {};
+
+    const {user: userData} = useSelector(state => state.user);
+    const {settings, id: userId} = userData || {};
+    const {isShowAvatars} = settings || {};
 
     const [actionMenu, setActionMenu] = React.useState(false);
     const [confirmDelete, setConfirmDelete] = React.useState(false);
@@ -31,19 +37,19 @@ const TaskItem = ({
             <div className={styles.taskItem}>
                 <div className={base.baseWrapperGap8}>
                     <div className={`${base.titleInnerNowrap} ${base.aifs}`}>
-                        <div className={styles.taskItemWrapper}>
-                            <div className={base.titleWrapper}>
-                                <div className={base.circle32}>
+                        <Link to={`/task/${id}`} className={styles.taskItemWrapper}>
+                            <span className={base.titleWrapper}>
+                                <span className={base.circle32}>
                                     {number}
-                                </div>
+                                </span>
 
                                 <p className={typography.h4}>{subject}</p>
-                            </div>
+                            </span>
 
                             <p className={styles.taskTheme}>{theme}</p>
 
                             <p className={styles.taskTheme}>{subTheme}</p>
-                        </div>
+                        </Link>
 
                         <HoverMenu
                             button={
@@ -71,7 +77,7 @@ const TaskItem = ({
                     <div className={base.titleInner}>
                         <div className={base.titleWrapper}>
                             <div className={base.circle40}>
-                                {avatar
+                                {avatar && !isShowAvatars || userId === authorId
                                     ? <img src={avatar} alt="avatar" className={base.circleAvatar} />
                                     : nickname && nickname[0]}
                             </div>
@@ -85,9 +91,9 @@ const TaskItem = ({
                     </div>
                 </div>
 
-                <div className={styles.taskItemContent}>
+                {task && <div className={styles.taskItemContent}>
                     {parse(task)}
-                </div>
+                </div>}
 
                 {loading && <LoaderForItem />}
             </div>

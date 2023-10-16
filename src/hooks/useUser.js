@@ -5,7 +5,7 @@ import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
 import { requestDataIsError } from '../utils/requestDataIsError';
 
-import { initProfileData, initUser } from '../redux/slices/user';
+import { initProfileData, initUser, updateUserSettings } from '../redux/slices/user';
 
 import useRequest from './useRequest';
 import useAlert from './useAlert';
@@ -182,6 +182,26 @@ const useUser = () => {
         alertNotify("Успешно", "Данные сохранены", "success");
     }
 
+    const updateSettings = async (isPrivateAccount, isShowAvatars) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.USER, "/settings", HTTP_METHODS.PUT, true, {
+            isPrivateAccount,
+            isShowAvatars
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => updateSettings(isPrivateAccount, isShowAvatars));
+        }
+
+        dispatch(updateUserSettings(response.data.settings));
+        alertNotify("Успешно", "Настройки обновлены", "success");
+    }
+
     return {
         isLoading,
         profileInfoIsLoading,
@@ -192,7 +212,8 @@ const useUser = () => {
         changePasswordVerify,
         changeAvatar,
         deleteAvatar,
-        changeData
+        changeData,
+        updateSettings
     }
 }
 

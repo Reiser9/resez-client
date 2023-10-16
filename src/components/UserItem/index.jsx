@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tooltip } from 'antd';
+import { useSelector } from 'react-redux';
 
 import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
@@ -22,6 +23,9 @@ import LoaderForItem from '../LoaderForItem';
 
 const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = () => {}}) => {
     const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName, status} = data;
+    const {user} = useSelector(state => state.user);
+    const {settings, id: userId} = user || {};
+    const {isShowAvatars} = settings || {};
 
     const [confirmBlock, setConfirmBlock] = React.useState(false);
     const [confirmUnblock, setConfirmUnblock] = React.useState(false);
@@ -34,7 +38,7 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
             <div className={styles.userItem}>
                 <div className={styles.userInfoInner}>
                     <div className={styles.userAvatarInner}>
-                        {avatar
+                        {avatar && !isShowAvatars || userId === id
                         ? <img src={avatar} alt="avatar" className={styles.userAvatar} />
                         : nickname
                             ? <p className={styles.userAvatarName}>{nickname[0]}</p>

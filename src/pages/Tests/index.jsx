@@ -26,7 +26,7 @@ const Tests = () => {
                             <Route index element={withSuspense(<TestsMain />)} />
                             <Route path="/subject/:subject" element={withSuspense(<TestsMain />)} />
                             <Route path="/my" element={withSuspense(<MyTests />)} />
-                            <Route path="/create" element={withSuspense(<CreateTest />)} />
+                            <Route path="/my/create" element={withSuspense(<CreateTest />)} />
                             <Route path="/exam/:id" element={withSuspense(<TestView />)} />
                             <Route path="*" element={<Navigate to={""} replace />} />
                         </Routes>

@@ -30,7 +30,7 @@ const TestItem = ({
             <div className={`${base.item3} ${styles.testItem}`}>
                 <div className={styles.testItemWrapper}>
                     <div className={styles.testItemTitleWrapper}>
-                        {subject && <Link to={`/tests/${id}`}>
+                        {subject && <Link to={`/tests/exam/${id}`}>
                             <p className={styles.testItemName}>{subject}</p>
                         </Link>}
 
@@ -43,7 +43,7 @@ const TestItem = ({
                             value={actionMenu}
                             setValue={setActionMenu}
                         >
-                            <MenuLink>
+                            <MenuLink disabled>
                                 <Edit />
 
                                 Редактировать
@@ -62,7 +62,7 @@ const TestItem = ({
                         <TextPoint title="ID теста" text={id} className={styles.testItemInfoItem} />
                     </div>
 
-                    <div className={styles.testItemScore}>
+                    {/* <div className={styles.testItemScore}>
                         <p className={`${typography.text2} ${styles.testItemScoreTitle}`}>Прогресс решения</p>
 
                         <div className={styles.testItemScoreContent}>
@@ -92,7 +92,7 @@ const TestItem = ({
                         <div className={styles.testItemLockResult}>
                             Решите тест полностью, чтобы увидеть результат
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className={styles.testItemTags}>

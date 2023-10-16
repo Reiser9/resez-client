@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
@@ -11,7 +12,11 @@ import { getLogTypeByType } from '../../utils/getLogTypeByType';
 
 const LogItem = ({data, loading}) => {
     const {message, date, logType, user, id} = data;
-    const {nickname, avatar} = user;
+    const {id: authorId, nickname, avatar} = user;
+
+    const {user: userData} = useSelector(state => state.user);
+    const {settings, id: userId} = userData || {};
+    const {isShowAvatars} = settings || {};
 
     return (
         <div className={styles.logsItem}>
@@ -27,7 +32,7 @@ const LogItem = ({data, loading}) => {
 
                     <div className={styles.logsItemUserInner}>
                         <div className={styles.logsItemUserImgInner}>
-                            {avatar
+                            {avatar && !isShowAvatars || userId === authorId
                             ? <img className={styles.logsItemUserImg} src={avatar} alt="avatar" />
                             :<p className={styles.logsItemUserLetter}>{nickname[0]}</p>}
                         </div>

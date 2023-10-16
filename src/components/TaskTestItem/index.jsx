@@ -9,9 +9,16 @@ import { Error } from '../Icons';
 
 import IconButton from '../IconButton';
 import Spoiler from '../Spoiler';
+import Input from '../Input';
 
-const TaskTestItem = ({data, showAnswer = false}) => {
-    const {number, task, solution, answer} = data || {};
+const TaskTestItem = ({
+    data,
+    value,
+    setValue = () => {},
+    showAnswer = false,
+    test = false
+}) => {
+    const {id, number, task, solution, answer, isDetailedAnswer} = data || {};
 
     return (
         <div className={styles.taskItem}>
@@ -29,17 +36,27 @@ const TaskTestItem = ({data, showAnswer = false}) => {
                 </IconButton>
             </div>
 
-            <div className={base.format}>
+            {task && <div className={base.format}>
                 {parse(task)}
-            </div>
+            </div>}
 
-            <Spoiler title="Решение" defaultOpen={showAnswer}>
-                <div className={base.format}>
-                    {parse(solution)}
+            {test
+            ? isDetailedAnswer
+                ? <p className={styles.taskItemDetailed}>
+                    Задание проверяется самостоятельно, решите данное задание в тетради и на следующей странице вы сможете проверить его
+                </p>
+                : <div className={`${base.baseWrapperGap4} ${styles.testTaskItemAnswer}`}>
+                    <p className={styles.answerTitle}>Ответ:</p>
+
+                    <Input value={value} setValue={e => setValue(id, e)} />
                 </div>
+            : <Spoiler title="Решение" defaultOpen={showAnswer}>
+                {solution && <div className={base.format}>
+                    {parse(solution)}
+                </div>}
 
                 <p className={styles.taskItemAnswer}>Ответ: {answer}</p>
-            </Spoiler>
+            </Spoiler>}
         </div>
     )
 }

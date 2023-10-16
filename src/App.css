@@ -207,6 +207,7 @@ input::placeholder{
 
 .ant-checkbox-checked .ant-checkbox-inner{
     background: var(--main)!important;
+    border-color: var(--main)!important;
 }
 
 .ant-checkbox-wrapper{
@@ -218,6 +219,14 @@ input::placeholder{
     .ant-checkbox-wrapper{
         cursor: pointer!important;
     }
+}
+
+.ant-checkbox-disabled .ant-checkbox-inner:after{
+    border-color: #fff!important;
+}
+
+.ant-checkbox-disabled{
+    opacity: 0.6!important;
 }
 
 /* Custom select antd */
