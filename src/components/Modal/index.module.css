@@ -171,3 +171,9 @@
     justify-content: center;
     gap: 12px;
 }
+
+@media (max-width: 440px) {
+    .confirmModalButtons{
+        flex-wrap: wrap;
+    }
+}

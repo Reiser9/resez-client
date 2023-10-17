@@ -411,6 +411,23 @@ const useTest = () => {
         successCallback();
     }
 
+    const checkDetailedTasks = async (id, successCallback = () => {}) => {
+        setError(false);
+
+        setTestCheckIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.TEST, `/${id}/detailed-answer-tasks`, HTTP_METHODS.GET);
+
+        setTestCheckIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response);
+        }
+
+        successCallback();
+        return response.data.tasks;
+    }
+
     const checkTest = async (id, spentSeconds, tasksWithoutDetailedAnswer, tasksWithDetailedAnswer, successCallback = () => {}) => {
         setError(false);
 
@@ -459,6 +476,7 @@ const useTest = () => {
         getTests,
         createTest,
         removeTest,
+        checkDetailedTasks,
         checkTest
     }
 }

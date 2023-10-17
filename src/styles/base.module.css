@@ -7,6 +7,11 @@
     max-width: 1200px;
 }
 
+.textCenter{
+    width: 100%;
+    text-align: center;
+}
+
 .baseWrapperGap12, .baseWrapperGap16, .baseWrapperGap8, .baseWrapperGap4, .baseWrapperGap20, .baseWrapperGap0,
 .baseWrapperGap40, .baseWrapperGap24{
     width: 100%;
@@ -287,6 +292,7 @@
     width: 100%;
     background: var(--input);
     padding: 0.8rem;
+    overflow-x: auto;
 }
 
 @media (max-width: 768px) {

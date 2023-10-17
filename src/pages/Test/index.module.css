@@ -149,11 +149,7 @@ div.testInfoItem{
 }
 
 .testResult{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 20px;
 }
 
 .testResultTitle{
@@ -166,6 +162,12 @@ div.testInfoItem{
     .testResultTitle{
         font-size: 1.8rem;
     }
+}
+
+.testResultSubtitle{
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
 }
 
 .testResultTitle span{
@@ -184,4 +186,8 @@ div.testInfoItem{
     width: 100%;
     text-align: center;
     font-weight: 600;
+}
+
+.taskSlider{
+    width: 100%;
 }

@@ -676,3 +676,9 @@ input::placeholder{
 .ant-steps-item:last-child .ant-steps-item-content{
     min-height: unset!important;
 }
+
+/* Custom slider antd */
+.ant-slider{
+    width: calc(100% - 20px)!important;
+    margin: 10px!important;
+}

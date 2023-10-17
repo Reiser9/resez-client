@@ -5,37 +5,50 @@ const useTimer = (countdownSeconds, onTimerEnd) => {
     const [elapsedTime, setElapsedTime] = React.useState(0);
     const [timerEnded, setTimerEnded] = React.useState(false);
     const [isPaused, setIsPaused] = React.useState(false);
+    const [isRestart, setIsRestart] = React.useState(false);
 
     React.useEffect(() => {
         let interval;
 
-        if(!isPaused){
+        if(!isPaused || isRestart){
             interval = setInterval(() => {
-                setRemainingTime((prevRemainingTime) => {
-                    if(prevRemainingTime === 0){
+                setRemainingTime(prev => {
+                    if(prev === 0){
                         clearInterval(interval);
                         setTimerEnded(true);
                         onTimerEnd();
 
                         return 0;
                     }
-                    return prevRemainingTime - 1;
+
+                    if(isRestart){
+                        setElapsedTime(0);
+                        setRemainingTime(countdownSeconds * 60);
+                        setIsRestart(false);
+                        setIsPaused(false);
+                    }
+
+                    return prev - 1;
                 });
 
-                setElapsedTime((prevElapsedTime) => prevElapsedTime + 1);
+                setElapsedTime(prev => prev + 1);
             }, 1000);
         }
 
         return () => {
             clearInterval(interval);
         };
-    }, [countdownSeconds, isPaused, onTimerEnd]);
+    }, [countdownSeconds, isPaused, onTimerEnd, isRestart]);
 
     React.useEffect(() => {
         if(countdownSeconds){
             setRemainingTime(countdownSeconds * 60);
         }
     }, countdownSeconds);
+
+    const restartTimer = () => {
+        setIsRestart(true);
+    }
 
     const handlePauseResume = () => {
         setIsPaused(prev => !prev);
@@ -60,6 +73,7 @@ const useTimer = (countdownSeconds, onTimerEnd) => {
         isPaused,
         timerEnded,
         pauseResume: handlePauseResume,
+        restartTimer
     };
 };
 

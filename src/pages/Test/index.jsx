@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Slider } from 'antd';
 
 import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
@@ -23,20 +24,24 @@ import useTimer from '../../hooks/useTimer';
 import Button from '../../components/Button';
 import Table from '../../components/Table';
 import TableItem from '../../components/Table/TableItem';
+import ConfirmModal from '../../components/Modal/ConfirmModal';
 
 const Test = () => {
+    const [confirmRestart, setConfirmRestart] = React.useState(false);
+    const [sidebarActive, setSidebarActive] = React.useState(false);
     const [step, setStep] = React.useState(1);
     const [result, setResult] = React.useState({});
 
+    const [tasksDetailed, setTasksDetailed] = React.useState([]);
     const [tasksAnswer, setTasksAnswer] = React.useState([]);
 
     const {id} = useParams();
     const navigate = useNavigate();
-    const {isLoading, getTestById, checkTest} = useTest();
+    const {isLoading, getTestById, checkDetailedTasks, checkTest} = useTest();
     const {test} = useSelector(state => state.test);
     const {tasks, durationMinutes, subject} = test || {};
-    const {tasksWithDetailedAnswerResult, tasksWithoutDetailedAnswerResult, totalPrimaryScore, totalSecondaryScore} = result || {};
-    const {remainingTime, elapsedTime, elapsed, isPaused, pauseResume} = useTimer(durationMinutes, () => {});
+    const {tasksWithDetailedAnswerResult, tasksWithoutDetailedAnswerResult, totalPrimaryScore, maxPrimaryScore, totalSecondaryScore} = result || {};
+    const {remainingTime, elapsedTime, elapsed, isPaused, pauseResume, restartTimer} = useTimer(durationMinutes, () => {});
 
     // React.useEffect(() => {
     //     const handleBeforeUnload = (e) => {
@@ -70,18 +75,46 @@ const Test = () => {
         });
     }
 
+    const handleScoreChange = (id, value) => {
+        setTasksDetailed(prev => {
+            return prev.map(task => {
+                if(task.id === id){
+                    return {
+                        ...task,
+                        primaryScore: value
+                    };
+                }
+
+                return task;
+            });
+        });
+    }
+
+    const restartTest = () => {
+        createTasks();
+        restartTimer();
+    }
+
+    const checkDetailedTasksHandler = async () => {
+        const result = await checkDetailedTasks(id);
+
+        const currentTasks = result.map(data => {
+            return {
+                ...data,
+                maxPrimaryScore: data.primaryScore,
+                primaryScore: 0,
+            }
+        });
+
+        setTasksDetailed(currentTasks);
+    }
+
     const checkResult = async () => {
         let tasksWithDetailedAnswer, tasksWithoutDetailedAnswer;
 
         tasksAnswer.forEach(data => {
             if(data.isDetailedAnswer){
-                return tasksWithDetailedAnswer = tasksWithDetailedAnswer ? [...tasksWithDetailedAnswer, {
-                    id: data.id,
-                    primaryScore: data.primaryScore
-                }] : [{
-                    id: data.id,
-                    primaryScore: data.primaryScore
-                }];
+                return;
             }
 
             tasksWithoutDetailedAnswer = tasksWithoutDetailedAnswer ? [...tasksWithoutDetailedAnswer, {
@@ -93,28 +126,41 @@ const Test = () => {
             }];
         });
 
+        tasksDetailed.forEach(data => {
+            tasksWithDetailedAnswer = tasksWithDetailedAnswer ? [...tasksWithDetailedAnswer, {
+                id: data.id,
+                primaryScore: data.primaryScore
+            }] : [{
+                id: data.id,
+                primaryScore: data.primaryScore
+            }]
+        });
+
         const result = await checkTest(id, elapsed, tasksWithoutDetailedAnswer, tasksWithDetailedAnswer, () => setStep(prev => prev + 1));
         setResult(result);
-        console.log(result);
+    }
+
+    const createTasks = () => {
+        const currentTasks = tasks.map(data => {
+            if(data.isDetailedAnswer){
+                return {
+                    ...data,
+                    primaryScore: 0
+                }
+            }
+
+            return {
+                ...data,
+                answer: ""
+            }
+        });
+
+        setTasksAnswer(currentTasks);
     }
 
     React.useEffect(() => {
         if(tasks){
-            const currentTasks = tasks.map(data => {
-                if(data.isDetailedAnswer){
-                    return {
-                        ...data,
-                        primaryScore: 0
-                    }
-                }
-
-                return {
-                    ...data,
-                    answer: ""
-                }
-            });
-
-            setTasksAnswer(currentTasks);
+            createTasks();
         }
     }, [tasks]);
 
@@ -129,108 +175,165 @@ const Test = () => {
     }
 
     return (
-        <TitleWrapper pageTitle="ResEz - Решение теста">
-            <WithSidebarWrapper>
-                <div className={pws.wrapper}>
-                    <div className={pws.contentFull}>
-                        <div className={styles.taskInner}>
-                            <div className={styles.taskContent}>
-                                {step === 1 && tasksAnswer?.map((data, id) => <TaskTestItem key={id} test data={data} value={data.answer} setValue={setAnswerHandler} />)}
-                                {step === 2 && "Второй этап"}
-                                {step === 3 && <div className={styles.testResult}>
-                                    <p className={styles.testResultTitle}>Вы набрали <span>{totalSecondaryScore}</span> из <span>100</span> баллов</p>
+        <>
+            <TitleWrapper pageTitle="ResEz - Решение теста">
+                <WithSidebarWrapper>
+                    <div className={pws.wrapper}>
+                        <div className={pws.contentFull}>
+                            <div className={styles.taskInner}>
+                                <div className={styles.taskContent}>
+                                    {step === 1 && tasksAnswer?.map((data, id) =>
+                                        <TaskTestItem
+                                            key={id}
+                                            test
+                                            data={data}
+                                            value={data.answer}
+                                            setValue={setAnswerHandler}
+                                        />)}
+                                    
+                                    {step === 2 && <div className={base.baseWrapperGap20}>
+                                        <p className={`${typography.h3} ${base.textCenter}`}>
+                                            Проверка заданий с развёрнутым ответом
+                                        </p>
 
-                                    <div className={styles.testResultWrapper}>
-                                        <p className={styles.testResultSubtitle}>Тестовая часть</p>
+                                        {tasksDetailed?.map(data => <div key={data.id} className={base.baseWrapperGap20}>
+                                            <TaskTestItem data={data} showAnswer />
 
-                                        <Table>
-                                            <TableItem head id="Задание" text="Ваш ответ" value="Правильный ответ" />
+                                            <div className={base.baseWrapperGap4}>
+                                                <p className={typography.text2}>Оцените задание (максимум баллов за задание: {data.maxPrimaryScore})</p>
 
-                                            {tasksWithoutDetailedAnswerResult?.map(data => <TableItem
-                                                key={data.id}
-                                                id={data.id}
-                                                text={data.answer || "-"}
-                                                value={data.correctAsnwer}
-                                                status={data.isCorrect ? "success" : "error"}
-                                            />)}
-                                        </Table>
-                                    </div>
+                                                <Slider
+                                                    className={styles.taskSlider}
+                                                    min={0}
+                                                    max={data.maxPrimaryScore}
+                                                    value={data.primaryScore}
+                                                    onChange={value => handleScoreChange(data.id, value)}
+                                                />
+                                            </div>
+                                        </div>)}
+                                    </div>}
 
-                                    <div className={styles.testResultWrapper}>
-                                        <p className={styles.testResultSubtitle}>Развёрнутый ответ</p>
+                                    {step === 3 && <div className={`${base.baseWrapperGap20} ${styles.testResult}`}>
+                                        <div className={`${base.baseWrapperGap4} ${styles.testResult}`}>
+                                            <p className={styles.testResultTitle}>Вы набрали <span>{totalSecondaryScore}</span> из <span>100</span> баллов</p>
 
-                                        <Table>
-                                            <TableItem head text="Ваш балл" value="Максимальный балл" />
+                                            <p className={styles.testResultSubtitle}>Набрано первичных баллов: {totalPrimaryScore} из {maxPrimaryScore}</p>
 
-                                            {tasksWithDetailedAnswerResult?.map(data => <TableItem
-                                                key={data.id}
-                                                text={`${data.primaryScore}`}
-                                                value={data.maxPrimaryScore}
-                                                status={data.primaryScore === data.maxPrimaryScore ? "success" : data.primaryScore === 0 ? "error" : "warn"}
-                                            />)}
-                                        </Table>
-                                    </div>
-                                </div>}
+                                            <p className={styles.testResultSubtitle}>Затрачено времени: {elapsedTime}</p>
+                                        </div>
 
-                                {step < 3 && <div className={styles.taskTestButtons}>
-                                    {step > 1 && <Button auto type="light" onClick={() => setStep(prev => prev - 1)}>
-                                        Назад
-                                    </Button>}
+                                        <Button to="/tests/my" type="light" auto>
+                                            Решать другие тесты
+                                        </Button>
 
-                                    {step === 1 && <Button auto onClick={() => {
-                                        if(!isPaused){
+                                        <div className={styles.testResultWrapper}>
+                                            <p className={styles.testResultSubtitle}>Тестовая часть</p>
+
+                                            <Table>
+                                                <TableItem head id="Задание" text="Ваш ответ" value="Правильный ответ" />
+
+                                                {tasksWithoutDetailedAnswerResult?.map(data => <TableItem
+                                                    key={data.id}
+                                                    id={data.id}
+                                                    text={data.answer || "-"}
+                                                    value={data.correctAsnwer}
+                                                    status={data.isCorrect ? "success" : "error"}
+                                                />)}
+                                            </Table>
+                                        </div>
+
+                                        <div className={styles.testResultWrapper}>
+                                            <p className={styles.testResultSubtitle}>Развёрнутый ответ</p>
+
+                                            <Table>
+                                                <TableItem head text="Ваш балл" value="Максимальный балл" />
+
+                                                {tasksWithDetailedAnswerResult?.map(data => <TableItem
+                                                    key={data.id}
+                                                    text={`${data.primaryScore}`}
+                                                    value={data.maxPrimaryScore}
+                                                    status={data.primaryScore === data.maxPrimaryScore ? "success" : data.primaryScore === 0 ? "error" : "warn"}
+                                                />)}
+                                            </Table>
+                                        </div>
+                                    </div>}
+
+                                    {step < 3 && <div className={styles.taskTestButtons}>
+                                        {step > 1 && <Button auto type="light" onClick={() => {
+                                            setStep(prev => prev - 1);
                                             pauseResume();
-                                        }
+                                        }}>
+                                            Назад
+                                        </Button>}
 
-                                        setStep(prev => prev + 1);
-                                    }}>
-                                        Далее
-                                    </Button>}
+                                        {step === 1 && <Button auto onClick={() => {
+                                            if(!isPaused){
+                                                pauseResume();
+                                            }
 
-                                    {step === 2 && <Button auto onClick={checkResult}>
-                                        К результату
-                                    </Button>}
-                                </div>}
-                            </div>
+                                            setStep(prev => prev + 1);
+                                            checkDetailedTasksHandler();
+                                        }}>
+                                            Далее
+                                        </Button>}
 
-                            <InnerSidebar icon={<Info />} className={styles.taskSidebar} big>
-                                <div className={styles.testInfoWrapper}>
-                                    <TextPoint title="Прошло:" className={styles.testInfoItem}>
-                                        <p className={typography.h4}>{elapsedTime}</p>
-                                    </TextPoint>
-
-                                    <TextPoint title="Осталось:" className={styles.testInfoItem}>
-                                        <p className={typography.h4}>{remainingTime}</p>
-                                    </TextPoint>
+                                        {step === 2 && <Button auto onClick={checkResult}>
+                                            К результату
+                                        </Button>}
+                                    </div>}
                                 </div>
 
-                                <TextPoint title="Экзамен длится:">
-                                    <p className={typography.h4}>{formatMinutesToDuration(durationMinutes)}</p>
-                                </TextPoint>
+                                <InnerSidebar value={sidebarActive} setValue={setSidebarActive} icon={<Info />} className={styles.taskSidebar} big>
+                                    {step !== 3 && <div className={styles.testInfoWrapper}>
+                                        <TextPoint title="Прошло:" className={styles.testInfoItem}>
+                                            <p className={typography.h4}>{elapsedTime}</p>
+                                        </TextPoint>
 
-                                <TextPoint title="Предмет:">
-                                    <p className={typography.h4}>{subject}</p>
-                                </TextPoint>
+                                        <TextPoint title="Осталось:" className={styles.testInfoItem}>
+                                            <p className={typography.h4}>{remainingTime}</p>
+                                        </TextPoint>
+                                    </div>}
 
-                                {step === 1 && <div className={styles.testInfoButtons}>
-                                    <button className={styles.testInfoButton} onClick={pauseResume}>
-                                        {!isPaused ? <Pause /> : <Play />}
+                                    <TextPoint title="Предмет:">
+                                        <p className={typography.h4}>{subject}</p>
+                                    </TextPoint>
 
-                                        {!isPaused ? "Пауза" : "Продолжить"}
-                                    </button>
+                                    <TextPoint title="Экзамен длится:">
+                                        <p className={typography.h4}>{formatMinutesToDuration(durationMinutes)}</p>
+                                    </TextPoint>
 
-                                    <button className={`${styles.testInfoButton} ${styles.danger}`}>
-                                        <Reload />
+                                    {step === 1 && <div className={styles.testInfoButtons}>
+                                        <button className={styles.testInfoButton} onClick={pauseResume}>
+                                            {!isPaused ? <Pause /> : <Play />}
 
-                                        Начать заново
-                                    </button>
-                                </div>}
-                            </InnerSidebar>
+                                            {!isPaused ? "Пауза" : "Продолжить"}
+                                        </button>
+
+                                        <button className={`${styles.testInfoButton} ${styles.danger}`} onClick={() => {
+                                            setConfirmRestart(true);
+                                            setSidebarActive(false);
+                                        }}>
+                                            <Reload />
+
+                                            Начать заново
+                                        </button>
+                                    </div>}
+                                </InnerSidebar>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </WithSidebarWrapper>
-        </TitleWrapper>
+                </WithSidebarWrapper>
+            </TitleWrapper>
+
+            <ConfirmModal
+                value={confirmRestart}
+                setValue={setConfirmRestart}
+                callback={restartTest}
+                text="Вы действительно хотите начать тест заново? Прогресс теста не будет сохранен"
+                rejectText="Продолжить решать"
+                confirmText="Начать заново"
+            />
+        </>
     )
 }
 

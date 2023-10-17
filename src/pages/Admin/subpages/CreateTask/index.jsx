@@ -23,10 +23,13 @@ const CreateTask = ({
     const [answer, setAnswer] = React.useState("");
 
     const [subjects, setSubjects] = React.useState([]);
+    const [subjectsFilter, setSubjectsFilter] = React.useState([]);
     const [subjectsIsLoading, setSubjectsIsLoading] = React.useState(false);
     const [themes, setThemes] = React.useState([]);
+    const [themesFilter, setThemesFilter] = React.useState([]);
     const [themesIsLoading, setThemesIsLoading] = React.useState(false);
     const [subThemes, setSubThemes] = React.useState([]);
+    const [subThemesFilter, setSubThemesFilter] = React.useState([]);
     const [subThemesIsLoading, setSubThemesIsLoading] = React.useState(false);
 
     const taskRef = React.useRef(null);
@@ -55,6 +58,7 @@ const CreateTask = ({
                 }
     
                 setSubjects(subjects);
+                setSubjectsFilter(subjects);
             });
         }
     }
@@ -69,6 +73,7 @@ const CreateTask = ({
                 }
     
                 setThemes(themes);
+                setThemesFilter(themes);
             });
         }
     }
@@ -83,8 +88,34 @@ const CreateTask = ({
                 }
                 
                 setSubThemes(subThemes);
+                setSubThemesFilter(subThemes);
             });
         }
+    }
+
+    const handleSearchSubject = (value) => {
+        const filteredOptions = subjects.filter(subject =>
+            subject.subject.toLowerCase().includes(value.toLowerCase())
+        );
+
+        setSubjectsFilter(filteredOptions);
+    }
+
+    const handleSearchThemes = (value) => {
+        const filteredOptions = themes.filter(theme => {
+            const themeTemp = `${theme.number}. ${theme.theme}`;
+            return themeTemp.toLowerCase().includes(value.toLowerCase());
+        });
+
+        setThemesFilter(filteredOptions);
+    }
+
+    const handleSearchSubThemes = (value) => {
+        const filteredOptions = subThemes.filter(subTheme =>
+            subTheme.subTheme.toLowerCase().includes(value.toLowerCase())
+        );
+
+        setSubThemesFilter(filteredOptions);
     }
 
     React.useEffect(() => {
@@ -121,13 +152,19 @@ const CreateTask = ({
                     loading={subjectsIsLoading}
                     onDropdownVisibleChange={subjectsDropdown}
                     value={subject}
-                    onChange={value => setSubject(value)}
-                    options={subjects?.map(data => {
+                    onChange={value => {
+                        setSubject(value);
+                        setSubjectsFilter(subjects);
+                    }}
+                    options={subjectsFilter?.map(data => {
                         return {
                             label: data.subject,
                             value: data.id
                         }
                     })}
+                    showSearch
+                    onSearch={handleSearchSubject}
+                    filterOption={false}
                 />
 
                 {subject && <Select
@@ -136,13 +173,19 @@ const CreateTask = ({
                     loading={themesIsLoading}
                     onDropdownVisibleChange={themeDropdown}
                     value={theme}
-                    onChange={value => setTheme(value)}
-                    options={themes?.map(data => {
+                    onChange={value => {
+                        setTheme(value);
+                        setThemesFilter(themes);
+                    }}
+                    options={themesFilter?.map(data => {
                         return {
                             label: `${data.number}. ${data.theme}`,
                             value: data.id
                         }
                     })}
+                    showSearch
+                    onSearch={handleSearchThemes}
+                    filterOption={false}
                 />}
 
                 {theme && <Select 
@@ -151,13 +194,19 @@ const CreateTask = ({
                     loading={subThemesIsLoading}
                     onDropdownVisibleChange={subThemeDropdown}
                     value={subTheme}
-                    onChange={value => setSubTheme(value)}
-                    options={subThemes?.map(data => {
+                    onChange={value => {
+                        setSubTheme(value);
+                        setSubThemesFilter(subThemes);
+                    }}
+                    options={subThemesFilter?.map(data => {
                         return {
                             label: data.subTheme,
                             value: data.id
                         }
                     })}
+                    showSearch
+                    onSearch={handleSearchSubThemes}
+                    filterOption={false}
                 />}
 
                 {subTheme && <>
