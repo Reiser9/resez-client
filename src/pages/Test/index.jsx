@@ -101,7 +101,6 @@ const Test = () => {
         const currentTasks = result.map(data => {
             return {
                 ...data,
-                maxPrimaryScore: data.primaryScore,
                 primaryScore: 0,
             }
         });
@@ -181,7 +180,7 @@ const Test = () => {
                     <div className={pws.wrapper}>
                         <div className={pws.contentFull}>
                             <div className={styles.taskInner}>
-                                <div className={styles.taskContent}>
+                                <div className={base.taskContent}>
                                     {step === 1 && tasksAnswer?.map((data, id) =>
                                         <TaskTestItem
                                             key={id}
@@ -213,8 +212,8 @@ const Test = () => {
                                         </div>)}
                                     </div>}
 
-                                    {step === 3 && <div className={`${base.baseWrapperGap20} ${styles.testResult}`}>
-                                        <div className={`${base.baseWrapperGap4} ${styles.testResult}`}>
+                                    {step === 3 && <div className={`${base.baseWrapperGap20} ${base.aic}`}>
+                                        <div className={`${base.baseWrapperGap4} ${base.aic}`}>
                                             <p className={styles.testResultTitle}>Вы набрали <span>{totalSecondaryScore}</span> из <span>100</span> баллов</p>
 
                                             <p className={styles.testResultSubtitle}>Набрано первичных баллов: {totalPrimaryScore} из {maxPrimaryScore}</p>
@@ -234,7 +233,7 @@ const Test = () => {
 
                                                 {tasksWithoutDetailedAnswerResult?.map(data => <TableItem
                                                     key={data.id}
-                                                    id={data.id}
+                                                    id={data.number}
                                                     text={data.answer || "-"}
                                                     value={data.correctAsnwer}
                                                     status={data.isCorrect ? "success" : "error"}
@@ -246,10 +245,11 @@ const Test = () => {
                                             <p className={styles.testResultSubtitle}>Развёрнутый ответ</p>
 
                                             <Table>
-                                                <TableItem head text="Ваш балл" value="Максимальный балл" />
+                                                <TableItem head id="Задание" text="Ваш балл" value="Максимальный балл" />
 
                                                 {tasksWithDetailedAnswerResult?.map(data => <TableItem
                                                     key={data.id}
+                                                    id={data.number}
                                                     text={`${data.primaryScore}`}
                                                     value={data.maxPrimaryScore}
                                                     status={data.primaryScore === data.maxPrimaryScore ? "success" : data.primaryScore === 0 ? "error" : "warn"}

@@ -318,7 +318,7 @@ const useTest = () => {
         if(!tests.tests || reload){
             dispatch(setTestsIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.TEST, `?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.TEST, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             dispatch(setTestsIsLoading(false));
 

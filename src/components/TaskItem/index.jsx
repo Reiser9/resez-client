@@ -91,7 +91,7 @@ const TaskItem = ({
                     </div>
                 </div>
 
-                {task && <div className={styles.taskItemContent}>
+                {task && <div className={base.format}>
                     {parse(task)}
                 </div>}
 

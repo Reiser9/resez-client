@@ -14,6 +14,7 @@ import NotContent from '../../../../components/NotContent';
 import CollectionItem from '../../../../components/CollectionItem';
 import CollectionItemSkeleton from '../../../../components/Skeleton/CollectionItem/CollectionItemSkeleton';
 import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
+import AuthWrapper from '../../../../components/Wrapper/AuthWrapper';
 
 const Cards = () => {
     const [collectionMoreLoading, setCollectionMoreLoading] = React.useState(false);
@@ -38,41 +39,43 @@ const Cards = () => {
     }, [collections?.collections, collections?.isLast]);
 
     return (
-        <div className={base.baseWrapperGap16}>
-            <div className={base.titleInner}>
-                <div className={base.titleWrapper}>
-                    <p className={typography.h3}>Коллекции {!collectionsIsLoading && `(${collections.totalCount || 0})`}</p>
+        <AuthWrapper>
+            <div className={base.baseWrapperGap16}>
+                <div className={base.titleInner}>
+                    <div className={base.titleWrapper}>
+                        <p className={typography.h3}>Коллекции {!collectionsIsLoading && `(${collections.totalCount || 0})`}</p>
 
-                    <ReloadButton loading={collectionsIsLoading} onClick={() => loadCollections(0, 6, true)} />
+                        <ReloadButton loading={collectionsIsLoading} onClick={() => loadCollections(0, 6, true)} />
+                    </div>
+
+                    <Button disabled={collectionsIsLoading} type="light" auto to="add">
+                        Создать
+                    </Button>
                 </div>
 
-                <Button disabled={collectionsIsLoading} type="light" auto to="add">
-                    Создать
-                </Button>
+                <BlockDataWithPaggination
+                    error={error}
+                    dataIsLoading={collectionsIsLoading}
+                    dataMoreIsLoading={collectionMoreLoading}
+                    dataLength={collections?.collections?.length}
+                    Skeleton={CollectionItemSkeleton}
+                    containerClassName={base.contentItems}
+                    errorContent={<NotContent text="Ошибка при загрузке коллекций" icon={<Cross />} danger />}
+                    notContent={<NotContent text="Коллекций не найдено" />}
+                    isLast={collections?.isLast}
+                    loadMoreData={loadMoreCollection}
+                >
+                    {collections?.collections?.map((data, id) =>
+                        <CollectionItem
+                            key={id}
+                            data={data}
+                            deleteCollection={() => deleteCollection(data.id)}
+                            loading={collectionIsLoading.includes(data.id)}
+                        />
+                    )}
+                </BlockDataWithPaggination>
             </div>
-
-            <BlockDataWithPaggination
-                error={error}
-                dataIsLoading={collectionsIsLoading}
-                dataMoreIsLoading={collectionMoreLoading}
-                dataLength={collections?.collections?.length}
-                Skeleton={CollectionItemSkeleton}
-                containerClassName={base.contentItems}
-                errorContent={<NotContent text="Ошибка при загрузке коллекций" icon={<Cross />} danger />}
-                notContent={<NotContent text="Коллекций не найдено" />}
-                isLast={collections?.isLast}
-                loadMoreData={loadMoreCollection}
-            >
-                {collections?.collections?.map((data, id) =>
-                    <CollectionItem
-                        key={id}
-                        data={data}
-                        deleteCollection={() => deleteCollection(data.id)}
-                        loading={collectionIsLoading.includes(data.id)}
-                    />
-                )}
-            </BlockDataWithPaggination>
-        </div>
+        </AuthWrapper>
     )
 }
 

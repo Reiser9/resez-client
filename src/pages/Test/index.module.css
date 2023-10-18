@@ -132,14 +132,6 @@ div.testInfoItem{
     }
 }
 
-.taskContent{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 40px;
-}
-
 .taskTestButtons{
     width: 100%;
     display: flex;

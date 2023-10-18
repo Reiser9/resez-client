@@ -15,6 +15,7 @@ import NotContent from '../../../../components/NotContent';
 import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
 import TestSkeleton from '../../../../components/Skeleton/TestItem';
 import ReloadButton from '../../../../components/ReloadButton';
+import AuthWrapper from '../../../../components/Wrapper/AuthWrapper';
 
 const MyTests = () => {
     const [testsMoreLoading, setTestsMoreLoading] = React.useState(false);
@@ -39,44 +40,46 @@ const MyTests = () => {
     }, [tests?.tests, tests?.isLast]);
 
     return (
-        <div className={base.baseWrapperGap16}>
-            <div className={base.titleInner}>
-                <div className={base.titleWrapper}>
-                    <p className={typography.h3}>Мои тесты {!testsIsLoading && `(${tests.totalCount || 0})`}</p>
+        <AuthWrapper>
+            <div className={base.baseWrapperGap16}>
+                <div className={base.titleInner}>
+                    <div className={base.titleWrapper}>
+                        <p className={typography.h3}>Мои тесты {!testsIsLoading && `(${tests.totalCount || 0})`}</p>
 
-                    <ReloadButton onClick={() => loadTests(0, 6, true)} loading={testsIsLoading} />
+                        <ReloadButton onClick={() => loadTests(0, 6, true)} loading={testsIsLoading} />
+                    </div>
+
+                    {!testsIsLoading && <Button auto type="light" to="create">
+                        Создать
+                    </Button>}
                 </div>
 
-                {!testsIsLoading && <Button auto type="light" to="create">
-                    Создать
-                </Button>}
+                <BlockDataWithPaggination
+                    error={error}
+                    dataIsLoading={testsIsLoading}
+                    dataMoreIsLoading={testsMoreLoading}
+                    dataLength={tests?.tests?.length}
+                    Skeleton={TestSkeleton}
+                    skeletonLoading={6}
+                    skeletonMoreLoading={3}
+                    containerClassName={base.contentItems}
+                    errorContent={<NotContent text="Ошибка при загрузке тестов" icon={<Cross />} danger />}
+                    notContent={<NotContent text={"Тестов не найдено"} />}
+                    isLast={tests?.isLast}
+                    loadMoreData={loadMoreTests}
+                >
+                    <div className={base.contentItems}>
+                        {tests?.tests
+                        ?.map(data => <TestItem
+                            key={data.id}
+                            data={data}
+                            loading={subjectIsLoading.includes(data.id)}
+                            deleteCallback={() => removeTest(data.id)}
+                        />)}
+                    </div>
+                </BlockDataWithPaggination>
             </div>
-
-            <BlockDataWithPaggination
-                error={error}
-                dataIsLoading={testsIsLoading}
-                dataMoreIsLoading={testsMoreLoading}
-                dataLength={tests?.tests?.length}
-                Skeleton={TestSkeleton}
-                skeletonLoading={6}
-                skeletonMoreLoading={3}
-                containerClassName={base.contentItems}
-                errorContent={<NotContent text="Ошибка при загрузке тестов" icon={<Cross />} danger />}
-                notContent={<NotContent text={"Тестов не найдено"} />}
-                isLast={tests?.isLast}
-                loadMoreData={loadMoreTests}
-            >
-                <div className={base.contentItems}>
-                    {tests?.tests
-                    ?.map(data => <TestItem
-                        key={data.id}
-                        data={data}
-                        loading={subjectIsLoading.includes(data.id)}
-                        deleteCallback={() => removeTest(data.id)}
-                    />)}
-                </div>
-            </BlockDataWithPaggination>
-        </div>
+        </AuthWrapper>
     )
 }
 

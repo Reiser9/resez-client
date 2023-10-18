@@ -135,7 +135,7 @@ const useAdmin = () => {
         if(!themes.themes || reload){
             dispatch(setThemesIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.ADMIN, `/theme?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/theme?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             dispatch(setThemesIsLoading(false));
 

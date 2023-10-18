@@ -10,18 +10,6 @@
     position: relative;
 }
 
-.taskItemContent{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.taskItemContent img{
-    max-width: 100%;
-}
-
 .taskItemWrapper{
     width: 100%;
     display: flex;

@@ -29,7 +29,7 @@ const useTraining = () => {
         if(!collections.collections || reload){
             dispatch(setCollectionsIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.COLLECTION, `?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.COLLECTION, `?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             dispatch(setCollectionsIsLoading(false));
 

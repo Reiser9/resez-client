@@ -56,12 +56,12 @@ const CardCollectionView = () => {
                 <BackButton />
 
                 <div className={styles.memoCollectionTags}>
-                    <div className={styles.memoCollectionCount}>
+                    <div className={base.tagElement}>
                         Терминов: {pairsCount || 0}
                     </div>
 
                     {isPrivate && <Tooltip title="Скрыта">
-                        <div className={styles.memoCollectionLock}>
+                        <div className={base.tagElementIcon}>
                             <Lock />
                         </div>    
                     </Tooltip>}

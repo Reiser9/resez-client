@@ -20,33 +20,6 @@
     gap: 12px;
 }
 
-.memoCollectionCount{
-    padding: 0.6rem 1.2rem;
-    border-radius: 4px;
-    background: var(--lighten);
-    color: var(--main);
-    font-size: 1.4rem;
-    flex-shrink: 0;
-}
-
-.memoCollectionLock{
-    width: 31px;
-    height: 31px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--lighten);
-}
-
-.memoCollectionLock svg{
-    width: 18px;
-}
-
-.memoCollectionLock svg path{
-    stroke: var(--main);
-}
-
 .memoCollectionActions{
     display: flex;
     gap: 8px;

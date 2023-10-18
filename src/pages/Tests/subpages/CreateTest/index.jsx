@@ -10,6 +10,7 @@ import useTest from '../../../../hooks/useTest';
 import CreatePageDefault from '../../../../components/CreatePageDefault';
 import Button from '../../../../components/Button';
 import Select from '../../../../components/Select';
+import AuthWrapper from '../../../../components/Wrapper/AuthWrapper';
 
 const CreateTest = ({
     edit = false
@@ -47,41 +48,43 @@ const CreateTest = ({
     }
 
     return (
-        <CreatePageDefault
-            title={`${edit ? "Редактирование" : "Создание"} теста`}
-            button={edit
-                ? <Button type="light" auto loading={isLoading}>
-                    Сохранить
-                </Button>
-                : <Button type="light" auto onClick={createTestHandler} loading={isLoading}>
-                    Создать
-                </Button>}
-        >
-            <div className={base.formMedium}>
-                <Select
-                    placeholder="Предмет"
-                    notContentText="Предметов не найдено"
-                    loading={subjectsIsLoading}
-                    onDropdownVisibleChange={subjectsDropdown}
-                    value={subject}
-                    onChange={value => setSubject(value)}
-                    options={subjects?.map(data => {
-                        return {
-                            label: data.subject,
-                            value: data.id
-                        }
-                    })}
-                />
+        <AuthWrapper>
+            <CreatePageDefault
+                title={`${edit ? "Редактирование" : "Создание"} теста`}
+                button={edit
+                    ? <Button type="light" auto loading={isLoading}>
+                        Сохранить
+                    </Button>
+                    : <Button type="light" auto onClick={createTestHandler} loading={isLoading}>
+                        Создать
+                    </Button>}
+            >
+                <div className={base.formMedium}>
+                    <Select
+                        placeholder="Предмет"
+                        notContentText="Предметов не найдено"
+                        loading={subjectsIsLoading}
+                        onDropdownVisibleChange={subjectsDropdown}
+                        value={subject}
+                        onChange={value => setSubject(value)}
+                        options={subjects?.map(data => {
+                            return {
+                                label: data.subject,
+                                value: data.id
+                            }
+                        })}
+                    />
 
-                <Checkbox disabled checked={generateVariant} onChange={e => setGenerateVariant(e.target.checked)}>
-                    Сгенерировать вариант ЕГЭ
-                </Checkbox>
+                    <Checkbox disabled checked={generateVariant} onChange={e => setGenerateVariant(e.target.checked)}>
+                        Сгенерировать вариант ЕГЭ
+                    </Checkbox>
 
-                <Checkbox checked={isPrivate} onChange={e => setIsPrivate(e.target.checked)}>
-                    Скрыть от других пользователей
-                </Checkbox>
-            </div>
-        </CreatePageDefault>
+                    <Checkbox checked={isPrivate} onChange={e => setIsPrivate(e.target.checked)}>
+                        Скрыть от других пользователей
+                    </Checkbox>
+                </div>
+            </CreatePageDefault>
+        </AuthWrapper>
     )
 }
 

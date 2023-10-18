@@ -42,7 +42,7 @@ const Tasks = () => {
 
     return (
         <div className={styles.taskInner}>
-            <div className={styles.taskContent}>
+            <div className={base.taskContent}>
                 {tasks?.tasks?.map((data, id) => <TaskTestItem key={id} data={data} showAnswer={taskId} />)}
             </div>
 

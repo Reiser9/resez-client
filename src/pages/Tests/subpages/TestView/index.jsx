@@ -57,16 +57,16 @@ const TestView = () => {
                         <div className={styles.testTags}>
                             <BackButton />
 
-                            <div className={styles.testTag}>
+                            <div className={base.tagElement}>
                                 {subject}
                             </div>
 
-                            <div className={styles.testTag}>
+                            <div className={base.tagElement}>
                                 Вопросов: {tasksCount}
                             </div>
 
                             {isPrivate && <Tooltip title="Скрыта">
-                                <div className={styles.testTagIcon}>
+                                <div className={base.tagElementIcon}>
                                     <Lock />
                                 </div>
                             </Tooltip>}

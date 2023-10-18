@@ -682,3 +682,37 @@ input::placeholder{
     width: calc(100% - 20px)!important;
     margin: 10px!important;
 }
+
+.ant-slider .ant-slider-track{
+    background: var(--main)!important;
+}
+
+.ant-slider .ant-slider-handle::after{
+    background: var(--input);
+    box-shadow: 0 0 0 2px var(--main)!important;
+}
+
+.ant-slider .ant-slider-rail{
+    background: var(--input)!important;
+}
+
+.tableContent{
+    width: 100%;
+    overflow-x: auto;
+}
+
+@media (any-hover: hover) {
+    .tableContent::-webkit-scrollbar{
+        height: 4px;
+    }
+
+    .tableContent::-webkit-scrollbar-thumb{
+        background: var(--main);
+        border-radius: 50px;
+    }
+
+    .tableContent::-webkit-scrollbar-track{
+        background: var(--line);
+        border-radius: 50px;
+    }
+}

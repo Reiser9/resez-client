@@ -26,7 +26,7 @@ const useLogs = () => {
         if(!logs.logs || reload){
             dispatch(setLogsIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.ADMIN, `/log?offfset=${offset}&limit=${limit}&userId=${userId}&logTypeId=${logTypeId}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/log?offset=${offset}&limit=${limit}&userId=${userId}&logTypeId=${logTypeId}`, HTTP_METHODS.GET, true);
 
             dispatch(setLogsIsLoading(false));
 

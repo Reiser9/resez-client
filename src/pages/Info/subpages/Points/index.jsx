@@ -73,11 +73,10 @@ const Points = () => {
                                 <TableItem head text="Первичный балл" value="Вторичный балл" />
 
                                 {tableInfo?.scoreConversion?.map(data => <TableItem
-                                    key={data}
+                                    key={data.id}
                                     text={data.primaryScore}
                                     value={data.secondaryScore}
-                                    success={data.isGreen}
-                                    error={data.isRed}
+                                    status={data.isGreen ? "success" : data.isRed ? "error" : ""}
                                 />)}
                             </Table>
                         </Spoiler>
@@ -89,7 +88,7 @@ const Points = () => {
                                 <TableItem head text="Задание" value="Первичный балл" />
 
                                 {tableInfo?.subjectTasks?.map(data => <TableItem
-                                    key={data}
+                                    key={data.id}
                                     text={data.number}
                                     value={data.primaryScore}
                                 />)}

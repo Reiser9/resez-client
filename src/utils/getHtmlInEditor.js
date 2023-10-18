@@ -23,15 +23,13 @@ export const getHtmlInEditor = (blocks = []) => {
                 html += `</ul>`;
                 break;
             case 'table':
-                html += `<table>`;
-                html += `<thead><tr>`;
+                html += `<div class="tableContent"><table><thead><tr>`;
 
                 block.data.content[0].forEach(header => {
                     html += `<th>${header}</th>`;
                 });
 
-                html += `</tr></thead>`;
-                html += `<tbody>`;
+                html += `</tr></thead><tbody>`;
                 
                 block.data.content.slice(1).forEach(row => {
                     html += `<tr>`;
@@ -41,7 +39,7 @@ export const getHtmlInEditor = (blocks = []) => {
                     html += `</tr>`;
                 });
 
-                html += `</tbody></table>`;
+                html += `</tbody></table></div>`;
                 break;
             case 'code':
                 html += `<pre><code>${block.data.code}</code></pre>`;

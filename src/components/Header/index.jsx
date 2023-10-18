@@ -81,7 +81,7 @@ const Header = ({empty = false}) => {
                     </div>}
 
                     <Link to="/" className={styles.headerLogoInner}>
-                        <p className={styles.headerLogo}>ResEz</p>
+                        <p className={styles.headerLogo}>ResEz <span className={styles.headerLogoVersion}>beta</span></p>
                     </Link>
                 </div>
 

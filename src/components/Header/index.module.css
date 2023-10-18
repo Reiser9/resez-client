@@ -26,6 +26,16 @@
     font-size: 3.2rem;
     color: var(--main);
     line-height: 1.2;
+    position: relative;
+}
+
+.headerLogoVersion{
+    color: var(--main);
+    font-size: 10px;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 4px;
+    left: calc(100% + 4px);
 }
 
 .headerProfileInner{

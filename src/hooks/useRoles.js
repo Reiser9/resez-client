@@ -47,7 +47,7 @@ const useRoles = () => {
         if(!roles.roles || reload){
             dispatch(setRolesIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.ADMIN, `/role?offfset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/role?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             dispatch(setRolesIsLoading(false));
 

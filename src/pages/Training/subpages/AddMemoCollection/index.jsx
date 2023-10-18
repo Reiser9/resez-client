@@ -17,6 +17,7 @@ import Button from '../../../../components/Button';
 import IconButton from '../../../../components/IconButton';
 import CreatePageDefault from '../../../../components/CreatePageDefault';
 import Preloader from '../../../../components/Preloader';
+import AuthWrapper from '../../../../components/Wrapper/AuthWrapper';
 
 const AddCardCollection = ({edit = false}) => {
     const [name, setName] = React.useState("");
@@ -169,69 +170,71 @@ const AddCardCollection = ({edit = false}) => {
     }, [collection]);
 
     return (
-        <CreatePageDefault
-            title={`${edit ? "Редактирование" : "Создание"} коллекции`}
-            button={edit
-                    ? <Button auto type="light" loading={isLoading || collectionByIdIsLoading} onClick={editCollectionHandler}>
-                        Сохранить
-                    </Button>
-                    : <Button auto type="light" loading={isLoading || collectionByIdIsLoading} onClick={createCollectionHandler}>
-                        Создать
-                    </Button>
-            }
-        >
-            {collectionByIdIsLoading
-            ? <Preloader />
-            : <div className={`${base.baseWrapperGap16} ${styles.addCardCollectionForm} ${base.aic}`}>
-                <Input value={name} setValue={setName} placeholder="Название" lengthLimit={75} trackLength />
+        <AuthWrapper>
+            <CreatePageDefault
+                title={`${edit ? "Редактирование" : "Создание"} коллекции`}
+                button={edit
+                        ? <Button auto type="light" loading={isLoading || collectionByIdIsLoading} onClick={editCollectionHandler}>
+                            Сохранить
+                        </Button>
+                        : <Button auto type="light" loading={isLoading || collectionByIdIsLoading} onClick={createCollectionHandler}>
+                            Создать
+                        </Button>
+                }
+            >
+                {collectionByIdIsLoading
+                ? <Preloader />
+                : <div className={`${base.baseWrapperGap16} ${styles.addCardCollectionForm} ${base.aic}`}>
+                    <Input value={name} setValue={setName} placeholder="Название" lengthLimit={75} trackLength />
 
-                <Checkbox checked={withDescription} onChange={e => setWithDescription(e.target.checked)}>
-                    Добавить описание
-                </Checkbox>
+                    <Checkbox checked={withDescription} onChange={e => setWithDescription(e.target.checked)}>
+                        Добавить описание
+                    </Checkbox>
 
-                {withDescription && <Input type="textarea" value={description} setValue={setDescription} placeholder="Описание" lengthLimit={500} trackLength />}
+                    {withDescription && <Input type="textarea" value={description} setValue={setDescription} placeholder="Описание" lengthLimit={500} trackLength />}
 
-                <Checkbox checked={anonimCollection} onChange={e => setAnonimCollection(e.target.checked)}>
-                    Скрыть от других пользователей
-                </Checkbox>
+                    <Checkbox checked={anonimCollection} onChange={e => setAnonimCollection(e.target.checked)}>
+                        Скрыть от других пользователей
+                    </Checkbox>
 
-                <div className={`${base.baseWrapperGap12} ${base.aic}`}>
-                    {pairs.map((data, id) => <div key={id} className={styles.addCardCollectionPair}>
-                        <div className={styles.addCardCollectionPairWrap}>
-                            <Input placeholder="Вопрос" lengthLimit={250} value={data.question} onChange={e => handleChange(id, e, "question")} wrapperClass={styles.addCardCollectionPairInput} />
-                            <Input placeholder="Ответ" lengthLimit={250} value={data.answer} onChange={e => handleChange(id, e, "answer")} wrapperClass={styles.addCardCollectionPairInput} />
+                    <div className={`${base.baseWrapperGap12} ${base.aic}`}>
+                        {pairs.map((data, id) => <div key={id} className={styles.addCardCollectionPair}>
+                            <div className={styles.addCardCollectionPairWrap}>
+                                <Input placeholder="Вопрос" lengthLimit={250} value={data.question} onChange={e => handleChange(id, e, "question")} wrapperClass={styles.addCardCollectionPairInput} />
+                                <Input placeholder="Ответ" lengthLimit={250} value={data.answer} onChange={e => handleChange(id, e, "answer")} wrapperClass={styles.addCardCollectionPairInput} />
 
-                            <button className={styles.addCardCollectionPairSwap} onClick={() => swapElementsInArray(id)}>
-                                <Swap />
-                            </button>
-                        </div>
+                                <button className={styles.addCardCollectionPairSwap} onClick={() => swapElementsInArray(id)}>
+                                    <Swap />
+                                </button>
+                            </div>
+                            
+                            <IconButton type="danger" className={styles.addCardCollectionPairDelete} onClick={() => removePair(id)}>
+                                <Delete />
+                            </IconButton>
+                        </div>)}
+
+                        <div className={styles.addCardCollectionPair} id="pairsAdd">
+                            <div className={styles.addCardCollectionPairWrap}>
+                                <Input placeholder="Вопрос" lengthLimit={250} value={question} setValue={setQuestion} wrapperClass={styles.addCardCollectionPairInput} onKeyDown={enterNewPair} />
+                                <Input placeholder="Ответ" lengthLimit={250} value={answer} setValue={setAnswer} wrapperClass={styles.addCardCollectionPairInput} onKeyDown={enterNewPair} />
+
+                                <button className={`${styles.addCardCollectionPairSwap}${(!answer && !question) ? ` ${styles.disable}` : ""}`} onClick={swapElements}>
+                                    <Swap />
+                                </button>
+                            </div>
                         
-                        <IconButton type="danger" className={styles.addCardCollectionPairDelete} onClick={() => removePair(id)}>
-                            <Delete />
-                        </IconButton>
-                    </div>)}
-
-                    <div className={styles.addCardCollectionPair} id="pairsAdd">
-                        <div className={styles.addCardCollectionPairWrap}>
-                            <Input placeholder="Вопрос" lengthLimit={250} value={question} setValue={setQuestion} wrapperClass={styles.addCardCollectionPairInput} onKeyDown={enterNewPair} />
-                            <Input placeholder="Ответ" lengthLimit={250} value={answer} setValue={setAnswer} wrapperClass={styles.addCardCollectionPairInput} onKeyDown={enterNewPair} />
-
-                            <button className={`${styles.addCardCollectionPairSwap}${(!answer && !question) ? ` ${styles.disable}` : ""}`} onClick={swapElements}>
-                                <Swap />
-                            </button>
+                            <IconButton type="danger" className={styles.addCardCollectionPairDelete} disabled>
+                                <Delete />
+                            </IconButton>
                         </div>
-                    
-                        <IconButton type="danger" className={styles.addCardCollectionPairDelete} disabled>
-                            <Delete />
-                        </IconButton>
-                    </div>
 
-                    <Button auto onClick={addNewPair}>
-                        Добавить
-                    </Button>
-                </div>
-            </div>}
-        </CreatePageDefault>
+                        <Button auto onClick={addNewPair}>
+                            Добавить
+                        </Button>
+                    </div>
+                </div>}
+            </CreatePageDefault>
+        </AuthWrapper>
     )
 }
 
