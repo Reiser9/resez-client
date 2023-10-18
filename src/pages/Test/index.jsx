@@ -37,7 +37,7 @@ const Test = () => {
 
     const {id} = useParams();
     const navigate = useNavigate();
-    const {isLoading, getTestById, checkDetailedTasks, checkTest} = useTest();
+    const {isLoading, testCheckIsLoading, getTestById, checkDetailedTasks, checkTest} = useTest();
     const {test} = useSelector(state => state.test);
     const {tasks, durationMinutes, subject} = test || {};
     const {tasksWithDetailedAnswerResult, tasksWithoutDetailedAnswerResult, totalPrimaryScore, maxPrimaryScore, totalSecondaryScore} = result || {};
@@ -96,6 +96,12 @@ const Test = () => {
     }
 
     const checkDetailedTasksHandler = async () => {
+        if(!isPaused){
+            pauseResume();
+        }
+
+        setStep(prev => prev + 1);
+
         const result = await checkDetailedTasks(id);
 
         const currentTasks = result.map(data => {
@@ -104,6 +110,10 @@ const Test = () => {
                 primaryScore: 0,
             }
         });
+
+        if(currentTasks.length === 0){
+            return checkResult();
+        }
 
         setTasksDetailed(currentTasks);
     }
@@ -181,106 +191,103 @@ const Test = () => {
                         <div className={pws.contentFull}>
                             <div className={styles.taskInner}>
                                 <div className={base.taskContent}>
-                                    {step === 1 && tasksAnswer?.map((data, id) =>
-                                        <TaskTestItem
-                                            key={id}
-                                            test
-                                            data={data}
-                                            value={data.answer}
-                                            setValue={setAnswerHandler}
-                                        />)}
-                                    
-                                    {step === 2 && <div className={base.baseWrapperGap20}>
-                                        <p className={`${typography.h3} ${base.textCenter}`}>
-                                            Проверка заданий с развёрнутым ответом
-                                        </p>
+                                    {testCheckIsLoading
+                                    ? <Preloader page />
+                                    : <>
+                                        {step === 1 && tasksAnswer?.map((data, id) =>
+                                            <TaskTestItem
+                                                key={id}
+                                                test
+                                                data={data}
+                                                value={data.answer}
+                                                setValue={setAnswerHandler}
+                                            />)}
+                                        
+                                        {step === 2 && <div className={base.baseWrapperGap20}>
+                                            <p className={`${typography.h3} ${base.textCenter}`}>
+                                                Проверка заданий с развёрнутым ответом
+                                            </p>
 
-                                        {tasksDetailed?.map(data => <div key={data.id} className={base.baseWrapperGap20}>
-                                            <TaskTestItem data={data} showAnswer />
+                                            {tasksDetailed?.map(data => <div key={data.id} className={base.baseWrapperGap20}>
+                                                <TaskTestItem data={data} showAnswer />
 
-                                            <div className={base.baseWrapperGap4}>
-                                                <p className={typography.text2}>Оцените задание (максимум баллов за задание: {data.maxPrimaryScore})</p>
+                                                <div className={base.baseWrapperGap4}>
+                                                    <p className={typography.text2}>Оцените задание (максимум баллов за задание: {data.maxPrimaryScore})</p>
 
-                                                <Slider
-                                                    className={styles.taskSlider}
-                                                    min={0}
-                                                    max={data.maxPrimaryScore}
-                                                    value={data.primaryScore}
-                                                    onChange={value => handleScoreChange(data.id, value)}
-                                                />
+                                                    <Slider
+                                                        className={styles.taskSlider}
+                                                        min={0}
+                                                        max={data.maxPrimaryScore}
+                                                        value={data.primaryScore}
+                                                        onChange={value => handleScoreChange(data.id, value)}
+                                                    />
+                                                </div>
+                                            </div>)}
+                                        </div>}
+
+                                        {step === 3 && <div className={`${base.baseWrapperGap20} ${base.aic}`}>
+                                            <div className={`${base.baseWrapperGap4} ${base.aic}`}>
+                                                <p className={styles.testResultTitle}>Вы набрали <span>{totalSecondaryScore}</span> из <span>100</span> баллов</p>
+
+                                                <p className={styles.testResultSubtitle}>Набрано первичных баллов: {totalPrimaryScore} из {maxPrimaryScore}</p>
+
+                                                <p className={styles.testResultSubtitle}>Затрачено времени: {elapsedTime}</p>
                                             </div>
-                                        </div>)}
-                                    </div>}
 
-                                    {step === 3 && <div className={`${base.baseWrapperGap20} ${base.aic}`}>
-                                        <div className={`${base.baseWrapperGap4} ${base.aic}`}>
-                                            <p className={styles.testResultTitle}>Вы набрали <span>{totalSecondaryScore}</span> из <span>100</span> баллов</p>
+                                            <Button to="/tests/my" type="light" auto>
+                                                Решать другие тесты
+                                            </Button>
 
-                                            <p className={styles.testResultSubtitle}>Набрано первичных баллов: {totalPrimaryScore} из {maxPrimaryScore}</p>
+                                            {tasksWithoutDetailedAnswerResult.length > 0 && <div className={styles.testResultWrapper}>
+                                                <p className={styles.testResultSubtitle}>Тестовая часть</p>
 
-                                            <p className={styles.testResultSubtitle}>Затрачено времени: {elapsedTime}</p>
-                                        </div>
+                                                <Table>
+                                                    <TableItem head id="Задание" text="Ваш ответ" value="Правильный ответ" />
 
-                                        <Button to="/tests/my" type="light" auto>
-                                            Решать другие тесты
-                                        </Button>
+                                                    {tasksWithoutDetailedAnswerResult?.map(data => <TableItem
+                                                        key={data.id}
+                                                        id={data.number}
+                                                        text={data.answer || "-"}
+                                                        value={data.correctAsnwer}
+                                                        status={data.isCorrect ? "success" : "error"}
+                                                    />)}
+                                                </Table>
+                                            </div>}
 
-                                        <div className={styles.testResultWrapper}>
-                                            <p className={styles.testResultSubtitle}>Тестовая часть</p>
+                                            {tasksWithDetailedAnswerResult.length > 0 && <div className={styles.testResultWrapper}>
+                                                <p className={styles.testResultSubtitle}>Развёрнутый ответ</p>
 
-                                            <Table>
-                                                <TableItem head id="Задание" text="Ваш ответ" value="Правильный ответ" />
+                                                <Table>
+                                                    <TableItem head id="Задание" text="Ваш балл" value="Максимальный балл" />
 
-                                                {tasksWithoutDetailedAnswerResult?.map(data => <TableItem
-                                                    key={data.id}
-                                                    id={data.number}
-                                                    text={data.answer || "-"}
-                                                    value={data.correctAsnwer}
-                                                    status={data.isCorrect ? "success" : "error"}
-                                                />)}
-                                            </Table>
-                                        </div>
+                                                    {tasksWithDetailedAnswerResult?.map(data => <TableItem
+                                                        key={data.id}
+                                                        id={data.number}
+                                                        text={`${data.primaryScore}`}
+                                                        value={data.maxPrimaryScore}
+                                                        status={data.primaryScore === data.maxPrimaryScore ? "success" : data.primaryScore === 0 ? "error" : "warn"}
+                                                    />)}
+                                                </Table>
+                                            </div>}
+                                        </div>}
 
-                                        <div className={styles.testResultWrapper}>
-                                            <p className={styles.testResultSubtitle}>Развёрнутый ответ</p>
-
-                                            <Table>
-                                                <TableItem head id="Задание" text="Ваш балл" value="Максимальный балл" />
-
-                                                {tasksWithDetailedAnswerResult?.map(data => <TableItem
-                                                    key={data.id}
-                                                    id={data.number}
-                                                    text={`${data.primaryScore}`}
-                                                    value={data.maxPrimaryScore}
-                                                    status={data.primaryScore === data.maxPrimaryScore ? "success" : data.primaryScore === 0 ? "error" : "warn"}
-                                                />)}
-                                            </Table>
-                                        </div>
-                                    </div>}
-
-                                    {step < 3 && <div className={styles.taskTestButtons}>
-                                        {step > 1 && <Button auto type="light" onClick={() => {
-                                            setStep(prev => prev - 1);
-                                            pauseResume();
-                                        }}>
-                                            Назад
-                                        </Button>}
-
-                                        {step === 1 && <Button auto onClick={() => {
-                                            if(!isPaused){
+                                        {step < 3 && <div className={styles.taskTestButtons}>
+                                            {step > 1 && <Button auto type="light" onClick={() => {
+                                                setStep(prev => prev - 1);
                                                 pauseResume();
-                                            }
+                                            }}>
+                                                Назад
+                                            </Button>}
 
-                                            setStep(prev => prev + 1);
-                                            checkDetailedTasksHandler();
-                                        }}>
-                                            Далее
-                                        </Button>}
+                                            {step === 1 && <Button auto onClick={() => checkDetailedTasksHandler()}>
+                                                Далее
+                                            </Button>}
 
-                                        {step === 2 && <Button auto onClick={checkResult}>
-                                            К результату
-                                        </Button>}
-                                    </div>}
+                                            {step === 2 && <Button auto onClick={checkResult}>
+                                                К результату
+                                            </Button>}
+                                        </div>}
+                                    </>}
                                 </div>
 
                                 <InnerSidebar value={sidebarActive} setValue={setSidebarActive} icon={<Info />} className={styles.taskSidebar} big>
