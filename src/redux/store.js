@@ -15,6 +15,7 @@ import callSlice from "./slices/call";
 import testSlice from "./slices/test";
 import infoSlice from "./slices/info";
 import taskSlice from "./slices/task";
+import warnSlice from "./slices/warn";
 
 export const store = configureStore({
     reducer: {
@@ -32,6 +33,7 @@ export const store = configureStore({
         call: callSlice,
         test: testSlice,
         info: infoSlice,
-        task: taskSlice
+        task: taskSlice,
+        warn: warnSlice
     }
 });

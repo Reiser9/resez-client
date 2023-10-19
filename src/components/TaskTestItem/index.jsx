@@ -72,7 +72,7 @@ const TaskTestItem = ({
             <Modal value={warn} setValue={setWarn} title="Жалоба на задание" size="small">
                 <Input value={warnText} setValue={setWarnText} type="textarea" title="Опишите проблему" trackLength lengthLimit={1000} />
 
-                <Button onClick={() => warnTask(id)}>
+                <Button onClick={() => warnTask(id, warnText, () => setWarn(false))}>
                     Отправить
                 </Button>
             </Modal>

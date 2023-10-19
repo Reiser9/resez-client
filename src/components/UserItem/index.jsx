@@ -11,6 +11,7 @@ import { CONFIG } from '../../consts/CONFIG';
 import { Notify, Phone, Stop, Verified } from '../Icons';
 
 import { maskPhone } from '../../utils/formatPhone';
+import {formatDate} from '../../utils/formatDate';
 
 import useUtils from '../../hooks/useUtils';
 import useCalls from '../../hooks/useCalls';
@@ -22,7 +23,7 @@ import ModalConfirm from '../Modal/ConfirmModal';
 import LoaderForItem from '../LoaderForItem';
 
 const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = () => {}}) => {
-    const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName, status} = data;
+    const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName, status, registrationDate, isOnline} = data;
     const {user} = useSelector(state => state.user);
     const {settings, id: userId} = user || {};
     const {isShowAvatars} = settings || {};
@@ -44,8 +45,8 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                             ? <p className={styles.userAvatarName}>{nickname[0]}</p>
                             : <p className={styles.userAvatarName}>Unk</p>}
 
-                        {theme && <Tooltip title="Тема пользователя">
-                            <div className={styles.userThemeCircle} style={{background: theme?.primary || CONFIG.BASE_COLOR}}></div>
+                        {isOnline && <Tooltip title="Онлайн">
+                            <div className={styles.userOnline}></div>
                         </Tooltip>}
 
                         {isVerified && <Tooltip title="Верифицирован">
@@ -65,9 +66,16 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                 </div>
 
                 <div className={base.baseWrapperGap12}>
-                    {id && <TextPoint title="ID" text={id} />}
+                    <div className={base.titleInnerNowrap}>
+                        {id && <TextPoint title="ID" text={id} />}
+
+                        {theme && <TextPoint title="Тема:">
+                            <div className={styles.userThemeCircle} style={{background: theme?.primary || CONFIG.BASE_COLOR}}></div>
+                        </TextPoint>}
+                    </div>
                     {status && <TextPoint title="Статус" text={status} />}
                     {phoneNumber && <TextPoint title="Номер телефона" text={maskPhone(phoneNumber)} />}
+                    {registrationDate && <TextPoint title="Дата регистрации" text={formatDate(registrationDate, "DD.MM.YYYY в HH:mm")} />}
 
                     {roles?.length > 0 && <TextPoint title="Роли">
                         <div className={styles.userRoles}>

@@ -7,8 +7,8 @@ import { Build } from '../Icons';
 
 const PageIsBuild = ({
     icon = <Build />,
-    title,
-    text
+    title = "Страница находится в разработке..",
+    text = "В следующем обновлении сайта она обязательно появится, запаситесь терпения и возвращайтесь чуть позже"
 }) => {
     return (
         <div className={styles.messangerBuildContent}>

@@ -163,10 +163,7 @@ const Messanger = () => {
                     </div> */}
 
                     <div className={pws.contentFull}>
-                        <PageIsBuild
-                            title="Страница находится в разработке.."
-                            text="В следующем обновлении сайта она обязательно появится, запаситесь терпения и возвращайтесь чуть позже"
-                        />
+                        <PageIsBuild />
                     </div>
                 </div>
             </WithSidebarWrapper>

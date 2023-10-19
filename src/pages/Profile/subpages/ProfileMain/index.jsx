@@ -77,13 +77,13 @@ const ProfileMain = () => {
 
                     <div className={styles.profileInfoItem}>
                         <Tooltip title="Просмотр профиля">
-                            <IconButton type="light">
+                            <IconButton type="light" disabled>
                                 <Eye />
                             </IconButton>
                         </Tooltip>
 
                         <Tooltip title="QR-код профиля">
-                            <IconButton type="light">
+                            <IconButton type="light" disabled>
                                 <Qr />
                             </IconButton>
                         </Tooltip>
@@ -97,31 +97,31 @@ const ProfileMain = () => {
                             value={moreProfileMenu}
                             setValue={setMoreProfileMenu}
                         >
-                            <MenuLink>
+                            <MenuLink disabled>
                                 <Edit />
 
                                 Редактировать
                             </MenuLink>
 
-                            <MenuLink>
+                            <MenuLink disabled>
                                 <Message />
 
                                 Сообщение
                             </MenuLink>
 
-                            <MenuLink>
+                            <MenuLink disabled>
                                 <User />
 
                                 Добавить в друзья
                             </MenuLink>
 
-                            <MenuLink danger>
+                            <MenuLink danger disabled>
                                 <Block />
 
                                 Заблокировать
                             </MenuLink>
 
-                            <MenuLink danger>
+                            <MenuLink danger disabled>
                                 <Delete />
 
                                 Удалить из друзей
@@ -131,25 +131,7 @@ const ProfileMain = () => {
                 </div>
             </div>
 
-            <div className={styles.wrapper}>
-                <div className={styles.profileContent}>
-                    
-                </div>
-
-                <div className={styles.sidebar}>
-                    <SidebarLink to="/profile">
-                        <User />
-
-                        Профиль
-                    </SidebarLink>
-
-                    <SidebarLink to="/profile/friends">
-                        <Friends />
-
-                        Друзья
-                    </SidebarLink>
-                </div>
-            </div>
+            
         </div>
     )
 }

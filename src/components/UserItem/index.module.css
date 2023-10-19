@@ -80,13 +80,21 @@
 }
 
 .userThemeCircle{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    margin-top: 0.4rem;
+}
+
+.userOnline{
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    border: 1px solid var(--white);
+    background: var(--success);
     position: absolute;
-    bottom: 0px;
-    right: 0px;
+    bottom: 0;
+    right: 0;
+    border: 2px solid var(--white);
 }
 
 .userRoles{

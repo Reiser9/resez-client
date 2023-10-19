@@ -22,6 +22,7 @@ const Logs = React.lazy(() => import("./subpages/Logs"));
 const Test = React.lazy(() => import("./subpages/Test"));
 const CreateSubject = React.lazy(() => import("./subpages/CreateSubject"));
 const CreateTask = React.lazy(() => import("./subpages/CreateTask"));
+const Warn = React.lazy(() => import("./subpages/Warn"));
 
 const Admin = () => {
     return (
@@ -46,6 +47,7 @@ const Admin = () => {
                                 <Route path="/test/subject/edit/:id" element={withSuspense(<CreateSubject edit />)} />
                                 <Route path="/test/task/create" element={withSuspense(<CreateTask />)} />
                                 <Route path="/test/task/edit/:id" element={withSuspense(<CreateTask edit />)} />
+                                <Route path="/warn" element={withSuspense(<Warn edit />)} />
                                 <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>
                         </div>
@@ -58,6 +60,7 @@ const Admin = () => {
                             <SidebarLink text="Роли" to="roles" />
                             <SidebarLink text="Логирование" to="logs" />
                             <SidebarLink text="Тесты" to="test" />
+                            <SidebarLink text="Жалобы" to="warn" />
                         </InnerSidebar>
                     </div>
                 </WithSidebarWrapper>
