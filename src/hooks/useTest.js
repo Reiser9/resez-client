@@ -270,9 +270,6 @@ const useTest = () => {
         if(!task){
             return alertNotify("Предупреждение", "Задание не может быть пустым", "warn");
         }
-        if(!answer){
-            return alertNotify("Предупреждение", "Ответ не может быть пустым", "warn");
-        }
 
         setIsLoading(true);
 

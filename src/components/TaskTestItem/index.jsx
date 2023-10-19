@@ -65,7 +65,7 @@ const TaskTestItem = ({
                         {parse(solution)}
                     </div>}
 
-                    <p className={styles.taskItemAnswer}>Ответ: {answer}</p>
+                    {answer && <p className={styles.taskItemAnswer}>Ответ: {answer}</p>}
                 </Spoiler>}
             </div>
 
