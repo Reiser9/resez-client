@@ -62,6 +62,7 @@ const Editor = React.forwardRef(({
             class: Image,
             config: {
                 uploader: {
+                    icon: "Иконка",
                     uploadByFile,
                     uploadByUrl
                 }
