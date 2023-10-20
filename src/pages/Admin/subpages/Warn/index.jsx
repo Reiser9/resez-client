@@ -19,6 +19,7 @@ const Warn = () => {
 
     const {isLoading, error, loadWarns, getAllWarns} = useWarn();
     const {warnsIsLoading, warns} = useSelector(state => state.warn);
+    const {user} = useSelector(state => state.user);
 
     const loadMoreWarns = async () => {
         setWarnsMoreLoading(true);

@@ -5,6 +5,9 @@ import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 
 import { Cross } from '../../../../components/Icons';
+import { PERMISSIONS } from '../../../../consts/PERMISSIONS';
+
+import { checkPermission } from '../../../../utils/checkPermission';
 
 import useAdmin from '../../../../hooks/useAdmin';
 
@@ -19,6 +22,7 @@ const Users = () => {
 
     const {error, userIsLoading, loadUsers, getAllUsers, userBlock, userUnblock} = useAdmin();
     const {usersIsLoading, users} = useSelector(state => state.admin);
+    const {user} = useSelector(state => state.user);
 
     const loadMoreUsers = async () => {
         setUsersMoreLoading(true);
@@ -58,6 +62,8 @@ const Users = () => {
                         loading={userIsLoading?.includes(data.id)}
                         userBlock={() => userBlock(data.id)}
                         userUnblock={() => userUnblock(data.id)}
+                        notify={checkPermission(user?.permissions, [PERMISSIONS.NOTIFIES])}
+                        block={checkPermission(user?.permissions, [PERMISSIONS.BLOCK_USERS])}
                     />
                 )}
             </BlockDataWithPaggination>

@@ -16,6 +16,7 @@ import InfoBlock from '../../../../components/InfoBlock';
 import ScrollSkeleton from '../../../../components/Skeleton/Scroll';
 import CatalogItem from '../../../../components/CatalogItem';
 import Preloader from '../../../../components/Preloader';
+import NotContent from '../../../../components/NotContent';
 
 const TestMain = () => {
     const [subjectsIsLoading, setSubjectsIsLoading] = React.useState(false);
@@ -80,7 +81,9 @@ const TestMain = () => {
                 <p className={typography.h4}>Каталог заданий</p>
 
                 <div className={base.contentItems}>
-                    {taskCatalog?.map(data => <CatalogItem key={data.id} data={data} />)}
+                    {taskCatalog.length > 0
+                    ? taskCatalog?.map(data => <CatalogItem key={data.id} data={data} />)
+                    : <NotContent text="Заданий не найдено" />}
                 </div>
             </div>}
         </div>

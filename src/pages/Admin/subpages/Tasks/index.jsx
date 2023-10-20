@@ -4,6 +4,10 @@ import { useSelector } from 'react-redux';
 import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 
+import { Cross } from '../../../../components/Icons';
+import { PERMISSIONS } from '../../../../consts/PERMISSIONS';
+import { checkPermission } from '../../../../utils/checkPermission';
+
 import useTest from '../../../../hooks/useTest';
 
 import ReloadButton from '../../../../components/ReloadButton';
@@ -11,7 +15,7 @@ import Button from '../../../../components/Button';
 import TaskItem from '../../../../components/TaskItem';
 import TaskItemSkeleton from '../../../../components/Skeleton/TaskItem';
 import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
-import { Cross } from '../../../../components/Icons';
+
 import NotContent from '../../../../components/NotContent';
 
 const Subjects = () => {
@@ -19,6 +23,7 @@ const Subjects = () => {
 
     const {error, taskIsLoading, loadTasks, getAllTasks, removeTask} = useTest();
     const {tasksIsLoading, tasks} = useSelector(state => state.admin);
+    const {user} = useSelector(state => state.user);
 
     const loadMoreTasks = async () => {
         setTasksMoreLoading(true);
@@ -45,9 +50,9 @@ const Subjects = () => {
                     <ReloadButton loading={tasksIsLoading} onClick={() => loadTasks(0, 5, true)} />
                 </div>
 
-                <Button type="light" auto to="task/create" disabled={tasksIsLoading}>
+                {checkPermission(user?.permissions, [PERMISSIONS.CREATE_TASKS]) && <Button type="light" auto to="task/create" disabled={tasksIsLoading}>
                     Создать
-                </Button>
+                </Button>}
             </div>
 
             <BlockDataWithPaggination
@@ -70,6 +75,8 @@ const Subjects = () => {
                         data={data}
                         deleteTask={() => removeTask(data.id)}
                         loading={taskIsLoading.includes(data.id)}
+                        edit={checkPermission(user?.permissions, [PERMISSIONS.UPDATE_TASKS])}
+                        remove={checkPermission(user?.permissions, [PERMISSIONS.DELETE_TASKS])}
                     />
                 )}
             </BlockDataWithPaggination>

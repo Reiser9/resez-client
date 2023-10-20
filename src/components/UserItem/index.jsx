@@ -14,7 +14,6 @@ import { maskPhone } from '../../utils/formatPhone';
 import {formatDate} from '../../utils/formatDate';
 
 import useUtils from '../../hooks/useUtils';
-import useCalls from '../../hooks/useCalls';
 
 import Button from '../Button';
 import IconButton from '../IconButton';
@@ -22,7 +21,14 @@ import TextPoint from '../TextPoint';
 import ModalConfirm from '../Modal/ConfirmModal';
 import LoaderForItem from '../LoaderForItem';
 
-const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = () => {}}) => {
+const UserItem = ({
+    data,
+    loading = false,
+    userBlock = () => {},
+    userUnblock = () => {},
+    notify = false,
+    block = false
+}) => {
     const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName, status, registrationDate, isOnline} = data;
     const {user} = useSelector(state => state.user);
     const {settings, id: userId} = user || {};
@@ -32,7 +38,6 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
     const [confirmUnblock, setConfirmUnblock] = React.useState(false);
 
     const {copyTextWithNotify} = useUtils();
-    const {callRequest} = useCalls();
 
     return (
         <>
@@ -102,24 +107,20 @@ const UserItem = ({data, loading = false, userBlock = () => {}, userUnblock = ()
                             Подробнее
                         </Button>
 
-                        {!isBlocked && <>
-                            <Tooltip title="Уведомление">
+                        {!isBlocked && (notify || block) && <>
+                            {notify && <Tooltip title="Уведомление">
                                 <IconButton type="light" className={styles.userItemButtonIcons}>
                                     <Notify />
                                 </IconButton>
-                            </Tooltip>
+                            </Tooltip>}
 
-                            <Tooltip title="Заблокировать">
+                            {block && <Tooltip title="Заблокировать">
                                 <IconButton type="danger" className={styles.userItemButtonIcons} onClick={() => setConfirmBlock(true)}>
                                     <Stop />
                                 </IconButton>
-                            </Tooltip>
+                            </Tooltip>}
                         </>}
                     </div>
-
-                    <IconButton type="light" onClick={() => callRequest(id)}>
-                        <Phone />
-                    </IconButton>
                 </div>
 
                 {isBlocked && <div className={styles.userItemBlock}>

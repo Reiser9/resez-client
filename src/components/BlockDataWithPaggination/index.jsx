@@ -39,7 +39,7 @@ const BlockDataWithPaggination = ({
                 {[...Array(skeletonMoreLoading)].map((_, id) => <Skeleton key={id} />)}
             </div>}
 
-            {!dataIsLoading && dataLength > 0 && !isLast && <Button loading={dataMoreIsLoading} type="empty" auto className={styles.dataMoreButton} onClick={loadMoreData}>
+            {!dataIsLoading && dataLength > 0 && !isLast && !error && <Button loading={dataMoreIsLoading} type="empty" auto className={styles.dataMoreButton} onClick={loadMoreData}>
                 {moreButtonText}
             </Button>}
         </>

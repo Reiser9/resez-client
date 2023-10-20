@@ -17,7 +17,9 @@ import ConfirmModal from '../Modal/ConfirmModal';
 const SubjectItem = ({
     data,
     deleteSubject = () => {},
-    loading = false
+    loading = false,
+    edit = false,
+    remove = false
 }) => {
     const {id, subject, isPublished, tasksCount} = data || {};
 
@@ -32,7 +34,7 @@ const SubjectItem = ({
                 <div className={styles.subjectItemWrapper}>
                     {subject && <p className={typography.h4}>{subject}</p>}
 
-                    <HoverMenu
+                    {(edit || remove) &&<HoverMenu
                         button={
                             <IconButton small type="light" onClick={() => setActionMenu(prev => !prev)}>
                                 <DotsHorizontal />
@@ -41,18 +43,18 @@ const SubjectItem = ({
                         value={actionMenu}
                         setValue={setActionMenu}
                     >
-                        <MenuLink onClick={() => navigate(`subject/edit/${id}`)}>
+                        {edit && <MenuLink onClick={() => navigate(`subject/edit/${id}`)}>
                             <Edit />
 
                             Редактировать
-                        </MenuLink>
+                        </MenuLink>}
 
-                        <MenuLink danger onClick={() => setConfirmDelete(true)}>
+                        {remove && <MenuLink danger onClick={() => setConfirmDelete(true)}>
                             <Delete />
 
                             Удалить
-                        </MenuLink>
-                    </HoverMenu>
+                        </MenuLink>}
+                    </HoverMenu>}
                 </div>
 
                 <TextPoint title="Количество заданий" text={tasksCount || 0} />

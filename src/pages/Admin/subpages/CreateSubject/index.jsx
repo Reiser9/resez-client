@@ -271,7 +271,7 @@ const CreateSubject = ({edit = false}) => {
                                         onChange={e => updateCreatedTask(taskId, "theme", e.target.value)}
                                         title="Тема задания"
                                         trackLength
-                                        lengthLimit={75}
+                                        lengthLimit={150}
                                     />
 
                                     <Input
@@ -291,7 +291,7 @@ const CreateSubject = ({edit = false}) => {
                                             onChange={e => updateCreatedSubTheme(taskId, subThemeId, e.target.value)}
                                             title={`Подтема (${theme.tasksCount || 0})`}
                                             trackLength
-                                            lengthLimit={75}
+                                            lengthLimit={150}
                                         />
                                         
                                         {subThemeId === 0
@@ -319,7 +319,7 @@ const CreateSubject = ({edit = false}) => {
                                     setValue={setTheme}
                                     title="Тема задания"
                                     trackLength
-                                    lengthLimit={75}
+                                    lengthLimit={150}
                                 />
 
                                 <Input
@@ -339,7 +339,7 @@ const CreateSubject = ({edit = false}) => {
                                         onChange={e => updateSubTheme(id, e.target.value)}
                                         title="Подтема"
                                         trackLength
-                                        lengthLimit={75}
+                                        lengthLimit={150}
                                     />
 
                                     <IconButton type="danger" onClick={() => deleteSubTheme(id)}>
@@ -353,7 +353,7 @@ const CreateSubject = ({edit = false}) => {
                                         setValue={setSubTheme}
                                         title="Подтема"
                                         trackLength
-                                        lengthLimit={75}
+                                        lengthLimit={150}
                                     />
 
                                     <IconButton type="danger" disabled>

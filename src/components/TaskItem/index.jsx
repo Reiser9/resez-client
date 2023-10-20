@@ -20,7 +20,9 @@ import ConfirmModal from '../Modal/ConfirmModal';
 const TaskItem = ({
     data,
     deleteTask = () => {},
-    loading = false
+    loading = false,
+    edit = false,
+    remove = false
 }) => {
     const {id, date, subject, theme, subTheme, user, task, number} = data || {};
     const {id: authorId, nickname, avatar} = user || {};
@@ -35,7 +37,7 @@ const TaskItem = ({
     return (
         <>
             <div className={styles.taskItem}>
-                <div className={base.baseWrapperGap8}>
+                <div className={base.baseWrapperGap12}>
                     <div className={`${base.titleInnerNowrap} ${base.aifs}`}>
                         <Link to={`/task/${id}`} className={styles.taskItemWrapper}>
                             <span className={base.titleWrapper}>
@@ -51,7 +53,7 @@ const TaskItem = ({
                             <p className={styles.taskTheme}>{subTheme}</p>
                         </Link>
 
-                        <HoverMenu
+                        {(edit || remove) && <HoverMenu
                             button={
                                 <IconButton type="light" small onClick={() => setActionMenu(prev => !prev)}>
                                     <DotsHorizontal />
@@ -60,18 +62,18 @@ const TaskItem = ({
                             value={actionMenu}
                             setValue={setActionMenu}
                         >
-                            <MenuLink>
+                            {edit && <MenuLink>
                                 <Edit />
 
                                 Редактировать
-                            </MenuLink>
+                            </MenuLink>}
 
-                            <MenuLink danger onClick={() => setConfirmDelete(true)}>
+                            {remove && <MenuLink danger onClick={() => setConfirmDelete(true)}>
                                 <Delete />
 
                                 Удалить
-                            </MenuLink>
-                        </HoverMenu>
+                            </MenuLink>}
+                        </HoverMenu>}
                     </div>
                     
                     <div className={base.titleInner}>

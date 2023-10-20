@@ -1,0 +1,21 @@
+export const PERMISSIONS = {
+    VIEW_USERS: 'Пользователи',
+    BLOCK_USERS: 'Блокировка пользователей',
+    NOTIFIES: 'Отпрака уведомлений',
+    ROLES: 'Роли',
+    THEMES: 'Темы',
+    CREATE_TEST_ACCOUNTS: 'Тестовые аккаунты',
+    LOGS: 'Логирование',
+    TESTS: 'Тесты',
+    SUBJECTS: 'Предметы',
+    CREATE_SUBJECTS: 'Создание предметов',
+    UPDATE_SUBJECTS: 'Редактирование предметов',
+    DELETE_SUBJECTS: 'Удаление предметов',
+    TASKS: 'Задания',
+    CREATE_TASKS: 'Создание заданий',
+    UPDATE_TASKS: 'Редактирование заданий',
+    DELETE_TASKS: 'Удаление заданий',
+    COMPLAINTS: 'Жалобы',
+    CONFIG: 'Конфигурация',
+    ARCHIVE: 'Архив'
+}

@@ -14,6 +14,7 @@ import MenuLink from '../HoverMenu/MenuLink';
 import TextPoint from '../TextPoint';
 import LoaderForItem from '../LoaderForItem';
 import ConfirmModal from '../Modal/ConfirmModal';
+import Button from '../Button';
 
 const TestItem = ({
     data,
@@ -30,9 +31,7 @@ const TestItem = ({
             <div className={`${base.item3} ${styles.testItem}`}>
                 <div className={styles.testItemWrapper}>
                     <div className={styles.testItemTitleWrapper}>
-                        {subject && <Link to={`/tests/exam/${id}`}>
-                            <p className={styles.testItemName}>{subject}</p>
-                        </Link>}
+                        {subject && <p className={styles.testItemName}>{subject}</p>}
 
                         <HoverMenu
                             button={
@@ -120,6 +119,10 @@ const TestItem = ({
                         </div>
                     </Tooltip>}
                 </div>
+
+                <Button to={`/tests/exam/${id}`} type="light" small>
+                    Решать
+                </Button>
                 
                 {loading && <LoaderForItem />}
             </div>

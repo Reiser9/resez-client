@@ -35,29 +35,31 @@ const AddRole = ({edit = false}) => {
 
     const [currentPermissions, setCurrentPermissions] = React.useState([]);
     const [permission, setPermission] = React.useState([]);
+    const [permissionHalf, setPermissionHalf] = React.useState([]);
 
     const {isLoading, roleByIdIsLoading, getAllPermissions, createRole, updateRole, getRoleById} = useRoles();
     const {permissionsIsLoading, permissions} = useSelector(state => state.role);
     const navigate = useNavigate();
     const {id} = useParams();
 
-    const onCheckPermission = (value) => {
+    const onCheckPermission = (value, elem) => {
         setPermission(value);
+        setPermissionHalf(elem.halfCheckedKeys);
     }
 
     const createRoleHandler = () => {
         const backbroundTextColor = backgroundColorAuto ? convertHexToOpacityHex(textHexString) : backgroundHexString;
 
-        createRole(name, permission, textHexString, backbroundTextColor, () => navigate("../roles"));
+        createRole(name, [...permission, ...permissionHalf], textHexString, backbroundTextColor, () => navigate("../roles"));
     }
 
     const updateRoleHandler = () => {
         const backbroundTextColor = backgroundColorAuto ? convertHexToOpacityHex(textHexString) : backgroundHexString;
 
-        updateRole(id, name, permission, textHexString, backbroundTextColor, () => navigate("../roles"));
+        updateRole(id, name, [...permission, ...permissionHalf], textHexString, backbroundTextColor, () => navigate("../roles"));
     }
 
-    const formatArrayToTree = (arr) => arr.map(item => ({
+    const formatArrayToTree = arr => arr.map(item => ({
         title: item.permission,
         key: item.id.toString(),
         children: formatArrayToTree(item.childrens) ?? []
@@ -74,9 +76,9 @@ const AddRole = ({edit = false}) => {
         setTextColor(role?.textColor);
         setBackgroundColor(role?.backgroundColor);
 
-        const perm = role?.permissions.map(data => data.id.toString());
+        const perm = role?.permissions.filter(data => data.isSelected).map(data => data.id.toString());
         setPermission(perm);
-    };
+    }
 
     React.useEffect(() => {
         getAllPermissions();

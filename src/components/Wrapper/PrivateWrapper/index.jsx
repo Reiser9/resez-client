@@ -13,6 +13,7 @@ const PrivateWrapper = ({children}) => {
         return <Preloader fill />
     }
 
+    // Сделать нормальную проверку
     if(!isAuth || user?.permissions?.length <= 0){
         return <Navigate to="/404" replace />
     }

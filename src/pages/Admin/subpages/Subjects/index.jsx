@@ -5,6 +5,9 @@ import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 
 import {Cross} from '../../../../components/Icons';
+import { PERMISSIONS } from '../../../../consts/PERMISSIONS';
+
+import { checkPermission } from '../../../../utils/checkPermission';
 
 import useTest from '../../../../hooks/useTest';
 
@@ -17,6 +20,7 @@ import NotContent from '../../../../components/NotContent';
 const Subjects = () => {
     const {subjectIsLoading, error, loadSubjects, removeSubject} = useTest();
     const {subjectsIsLoading, subjects} = useSelector(state => state.admin);
+    const {user} = useSelector(state => state.user);
 
     React.useEffect(() => {
         loadSubjects();
@@ -31,9 +35,9 @@ const Subjects = () => {
                     <ReloadButton loading={subjectsIsLoading} onClick={() => loadSubjects(true)} />
                 </div>
 
-                <Button type="light" auto to="subject/create" disabled={subjectsIsLoading}>
+                {checkPermission(user?.permissions, [PERMISSIONS.CREATE_SUBJECTS]) && <Button type="light" auto to="subject/create" disabled={subjectsIsLoading}>
                     Создать
-                </Button>
+                </Button>}
             </div>
 
             {subjectsIsLoading
@@ -48,6 +52,8 @@ const Subjects = () => {
                         data={data}
                         deleteSubject={() => removeSubject(data.id)}
                         loading={subjectIsLoading.includes(data.id)}
+                        edit={checkPermission(user?.permissions, [PERMISSIONS.UPDATE_SUBJECTS])}
+                        remove={checkPermission(user?.permissions, [PERMISSIONS.DELETE_SUBJECTS])}
                     />
                 )}
             </div>
