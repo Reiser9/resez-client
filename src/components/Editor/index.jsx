@@ -18,6 +18,18 @@ import useAdmin from '../../hooks/useAdmin';
 
 const ReactEditorJS = createReactEditorJS();
 
+const CustomBlockTool = () => {
+    return (
+      <div>
+        <div>
+          <span>Иконка вашего блока</span>
+          <span>Название вашего блока</span>
+        </div>
+        {/* Ваш код для редактирования кастомного блока */}
+      </div>
+    );
+  };
+
 const Editor = React.forwardRef(({
     placeholder = "",
     id = "",
@@ -61,7 +73,16 @@ const Editor = React.forwardRef(({
         checklist: CheckList,
         inlineCode: InlineCode,
         simpleImage: SimpleImage,
-    };
+        customElements: {
+            class: CustomBlockTool,
+            inlineToolbar: true,
+            shortcut: 'CMD+SHIFT+C',
+            config: {
+                icon: 'Иконка вашего блока',
+                title: 'Название вашего блока',
+            }
+        }
+    }
 
     return (
         <ReactEditorJS
