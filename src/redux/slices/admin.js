@@ -142,6 +142,13 @@ export const adminSlice = createSlice({
                 totalCount: state.tasks.totalCount + 1
             };
         },
+        changeTask: (state, action) => {
+            const index = state.tasks?.tasks?.findIndex(obj => obj.id === action.payload.id);
+
+            if(index !== -1){
+                state.tasks?.tasks?.splice(index, 1, action.payload);
+            }
+        },
         deleteTask: (state, action) => {
             state.tasks.tasks = state.tasks?.tasks?.filter(item => item.id !== action.payload.id);
             state.tasks.totalCount--;
@@ -177,6 +184,7 @@ export const {
     initTasks,
     setTasks,
     addNewTask,
+    changeTask,
     deleteTask,
     setTaskCatalogIsLoading,
     initTaskCatalog,

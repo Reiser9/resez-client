@@ -16,7 +16,8 @@ import {
     changeSubject,
     addNewTask,
     setTaskCatalogIsLoading,
-    initTaskCatalog
+    initTaskCatalog,
+    changeTask
 } from '../redux/slices/admin';
 import { addNewTest, deleteTest, initTest, initTests, setTests, setTestsIsLoading } from '../redux/slices/test';
 import { initTableScore, setTableIsLoading } from '../redux/slices/info';
@@ -31,6 +32,7 @@ const useTest = () => {
     const [subjectIsLoading, setSubjectIsLoading] = React.useState([]);
     const [taskIsLoading, setTaskIsLoading] = React.useState([]);
     const [testCheckIsLoading, setTestCheckIsLoading] = React.useState(false);
+    const [taskByIdIsLoading, setTaskByIdIsLoading] = React.useState(false);
 
     const {alertNotify} = useAlert();
     const {request} = useRequest();
@@ -314,18 +316,17 @@ const useTest = () => {
             return errorController(response, () => updateTask(id, subThemeId, task, solution, answer, successCallback));
         }
 
-        // dispatch(addNewTask(response.data.task));
-        console.log(response.data);
+        dispatch(changeTask(response.data.task));
         alertNotify("Успешно", "Задание изменено", "success");
         successCallback();
     }
 
     const getTaskById = async (id) => {
-        setIsLoading(true);
+        setTaskByIdIsLoading(true);
 
         const response = await request(REQUEST_TYPE.ADMIN, `/task/${id}`, HTTP_METHODS.GET, true);
 
-        setIsLoading(false);
+        setTaskByIdIsLoading(false);
 
         if(requestDataIsError(response)){
             return errorController(response, () => getTaskById(id));
@@ -495,6 +496,7 @@ const useTest = () => {
         subjectIsLoading,
         taskIsLoading,
         testCheckIsLoading,
+        taskByIdIsLoading,
         loadSubjects,
         getSubjectById,
         createSubject,

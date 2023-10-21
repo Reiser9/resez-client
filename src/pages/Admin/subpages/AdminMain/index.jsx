@@ -66,7 +66,7 @@ const AdminMain = () => {
                             </p>
                         </div>
 
-                        <Tooltip title={formatDate(maxTotalOnlineDate, "D MMMM YYYY")}>
+                        <Tooltip title={maxTotalOnlineDate ? formatDate(maxTotalOnlineDate, "D MMMM YYYY") : "Неизвестно"}>
                             <div className={styles.adminStatsItem}>
                                 <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
                                     <div className={styles.adminStatsCircle}></div>
@@ -82,7 +82,7 @@ const AdminMain = () => {
                             </div>
                         </Tooltip>
 
-                        <Tooltip title={formatDate(maxOnlinePerDayDate)}>
+                        <Tooltip title={maxOnlinePerDayDate ? formatDate(maxOnlinePerDayDate) : "Неизвестно"}>
                             <div className={styles.adminStatsItem}>
                                 <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
                                     <div className={styles.adminStatsCircle}></div>

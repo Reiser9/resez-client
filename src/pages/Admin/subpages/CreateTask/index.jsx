@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import base from '../../../../styles/base.module.css';
 import styles from './index.module.css';
 
-import { getHtmlInEditor } from '../../../../utils/getHtmlInEditor';
+import { convertHtmlToEditorBlocks, getHtmlInEditor } from '../../../../utils/getHtmlInEditor';
 
 import useTest from '../../../../hooks/useTest';
 
@@ -13,11 +13,13 @@ import Button from '../../../../components/Button';
 import Select from '../../../../components/Select';
 import Input from '../../../../components/Input';
 import Editor from '../../../../components/Editor';
+import Preloader from '../../../../components/Preloader';
 
 const CreateTask = ({
     edit = false
 }) => {
     const [subject, setSubject] = React.useState();
+    const [subjectName, setSubjectName] = React.useState("");
     const [theme, setTheme] = React.useState();
     const [subTheme, setSubTheme] = React.useState();
     const [answer, setAnswer] = React.useState("");
@@ -32,72 +34,91 @@ const CreateTask = ({
     const [subThemesFilter, setSubThemesFilter] = React.useState([]);
     const [subThemesIsLoading, setSubThemesIsLoading] = React.useState(false);
 
+    const [editingIsLoading, setEditingIsLoading] = React.useState(false);
+
     const taskRef = React.useRef(null);
     const solutionRef = React.useRef(null);
 
-    const {isLoading, getShortSubjects, getThemesBySubject, getSubThemesByTheme, createTask, getTaskById, updateTask} = useTest();
+    const {isLoading, taskByIdIsLoading, getShortSubjects, getThemesBySubject, getSubThemesByTheme,
+        createTask, getTaskById, updateTask} = useTest();
     const navigate = useNavigate();
     const {id} = useParams();
 
     const createTaskHandler = async () => {
         const taskData = await taskRef.current.save();
         const taskContent = getHtmlInEditor(taskData.blocks);
-        
-        solutionRef.current.render(taskData);
 
         const solutionData = await solutionRef.current.save();
         const solutionContent = getHtmlInEditor(solutionData.blocks);
 
-        //createTask(subTheme, taskContent, solutionContent, answer, () => navigate("../test"));
+        createTask(subTheme, taskContent, solutionContent, answer, () => navigate("../test"));
     }
 
     const updateTaskHandler = async () => {
+        const taskData = await taskRef.current.save();
+        const taskContent = getHtmlInEditor(taskData.blocks);
 
+        const solutionData = await solutionRef.current.save();
+        const solutionContent = getHtmlInEditor(solutionData.blocks);
+
+        updateTask(id, subTheme, taskContent, solutionContent, answer, () => navigate("../test"));
     }
 
     const subjectsDropdown = (open) => {
         if(open && subjects.length === 0){
-            setSubjectsIsLoading(true);
-            getShortSubjects().then(subjects => {
-                setSubjectsIsLoading(false);
-                if(!subjects){
-                    return;
-                }
-    
-                setSubjects(subjects);
-                setSubjectsFilter(subjects);
-            });
+            getSubjects();
         }
     }
 
-    const themeDropdown = (open, subjectId = "") => {
+    const getSubjects = async () => {
+        setSubjectsIsLoading(true);
+        const response = await getShortSubjects();
+        setSubjectsIsLoading(false);
+
+        if(!response){
+            return;
+        }
+
+        setSubjects(response);
+        setSubjectsFilter(response);
+    }
+
+    const themeDropdown = (open) => {
         if(open && themes.length === 0 && subject){
-            setThemesIsLoading(true);
-            getThemesBySubject(subject || subjectId).then(themes => {
-                setThemesIsLoading(false);
-                if(!themes){
-                    return;
-                }
+            getThemes(subject);
+        }
+    }
     
-                setThemes(themes);
-                setThemesFilter(themes);
-            });
+    const getThemes = async (subject) => {
+        setThemesIsLoading(true);
+        const response = await getThemesBySubject(subject);
+        setThemesIsLoading(false);
+
+        if(!response){
+            return;
+        }
+
+        setThemes(response);
+        setThemesFilter(response);
+    }
+
+    const subThemeDropdown = (open) => {
+        if(open && subThemes.length === 0 && theme){
+            getSubThemes(theme);
         }
     }
 
-    const subThemeDropdown = (open, themeId = "") => {
-        if(open && subThemes.length === 0 && theme){
-            setSubThemesIsLoading(true);
-            getSubThemesByTheme(theme || themeId).then(subThemes => {
-                setSubThemesIsLoading(false);
-                if(!subThemes){
-                    return;
-                }
-                
-                setSubThemes(subThemes);
-                setSubThemesFilter(subThemes);
-            });
+    const getSubThemes = async (theme) => {
+        setSubThemesIsLoading(true);
+        const response = await getSubThemesByTheme(theme);
+        setSubThemesIsLoading(false);
+
+        if(!response){
+            return;
         }
+        
+        setSubThemes(response);
+        setSubThemesFilter(response);
     }
 
     const handleSearchSubject = (value) => {
@@ -127,18 +148,34 @@ const CreateTask = ({
 
     const getTaskHandler = async () => {
         const currentTask = await getTaskById(id);
+        const {subject, subjectTask, subTheme, task, solution, answer} = currentTask || {};
 
-        const {subjectTask, task, answer, solution, subTheme, subject} = currentTask || {};
-        subjectsDropdown(true);
-        themeDropdown(true, subjectTask?.id);
-        subThemeDropdown(true, subTheme?.id);
+
+        await Promise.all([
+            getSubjects(),
+            getThemes(subject?.id),
+            getSubThemes(subjectTask?.id),
+        ]);
+
         setSubject(subject?.id);
+        setSubjectName(subject?.subject);
         setTheme(subjectTask?.id);
         setSubTheme(subTheme?.id);
+        setAnswer(answer);
+        setEditingIsLoading(true);
+
+        setTimeout(() => {
+            taskRef.current.render({
+                blocks: convertHtmlToEditorBlocks(task)
+            });
+            solutionRef.current.render({
+                blocks: convertHtmlToEditorBlocks(solution)
+            });
+        }, 100);
     }
 
     React.useEffect(() => {
-        if(subject && theme){
+        if(subject && !edit){
             setTheme();
             setThemes([]);
             setSubTheme();
@@ -147,7 +184,18 @@ const CreateTask = ({
     }, [subject]);
 
     React.useEffect(() => {
-        if(theme && subTheme){
+        if(theme && !edit){
+            setSubTheme();
+            setSubThemes([]);
+        }
+    }, [theme]);
+
+    React.useEffect(() => {
+        if(editingIsLoading){
+            return setEditingIsLoading(false);
+        }
+
+        if(theme && edit){
             setSubTheme();
             setSubThemes([]);
         }
@@ -158,6 +206,10 @@ const CreateTask = ({
             getTaskHandler();
         }
     }, [id, edit]);
+
+    if(taskByIdIsLoading){
+        return <Preloader page />
+    }
 
     return (
         <CreatePageDefault
@@ -171,7 +223,11 @@ const CreateTask = ({
                 </Button>)}
         >
             <div className={base.formMedium}>
-                <Select
+                {edit
+                ? <div className={styles.selectDisabled}>
+                    {subjectName}
+                </div>
+                : <Select
                     placeholder="Предмет"
                     notContentText="Предметов не найдено"
                     loading={subjectsIsLoading}
@@ -190,7 +246,7 @@ const CreateTask = ({
                     showSearch
                     onSearch={handleSearchSubject}
                     filterOption={false}
-                />
+                />}
 
                 {(subject || edit) && <Select
                     placeholder="Номер задания"

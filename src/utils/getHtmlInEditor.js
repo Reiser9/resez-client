@@ -67,3 +67,86 @@ export const getHtmlInEditor = (blocks = []) => {
 
     return html;
 }
+
+export const convertHtmlToEditorBlocks = (html) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+  
+    const blocks = [];
+  
+    doc.body.childNodes.forEach((node) => {
+        const block = {};
+    
+        if(node.nodeName === 'H1' || node.nodeName === 'H2' || node.nodeName === 'H3' || node.nodeName === 'H4' || node.nodeName === 'H5' || node.nodeName === 'H6') {
+            block.type = 'header';
+            block.data = {
+                level: parseInt(node.nodeName.substring(1), 10),
+                text: node.innerHTML,
+            }
+        }
+        else if(node.nodeName === 'P'){
+            block.type = 'paragraph';
+                block.data = {
+                text: node.innerHTML,
+            }
+        }
+        else if(node.nodeName === 'UL' || node.nodeName === 'OL'){
+            block.type = 'list';
+                block.data = {
+                items: [],
+            }
+    
+            node.childNodes.forEach((itemNode) => {
+                if (itemNode.nodeName === 'LI') {
+                    block.data.items.push(itemNode.innerHTML);
+                }
+            });
+        }
+        else if(node.nodeName === 'DIV'){
+            block.type = 'table';
+            block.data = {
+                content: [],
+            }
+    
+            node.querySelectorAll('tr').forEach((rowNode, rowIndex) => {
+                const row = [];
+        
+                rowNode.querySelectorAll('th, td').forEach((cellNode) => {
+                    row.push(cellNode.innerHTML);
+                });
+        
+                if(rowIndex === 0){
+                    block.data.content.push(row);
+                }
+                else{
+                    block.data.content.push(row);
+                }
+            });
+        }
+        else if(node.nodeName === 'PRE'){
+            block.type = 'code';
+            block.data = {
+                code: node.querySelector('code').innerHTML,
+            }
+        }
+        else if(node.nodeName === 'IMG'){
+            block.type = 'image';
+            block.data = {
+                file: {
+                    url: node.getAttribute('src'),
+                },
+                caption: node.getAttribute('alt'),
+            }
+        }
+        else{
+            block.type = 'raw';
+            block.data = {
+                html: node.outerHTML,
+            }
+        }
+    
+        blocks.push(block);
+    });
+  
+    return blocks;
+};
