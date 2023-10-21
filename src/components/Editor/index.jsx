@@ -11,24 +11,13 @@ import Marker from "@editorjs/marker";
 import CheckList from "@editorjs/checklist";
 import InlineCode from "@editorjs/inline-code";
 import SimpleImage from "@editorjs/simple-image";
+import { CustomMath } from './CustomMathTool';
 
 import styles from './index.module.css';
 
 import useAdmin from '../../hooks/useAdmin';
 
 const ReactEditorJS = createReactEditorJS();
-
-const CustomBlockTool = () => {
-    return (
-      <div>
-        <div>
-          <span>Иконка вашего блока</span>
-          <span>Название вашего блока</span>
-        </div>
-        {/* Ваш код для редактирования кастомного блока */}
-      </div>
-    );
-  };
 
 const Editor = React.forwardRef(({
     placeholder = "",
@@ -55,6 +44,7 @@ const Editor = React.forwardRef(({
 
     const EDITOR_TOOLS = {
         embed: Embed,
+        header: Header,
         table: Table,
         list: List,
         code: Code,
@@ -62,25 +52,76 @@ const Editor = React.forwardRef(({
             class: Image,
             config: {
                 uploader: {
-                    icon: "Иконка",
                     uploadByFile,
                     uploadByUrl
                 }
             },
         },
         raw: Raw,
-        header: Header,
         marker: Marker,
         checklist: CheckList,
         inlineCode: InlineCode,
         simpleImage: SimpleImage,
-        customElements: {
-            class: CustomBlockTool,
-            inlineToolbar: true,
-            shortcut: 'CMD+SHIFT+C',
-            config: {
-                icon: 'Иконка вашего блока',
-                title: 'Название вашего блока',
+        customElements: CustomMath
+    }
+
+    const localLang = {
+        messages: {
+            ui: {
+                "blockTunes": {
+                    "toggler": {
+                        "Click to tune": "Нажмите, чтобы настроить",
+                        "or drag to move": "или перетащите"
+                    },
+                },
+                "inlineToolbar": {
+                    "converter": {
+                        "Convert to": "Конвертировать в"
+                    }
+                },
+                "toolbar": {
+                    "toolbox": {
+                        "Add": "Добавить"
+                    }
+                }
+            },
+            toolNames: {
+                "Text": "Параграф",
+                "Heading": "Заголовок",
+                "List": "Список",
+                "Image": "Изображение",
+                "Checklist": "Чеклист",
+                "Code": "Код",
+                "Raw HTML": "HTML",
+                "Table": "Таблица",
+                "Link": "Ссылка",
+                "Marker": "Маркер",
+                "Bold": "Полужирный",
+                "Italic": "Курсив",
+                "InlineCode": "Моноширинный"
+            },
+            tools: {
+                "warning": {
+                    "Title": "Название",
+                    "Message": "Сообщение",
+                },
+                "link": {
+                    "Add a link": "Вставьте ссылку"
+                },
+                "stub": {
+                    "The block can not be displayed correctly.": "Блок не может быть отображен"
+                }
+            },
+            blockTunes: {
+                "delete": {
+                    "Delete": "Удалить"
+                },
+                "moveUp": {
+                    "Move up": "Переместить вверх"
+                },
+                "moveDown": {
+                    "Move down": "Переместить вниз"
+                }
             }
         }
     }
@@ -92,6 +133,7 @@ const Editor = React.forwardRef(({
             minHeight={minHeight}
             holder={id}
             placeholder={placeholder}
+            i18n={localLang}
             {...props}
         >
             <div id={id} className={styles.editor}></div>

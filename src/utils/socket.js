@@ -1,12 +1,12 @@
 import io from "socket.io-client";
 import { v4 } from 'uuid';
 
-let uniqId = localStorage.getItem("uniqueId");
+let uniqueId = localStorage.getItem("uniqueId");
 
-if(!uniqId){
-    uniqId = v4();
+if(!uniqueId){
+    uniqueId = v4();
 
-    localStorage.setItem("uniqueId", uniqId);
+    localStorage.setItem("uniqueId", uniqueId);
 }
 
 const socketOptions = {
@@ -16,7 +16,7 @@ const socketOptions = {
     timeout: 10000,
     transports: ["websocket"],
     auth: {
-        uniqId
+        uniqueId
     }
 }
 

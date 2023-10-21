@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 } from 'uuid';
 
 import {socket} from '../utils/socket';
 
@@ -28,18 +27,6 @@ const useSocket = () => {
 
         socket.emit("join", user?.id, sessionId);
     }, [user, sessionId]);
-
-    React.useEffect(() => {
-        let uniqId = localStorage.getItem("uniqueId");
-
-        if(!uniqId){
-            uniqId = v4();
-
-            localStorage.setItem("uniqueId", uniqId);
-        }
-
-        socket.emit("connection", uniqId);
-    }, []);
 
     React.useEffect(() => {
         socket.connect();

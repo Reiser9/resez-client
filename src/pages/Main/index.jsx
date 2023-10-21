@@ -1,4 +1,6 @@
 import React from "react";
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 import typography from '../../styles/typography.module.css';
 import styles from "./index.module.css";

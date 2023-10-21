@@ -29,7 +29,8 @@ const UserItem = ({
     notify = false,
     block = false
 }) => {
-    const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName, lastName, status, registrationDate, isOnline} = data;
+    const {avatar, isBlocked, isVerified, level, xp, xpLimit, nickname, phoneNumber, theme, roles, id, firstName,
+        lastName, status, registrationDate, isOnline, lastActivity} = data;
     const {user} = useSelector(state => state.user);
     const {settings, id: userId} = user || {};
     const {isShowAvatars} = settings || {};
@@ -50,8 +51,12 @@ const UserItem = ({
                             ? <p className={styles.userAvatarName}>{nickname[0]}</p>
                             : <p className={styles.userAvatarName}>Unk</p>}
 
-                        {isOnline && <Tooltip title="Онлайн">
+                        {isOnline
+                        ? <Tooltip title="Онлайн">
                             <div className={styles.userOnline}></div>
+                        </Tooltip>
+                        : <Tooltip title={`Последняя активность: ${lastActivity ? formatDate(lastActivity) : "неизвестно"}`}>
+                            <div className={styles.userOffline}></div>
                         </Tooltip>}
 
                         {isVerified && <Tooltip title="Верифицирован">

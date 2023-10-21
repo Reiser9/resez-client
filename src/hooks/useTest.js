@@ -46,7 +46,7 @@ const useTest = () => {
         if(!subjects.subjects || reload){
             dispatch(setSubjectsIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.ADMIN, "subject", HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, "/subject", HTTP_METHODS.GET, true);
 
             dispatch(setSubjectsIsLoading(false));
 
@@ -65,7 +65,7 @@ const useTest = () => {
 
         setIsLoading(true)
 
-        const response = await request(REQUEST_TYPE.ADMIN, `subject/${id}`, HTTP_METHODS.GET, true);
+        const response = await request(REQUEST_TYPE.ADMIN, `/subject/${id}`, HTTP_METHODS.GET, true);
 
         setIsLoading(false);
 
@@ -88,7 +88,7 @@ const useTest = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.ADMIN, "subject", HTTP_METHODS.POST, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/subject", HTTP_METHODS.POST, true, {
             subject,
             isPublished,
             subjectTasks,
@@ -111,7 +111,7 @@ const useTest = () => {
     const editSubject = async (id, subject, isPublished, subjectTasks, isMark, durationMinutes, successCallback = () => {}) => {
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.ADMIN, "subject", HTTP_METHODS.PUT, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/subject", HTTP_METHODS.PUT, true, {
             id,
             subject,
             isPublished,
@@ -133,7 +133,7 @@ const useTest = () => {
     const createTablePoints = async (subjectId, scoreConversion, successCallback = () => {}) => {
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.ADMIN, "score-conversion", HTTP_METHODS.POST, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/score-conversion", HTTP_METHODS.POST, true, {
             subjectId,
             scoreConversion
         });
@@ -151,7 +151,7 @@ const useTest = () => {
     const removeSubject = async (id, successCallback = () => {}) => {
         setSubjectIsLoading(prev => [...prev, id]);
 
-        const response = await request(REQUEST_TYPE.ADMIN, `subject/${id}`, HTTP_METHODS.DELETE, true);
+        const response = await request(REQUEST_TYPE.ADMIN, `/subject/${id}`, HTTP_METHODS.DELETE, true);
 
         setSubjectIsLoading(prev => prev.filter(item => item !== id));
 
@@ -165,7 +165,7 @@ const useTest = () => {
     }
 
     const getShortSubjects = async () => {
-        const response = await request(REQUEST_TYPE.EMPTY, "subject", HTTP_METHODS.GET);
+        const response = await request(REQUEST_TYPE.EMPTY, "/subject", HTTP_METHODS.GET);
 
         if(requestDataIsError(response)){
             return errorController(response, () => {}, "", () => {});
@@ -215,7 +215,7 @@ const useTest = () => {
         if(!tasks.tasks || reload){
             dispatch(setTasksIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.ADMIN, `task?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/task?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
 
             dispatch(setTasksIsLoading(false));
 
@@ -252,7 +252,7 @@ const useTest = () => {
     const removeTask = async (id, successCallback = () => {}) => {
         setTaskIsLoading(prev => [...prev, id]);
 
-        const response = await request(REQUEST_TYPE.ADMIN, `task/${id}`, HTTP_METHODS.DELETE, true);
+        const response = await request(REQUEST_TYPE.ADMIN, `/task/${id}`, HTTP_METHODS.DELETE, true);
 
         setTaskIsLoading(prev => prev.filter(item => item !== id));
 
@@ -273,7 +273,7 @@ const useTest = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.ADMIN, "task", HTTP_METHODS.POST, true, {
+        const response = await request(REQUEST_TYPE.ADMIN, "/task", HTTP_METHODS.POST, true, {
             subThemeId,
             task,
             solution,
@@ -290,6 +290,48 @@ const useTest = () => {
         dispatch(addNewTask(response.data.task));
         alertNotify("Успешно", "Задание создано", "success");
         successCallback();
+    }
+
+    const updateTask = async (id, subThemeId, task, solution, answer, successCallback = () => {}) => {
+        if(!task){
+            return alertNotify("Предупреждение", "Задание не может быть пустым", "warn");
+        }
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, "/task", HTTP_METHODS.PUT, true, {
+            id,
+            subThemeId,
+            task,
+            solution,
+            answer,
+            isVerified: true
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => updateTask(id, subThemeId, task, solution, answer, successCallback));
+        }
+
+        // dispatch(addNewTask(response.data.task));
+        console.log(response.data);
+        alertNotify("Успешно", "Задание изменено", "success");
+        successCallback();
+    }
+
+    const getTaskById = async (id) => {
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, `/task/${id}`, HTTP_METHODS.GET, true);
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => getTaskById(id));
+        }
+
+        return response.data.task;
     }
 
     const getTasksBySubject = async (id, errorCallback = () => {}) => {
@@ -374,7 +416,7 @@ const useTest = () => {
 
         setIsLoading(true);
 
-        const response = await request(REQUEST_TYPE.TEST, "generate-exam", HTTP_METHODS.POST, true, {
+        const response = await request(REQUEST_TYPE.TEST, "/generate-exam", HTTP_METHODS.POST, true, {
             subjectId,
             isPrivate
         });
@@ -467,6 +509,8 @@ const useTest = () => {
         getAllTasks,
         removeTask,
         createTask,
+        updateTask,
+        getTaskById,
         getTasksBySubject,
         loadTests,
         getTestById,

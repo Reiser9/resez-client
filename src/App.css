@@ -716,3 +716,14 @@ input::placeholder{
         border-radius: 50px;
     }
 }
+
+/* Custom math tool */
+.math{
+    width: 100%;
+}
+
+.math input{
+    width: 100%;
+    min-height: 38px;
+    padding: 0.4em 0;
+}

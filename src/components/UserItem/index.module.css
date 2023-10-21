@@ -86,7 +86,7 @@
     margin-top: 0.4rem;
 }
 
-.userOnline{
+.userOnline, .userOffline{
     width: 14px;
     height: 14px;
     border-radius: 50%;
@@ -95,6 +95,10 @@
     bottom: 0;
     right: 0;
     border: 2px solid var(--white);
+}
+
+.userOffline{
+    background: var(--textGrey);
 }
 
 .userRoles{

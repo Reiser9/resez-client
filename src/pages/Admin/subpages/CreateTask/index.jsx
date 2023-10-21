@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import base from '../../../../styles/base.module.css';
 import styles from './index.module.css';
@@ -35,17 +35,24 @@ const CreateTask = ({
     const taskRef = React.useRef(null);
     const solutionRef = React.useRef(null);
 
-    const {isLoading, getShortSubjects, getThemesBySubject, getSubThemesByTheme, createTask} = useTest();
+    const {isLoading, getShortSubjects, getThemesBySubject, getSubThemesByTheme, createTask, getTaskById, updateTask} = useTest();
     const navigate = useNavigate();
+    const {id} = useParams();
 
     const createTaskHandler = async () => {
         const taskData = await taskRef.current.save();
         const taskContent = getHtmlInEditor(taskData.blocks);
+        
+        solutionRef.current.render(taskData);
 
         const solutionData = await solutionRef.current.save();
         const solutionContent = getHtmlInEditor(solutionData.blocks);
 
-        createTask(subTheme, taskContent, solutionContent, answer, () => navigate("../test"));
+        //createTask(subTheme, taskContent, solutionContent, answer, () => navigate("../test"));
+    }
+
+    const updateTaskHandler = async () => {
+
     }
 
     const subjectsDropdown = (open) => {
@@ -63,10 +70,10 @@ const CreateTask = ({
         }
     }
 
-    const themeDropdown = (open) => {
+    const themeDropdown = (open, subjectId = "") => {
         if(open && themes.length === 0 && subject){
             setThemesIsLoading(true);
-            getThemesBySubject(subject).then(themes => {
+            getThemesBySubject(subject || subjectId).then(themes => {
                 setThemesIsLoading(false);
                 if(!themes){
                     return;
@@ -78,10 +85,10 @@ const CreateTask = ({
         }
     }
 
-    const subThemeDropdown = (open) => {
+    const subThemeDropdown = (open, themeId = "") => {
         if(open && subThemes.length === 0 && theme){
             setSubThemesIsLoading(true);
-            getSubThemesByTheme(theme).then(subThemes => {
+            getSubThemesByTheme(theme || themeId).then(subThemes => {
                 setSubThemesIsLoading(false);
                 if(!subThemes){
                     return;
@@ -118,6 +125,18 @@ const CreateTask = ({
         setSubThemesFilter(filteredOptions);
     }
 
+    const getTaskHandler = async () => {
+        const currentTask = await getTaskById(id);
+
+        const {subjectTask, task, answer, solution, subTheme, subject} = currentTask || {};
+        subjectsDropdown(true);
+        themeDropdown(true, subjectTask?.id);
+        subThemeDropdown(true, subTheme?.id);
+        setSubject(subject?.id);
+        setTheme(subjectTask?.id);
+        setSubTheme(subTheme?.id);
+    }
+
     React.useEffect(() => {
         if(subject && theme){
             setTheme();
@@ -134,11 +153,17 @@ const CreateTask = ({
         }
     }, [theme]);
 
+    React.useEffect(() => {
+        if(id && edit){
+            getTaskHandler();
+        }
+    }, [id, edit]);
+
     return (
         <CreatePageDefault
             title={`${edit ? "Редактирование" : "Создание"} задания`}
             button={subTheme && (edit
-                ? <Button type="light" auto loading={isLoading}>
+                ? <Button type="light" auto onClick={updateTaskHandler} loading={isLoading}>
                     Сохранить
                 </Button>
                 : <Button type="light" auto onClick={createTaskHandler} loading={isLoading}>
@@ -167,7 +192,7 @@ const CreateTask = ({
                     filterOption={false}
                 />
 
-                {subject && <Select
+                {(subject || edit) && <Select
                     placeholder="Номер задания"
                     notContentText="Заданий не найдено"
                     loading={themesIsLoading}
@@ -188,7 +213,7 @@ const CreateTask = ({
                     filterOption={false}
                 />}
 
-                {theme && <Select 
+                {(theme || edit) && <Select 
                     placeholder="Тема"
                     notContentText="Тем не найдено"
                     loading={subThemesIsLoading}
@@ -209,7 +234,7 @@ const CreateTask = ({
                     filterOption={false}
                 />}
 
-                {subTheme && <>
+                {(subTheme || edit) && <>
                     <Editor placeholder="Задание" ref={taskRef} id="taskEditor" />
 
                     <Editor placeholder="Решение" ref={solutionRef} id="answerEditor" />

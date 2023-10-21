@@ -8,8 +8,10 @@ import styles from './index.module.css';
 import { Stats } from '../../../../components/Icons';
 
 import {socket} from '../../../../utils/socket';
+import {formatDate} from '../../../../utils/formatDate';
 
 import { setAdminStats } from '../../../../redux/slices/admin';
+import { Tooltip } from 'antd';
 
 const AdminMain = () => {
     const {adminStats} = useSelector(state => state.admin);
@@ -26,7 +28,8 @@ const AdminMain = () => {
         }
     }, []);
 
-    const {accountsCount, blockedAccountsCount, adminsCount, totalOnline, authUsersOnline} = adminStats || {};
+    const {accountsCount, blockedAccountsCount, adminsCount, totalOnline, authUsersOnline,
+        maxTotalOnline, maxOnlinePerDay, maxOnlinePerDayDate, maxTotalOnlineDate} = adminStats || {};
 
     return (
         <div className={base.baseWrapperGap16}>
@@ -62,6 +65,38 @@ const AdminMain = () => {
                                 Онлайн авторизованных
                             </p>
                         </div>
+
+                        <Tooltip title={formatDate(maxTotalOnlineDate, "D MMMM YYYY")}>
+                            <div className={styles.adminStatsItem}>
+                                <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
+                                    <div className={styles.adminStatsCircle}></div>
+
+                                    <p className={styles.adminStatsNumber}>
+                                        {maxTotalOnline || 0}
+                                    </p>
+                                </div>
+
+                                <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                                    Максимальный онлайн
+                                </p>
+                            </div>
+                        </Tooltip>
+
+                        <Tooltip title={formatDate(maxOnlinePerDayDate)}>
+                            <div className={styles.adminStatsItem}>
+                                <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
+                                    <div className={styles.adminStatsCircle}></div>
+
+                                    <p className={styles.adminStatsNumber}>
+                                        {maxOnlinePerDay || 0}
+                                    </p>
+                                </div>
+
+                                <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                                    Максимальный онлайн за день
+                                </p>
+                            </div>
+                        </Tooltip>
 
                         <div className={styles.adminStatsItem}>
                             <div className={`${styles.adminStatsNumberInner} ${styles.info}`}>

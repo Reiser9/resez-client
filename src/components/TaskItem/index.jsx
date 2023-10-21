@@ -1,6 +1,6 @@
 import React from 'react';
 import parse from 'html-react-parser';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import base from '../../styles/base.module.css';
@@ -34,6 +34,8 @@ const TaskItem = ({
     const [actionMenu, setActionMenu] = React.useState(false);
     const [confirmDelete, setConfirmDelete] = React.useState(false);
 
+    const navigate = useNavigate();
+
     return (
         <>
             <div className={styles.taskItem}>
@@ -62,7 +64,7 @@ const TaskItem = ({
                             value={actionMenu}
                             setValue={setActionMenu}
                         >
-                            {edit && <MenuLink>
+                            {edit && <MenuLink onClick={() => navigate(`task/edit/${id}`)}>
                                 <Edit />
 
                                 Редактировать
