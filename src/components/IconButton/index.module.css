@@ -43,11 +43,16 @@
     color: #000;
 }
 
+.warn{
+    background: var(--warnB);
+    color: #000;
+}
+
 .light{
     background: var(--lighten);
 }
 
-.light:hover, .danger:hover{
+.light:hover, .danger:hover, .warn:hover{
     opacity: 0.6;
 }
 
@@ -62,4 +67,8 @@
 
 .iconButton.danger svg path{
     stroke: var(--error);
+}
+
+.iconButton.warn svg path{
+    stroke: var(--warn);
 }

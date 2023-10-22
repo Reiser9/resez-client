@@ -12,6 +12,7 @@ import CheckList from "@editorjs/checklist";
 import InlineCode from "@editorjs/inline-code";
 import SimpleImage from "@editorjs/simple-image";
 import { CustomMath } from './CustomMathTool';
+import { CustomFiles } from './CustomFiles';
 
 import styles from './index.module.css';
 
@@ -62,7 +63,8 @@ const Editor = React.forwardRef(({
         checklist: CheckList,
         inlineCode: InlineCode,
         simpleImage: SimpleImage,
-        customElements: CustomMath
+        math: CustomMath,
+        files: CustomFiles
     }
 
     const localLang = {

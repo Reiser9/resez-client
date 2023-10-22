@@ -6,7 +6,8 @@ import styles from './index.module.css';
 const typesButton = {
     "default": styles.default,
     "light": styles.light,
-    "danger": styles.danger
+    "danger": styles.danger,
+    "warn": styles.warn
 }
 
 const IconButton = ({

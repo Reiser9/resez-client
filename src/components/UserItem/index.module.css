@@ -231,13 +231,13 @@
 }
 
 .userVerified{
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     flex-shrink: 0;
     position: absolute;
-    top: -4px;
-    left: -4px;
+    top: -2px;
+    left: -2px;
     background: var(--input);
     display: flex;
     align-items: center;

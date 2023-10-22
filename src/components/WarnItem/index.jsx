@@ -54,7 +54,7 @@ const WarnItem = ({
                 </HoverMenu>
             </div>
 
-            <TextPoint title="Задание">
+            <TextPoint title="ID задания">
                 <Link to={`/task/${targetId}`} className={styles.link}>{targetId}</Link>
             </TextPoint>
 

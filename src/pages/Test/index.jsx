@@ -8,7 +8,7 @@ import typography from '../../styles/typography.module.css';
 import pws from '../../styles/pageWithSidebar.module.css';
 import styles from './index.module.css';
 
-import { Info, Pause, Play, Reload } from '../../components/Icons';
+import { Pause, Play, Reload } from '../../components/Icons';
 
 import {formatMinutesToDuration} from '../../utils/formatMinutesToDuration';
 
@@ -18,13 +18,13 @@ import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
 import TextPoint from '../../components/TextPoint';
 import TaskTestItem from '../../components/TaskTestItem';
-import InnerSidebar from '../../components/InnerSidebar';
 import Preloader from '../../components/Preloader';
 import useTimer from '../../hooks/useTimer';
 import Button from '../../components/Button';
 import Table from '../../components/Table';
 import TableItem from '../../components/Table/TableItem';
 import ConfirmModal from '../../components/Modal/ConfirmModal';
+import InfoSidebar from '../../components/InfoSidebar';
 
 const Test = () => {
     const [confirmRestart, setConfirmRestart] = React.useState(false);
@@ -290,7 +290,7 @@ const Test = () => {
                                     </>}
                                 </div>
 
-                                <InnerSidebar value={sidebarActive} setValue={setSidebarActive} icon={<Info />} className={styles.taskSidebar} big>
+                                <InfoSidebar value={sidebarActive} setValue={setSidebarActive}>
                                     {step !== 3 && <div className={styles.testInfoWrapper}>
                                         <TextPoint title="Прошло:" className={styles.testInfoItem}>
                                             <p className={typography.h4}>{elapsedTime}</p>
@@ -325,7 +325,7 @@ const Test = () => {
                                             Начать заново
                                         </button>
                                     </div>}
-                                </InnerSidebar>
+                                </InfoSidebar>
                             </div>
                         </div>
                     </div>

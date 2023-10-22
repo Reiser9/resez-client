@@ -5,7 +5,7 @@ import typography from '../../styles/typography.module.css';
 import base from '../../styles/base.module.css';
 import styles from './index.module.css';
 
-import { Error } from '../Icons';
+import { Warn } from '../Icons';
 
 import useWarn from '../../hooks/useWarn';
 
@@ -41,8 +41,8 @@ const TaskTestItem = ({
                         <p className={typography.h4}>Задание</p>
                     </div>
 
-                    <IconButton small type="danger" onClick={() => setWarn(true)}>
-                        <Error />
+                    <IconButton small type="warn" onClick={() => setWarn(true)}>
+                        <Warn />
                     </IconButton>
                 </div>
 

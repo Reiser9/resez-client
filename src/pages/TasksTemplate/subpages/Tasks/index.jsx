@@ -6,14 +6,12 @@ import typography from '../../../../styles/typography.module.css';
 import base from '../../../../styles/base.module.css';
 import styles from './index.module.css';
 
-import { Info } from '../../../../components/Icons';
-
 import useTask from '../../../../hooks/useTask';
 
 import TextPoint from '../../../../components/TextPoint';
 import TaskTestItem from '../../../../components/TaskTestItem';
 import Preloader from '../../../../components/Preloader';
-import InnerSidebar from '../../../../components/InnerSidebar';
+import InfoSidebar from '../../../../components/InfoSidebar';
 
 const Tasks = () => {
     const {getTasksBySubthemeId, getTaskById} = useTask();
@@ -46,7 +44,7 @@ const Tasks = () => {
                 {tasks?.tasks?.map((data, id) => <TaskTestItem key={id} data={data} showAnswer={taskId} />)}
             </div>
 
-            <InnerSidebar icon={<Info />} className={styles.taskSidebar} big>
+            <InfoSidebar>
                 <TextPoint title="Предмет:">
                     <p className={typography.h4}>{subject}</p>
                 </TextPoint>
@@ -62,7 +60,7 @@ const Tasks = () => {
                 <TextPoint title="Подтема:">
                     <p className={typography.h4}>{subTheme}</p>
                 </TextPoint>
-            </InnerSidebar>
+            </InfoSidebar>
         </div>
     )
 }

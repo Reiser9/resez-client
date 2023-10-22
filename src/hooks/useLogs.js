@@ -12,8 +12,6 @@ import useError from './useError';
 
 const useLogs = () => {
     const [error, setError] = React.useState(false);
-    const [loading, setIsLoading] = React.useState(false);
-    const [logIsLoading, setLogIsLoading] = React.useState([]);
 
     const {request} = useRequest();
     const {errorController} = useError();
@@ -33,7 +31,7 @@ const useLogs = () => {
             if(requestDataIsError(response)){
                 setError(true);
 
-                return errorController(response, () => loadLogs(offset, limit, reload));
+                return errorController(response, () => loadLogs(offset, limit, userId, logTypeId, reload));
             }
             
             dispatch(initLogs(response.data));
@@ -58,8 +56,6 @@ const useLogs = () => {
 
     return{
         error,
-        loading,
-        logIsLoading,
         loadLogs,
         getAllLogs
     }

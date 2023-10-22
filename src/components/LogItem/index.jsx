@@ -10,7 +10,7 @@ import { ArrowRightLong } from '../Icons';
 import { formatDate } from '../../utils/formatDate';
 import { getLogTypeByType } from '../../utils/getLogTypeByType';
 
-const LogItem = ({data, loading}) => {
+const LogItem = ({data}) => {
     const {message, date, logType, user, id} = data;
     const {id: authorId, nickname, avatar} = user;
 

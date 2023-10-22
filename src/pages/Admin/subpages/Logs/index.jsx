@@ -76,11 +76,11 @@ const Logs = () => {
     const resetFilter = () => {
         setUser();
         setLog();
-        loadLogs(0, 8, "", "", true);
+        loadLogs(0, 10, "", "", true);
     }
 
     React.useEffect(() => {
-        loadLogs(0, 8);
+        loadLogs(0, 10);
     }, []);
 
     React.useEffect(() => {
@@ -174,7 +174,6 @@ const Logs = () => {
                     <LogItem
                         key={data.id}
                         data={data}
-                        loading={setLogIsLoading?.includes(data.id)}
                     />
                 )}
             </BlockDataWithPaggination>

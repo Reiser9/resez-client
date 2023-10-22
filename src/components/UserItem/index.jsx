@@ -49,13 +49,13 @@ const UserItem = ({
                         ? <img src={avatar} alt="avatar" className={styles.userAvatar} />
                         : nickname
                             ? <p className={styles.userAvatarName}>{nickname[0]}</p>
-                            : <p className={styles.userAvatarName}>Unk</p>}
+                            : <p className={styles.userAvatarName}>No</p>}
 
                         {isOnline
                         ? <Tooltip title="Онлайн">
                             <div className={styles.userOnline}></div>
                         </Tooltip>
-                        : <Tooltip title={`Последняя активность: ${lastActivity ? formatDate(lastActivity) : "неизвестно"}`}>
+                        : <Tooltip title="Оффлайн">
                             <div className={styles.userOffline}></div>
                         </Tooltip>}
 
@@ -85,6 +85,7 @@ const UserItem = ({
                     </div>
                     {status && <TextPoint title="Статус" text={status} />}
                     {phoneNumber && <TextPoint title="Номер телефона" text={maskPhone(phoneNumber)} />}
+                    {!isOnline && <TextPoint title="Был в сети" text={lastActivity ? formatDate(lastActivity) : "Неизвестно"} />}
                     {registrationDate && <TextPoint title="Дата регистрации" text={formatDate(registrationDate, "DD.MM.YYYY в HH:mm")} />}
 
                     {roles?.length > 0 && <TextPoint title="Роли">
