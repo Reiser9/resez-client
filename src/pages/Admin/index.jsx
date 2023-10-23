@@ -31,7 +31,7 @@ const Admin = () => {
     const {user} = useSelector(state => state.user);
 
     return (
-        <PrivateWrapper>
+        <PrivateWrapper permissions={[PERMISSIONS.ROLES]}>
             <TitleWrapper pageTitle="ResEz - Админка">
                 <WithSidebarWrapper>
                     <div className={pws.wrapper}>

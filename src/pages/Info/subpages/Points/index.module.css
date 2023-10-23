@@ -41,11 +41,10 @@
     width: 100%;
     display: flex;
     gap: 24px;
-    flex-wrap: wrap;
 }
 
 .pointWrapper{
-    width: calc(100% / 2 - 24px / 2);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -55,9 +54,5 @@
 @media (max-width: 1050px) {
     .pointContent{
         gap: 16px;
-    }
-
-    .pointWrapper{
-        width: 100%;
     }
 }

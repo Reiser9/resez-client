@@ -2,9 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
+import { checkPermission } from '../../../utils/checkPermission';
+
 import Preloader from '../../Preloader';
 
-const PrivateWrapper = ({children}) => {
+const PrivateWrapper = ({
+    permissions = [],
+    children
+}) => {
     const {appIsLoading} = useSelector(state => state.app);
     const {isAuth} = useSelector(state => state.auth);
     const {user} = useSelector(state => state.user);
@@ -13,8 +18,7 @@ const PrivateWrapper = ({children}) => {
         return <Preloader fill />
     }
 
-    // Сделать нормальную проверку
-    if(!isAuth || user?.permissions?.length <= 0){
+    if(!isAuth || !checkPermission(user?.permissions, permissions)){
         return <Navigate to="/404" replace />
     }
 

@@ -71,6 +71,18 @@ export const userSlice = createSlice({
                 settings: {...action.payload}
             }
         },
+        updatePermissions: (state, action) => {
+            const currentPermissions = state.user.permissions;
+
+            if(!currentPermissions){
+                return;
+            }
+
+            state.user = {
+                ...state.user,
+                permissions: action.payload
+            }
+        },
         setDataUser: () => initialState
     }
 });
@@ -88,6 +100,7 @@ export const {
     setUserBlocked,
     initSessionId,
     updateUserSettings,
+    updatePermissions,
     setDataUser
 } = userSlice.actions;
 

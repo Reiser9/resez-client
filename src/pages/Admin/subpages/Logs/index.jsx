@@ -162,8 +162,8 @@ const Logs = () => {
                 dataMoreIsLoading={logsMoreLoading}
                 dataLength={logs?.logs?.length}
                 Skeleton={LogItemSkeleton}
-                skeletonLoading={4}
-                skeletonMoreLoading={2}
+                skeletonLoading={10}
+                skeletonMoreLoading={4}
                 containerClassName={styles.logsContent}
                 errorContent={<NotContent text="Ошибка при загрузке логов" icon={<Cross />} danger />}
                 notContent={<NotContent text="Логи не найдены" />}

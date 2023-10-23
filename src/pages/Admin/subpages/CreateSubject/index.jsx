@@ -15,7 +15,9 @@ import CreatePageDefault from '../../../../components/CreatePageDefault';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import IconButton from '../../../../components/IconButton';
-import CreateTablePoints from './CreateTablePoints';
+import Table from '../../../../components/Table';
+import CreateTableItem from './CreateTableItem';
+import Preloader from '../../../../components/Preloader';
 
 const CreateSubject = ({edit = false}) => {
     const [name, setName] = React.useState("");
@@ -24,11 +26,12 @@ const CreateSubject = ({edit = false}) => {
     const [isPoint, setIsPoint] = React.useState(false);
     const [step, setStep] = React.useState(0);
 
+    const [createdSubjectId, setCreatedSubjectId] = React.useState("");
+
     const [red, setRed] = React.useState(null);
     const [green, setGreen] = React.useState(null);
     const [elements, setElements] = React.useState([]);
 
-    const [subjectId, setSubjectId] = React.useState(null);
     const [primaryCount, setPrimaryCount] = React.useState(null);
 
     const [tasks, setTasks] = React.useState([]);
@@ -40,7 +43,8 @@ const CreateSubject = ({edit = false}) => {
 
     const [subTheme, setSubTheme] = React.useState("");
 
-    const {isLoading, createSubject, editSubject, createTablePoints, getSubjectById} = useTest();
+    const {isLoading, subjectByIdIsLoading, tableByIdIsLoading, createSubject, editSubject, createTablePoints,
+        getSubjectById, getTablePointsBySubjectId} = useTest();
     const {alertNotify} = useAlert();
     const navigate = useNavigate();
     const {id} = useParams();
@@ -68,16 +72,15 @@ const CreateSubject = ({edit = false}) => {
             const id = await createSubject(name, isPublished, updatedTasks, isPoint, examMinutes, () => {
                 setStep(prev => prev + 1);
             });
-
-            setSubjectId(id);
+            setCreatedSubjectId(id); 
 
             const primaryCount = updatedTasks.reduce((accumulator, currentValue) => {
                 return accumulator + parseInt(currentValue.primaryScore);
             }, 0);
 
             setPrimaryCount(primaryCount);
+            fillEmptyTableCell(primaryCount);
         }
-        
     }
 
     const tableHandler = () => {
@@ -104,7 +107,7 @@ const CreateSubject = ({edit = false}) => {
             return alertNotify("Предупреждение", "Таблица должна быть полностью заполненной", "warn");
         }
 
-        createTablePoints(subjectId, updatedScores, () => navigate("../test"));
+        createTablePoints(createdSubjectId, updatedScores, () => navigate("../test"));
     }
 
     const addTask = () => {
@@ -210,12 +213,80 @@ const CreateSubject = ({edit = false}) => {
         setExamMinutes(durationMinutes);
     }
 
+    const getCurrentTablePoint = async (id) => {
+
+    }
+
+    const setRedHandler = (id) => {
+        setGreen(prev => {
+            if(prev === null || id + 1 === primaryCount){
+                return null;
+            }
+            else if(id >= prev){
+                return id + 1;
+            }
+
+            return prev;
+        });
+
+        setRed(prev => prev === id ? null : id);
+    }
+
+    const setGreenHandler = (id) => {
+        setRed(prev => {
+            if(prev === null || id === 0){
+                return null;
+            }
+            else if(id <= prev){
+                return id - 1;
+            }
+
+            return prev;
+        });
+
+        setGreen(prev => prev === id ? null : id);
+    }
+
+    const handleChangeInput = (e, id) => {
+        let currentData = [...elements];
+
+        currentData[id].secondaryScore = e.target.value;
+        setElements(currentData);
+    }
+
+    const fillEmptyTableCell = (count) => {
+        let newElements = [];
+
+        [...Array(count)].map((_, id) => {
+            newElements = [...newElements, {
+                id,
+                primaryScore: id + 1,
+                isRed: false,
+                isGreen: false,
+                secondaryScore: ""
+            }];
+        });
+
+        setElements(newElements);
+    }
+
     React.useEffect(() => {
         if(edit && id){
-            getCurrentSubject(id);
-            setSubjectId(id);
+            if(step === 0){
+                getCurrentSubject(id);
+            }
+            else{
+                getCurrentTablePoint(id);
+                getTablePointsBySubjectId(id);
+            }
         }
-    }, [id, edit]);
+    }, [edit, id, step]);
+
+    React.useEffect(() => {
+        if(id){
+            setCreatedSubjectId(id);
+        }
+    }, [id]);
 
     return (
         <CreatePageDefault
@@ -239,7 +310,9 @@ const CreateSubject = ({edit = false}) => {
                     } : false}
                 />
 
-                {step === 0 && <>
+                {subjectByIdIsLoading
+                ? <Preloader page />
+                : step === 0 && <>
                     <Input value={name} setValue={setName} title="Название предмета" trackLength lengthLimit={75} />
 
                     <Input value={examMinutes} setValue={setExamMinutes} title="Длительность экзамена в минутах" lengthLimit={3} />
@@ -377,17 +450,28 @@ const CreateSubject = ({edit = false}) => {
                     </div>
                 </>}
 
-                {step === 1 && <CreateTablePoints
-                    primaryPointCount={primaryCount}
-                    elements={elements}
-                    setElements={setElements}
-                    red={red}
-                    green={green}
-                    setRed={setRed}
-                    setGreen={setGreen}
-                    edit={edit}
-                    subjectId={subjectId}
-                />}
+                {tableByIdIsLoading
+                ? <Preloader page />
+                : step === 1 && <Table>
+                    <div className={styles.subjectPointsItem}>
+                        <p className={styles.subjectPointsHead}>Первичный балл</p>
+
+                        <div className={styles.subjectPointsActions}></div>
+
+                        <p className={styles.subjectPointsHead}>Вторичный балл</p>
+                    </div>
+
+                    {elements?.map((data, id) => <CreateTableItem
+                        key={id}
+                        data={data}
+                        red={red}
+                        id={id}
+                        green={green}
+                        callbackRed={() => setRedHandler(id)}
+                        callbackGreen={() => setGreenHandler(id)}
+                        onChange={handleChangeInput}
+                    />)}
+                </Table>}
             </div>
         </CreatePageDefault>
     )

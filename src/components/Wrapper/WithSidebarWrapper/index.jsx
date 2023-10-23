@@ -35,8 +35,7 @@ const WithSidebarWrapper = ({container = "basic", children}) => {
                 <SidebarLink onClick={hideSidebar} text="Мессенджер" icon={<Message />} to="/messanger" />
                 <SidebarLink onClick={hideSidebar} text="Полезное" icon={<Fire />} to="/info" />
                 <SidebarLink onClick={hideSidebar} text="Магазин" icon={<Store />} to="/store" />
-                {/* Сделать с нормальной проверкой */}
-                {user?.permissions?.length > 0 &&<SidebarLink onClick={hideSidebar} text="Админка" icon={<Code />} to="/admin" />}
+                {user?.permissions?.length > 0 && <SidebarLink onClick={hideSidebar} text="Админка" icon={<Code />} to="/admin" />}
                 {checkPermission(user?.permissions, [PERMISSIONS.CONFIG]) && <SidebarLink onClick={hideSidebar} text="Конфигурация" icon={<Console />} to="/config" />}
             </Sidebar>
 

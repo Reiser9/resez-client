@@ -65,12 +65,12 @@ const useAuth = () => {
             });
         }
 
-        dispatch(setAuthIsLoading(true))
+        dispatch(setAuthIsLoading(true));
         const {data} = await getShortInfo() || "";
-        dispatch(setAuthIsLoading(false))
+        dispatch(setAuthIsLoading(false));
 
         if(!data){
-            return;
+            return dispatch(setAuthIsLoading(false));;
         }
 
         const {primary, light} = data.user?.theme || {};

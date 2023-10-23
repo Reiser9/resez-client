@@ -83,9 +83,10 @@ const UserItem = ({
                             <div className={styles.userThemeCircle} style={{background: theme?.primary || CONFIG.BASE_COLOR}}></div>
                         </TextPoint>}
                     </div>
+                    
                     {status && <TextPoint title="Статус" text={status} />}
                     {phoneNumber && <TextPoint title="Номер телефона" text={maskPhone(phoneNumber)} />}
-                    {!isOnline && <TextPoint title="Был в сети" text={lastActivity ? formatDate(lastActivity) : "Неизвестно"} />}
+                    {!isOnline && <TextPoint title="Был(а) в сети" text={lastActivity ? formatDate(lastActivity) : "Неизвестно"} />}
                     {registrationDate && <TextPoint title="Дата регистрации" text={formatDate(registrationDate, "DD.MM.YYYY в HH:mm")} />}
 
                     {roles?.length > 0 && <TextPoint title="Роли">

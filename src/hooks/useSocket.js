@@ -3,13 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {socket} from '../utils/socket';
 
-import { CALL_STATUSES } from '../consts/CALL_STATUSES';
-
-import {playSound} from '../utils/playSound';
-
-import { incrementUreadNotifyCount, setUserBlocked } from '../redux/slices/user';
+import { incrementUreadNotifyCount, setUserBlocked, updatePermissions } from '../redux/slices/user';
 import { addNotifyInStart } from '../redux/slices/notify';
-import { setCallInfo, setCallStatus } from '../redux/slices/call';
 
 import useRequest from './useRequest';
 import useNotify from './useNotify';
@@ -50,10 +45,9 @@ const useSocket = () => {
             dispatch(setUserBlocked(false));
         });
 
-        socket.on("call-request", ({userData, callId}) => {
-            dispatch(setCallInfo({user: userData, callId}));
-            dispatch(setCallStatus(CALL_STATUSES.INCOMING));
-            playSound("/assets/img/call.mp3");
+        socket.on("new-permissions", (data) => {
+            dispatch(updatePermissions(data.permissions));
+            alertNotify("Ваша роль обновлена", "Кто-то изменил вашу роль", "info", 4000);
         });
 
         return () => {
@@ -62,7 +56,7 @@ const useSocket = () => {
             socket.off("blocked");
             socket.off("unblocked");
             socket.off("endSession");
-            socket.off("call-request");
+            socket.off("new-permissions");
         };
     }, []);
 }

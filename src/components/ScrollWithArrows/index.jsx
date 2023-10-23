@@ -5,6 +5,7 @@ import styles from './index.module.css';
 import { ArrowLeft, ArrowRight } from '../Icons';
 
 const ScrollWithArrows = ({
+    scrollValue = 200,
     children
 }) => {
     const [scroll, setScroll] = React.useState(0);
@@ -17,24 +18,37 @@ const ScrollWithArrows = ({
     }
 
     const scrollTo = (scroll) => {
-        scrollContainerRef.current.scrollBy({
-            left: scroll,
+        updateMaxScroll();
+        const block = scrollContainerRef.current;
+        const remainingScroll = block.scrollWidth - block.clientWidth - block.scrollLeft;
+        let scrollLeft;
+
+        if(scroll < 0 && block.scrollLeft > 0){
+            scrollLeft = Math.max(scroll, -block.scrollLeft);
+        }
+        else if(scroll > 0 && remainingScroll > 0){
+            scrollLeft = Math.min(scroll, remainingScroll);
+        }
+
+        block.scrollBy({
+            left: scrollLeft,
             behavior: 'smooth',
         });
     }
 
-    React.useEffect(() => {
-        const updateMaxScroll = () => {
-            const block = scrollContainerRef.current;
-        
-            if(block){
-                const maxScrollAmount = block.scrollWidth - block.clientWidth;
-                setScrollBlock(maxScrollAmount);
-            }
+    const updateMaxScroll = () => {
+        const block = scrollContainerRef.current;
+
+        if(scrollContainerRef.current){
+            const maxScrollAmount = Math.max(0, block.scrollWidth - block.clientWidth);
+            setScrollBlock(maxScrollAmount);
         }
-        
+    }
+
+    React.useEffect(() => {
         const block = scrollContainerRef.current;
         const observer = new MutationObserver(updateMaxScroll);
+        updateMaxScroll();
 
         if(block){
             observer.observe(block, { attributes: true, childList: true, subtree: true });
@@ -47,6 +61,10 @@ const ScrollWithArrows = ({
             window.removeEventListener("resize", updateMaxScroll);
         }
     }, []);
+
+    React.useEffect(() => {
+        updateMaxScroll();
+    }, [children]);
     
     return (
         <div className={styles.subjectsTags}>
@@ -55,14 +73,14 @@ const ScrollWithArrows = ({
             </div>
 
             {scrollBlock > 0 && <>
-                <div className={`${styles.subjectsTagsArrowInner} ${styles.prev}${scroll > 0 ? ` ${styles.arrowFade}` : ""}`}>
-                    <div className={styles.subjectsTagsArrow} onClick={() => scrollTo(-200)}>
+                <div className={`${styles.subjectsTagsArrowInner} ${styles.prev}${scroll > 5 ? ` ${styles.arrowFade}` : ""}`}>
+                    <div className={styles.subjectsTagsArrow} onClick={() => scrollTo(-scrollValue)}>
                         <ArrowLeft />
                     </div>
                 </div>
 
-                <div className={`${styles.subjectsTagsArrowInner} ${styles.next}${scroll < scrollBlock ? ` ${styles.arrowFade}` : ""}`}>
-                    <div className={styles.subjectsTagsArrow} onClick={() => scrollTo(200)}>
+                <div className={`${styles.subjectsTagsArrowInner} ${styles.next}${scroll < scrollBlock - 5 ? ` ${styles.arrowFade}` : ""}`}>
+                    <div className={styles.subjectsTagsArrow} onClick={() => scrollTo(scrollValue)}>
                         <ArrowRight />
                     </div>
                 </div>

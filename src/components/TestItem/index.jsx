@@ -121,7 +121,7 @@ const TestItem = ({
                 </div>
 
                 <Button to={`/tests/exam/${id}`} type="light" small>
-                    Решать
+                    Подробнее
                 </Button>
                 
                 {loading && <LoaderForItem />}

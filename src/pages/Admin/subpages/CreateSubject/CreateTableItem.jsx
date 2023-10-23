@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './index.module.css';
 
-import { ArrowBottomLong, ArrowTopLong } from '../../../../../components/Icons';
+import { ArrowBottomLong, ArrowTopLong } from '../../../../components/Icons';
 
 const CreateTableItem = ({
     data,

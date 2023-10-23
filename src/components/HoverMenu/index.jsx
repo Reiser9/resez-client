@@ -6,6 +6,7 @@ const HoverMenu = ({
     value,
     setValue = () => {},
     button,
+    big = false,
     children,
     ...props
 }) => {
@@ -33,7 +34,7 @@ const HoverMenu = ({
         <div className={styles.hoverMenuWrapper} ref={menuRef} {...props}>
             {button}
 
-            <div className={`${styles.hoverMenuOverlay}${value ? ` ${styles.active}` : ""}`} onClick={closeMenu}>
+            <div className={`${styles.hoverMenuOverlay}${value ? ` ${styles.active}` : ""}${big ? ` ${styles.big}` : ""}`} onClick={closeMenu}>
                 <div className={styles.hoverMenu}>
                     <div className={styles.hoverMenuContent} onClick={e => e.stopPropagation()}>
                         {children}

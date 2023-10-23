@@ -75,8 +75,8 @@ const TestMain = () => {
                 image={<TypesTest />}
             />
 
-            {taskCatalogIsLoading
-            ? <Preloader />
+            {taskCatalogIsLoading || subjectsIsLoading
+            ? <Preloader page />
             : <div className={base.baseWrapperGap12}>
                 <p className={typography.h4}>Каталог заданий</p>
 

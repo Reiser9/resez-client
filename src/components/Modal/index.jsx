@@ -25,6 +25,22 @@ const Modal = ({
     size = "default",
     children
 }) => {
+    React.useEffect(() => {
+        const handleKeyDown = (e) => {
+            if(e.keyCode === 27){
+                setValue(false);
+            }
+        }
+      
+        if(value){
+            document.addEventListener('keydown', handleKeyDown);
+        }
+      
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [value]);
+
     return (
         <div className={`${styles.modalOverlay}${value ? ` ${styles.active}` : ""}`} onClick={() => setValue(false)}>
             <div className={`${styles.modalWrapper} ${modalSize(size)}`}>

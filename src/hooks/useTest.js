@@ -33,6 +33,8 @@ const useTest = () => {
     const [taskIsLoading, setTaskIsLoading] = React.useState([]);
     const [testCheckIsLoading, setTestCheckIsLoading] = React.useState(false);
     const [taskByIdIsLoading, setTaskByIdIsLoading] = React.useState(false);
+    const [subjectByIdIsLoading, setSubjectByIdIsLoading] = React.useState(false);
+    const [tableByIdIsLoading, setTableByIdIsLoading] = React.useState(false);
 
     const {alertNotify} = useAlert();
     const {request} = useRequest();
@@ -60,24 +62,6 @@ const useTest = () => {
 
             dispatch(initSubjects(response.data));
         }
-    }
-
-    const getSubjectById = async (id) => {
-        setError(false);
-
-        setIsLoading(true)
-
-        const response = await request(REQUEST_TYPE.ADMIN, `/subject/${id}`, HTTP_METHODS.GET, true);
-
-        setIsLoading(false);
-
-        if(requestDataIsError(response)){
-            setError(true);
-
-            return errorController(response, () => getSubjectById(id));
-        }
-
-        return response.data.subject;
     }
 
     const createSubject = async (subject, isPublished, subjectTasks, isMark, durationMinutes, successCallback = () => {}) => {
@@ -147,6 +131,57 @@ const useTest = () => {
         }
 
         alertNotify("Успешно", "Предмет создан", "success");
+        successCallback();
+    }
+
+    const editTablePoints = async (subjectId, scoreConversion, successCallback = () => {}) => {
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, "/score-conversion", HTTP_METHODS.POST, true, {
+            subjectId,
+            scoreConversion
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => editTablePoints(subjectId, scoreConversion, successCallback));
+        }
+
+        alertNotify("Успешно", "Предмет изменен", "success");
+        successCallback();
+    }
+
+    const getSubjectById = async (id) => {
+        setError(false);
+
+        setSubjectByIdIsLoading(true)
+
+        const response = await request(REQUEST_TYPE.ADMIN, `/subject/${id}`, HTTP_METHODS.GET, true);
+
+        setSubjectByIdIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => getSubjectById(id));
+        }
+
+        return response.data.subject;
+    }
+
+    const getTablePointsBySubjectId = async (id, successCallback = () => {}) => {
+        setTableByIdIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, `/subject/${id}/score-conversion`, HTTP_METHODS.GET, true);
+
+        setTableByIdIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => getTablePointsBySubjectId(id, successCallback));
+        }
+
+        console.log(response.data.scoreConversion);
         successCallback();
     }
 
@@ -497,11 +532,14 @@ const useTest = () => {
         taskIsLoading,
         testCheckIsLoading,
         taskByIdIsLoading,
+        subjectByIdIsLoading,
+        tableByIdIsLoading,
         loadSubjects,
         getSubjectById,
         createSubject,
         editSubject,
         createTablePoints,
+        getTablePointsBySubjectId,
         removeSubject,
         getShortSubjects,
         getThemesBySubject,

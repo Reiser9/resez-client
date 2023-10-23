@@ -59,7 +59,7 @@ const Points = () => {
             </ScrollWithArrows>}
 
             {tableIsLoading || subjectsIsLoading
-            ? <Preloader />
+            ? <Preloader page />
             : id ? <>
                 <div className={styles.pointsTextInner}>
                     <p className={`${styles.pointsText} ${styles.pointsTextRed}`}>Красным обозначен минимальный порог для получения аттестата</p>
@@ -67,7 +67,7 @@ const Points = () => {
                 </div>
 
                 <div className={styles.pointContent}>
-                    <div className={styles.pointWrapper}>
+                    {tableInfo?.scoreConversion?.length > 0 && <div className={styles.pointWrapper}>
                         <Spoiler title="Перевод баллов">
                             <Table>
                                 <TableItem head text="Первичный балл" value="Вторичный балл" />
@@ -80,9 +80,9 @@ const Points = () => {
                                 />)}
                             </Table>
                         </Spoiler>
-                    </div>
+                    </div>}
 
-                    <div className={styles.pointWrapper}>
+                    {tableInfo?.subjectTasks?.length > 0 && <div className={styles.pointWrapper}>
                         <Spoiler title="Оценка заданий">
                             <Table>
                                 <TableItem head text="Задание" value="Первичный балл" />
@@ -94,7 +94,7 @@ const Points = () => {
                                 />)}
                             </Table>
                         </Spoiler>
-                    </div>
+                    </div>}
                 </div>
             </>
             : subjects.length <= 0 && <NotContent text="Предметов не найдено" icon={<Tests />} />}

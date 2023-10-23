@@ -5,6 +5,7 @@ import typography from '../../../../styles/typography.module.css';
 import styles from './index.module.css';
 
 import LinkBlock from '../../../../components/LinkBlock';
+import ScrollWithArrows from '../../../../components/ScrollWithArrows';
 
 const TrainingMain = () => {
     return (

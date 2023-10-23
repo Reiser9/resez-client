@@ -15,9 +15,12 @@
     transition: .2s linear;
 }
 
+.hoverMenuOverlay.big{
+    width: 280px;
+}
+
 @media (any-hover: none) and (max-width: 768px) {
     .hoverMenuOverlay{
-        width: 100%;
         position: fixed;
         top: 0;
         left: 0;
@@ -30,6 +33,10 @@
         opacity: 0;
         pointer-events: none;
         transition: .3s ease-in-out;
+    }
+
+    .hoverMenuOverlay, .hoverMenuOverlay.big{
+        width: 100%;
     }
 }
 

@@ -14,6 +14,7 @@ import useTheme from '../../hooks/useTheme';
 import useAuth from '../../hooks/useAuth';
 
 import ConfirmModal from '../Modal/ConfirmModal';
+import HoverMenu from '../HoverMenu';
 
 const Header = ({empty = false}) => {
     const [profileMenu, setProfileMenu] = React.useState(false);
@@ -50,20 +51,6 @@ const Header = ({empty = false}) => {
     const logoutHandler = () => {
         logout(() => navigate("../../../"));
     }
-  
-    const handleOutsideClick = (e) => {
-        if (profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
-            closeProfileMenu();
-        }
-    };
-  
-    React.useEffect(() => {
-        document.addEventListener("click", handleOutsideClick);
-    
-        return () => {
-            document.removeEventListener("click", handleOutsideClick);
-        };
-    }, []);
 
     React.useEffect(() => {
         dispatch(setSidebarShow(false));
@@ -86,91 +73,94 @@ const Header = ({empty = false}) => {
                 </div>
 
                 {!empty && <div className={styles.headerProfileInner} ref={profileMenuRef}>
-                        <div className={styles.headerProfileWrap} onClick={toggleMenuProfile}>
-                            <div className={`${styles.headerProfileImgInner}${unreadNotifiesCount > 0 ? ` ${styles.unread}` : ""}`}>
-                                {isAuth ? avatar
-                                ? <img src={avatar} alt="avatar" className={styles.headerProfileImg} />
-                                : nickname && <p className={styles.headerProfileName}>{nickname[0]}</p>
-                                : <Enter />}
-                            </div>
+                        <HoverMenu
+                            button={
+                                <div className={styles.headerProfileWrap} onClick={toggleMenuProfile}>
+                                    <div className={`${styles.headerProfileImgInner}${unreadNotifiesCount > 0 ? ` ${styles.unread}` : ""}`}>
+                                        {isAuth ? avatar
+                                        ? <img src={avatar} alt="avatar" className={styles.headerProfileImg} />
+                                        : nickname && <p className={styles.headerProfileName}>{nickname[0]}</p>
+                                        : <Enter />}
+                                    </div>
 
-                            {isAuth && <p className={`${typography.text} ${styles.headerProfileNick}`}>
-                                {nickname}
-                            </p>}
+                                    {isAuth && <p className={`${typography.text} ${styles.headerProfileNick}`}>
+                                        {nickname}
+                                    </p>}
 
-                            <ArrowBottom className={`${styles.headerProfileArrow}${profileMenu ? ` ${styles.active}` : ""}`} />
-                        </div>
-
-                        <div className={`${styles.headerProfileMenuInner}${profileMenu ? ` ${styles.active}` : ""}`}>
-                            <div className={styles.headerProfileMenu}>
-                                {isAuth ? <>
-                                    <div className={styles.headerProfileMenuInfo}>
-                                        <div className={styles.headerProfileMenuData}>
-                                            <div className={styles.headerProfileMenuImgInner}>
-                                                {avatar
-                                                ? <img src={avatar} alt="avatar" className={styles.headerProfileMenuImg} />
-                                                : nickname && <p className={styles.headerProfileName}>{nickname[0]}</p>}
-                                            </div>
-
-                                            <div className={styles.headerProfileMenuNameInner}>
-                                                <p className={`${typography.text} ${styles.headerProfileMenuName}`}>{nickname}</p>
-
-                                                <p className={`${typography.text2} ${styles.headerProfileMenuStatus}`}>{status}</p>
-                                            </div>
+                                    <ArrowBottom className={`${styles.headerProfileArrow}${profileMenu ? ` ${styles.active}` : ""}`} />
+                                </div>
+                            }
+                            value={profileMenu}
+                            setValue={setProfileMenu}
+                            big
+                        >
+                            {isAuth ? <>
+                                <div className={styles.headerProfileMenuInfo}>
+                                    <div className={styles.headerProfileMenuData}>
+                                        <div className={styles.headerProfileMenuImgInner}>
+                                            {avatar
+                                            ? <img src={avatar} alt="avatar" className={styles.headerProfileMenuImg} />
+                                            : nickname && <p className={styles.headerProfileName}>{nickname[0]}</p>}
                                         </div>
 
-                                        <div className={`${typography.text2} ${styles.headerProfileLvl}`}>
-                                            {level}
+                                        <div className={styles.headerProfileMenuNameInner}>
+                                            <p className={`${typography.text} ${styles.headerProfileMenuName}`}>{nickname}</p>
+
+                                            <p className={`${typography.text2} ${styles.headerProfileMenuStatus}`}>{status}</p>
                                         </div>
                                     </div>
 
-                                    <Link to="/profile" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
-                                        <User />
-
-                                        Профиль
-                                    </Link>
-
-                                    <Link to="/notifies" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
-                                        <Notify />
-
-                                        Уведомления
-
-                                        {unreadNotifiesCount > 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 9 ? "9+" : unreadNotifiesCount}</span>}
-                                    </Link>
-
-                                    <Link to="/profile/achievements" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
-                                        <Trophy />
-
-                                        Достижения
-                                    </Link>
-                                </> :
-                                <Link to="/login" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
-                                    <User />
-
-                                    Войти
-                                </Link>}
-
-                                <div className={styles.headerProfileMenuLink} onClick={() => {
-                                    changeTheme();
-                                    closeProfileMenu();
-                                }}>
-                                    <Moon />
-
-                                    Темная тема
-
-                                    <Switch size="small" checked={mode === "dark"} className={styles.headerThemeLabel} />
+                                    <div className={`${typography.text2} ${styles.headerProfileLvl}`}>
+                                        {level}
+                                    </div>
                                 </div>
 
-                                {isAuth && <div className={`${styles.headerProfileMenuLink} ${styles.delete}`} onClick={() => {
-                                    setConfirmLeave(true);
-                                    closeProfileMenu();
-                                }}>
-                                    <Exit />
+                                <Link to="/profile" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
+                                    <User />
 
-                                    Выход
-                                </div>}
+                                    Профиль
+                                </Link>
+
+                                <Link to="/notifies" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
+                                    <Notify />
+
+                                    Уведомления
+
+                                    {unreadNotifiesCount > 0 && <span className={styles.headerProfileNotifyCount}>{unreadNotifiesCount > 9 ? "9+" : unreadNotifiesCount}</span>}
+                                </Link>
+
+                                <Link to="/profile/achievements" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
+                                    <Trophy />
+
+                                    Достижения
+                                </Link>
+                            </> :
+                            <Link to="/login" className={styles.headerProfileMenuLink} onClick={closeProfileMenu}>
+                                <User />
+
+                                Войти
+                            </Link>}
+
+                            <div className={styles.headerProfileMenuLink} onClick={() => {
+                                changeTheme();
+                                closeProfileMenu();
+                            }}>
+                                <Moon />
+
+                                Темная тема
+
+                                <Switch size="small" checked={mode === "dark"} className={styles.headerThemeLabel} />
                             </div>
-                        </div>
+
+                            {isAuth && <div className={`${styles.headerProfileMenuLink} ${styles.delete}`} onClick={() => {
+                                setConfirmLeave(true);
+                                closeProfileMenu();
+                            }}>
+                                <Exit />
+
+                                Выход
+                            </div>}
+                        </HoverMenu>
                     </div>}
             </header>
 

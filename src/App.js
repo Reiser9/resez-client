@@ -23,6 +23,7 @@ const Messanger = React.lazy(() => import("./pages/Messanger"));
 const Info = React.lazy(() => import("./pages/Info"));
 const Store = React.lazy(() => import("./pages/Store"));
 const Admin = React.lazy(() => import("./pages/Admin"));
+const Config = React.lazy(() => import("./pages/Config"));
 const TasksTemplate = React.lazy(() => import("./pages/TasksTemplate"));
 
 const Register = React.lazy(() => import("./pages/Register"));
@@ -63,6 +64,7 @@ const App = () => {
                         <Route path="info/*" element={withSuspense(<Info />)} />
                         <Route path="store/*" element={withSuspense(<Store />)} />
                         <Route path="admin/*" element={withSuspense(<Admin />)} />
+                        <Route path="config/*" element={withSuspense(<Config />)} />
                         <Route path="task/*" element={withSuspense(<TasksTemplate />)} />
                         <Route path="*" element={<Navigate to={"/404"} replace />} />
                     </Route>
