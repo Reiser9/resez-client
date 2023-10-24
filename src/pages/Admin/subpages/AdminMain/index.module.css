@@ -49,7 +49,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 8px;
     padding: 1.2rem 0.8rem;
 }

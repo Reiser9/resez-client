@@ -60,6 +60,11 @@ export const getHtmlInEditor = (blocks = []) => {
             case 'image':
                 html += `<img src="${block.data.file.url}" alt="${block.data.caption}">`
                 break;
+            case 'files':
+                if(block.data?.fileUrl){
+                    html += `<a href="${block.data?.fileUrl}" target="_blanc">${block.data?.fileName || "Файл без названия"}</a>`
+                }
+                break;
             default:
                 break;
         }
@@ -136,6 +141,15 @@ export const convertHtmlToEditorBlocks = (html) => {
                     url: node.getAttribute('src'),
                 },
                 caption: node.getAttribute('alt'),
+            }
+        }
+        else if(node.nodeName === 'A'){
+            block.type = 'files';
+            block.data = {
+                file: {
+                    url: node.getAttribute("href")
+                },
+                fileName: node.textContent
             }
         }
         else{

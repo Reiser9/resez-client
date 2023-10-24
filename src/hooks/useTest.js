@@ -181,8 +181,8 @@ const useTest = () => {
             return errorController(response, () => getTablePointsBySubjectId(id, successCallback));
         }
 
-        console.log(response.data.scoreConversion);
         successCallback();
+        return response.data.scoreConversion;
     }
 
     const removeSubject = async (id, successCallback = () => {}) => {
@@ -539,6 +539,7 @@ const useTest = () => {
         createSubject,
         editSubject,
         createTablePoints,
+        editTablePoints,
         getTablePointsBySubjectId,
         removeSubject,
         getShortSubjects,

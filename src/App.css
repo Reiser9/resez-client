@@ -727,3 +727,27 @@ input::placeholder{
     min-height: 38px;
     padding: 0.4em 0;
 }
+
+/* Custom file tool */
+.chooseFileInner{
+    width: 100%;
+    display: flex;
+    gap: 4px;
+}
+
+.chooseFileButton{
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    background: var(--lighten);
+    color: var(--main);
+    font-size: 1.4rem;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.chooseFileNameInput{
+    width: 100%;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.4rem;
+    background: var(--white);
+}

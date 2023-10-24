@@ -29,7 +29,7 @@ const AdminMain = () => {
     }, []);
 
     const {accountsCount, blockedAccountsCount, adminsCount, totalOnline, authUsersOnline,
-        maxTotalOnline, maxOnlinePerDay, maxOnlinePerDayDate, maxTotalOnlineDate} = adminStats || {};
+        maxTotalOnline, maxOnlinePerDay, maxOnlinePerDayDate, maxTotalOnlineDate, uniqueUsersCountPerDay} = adminStats || {};
 
     return (
         <div className={base.baseWrapperGap16}>
@@ -66,22 +66,6 @@ const AdminMain = () => {
                             </p>
                         </div>
 
-                        <Tooltip title={maxTotalOnlineDate ? formatDate(maxTotalOnlineDate, "D MMMM YYYY в HH:mm") : "Неизвестно"}>
-                            <div className={styles.adminStatsItem}>
-                                <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
-                                    <div className={styles.adminStatsCircle}></div>
-
-                                    <p className={styles.adminStatsNumber}>
-                                        {maxTotalOnline || 0}
-                                    </p>
-                                </div>
-
-                                <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
-                                    Максимальный онлайн
-                                </p>
-                            </div>
-                        </Tooltip>
-
                         <Tooltip title={maxOnlinePerDayDate ? formatDate(maxOnlinePerDayDate) : "Неизвестно"}>
                             <div className={styles.adminStatsItem}>
                                 <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
@@ -94,6 +78,36 @@ const AdminMain = () => {
 
                                 <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
                                     Максимальный онлайн за день
+                                </p>
+                            </div>
+                        </Tooltip>
+
+                        <div className={styles.adminStatsItem}>
+                            <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
+                                <div className={styles.adminStatsCircle}></div>
+
+                                <p className={styles.adminStatsNumber}>
+                                    {uniqueUsersCountPerDay || 0}
+                                </p>
+                            </div>
+
+                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                                Количество уникальных пользователей за день
+                            </p>
+                        </div>
+
+                        <Tooltip title={maxTotalOnlineDate ? formatDate(maxTotalOnlineDate, "D MMMM YYYY в HH:mm") : "Неизвестно"}>
+                            <div className={styles.adminStatsItem}>
+                                <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
+                                    <div className={styles.adminStatsCircle}></div>
+
+                                    <p className={styles.adminStatsNumber}>
+                                        {maxTotalOnline || 0}
+                                    </p>
+                                </div>
+
+                                <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                                    Максимальный онлайн
                                 </p>
                             </div>
                         </Tooltip>

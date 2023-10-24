@@ -46,7 +46,11 @@ const Notifies = () => {
     const editorRef = React.useRef(null);
 
     const createNotify = async () => {
-        if((!date || !time) && delayedSend && !isDateTimePast(date, time)){
+        if((!date || !time) && delayedSend){
+            return alertNotify("Ошибка", "Укажите время и дату", "error");
+        }
+
+        if(delayedSend && !isDateTimePast(date, time)){
             return alertNotify("Ошибка", "Нельзя отправить уведомление в прошедшую дату", "error");
         }
 

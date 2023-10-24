@@ -15,6 +15,7 @@ import useAuth from '../../hooks/useAuth';
 
 import ConfirmModal from '../Modal/ConfirmModal';
 import HoverMenu from '../HoverMenu';
+import Logo from './Logo';
 
 const Header = ({empty = false}) => {
     const [profileMenu, setProfileMenu] = React.useState(false);
@@ -67,9 +68,7 @@ const Header = ({empty = false}) => {
                         <Cross className={`${styles.crossIcon}${sidebarShow ? ` ${styles.active}` : ""}`} />
                     </div>}
 
-                    <Link to="/" className={styles.headerLogoInner}>
-                        <span className={styles.headerLogo}>ResEz <span className={styles.headerLogoVersion}>beta</span></span>
-                    </Link>
+                    <Logo />
                 </div>
 
                 {!empty && <div className={styles.headerProfileInner} ref={profileMenuRef}>

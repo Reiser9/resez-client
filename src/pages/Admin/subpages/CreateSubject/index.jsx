@@ -28,8 +28,8 @@ const CreateSubject = ({edit = false}) => {
 
     const [createdSubjectId, setCreatedSubjectId] = React.useState("");
 
-    const [red, setRed] = React.useState(null);
-    const [green, setGreen] = React.useState(null);
+    const [red, setRed] = React.useState(-9999);
+    const [green, setGreen] = React.useState(9999);
     const [elements, setElements] = React.useState([]);
 
     const [primaryCount, setPrimaryCount] = React.useState(null);
@@ -44,7 +44,7 @@ const CreateSubject = ({edit = false}) => {
     const [subTheme, setSubTheme] = React.useState("");
 
     const {isLoading, subjectByIdIsLoading, tableByIdIsLoading, createSubject, editSubject, createTablePoints,
-        getSubjectById, getTablePointsBySubjectId} = useTest();
+        getSubjectById, getTablePointsBySubjectId, editTablePoints} = useTest();
     const {alertNotify} = useAlert();
     const navigate = useNavigate();
     const {id} = useParams();
@@ -64,9 +64,15 @@ const CreateSubject = ({edit = false}) => {
         }
 
         if(edit){
-            editSubject(id, name, isPublished, updatedTasks, isPoint, examMinutes, () => {
+            await editSubject(id, name, isPublished, updatedTasks, isPoint, examMinutes, () => {
                 setStep(prev => prev + 1);
             });
+            
+            const primaryCount = updatedTasks.reduce((accumulator, currentValue) => {
+                return accumulator + parseInt(currentValue.primaryScore);
+            }, 0);
+
+            setPrimaryCount(primaryCount);
         }
         else{
             const id = await createSubject(name, isPublished, updatedTasks, isPoint, examMinutes, () => {
@@ -87,9 +93,10 @@ const CreateSubject = ({edit = false}) => {
         let empty = false;
 
         let updatedScores = elements.map(data => {
-            const {id, primaryScore, secondaryScore} = data || {};
-            const isGreen = id >= green;
-            const isRed = id <= red;
+            const {primaryScore, secondaryScore} = data || {};
+            const isGreen = primaryScore - 1 >= green;
+            const isRed = primaryScore - 1 <= red;
+            debugger;
 
             if(!secondaryScore){
                 empty = true;
@@ -107,7 +114,12 @@ const CreateSubject = ({edit = false}) => {
             return alertNotify("Предупреждение", "Таблица должна быть полностью заполненной", "warn");
         }
 
-        createTablePoints(createdSubjectId, updatedScores, () => navigate("../test"));
+        if(edit){
+            editTablePoints(createdSubjectId, updatedScores, () => navigate("../test"));
+        }
+        else{
+            createTablePoints(createdSubjectId, updatedScores, () => navigate("../test"));
+        }
     }
 
     const addTask = () => {
@@ -197,6 +209,7 @@ const CreateSubject = ({edit = false}) => {
         setSubThemes(updatedSubThemes);
     }
 
+    // Только если редактируем
     const getCurrentSubject = async (id) => {
         const currentSubject = await getSubjectById(id);
 
@@ -211,16 +224,65 @@ const CreateSubject = ({edit = false}) => {
         setTasks([...subjectTasks]);
         setIsPoint(isMark);
         setExamMinutes(durationMinutes);
+
+        const primaryCount = subjectTasks.reduce((accumulator, currentValue) => {
+            return accumulator + parseInt(currentValue.primaryScore);
+        }, 0);
+
+        setPrimaryCount(primaryCount);
+        fillEmptyTableCell(primaryCount);
     }
 
+    // Только если редактируем
     const getCurrentTablePoint = async (id) => {
+        const currentTable = await getTablePointsBySubjectId(id);
 
+        let redId = -9999, greenId = 9999, newCurrentTable = [];
+
+        currentTable.forEach(element => {
+            if(element.isRed && redId < element.primaryScore){
+                redId = element.primaryScore - 1;
+            }
+
+            if(element.isGreen && greenId > element.primaryScore){
+                greenId = element.primaryScore - 1;
+            }
+        });
+
+        if(primaryCount >= currentTable.length){
+            // Стало больше баллов
+            newCurrentTable = [...Array(primaryCount)].map((_, id) => {
+                return {
+                    id,
+                    primaryScore: id + 1,
+                    isRed: false,
+                    isGreen: false,
+                    secondaryScore: currentTable.length > id ? currentTable[id]?.secondaryScore : ""
+                }
+            });
+        }
+        else{
+            // Стало меньше баллов
+            newCurrentTable = [...Array(primaryCount)].map((_, id) => {
+                return {
+                    id,
+                    primaryScore: id + 1,
+                    isRed: false,
+                    isGreen: false,
+                    secondaryScore: currentTable[id]?.secondaryScore
+                }
+            });
+        }
+
+        setRed(redId);
+        setGreen(greenId);
+        setElements(newCurrentTable);
     }
 
     const setRedHandler = (id) => {
         setGreen(prev => {
-            if(prev === null || id + 1 === primaryCount){
-                return null;
+            if(prev === 9999 || id + 1 === primaryCount){
+                return 9999;
             }
             else if(id >= prev){
                 return id + 1;
@@ -229,13 +291,13 @@ const CreateSubject = ({edit = false}) => {
             return prev;
         });
 
-        setRed(prev => prev === id ? null : id);
+        setRed(prev => prev === id ? -9999 : id);
     }
 
     const setGreenHandler = (id) => {
         setRed(prev => {
-            if(prev === null || id === 0){
-                return null;
+            if(prev === -9999 || id === 0){
+                return -9999;
             }
             else if(id <= prev){
                 return id - 1;
@@ -244,7 +306,7 @@ const CreateSubject = ({edit = false}) => {
             return prev;
         });
 
-        setGreen(prev => prev === id ? null : id);
+        setGreen(prev => prev === id ? 9999 : id);
     }
 
     const handleChangeInput = (e, id) => {
@@ -277,16 +339,15 @@ const CreateSubject = ({edit = false}) => {
             }
             else{
                 getCurrentTablePoint(id);
-                getTablePointsBySubjectId(id);
             }
         }
     }, [edit, id, step]);
 
     React.useEffect(() => {
-        if(id){
+        if(id && edit){
             setCreatedSubjectId(id);
         }
-    }, [id]);
+    }, [id, edit]);
 
     return (
         <CreatePageDefault

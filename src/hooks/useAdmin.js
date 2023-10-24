@@ -337,6 +337,26 @@ const useAdmin = () => {
         return response.data;
     }
 
+    const uploadFile = async (fileData) => {
+        setError(false);
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.ADMIN, "/upload-file", HTTP_METHODS.POST, true, fileData, {
+            'Content-type': 'multipart/form-data'
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            setError(true);
+
+            return errorController(response, () => uploadFile(fileData));
+        }
+
+        return response.data;
+    }
+
     const getLogTypes = async () => {
         setError(false);
         setLogTypesLoading(true);
@@ -378,6 +398,7 @@ const useAdmin = () => {
         getNotifyTypes,
         uploadImageOnServerFile,
         uploadImageOnServerUrl,
+        uploadFile,
         getLogTypes
     }
 }

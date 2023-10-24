@@ -15,29 +15,6 @@
     }
 }
 
-.headerLogoInner{
-    width: 89px;
-    display: flex;
-    flex-shrink: 0;
-}
-
-.headerLogo{
-    font-weight: 700;
-    font-size: 3.2rem;
-    color: var(--main);
-    line-height: 1.2;
-    position: relative;
-}
-
-.headerLogoVersion{
-    color: var(--main);
-    font-size: 10px;
-    text-transform: uppercase;
-    position: absolute;
-    bottom: 4px;
-    left: calc(100% + 4px);
-}
-
 .headerProfileInner{
     position: relative;
 }
@@ -327,4 +304,51 @@
 
 .menuIcon path, .crossIcon path{
     stroke: var(--main);
+}
+
+/* Логотип */
+.headerLogoInner{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.headerLogo{
+    font-weight: 700;
+    font-size: 3.2rem;
+    color: var(--main);
+    line-height: 1.2;
+    position: relative;
+}
+
+.headerLogoVersion{
+    color: var(--main);
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-top: auto;
+    font-weight: 700;
+}
+
+.newyear .headerLogo, .newyear .headerLogoVersion{
+    color: #007cee;
+}
+
+.halloween .headerLogo, .halloween .headerLogoVersion{
+    color: #FFAB66;
+}
+
+.headerLogoImg{
+    width: 24px;
+}
+
+.headerLogoDecor{
+    position: absolute;
+    top: 0;
+    left: 2px;
+}
+
+.newyear .headerLogoDecor{
+    top: -5px;
+    left: 5px;
 }

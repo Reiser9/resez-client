@@ -1,3 +1,5 @@
+import React from 'react';
+
 export class CustomFiles {
     static get toolbox() {
         return {
@@ -6,19 +8,85 @@ export class CustomFiles {
         }
     }
 
-    render() {
-        const wrapper = document.createElement("input");
-        wrapper.setAttribute("type", "file");
-
-        return wrapper;
+    constructor({data, config, api}) {
+        this.data = data;
+        this.config = config;
+        this.api = api;
+        
+        this.fileInputRef = React.createRef();
+        this.fileInputRef.current = this.createFileInput();
+        this.fileNameInput = null;
     }
 
-    save(blockContent) {
-        const input = blockContent.querySelector("input");
-        console.log(input.value);
+    createFileInput = () => {
+        const input = document.createElement('input');
+        input.id = "chooseFile";
+        input.type = 'file';
+        input.style.display = 'none';
+        input.addEventListener('change', this.handleFileChange);
+        return input;
+    }
 
-        return {
-            url: input.value,
+    render() {
+        const container = document.createElement('div');
+
+        container.classList.add("chooseFileInner");
+        container.appendChild(this.fileInputRef.current);
+
+        this.fileNameInput = document.createElement('input');
+        this.fileNameInput.classList.add("chooseFileNameInput");
+        this.fileNameInput.type = "text";
+        this.fileNameInput.placeholder = "Введите название файла";
+
+        container.appendChild(this.fileNameInput);
+        this.fileNameInput.focus();
+
+        const label = document.createElement('label');
+        label.classList.add("chooseFileButton");
+        label.htmlFor = "chooseFile";
+        label.textContent = 'Загрузить файл';
+
+        container.appendChild(label);
+
+        if(this.data?.file?.url){
+            this.fileNameInput.value = this.data?.fileName;
+        }
+        else{
+            this.fileInputRef.current.click();
+        }
+
+        return container;
+    }
+
+    handleFileChange = (event) => {
+        const file = event.target.files[0];
+
+        this.uploadFile(file);
+    }
+
+    uploadFile = (file) => {
+        if(!file){
+            return;
+        }
+
+        const {uploadRequest} = this.config;
+
+        uploadRequest(file).then(data => {
+            this.data = data;
+            this.fileNameInput.value = file.name;
+        }).catch(error => {
+            console.error('Error saving file:', error);
+        });
+    }
+
+    save = () => {
+        if(this.data?.file){
+            const fileName = this.fileNameInput.value;
+
+            return {
+                fileUrl: this.data?.file?.url,
+                fileName: fileName
+            };
         }
     }
 }

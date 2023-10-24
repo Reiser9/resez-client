@@ -26,7 +26,7 @@ const Editor = React.forwardRef(({
     minHeight = 60,
     ...props
 }, ref) => {
-    const {uploadImageOnServerFile, uploadImageOnServerUrl} = useAdmin();
+    const {uploadImageOnServerFile, uploadImageOnServerUrl, uploadFile} = useAdmin();
 
     const handleInitialize = React.useCallback(instance => {
         ref.current = instance;
@@ -41,6 +41,13 @@ const Editor = React.forwardRef(({
 
     const uploadByUrl = async (url) => {
         return await uploadImageOnServerUrl(url);
+    }
+
+    const uploadFileHandler = async (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        return await uploadFile(formData);
     }
 
     const EDITOR_TOOLS = {
@@ -64,7 +71,12 @@ const Editor = React.forwardRef(({
         inlineCode: InlineCode,
         simpleImage: SimpleImage,
         math: CustomMath,
-        files: CustomFiles
+        files: {
+            class: CustomFiles,
+            config: {
+                uploadRequest: uploadFileHandler
+            },
+        },
     }
 
     const localLang = {

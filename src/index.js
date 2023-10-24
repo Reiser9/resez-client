@@ -11,7 +11,6 @@ import Notifies from './components/Notifies';
 import InitialWrapper from "./components/Wrapper/InitialWrapper";
 import ThemeWrapper from "./components/Wrapper/ThemeWrapper";
 import ChangeThemeAnimate from './components/ChangeThemeAnimate';
-import CallWrapper from './components/CallWrapper';
 import EventAnimation from './components/EventAnimation';
 
 import {store} from './redux/store';
@@ -23,8 +22,7 @@ root.render(
         <BrowserRouter>
             <ThemeWrapper>
                 <ChangeThemeAnimate />
-                {/* <EventAnimation /> */}
-                {/* <CallWrapper /> */}
+                <EventAnimation />
 
                 <InitialWrapper>
                     <SkeletonTheme baseColor="var(--input)" highlightColor="var(--inputDarken)">
