@@ -246,40 +246,40 @@ const useTest = () => {
     }
 
     // Задания
-    const loadTasks = async (offset = 0, limit = 5, reload = false) => {
+    const loadTasks = async (offset = 0, limit = 5, subjectId = "", subjectTaskId = "", subThemeId = "", isVerified = "", userId = "", reload = false) => {
         setError(false);
 
         if(!tasks.tasks || reload){
             dispatch(setTasksIsLoading(true));
 
-            const response = await request(REQUEST_TYPE.ADMIN, `/task?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/task?offset=${offset}&limit=${limit}&subjectId=${subjectId}&subjectTaskId=${subjectTaskId}&subThemeId=${subThemeId}&isVerified=${isVerified}&userId=${userId}`, HTTP_METHODS.GET, true);
 
             dispatch(setTasksIsLoading(false));
 
             if(requestDataIsError(response)){
                 setError(true);
 
-                return errorController(response, () => loadTasks(offset, limit, reload));
+                return errorController(response, () => loadTasks(offset, limit, subjectId, subjectTaskId, subThemeId, isVerified, userId, reload));
             }
 
             dispatch(initTasks(response.data));
         }
     }
 
-    const getAllTasks = async (offset = 0, limit = 5) => {
+    const getAllTasks = async (offset = 0, limit = 5, subjectId = "", subjectTaskId = "", subThemeId = "", isVerified = "", userId = "",) => {
         setError(false);
 
         if(tasks?.tasks?.length === 0 || tasks?.tasks?.length < offset + limit){
             setIsLoading(true);
 
-            const response = await request(REQUEST_TYPE.ADMIN, `/task?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/task?offset=${offset}&limit=${limit}&subjectId=${subjectId}&subjectTaskId=${subjectTaskId}&subThemeId=${subThemeId}&isVerified=${isVerified}&userId=${userId}`, HTTP_METHODS.GET, true);
 
             setIsLoading(false);
 
             if(requestDataIsError(response)){
                 setError(true);
 
-                return errorController(response, () => getAllTasks(offset, limit));
+                return errorController(response, () => getAllTasks(offset, limit, subjectId, subjectTaskId, subThemeId, isVerified, userId));
             }
 
             dispatch(setTasks(response.data));
@@ -302,8 +302,23 @@ const useTest = () => {
         successCallback();
     }
 
-    // isVerified - когда пользователи могут создать задания
-    const createTask = async (subThemeId, task, solution, answer, successCallback = () => {}) => {
+    const verifyTask = async (id, successCallback = () => {}) => {
+        setTaskIsLoading(prev => [...prev, id]);
+
+        const response = await request(REQUEST_TYPE.ADMIN, `/task/${id}/verify`, HTTP_METHODS.PUT, true);
+
+        setTaskIsLoading(prev => prev.filter(item => item !== id));
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => verifyTask(id, successCallback));
+        }
+
+        dispatch(changeTask(response.data.task));
+        alertNotify("Успешно", "Задание проверено", "success");
+        successCallback();
+    }
+
+    const createTask = async (subThemeId, task, solution, answer, isVerified = false, successCallback = () => {}) => {
         if(!task){
             return alertNotify("Предупреждение", "Задание не может быть пустым", "warn");
         }
@@ -315,13 +330,13 @@ const useTest = () => {
             task,
             solution,
             answer,
-            isVerified: true
+            isVerified
         });
 
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            return errorController(response, () => createTask(subThemeId, task, solution, answer, successCallback));
+            return errorController(response, () => createTask(subThemeId, task, solution, answer, isVerified, successCallback));
         }
 
         dispatch(addNewTask(response.data.task));
@@ -329,7 +344,7 @@ const useTest = () => {
         successCallback();
     }
 
-    const updateTask = async (id, subThemeId, task, solution, answer, successCallback = () => {}) => {
+    const updateTask = async (id, subThemeId, task, solution, answer, isVerified, successCallback = () => {}) => {
         if(!task){
             return alertNotify("Предупреждение", "Задание не может быть пустым", "warn");
         }
@@ -342,13 +357,13 @@ const useTest = () => {
             task,
             solution,
             answer,
-            isVerified: true
+            isVerified
         });
 
         setIsLoading(false);
 
         if(requestDataIsError(response)){
-            return errorController(response, () => updateTask(id, subThemeId, task, solution, answer, successCallback));
+            return errorController(response, () => updateTask(id, subThemeId, task, solution, answer, isVerified, successCallback));
         }
 
         dispatch(changeTask(response.data.task));
@@ -549,6 +564,7 @@ const useTest = () => {
         loadTasks,
         getAllTasks,
         removeTask,
+        verifyTask,
         createTask,
         updateTask,
         getTaskById,

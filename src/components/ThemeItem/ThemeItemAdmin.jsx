@@ -14,7 +14,13 @@ import LoaderForItem from '../LoaderForItem';
 import HoverMenu from '../HoverMenu';
 import MenuLink from '../HoverMenu/MenuLink';
 
-const ThemeItemAdmin = ({data, themeDelete = () => {}, loading = false}) => {
+const ThemeItemAdmin = ({
+    data,
+    themeDelete = () => {},
+    loading = false,
+    edit = false,
+    remove = false
+}) => {
     const {primary, light, id, likesCount, dislikesCount, usersCount, isRatingEnabled} = data;
 
     const [eventMenu, setEventMenu] = React.useState(false);
@@ -32,7 +38,7 @@ const ThemeItemAdmin = ({data, themeDelete = () => {}, loading = false}) => {
                             <div className={styles.appearanceItemThemeSecondary} style={{background: light, border: `1px solid ${primary}`}}></div>
                         </div>}
 
-                        <HoverMenu
+                        {(edit || remove) && <HoverMenu
                             button={
                                 <IconButton small type="light" onClick={() => setEventMenu(prev => !prev)}>
                                     <DotsHorizontal />
@@ -41,21 +47,21 @@ const ThemeItemAdmin = ({data, themeDelete = () => {}, loading = false}) => {
                             value={eventMenu}
                             setValue={setEventMenu}
                         >
-                            <MenuLink onClick={() => navigate(`theme/edit/${id}`)}>
+                            {edit && <MenuLink onClick={() => navigate(`theme/edit/${id}`)}>
                                 <Edit />
 
                                 Редактировать
-                            </MenuLink>
+                            </MenuLink>}
 
-                            <MenuLink danger onClick={() => {
+                            {remove && <MenuLink danger onClick={() => {
                                 setConfirmDelete(true);
                                 setEventMenu(false);
                             }}>
                                 <Delete />
 
                                 Удалить
-                            </MenuLink>
-                        </HoverMenu>
+                            </MenuLink>}
+                        </HoverMenu>}
                     </div>
 
                     <div className={styles.apperanceItemStatsInner}>

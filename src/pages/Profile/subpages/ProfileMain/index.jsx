@@ -76,7 +76,7 @@ const ProfileMain = () => {
                     </div>
 
                     <div className={styles.profileInfoItem}>
-                        <Tooltip title="Просмотр профиля">
+                        {/* <Tooltip title="Просмотр профиля">
                             <IconButton type="light" disabled>
                                 <Eye />
                             </IconButton>
@@ -126,7 +126,7 @@ const ProfileMain = () => {
 
                                 Удалить из друзей
                             </MenuLink>
-                        </HoverMenu>
+                        </HoverMenu> */}
                     </div>
                 </div>
             </div>

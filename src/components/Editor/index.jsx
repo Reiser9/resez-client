@@ -52,7 +52,10 @@ const Editor = React.forwardRef(({
 
     const EDITOR_TOOLS = {
         embed: Embed,
-        header: Header,
+        header: {
+            class: Header,
+            inlineToolbar : true
+        },
         table: Table,
         list: List,
         code: Code,
@@ -115,20 +118,53 @@ const Editor = React.forwardRef(({
                 "InlineCode": "Моноширинный"
             },
             tools: {
-                "warning": {
+                warning: {
                     "Title": "Название",
                     "Message": "Сообщение",
                 },
-                "link": {
+                link: {
                     "Add a link": "Вставьте ссылку"
                 },
-                "stub": {
+                stub: {
                     "The block can not be displayed correctly.": "Блок не может быть отображен"
+                },
+                header: {
+                    "Heading 1": "Заголовок 1",
+                    "Heading 2": "Заголовок 2",
+                    "Heading 3": "Заголовок 3",
+                    "Heading 4": "Заголовок 4",
+                    "Heading 5": "Заголовок 5",
+                    "Heading 6": "Заголовок 6"
+                },
+                image: {
+                    'Select an Image': 'Загрузить изображение',
+                    'Caption': 'Описание',
+                    "With border": "С обводкой",
+                    "Stretch image": "Расстянуть",
+                    "With background": "С задним фоном"
+                },
+                table: {
+                    "Add column to left": "Добавить колонку слева",
+                    "Add column to right": "Добавить колонку справа",
+                    "Add row above": "Добавить строку выше",
+                    "Add row below": "Добавить строку ниже",
+                    "Delete column": "Удалить колонку",
+                    "Delete row": "Удалить строку",
+                    "With headings": "С заголовками",
+                    "Without headings": "Без заголовками"
+                },
+                list: {
+                    "Ordered": "Упорядоченный",
+                    "Unordered": "Неупорядоченный"
+                },
+                code: {
+                    "Enter a code": "Введите код"
                 }
             },
             blockTunes: {
                 "delete": {
-                    "Delete": "Удалить"
+                    "Delete": "Удалить",
+                    "Click to delete": "Подтвердить"
                 },
                 "moveUp": {
                     "Move up": "Переместить вверх"

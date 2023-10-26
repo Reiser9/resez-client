@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import parse from 'html-react-parser';
 
 import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
@@ -11,6 +10,7 @@ import { getNotifyType } from '../../utils/getNotifyType';
 
 import Button from '../Button';
 import Modal from '../Modal';
+import CustomHtmlParser from '../CustomHtmlParser';
 
 const NotifyItem = ({data, loading = false, callback = () => {}}) => {
     const {title, content, type, date, isRead, sender} = data;
@@ -50,7 +50,7 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
                 </span>
 
                 {content && <div className={`${typography.text} ${styles.notifyItemTextContent} ${base.format}`}>
-                    {parse(content)}
+                    <CustomHtmlParser html={content} />
                 </div>}
 
                 <div className={styles.notifyItemButtonInner}>
@@ -64,7 +64,7 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
 
             <Modal value={modal} setValue={setModal} title={title} subtitle={formatDate(date)}>
                 <div className={base.format}>
-                    {parse(content)}
+                    <CustomHtmlParser html={content} />
 
                     {getNotifyType(type)?.name === "session" && <p className={typography.text}>
                         <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности

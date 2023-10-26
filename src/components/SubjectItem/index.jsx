@@ -12,7 +12,9 @@ import HoverMenu from '../HoverMenu';
 import MenuLink from '../HoverMenu/MenuLink';
 import IconButton from '../IconButton';
 import LoaderForItem from '../LoaderForItem';
-import ConfirmModal from '../Modal/ConfirmModal';
+import Modal from '../Modal';
+import Button from '../Button';
+import Input from '../Input';
 
 const SubjectItem = ({
     data,
@@ -21,8 +23,9 @@ const SubjectItem = ({
     edit = false,
     remove = false
 }) => {
-    const {id, subject, isPublished, tasksCount} = data || {};
+    const {id, subject, isPublished, subjectTasksCount, tasksCount} = data || {};
 
+    const [confirmText, setConfirmText] = React.useState("");
     const [actionMenu, setActionMenu] = React.useState(false);
     const [confirmDelete, setConfirmDelete] = React.useState(false);
 
@@ -57,18 +60,24 @@ const SubjectItem = ({
                     </HoverMenu>}
                 </div>
 
-                <TextPoint title="Количество заданий" text={tasksCount || 0} />
+                <TextPoint title="Количество заданий в предмете" text={subjectTasksCount || 0} />
                 <TextPoint title="Статус" text={isPublished ? "Опубликован" : "Черновик"} />
+                <TextPoint title="Количество созданных заданий" text={tasksCount || 0} />
 
                 {loading && <LoaderForItem />}
             </div>
 
-            <ConfirmModal
-                value={confirmDelete}
-                setValue={setConfirmDelete}
-                text={`Вы действительно хотите удалить предмет "${subject}"?`}
-                callback={deleteSubject}
-            />
+            <Modal value={confirmDelete} setValue={setConfirmDelete} title={`Удаление предмета: ${subject}`} size="small">
+                <p className={`${typography.text2} ${base.warningText}`}>Внимание! Удаляя предмет, удалятся и все задания, связанные с ним, будьте внимательны, перед тем, как удаляете предмет</p>
+
+                <p className={typography.text2}>Чтобы удалить предмет, напишите слово ПОДТВЕРДИТЬ в поле ниже</p>
+
+                <Input value={confirmText} setValue={setConfirmText} />
+
+                <Button loading={loading} onClick={deleteSubject} disabled={confirmText.toLowerCase() !== "подтвердить"}>
+                    Удалить
+                </Button>
+            </Modal>
         </>
     )
 }

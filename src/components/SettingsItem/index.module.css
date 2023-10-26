@@ -30,6 +30,12 @@
     font-weight: 600;
 }
 
+@media (max-width: 768px) {
+    .settingsBlockName{
+        font-size: 1.5rem;
+    }
+}
+
 .settingsBlockDescription{
     font-size: 1.4rem;
     color: var(--textGrey);

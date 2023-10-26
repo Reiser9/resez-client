@@ -1,5 +1,4 @@
 import React from 'react';
-import parse from 'html-react-parser';
 
 import typography from '../../styles/typography.module.css';
 import base from '../../styles/base.module.css';
@@ -14,6 +13,7 @@ import Button from '../Button';
 import Spoiler from '../Spoiler';
 import Input from '../Input';
 import Modal from '../Modal';
+import CustomHtmlParser from '../CustomHtmlParser';
 
 const TaskTestItem = ({
     data,
@@ -47,7 +47,7 @@ const TaskTestItem = ({
                 </div>
 
                 {task && <div className={base.format}>
-                    {parse(task)}
+                    <CustomHtmlParser html={task} />
                 </div>}
 
                 {test
@@ -62,7 +62,7 @@ const TaskTestItem = ({
                     </div>
                 : <Spoiler title="Решение" defaultOpen={showAnswer}>
                     {solution && <div className={base.format}>
-                        {parse(solution)}
+                        <CustomHtmlParser html={solution} />
                     </div>}
 
                     {answer && <p className={styles.taskItemAnswer}>Ответ: {answer}</p>}
@@ -72,7 +72,10 @@ const TaskTestItem = ({
             <Modal value={warn} setValue={setWarn} title="Жалоба на задание" size="small">
                 <Input value={warnText} setValue={setWarnText} type="textarea" title="Опишите проблему" trackLength lengthLimit={1000} />
 
-                <Button onClick={() => warnTask(id, warnText, () => setWarn(false))}>
+                <Button onClick={() => warnTask(id, warnText, () => {
+                    setWarn(false);
+                    setWarnText("");
+                })}>
                     Отправить
                 </Button>
             </Modal>

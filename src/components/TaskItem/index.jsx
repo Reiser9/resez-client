@@ -1,5 +1,4 @@
 import React from 'react';
-import parse from 'html-react-parser';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -7,7 +6,7 @@ import base from '../../styles/base.module.css';
 import typography from '../../styles/typography.module.css';
 import styles from './index.module.css';
 
-import { Delete, DotsHorizontal, Edit } from '../Icons';
+import { Check, Delete, DotsHorizontal, Edit, Verified } from '../Icons';
 
 import { formatDate } from '../../utils/formatDate';
 
@@ -16,15 +15,19 @@ import MenuLink from '../HoverMenu/MenuLink';
 import IconButton from '../IconButton';
 import LoaderForItem from '../LoaderForItem';
 import ConfirmModal from '../Modal/ConfirmModal';
+import CustomHtmlParser from '../CustomHtmlParser';
+import { Tooltip } from 'antd';
 
 const TaskItem = ({
     data,
     deleteTask = () => {},
+    verifyTask = () => {},
     loading = false,
     edit = false,
-    remove = false
+    remove = false,
+    verify = false
 }) => {
-    const {id, date, subject, theme, subTheme, user, task, number} = data || {};
+    const {id, date, subject, theme, subTheme, user, task, number, isVerified} = data || {};
     const {id: authorId, nickname, avatar} = user || {};
 
     const {user: userData} = useSelector(state => state.user);
@@ -64,6 +67,12 @@ const TaskItem = ({
                             value={actionMenu}
                             setValue={setActionMenu}
                         >
+                            {verify && !isVerified && <MenuLink onClick={verifyTask}>
+                                <Check />
+
+                                Проверено
+                            </MenuLink>}
+
                             {edit && <MenuLink onClick={() => navigate(`task/edit/${id}`)}>
                                 <Edit />
 
@@ -89,14 +98,20 @@ const TaskItem = ({
                             <p className={typography.text}>{nickname}</p>
                         </div>
 
-                        <p className={`${typography.text2} ${styles.taskItemDate}`}>
-                            {formatDate(date)}
-                        </p>
+                        <div className={base.titleWrapper}>
+                            <p className={`${typography.text2} ${styles.taskItemDate}`}>
+                                {formatDate(date)}
+                            </p>
+
+                            {isVerified && <Tooltip title="Проверено">
+                                <Verified className={styles.taskVerified} />    
+                            </Tooltip>}
+                        </div>
                     </div>
                 </div>
 
                 {task && <div className={base.format}>
-                    {parse(task)}
+                    <CustomHtmlParser html={task} />
                 </div>}
 
                 {loading && <LoaderForItem />}

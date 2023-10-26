@@ -31,7 +31,7 @@ const Admin = () => {
     const {user} = useSelector(state => state.user);
 
     return (
-        <PrivateWrapper permissions={[PERMISSIONS.ROLES]}>
+        <PrivateWrapper permissions={[PERMISSIONS.ADMIN]}>
             <TitleWrapper pageTitle="ResEz - Админка">
                 <WithSidebarWrapper>
                     <div className={pws.wrapper}>
@@ -39,13 +39,13 @@ const Admin = () => {
                             <Routes>
                                 <Route index element={withSuspense(<AdminMain />)} />
                                 {checkPermission(user?.permissions, [PERMISSIONS.NOTIFIES]) && <Route path="/notifies" element={withSuspense(<Notifies />)} />}
-                                {checkPermission(user?.permissions, [PERMISSIONS.VIEW_USERS]) && <Route path="/users" element={withSuspense(<Users />)} />}
+                                <Route path="/users" element={withSuspense(<Users />)} />
                                 {checkPermission(user?.permissions, [PERMISSIONS.THEMES]) && <Route path="/appearance" element={withSuspense(<Appearance />)} />}
                                 {checkPermission(user?.permissions, [PERMISSIONS.THEMES]) && <Route path="/appearance/theme/create" element={withSuspense(<CreateTheme />)} />}
                                 {checkPermission(user?.permissions, [PERMISSIONS.THEMES]) && <Route path="/appearance/theme/edit/:id" element={withSuspense(<CreateTheme edit />)} />}
                                 {checkPermission(user?.permissions, [PERMISSIONS.ROLES]) && <Route path="/roles" element={withSuspense(<Roles />)} />}
-                                {checkPermission(user?.permissions, [PERMISSIONS.ROLES]) && <Route path="/roles/create" element={withSuspense(<CreateRole />)} />}
-                                {checkPermission(user?.permissions, [PERMISSIONS.ROLES]) && <Route path="/roles/:id" element={withSuspense(<CreateRole edit />)} />}
+                                {checkPermission(user?.permissions, [PERMISSIONS.CREATE_ROLES]) && <Route path="/roles/create" element={withSuspense(<CreateRole />)} />}
+                                {checkPermission(user?.permissions, [PERMISSIONS.UPDATE_ROLES]) && <Route path="/roles/:id" element={withSuspense(<CreateRole edit />)} />}
                                 {checkPermission(user?.permissions, [PERMISSIONS.LOGS]) && <Route path="/logs" element={withSuspense(<Logs />)} />}
                                 {checkPermission(user?.permissions, [PERMISSIONS.TESTS]) && <Route path="/test" element={withSuspense(<Test />)} />}
                                 {checkPermission(user?.permissions, [PERMISSIONS.CREATE_SUBJECTS]) && <Route path="/test/subject/create" element={withSuspense(<CreateSubject />)} />}
@@ -60,7 +60,7 @@ const Admin = () => {
                         <InnerSidebar>
                             <SidebarLink text="Главная" to="" end />
                             {checkPermission(user?.permissions, [PERMISSIONS.NOTIFIES]) && <SidebarLink text="Уведомления" to="notifies" />}
-                            {checkPermission(user?.permissions, [PERMISSIONS.VIEW_USERS]) && <SidebarLink text="Пользователи" to="users" />}
+                            <SidebarLink text="Пользователи" to="users" />
                             {checkPermission(user?.permissions, [PERMISSIONS.THEMES]) && <SidebarLink text="Внешний вид" to="appearance" />}
                             {checkPermission(user?.permissions, [PERMISSIONS.ROLES]) && <SidebarLink text="Роли" to="roles" />}
                             {checkPermission(user?.permissions, [PERMISSIONS.LOGS]) && <SidebarLink text="Логирование" to="logs" />}

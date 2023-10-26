@@ -1,5 +1,4 @@
 import React from 'react';
-import parse from 'html-react-parser'
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'antd';
 
@@ -10,6 +9,7 @@ import styles from './index.module.css';
 import { Swap } from '../Icons';
 
 import IconButton from '../IconButton';
+import CustomHtmlParser from '../CustomHtmlParser';
 
 const TestQuestionItem = ({data}) => {
     const {id, number, theme, subTheme, task} = data || {};
@@ -41,7 +41,7 @@ const TestQuestionItem = ({data}) => {
             </div>
 
             {task && <div className={`${base.format} ${styles.testQuestionTask}`}>
-                {parse(task)}
+                <CustomHtmlParser html={task} />
             </div>}
         </div>
     )

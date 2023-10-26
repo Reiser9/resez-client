@@ -18,6 +18,7 @@ import NotContent from '../../../../components/NotContent';
 import IconButton from '../../../../components/IconButton';
 import Select from '../../../../components/Select';
 import Button from '../../../../components/Button';
+import Modal from '../../../../components/Modal';
 
 const Logs = () => {
     const [logsMoreLoading, setLogsMoreLoading] = React.useState(false);
@@ -31,14 +32,14 @@ const Logs = () => {
 
     const {logsIsLoading, logs} = useSelector(state => state.log);
 
-    const {error, setLogIsLoading, loadLogs, getAllLogs} = useLogs();
+    const {error, loadLogs, getAllLogs} = useLogs();
     const {searchUsersLoading, logTypesLoading, getLogTypes, searchUsers} = useAdmin();
 
     const searchUsersRef = React.useRef(null);
 
     const loadMoreLogs = async () => {
         setLogsMoreLoading(true);
-        await getAllLogs(logs?.logs?.length);
+        await getAllLogs(logs?.logs?.length, 10, user, log);
         setLogsMoreLoading(false);
     }
 
@@ -77,6 +78,7 @@ const Logs = () => {
         setUser();
         setLog();
         loadLogs(0, 10, "", "", true);
+        setLogsFilter(false);
     }
 
     React.useEffect(() => {
@@ -97,28 +99,51 @@ const Logs = () => {
 
     React.useEffect(() => {
         if(user || log){
-            loadLogs(0, 8, user, log, true);
+            loadLogs(0, 10, user, log, true);
         }
     }, [user, log]);
 
     return (
-        <div className={base.baseWrapperGap16}>
-            <div className={base.titleInner}>
-                <p className={typography.h3}>Логирование {!logsIsLoading && `(${logs?.totalCount || 0})`}</p>
+        <>
+            <div className={base.baseWrapperGap16}>
+                <div className={base.titleInner}>
+                    <p className={typography.h3}>Логирование {!logsIsLoading && `(${logs?.totalCount || 0})`}</p>
 
-                <div className={base.titleWrapper}>
-                    <IconButton small type="light" onClick={() => setLogsFilter(prev => !prev)}>
-                        <Filter />
-                    </IconButton>
-                    
-                    <ReloadButton loading={logsIsLoading} onClick={() => loadLogs(0, 8, user, log, true)} />
+                    <div className={base.titleWrapper}>
+                        <IconButton small type="light" onClick={() => setLogsFilter(true)}>
+                            <Filter />
+                        </IconButton>
+                        
+                        <ReloadButton loading={logsIsLoading} onClick={() => loadLogs(0, 10, user, log, true)} />
+                    </div>
                 </div>
+
+                <BlockDataWithPaggination
+                    error={error}
+                    dataIsLoading={logsIsLoading}
+                    dataMoreIsLoading={logsMoreLoading}
+                    dataLength={logs?.logs?.length}
+                    Skeleton={LogItemSkeleton}
+                    skeletonLoading={10}
+                    skeletonMoreLoading={4}
+                    containerClassName={styles.logsContent}
+                    errorContent={<NotContent text="Ошибка при загрузке логов" icon={<Cross />} danger />}
+                    notContent={<NotContent text="Логи не найдены" />}
+                    isLast={logs?.isLast}
+                    loadMoreData={loadMoreLogs}
+                >
+                    {logs?.logs?.map(data =>
+                        <LogItem
+                            key={data.id}
+                            data={data}
+                        />
+                    )}
+                </BlockDataWithPaggination>
             </div>
 
-            <div className={styles.filterInner}>
+            <Modal value={logsFilter} setValue={setLogsFilter} title="Фильтры" size="small">
                 <Select
                     placeholder="Пользователь"
-                    className={styles.filterItem}
                     loading={searchUsersLoading}
                     showSearch
                     notContentText="Пользователей не найдено"
@@ -137,7 +162,6 @@ const Logs = () => {
 
                 <Select
                     placeholder="Тип лога"
-                    className={styles.filterItem}
                     loading={logTypesLoading}
                     notContentText="Типов не найдено"
                     onDropdownVisibleChange={dropdownLogTypes}
@@ -151,33 +175,11 @@ const Logs = () => {
                     })}
                 />
 
-                <Button small auto onClick={resetFilter}>
+                <Button onClick={resetFilter}>
                     Сбросить фильтры
                 </Button>
-            </div>
-
-            <BlockDataWithPaggination
-                error={error}
-                dataIsLoading={logsIsLoading}
-                dataMoreIsLoading={logsMoreLoading}
-                dataLength={logs?.logs?.length}
-                Skeleton={LogItemSkeleton}
-                skeletonLoading={10}
-                skeletonMoreLoading={4}
-                containerClassName={styles.logsContent}
-                errorContent={<NotContent text="Ошибка при загрузке логов" icon={<Cross />} danger />}
-                notContent={<NotContent text="Логи не найдены" />}
-                isLast={logs?.isLast}
-                loadMoreData={loadMoreLogs}
-            >
-                {logs?.logs?.map(data =>
-                    <LogItem
-                        key={data.id}
-                        data={data}
-                    />
-                )}
-            </BlockDataWithPaggination>
-        </div>
+            </Modal>
+        </>
     )
 }
 

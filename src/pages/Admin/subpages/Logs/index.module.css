@@ -4,15 +4,3 @@
     flex-wrap: wrap;
     gap: 12px;
 }
-
-.filterInner{
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-}
-
-div.filterItem{
-    width: calc(100% / 2 - 12px / 2);
-}

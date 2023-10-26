@@ -58,11 +58,21 @@ export const getHtmlInEditor = (blocks = []) => {
                 html += `</ol>`;
                 break;
             case 'image':
-                html += `<img src="${block.data.file.url}" alt="${block.data.caption}">`
+                html += `<div class="blockImage"><img src="${block.data.file.url}" alt="${block.data.caption}"></div>`
                 break;
             case 'files':
                 if(block.data?.fileUrl){
                     html += `<a href="${block.data?.fileUrl}" target="_blanc">${block.data?.fileName || "Файл без названия"}</a>`
+                }
+                break;
+            case 'math':
+                if(block.data?.latex){
+                    if(block.data?.type === "block"){
+                        html += `<p class="mathquill">${block.data?.latex}</p>`
+                    }
+                    else{
+                        html += `<span class="mathquill">${block.data?.latex}</span>`
+                    }
                 }
                 break;
             default:
@@ -89,9 +99,16 @@ export const convertHtmlToEditorBlocks = (html) => {
                 text: node.innerHTML,
             }
         }
+        else if((node.nodeName === 'SPAN' || node.nodeName === 'P') && node.className === 'mathquill'){
+            block.type = 'math';
+            block.data = {
+                type: node.nodeName === 'P' ? "block" : "line",
+                latex: node.innerHTML
+            }
+        }
         else if(node.nodeName === 'P'){
             block.type = 'paragraph';
-                block.data = {
+            block.data = {
                 text: node.innerHTML,
             }
         }
@@ -106,6 +123,15 @@ export const convertHtmlToEditorBlocks = (html) => {
                     block.data.items.push(itemNode.innerHTML);
                 }
             });
+        }
+        else if(node.nodeName === 'DIV' && node.className === 'blockImage'){
+            block.type = 'image';
+            block.data = {
+                file: {
+                    url: node.querySelector("img").getAttribute('src'),
+                },
+                caption: node.querySelector("img").getAttribute('alt'),
+            }
         }
         else if(node.nodeName === 'DIV'){
             block.type = 'table';
@@ -132,15 +158,6 @@ export const convertHtmlToEditorBlocks = (html) => {
             block.type = 'code';
             block.data = {
                 code: node.querySelector('code').innerHTML,
-            }
-        }
-        else if(node.nodeName === 'IMG'){
-            block.type = 'image';
-            block.data = {
-                file: {
-                    url: node.getAttribute('src'),
-                },
-                caption: node.getAttribute('alt'),
             }
         }
         else if(node.nodeName === 'A'){

@@ -4,6 +4,11 @@ import { useSelector } from 'react-redux';
 import base from '../../../../styles/base.module.css';
 import typography from '../../../../styles/typography.module.css';
 
+import { Cross } from '../../../../components/Icons';
+
+import { checkPermission } from '../../../../utils/checkPermission';
+import { PERMISSIONS } from '../../../../consts/PERMISSIONS';
+
 import useAdmin from '../../../../hooks/useAdmin';
 
 import ReloadButton from '../../../../components/ReloadButton';
@@ -12,11 +17,11 @@ import ThemeItemAdmin from '../../../../components/ThemeItem/ThemeItemAdmin';
 import ThemeItemAdminSkeleton from '../../../../components/Skeleton/Theme/ThemeItemAdminSkeleton';
 import NotContent from '../../../../components/NotContent';
 import BlockDataWithPaggination from '../../../../components/BlockDataWithPaggination';
-import { Cross } from '../../../../components/Icons';
 
 const Appearance = () => {
     const [themesMoreLoading, setThemesMoreLoading] = React.useState(false);
     const {themesIsLoading, themes} = useSelector(state => state.admin);
+    const {user} = useSelector(state => state.user);
     const {themeIsLoading, error, loadAllThemes, getAllThemes, removeTheme} = useAdmin();
 
     const loadMoreThemes = async () => {
@@ -44,9 +49,9 @@ const Appearance = () => {
                     <ReloadButton loading={themesIsLoading} onClick={() => loadAllThemes(0, 8, true)} />
                 </div>
 
-                <Button disabled={themesIsLoading} type="light" auto to="theme/create">
+                {checkPermission(user?.permissions, [PERMISSIONS.CREATE_THEMES]) && <Button disabled={themesIsLoading} type="light" auto to="theme/create">
                     Создать
-                </Button>
+                </Button>}
             </div>
 
             <BlockDataWithPaggination
@@ -69,6 +74,8 @@ const Appearance = () => {
                         data={data}
                         themeDelete={() => removeTheme(data.id)}
                         loading={themeIsLoading.includes(data.id)}
+                        edit={checkPermission(user?.permissions, [PERMISSIONS.UPDATE_THEMES])}
+                        remove={checkPermission(user?.permissions, [PERMISSIONS.DELETE_THEMES])}
                     />
                 )}
             </BlockDataWithPaggination>

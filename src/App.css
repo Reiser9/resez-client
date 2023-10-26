@@ -559,16 +559,27 @@ input::placeholder{
 
 .tc-row--selected, .tc-row--selected:after, .tc-row--selected:before, .tc-cell--selected,
 .tc-add-row:hover:before, .ce-block--selected .ce-block__content{
-    background: var(--hover)!important;
+    background: var(--pulse)!important;
 }
 
 .tc-toolbox__toggler{
     color: var(--main)!important;
 }
 
+.cdx-list{
+    padding-left: 20px!important;
+}
+
 .cdx-list__item{
     min-height: 33px;
+}
+
+ul .cdx-list__item{
     list-style-type: disc;
+}
+
+ol .cdx-list__item{
+    list-style-type: decimal;
 }
 
 .ce-inline-toolbar__dropdown{
@@ -625,12 +636,16 @@ input::placeholder{
 
 @media (hover: hover) {
     .ce-toolbar__settings-btn:hover, .ce-toolbar__plus:hover, .ce-popover-item:hover, .tc-popover__item:hover,
-    .tc-add-row:hover, .tc-add-column:hover, .ce-inline-toolbar__dropdown:hover, .ce-inline-tool:hover,
+     .ce-inline-toolbar__dropdown:hover, .ce-inline-tool:hover,
     .ce-conversion-tool:hover{
         background: var(--hover)!important;
     }
 
-    .ce-popover-item--confirmation:hover{
+    .tc-add-row:hover, .tc-add-column:hover{
+        background: var(--pulse)!important;
+    }
+
+    .ce-popover-item--confirmation:hover, .tc-popover__item--confirm:hover{
         background: var(--error)!important;
     }
 
@@ -717,15 +732,54 @@ input::placeholder{
     }
 }
 
-/* Custom math tool */
-.math{
+.blockImage{
     width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0.6rem 0;
 }
 
-.math input{
+.blockImage img{
+    max-width: 100%;
+}
+
+/* Custom math tool */
+.mq-editable-field{
     width: 100%;
-    min-height: 38px;
-    padding: 0.4em 0;
+    border: none!important;
+    background: var(--white);
+    border-radius: 4px;
+    padding: 1.2rem 1.6rem;
+}
+
+.mq-focused{
+    border: none!important;
+    box-shadow: none!important;
+}
+
+.mq-cursor{
+    width: 1.5px;
+    height: 18px;
+    border-color: var(--text)!important;
+}
+
+.mq-editable-field .mq-latex-command-input, .mq-math-mode .mq-text-mode.mq-hasCursor{
+    border-radius: 4px;
+    border: none!important;
+    background: var(--input);
+    box-shadow: none!important;
+}
+
+.mq-math-mode .mq-empty{
+    background: var(--hover)!important;
+}
+
+.mq-math-mode .mq-empty.mq-root-block{
+    background: transparent!important;
+}
+
+p.mathquill{
+    width: 100%;
 }
 
 /* Custom file tool */

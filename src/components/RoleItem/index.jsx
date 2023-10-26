@@ -13,7 +13,13 @@ import IconButton from '../IconButton';
 import ConfirmModal from '../Modal/ConfirmModal';
 import LoaderForItem from '../LoaderForItem';
 
-const RoleItem = ({data, loading = false, deleteRole = () => {}}) => {
+const RoleItem = ({
+    data,
+    loading = false,
+    deleteRole = () => {},
+    edit = false,
+    remove = false
+}) => {
     const {id, role, permissionsCount, usersCount, textColor, backgroundColor} = data || {};
 
     const [actionMenu, setActionMenu] = React.useState(false);
@@ -33,28 +39,28 @@ const RoleItem = ({data, loading = false, deleteRole = () => {}}) => {
                 <div className={styles.roleItemInfoInner}>
                     <TextPoint title="Привилегий" text={permissionsCount || 0} />
 
-                    <HoverMenu
+                    {(edit || remove) && <HoverMenu
                         button={<IconButton small type="light" onClick={() => setActionMenu(prev => !prev)}>
                             <DotsHorizontal />
                         </IconButton>}
                         value={actionMenu}
                         setValue={setActionMenu}
                     >
-                        <MenuLink onClick={() => navigate(`${id}`)}>
+                        {edit && <MenuLink onClick={() => navigate(`${id}`)}>
                             <Edit />
 
                             Редактировать
-                        </MenuLink>
+                        </MenuLink>}
 
-                        <MenuLink danger onClick={() => {
+                        {remove && <MenuLink danger onClick={() => {
                             setConfirmDelete(true);
                             setActionMenu(false);
                         }}>
                             <Delete />
 
                             Удалить
-                        </MenuLink>
-                    </HoverMenu>
+                        </MenuLink>}
+                    </HoverMenu>}
                 </div>
 
                 {loading && <LoaderForItem />}

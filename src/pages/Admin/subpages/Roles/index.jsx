@@ -6,6 +6,9 @@ import base from '../../../../styles/base.module.css';
 
 import { Cross } from '../../../../components/Icons';
 
+import { checkPermission } from '../../../../utils/checkPermission';
+import { PERMISSIONS } from '../../../../consts/PERMISSIONS';
+
 import useRoles from '../../../../hooks/useRoles';
 
 import Button from '../../../../components/Button';
@@ -20,6 +23,7 @@ const Roles = () => {
 
     const [rolesMoreLoading, setRolesMoreLoading] = React.useState(false);
     const {rolesIsLoading, roles} = useSelector(state => state.role);
+    const {user} = useSelector(state => state.user);
 
     const loadMoreRoles = async () => {
         setRolesMoreLoading(true);
@@ -46,9 +50,9 @@ const Roles = () => {
                     <ReloadButton loading={rolesIsLoading} onClick={() => loadRoles(0, 8, true)} />
                 </div>
 
-                <Button type="light" disabled={rolesIsLoading} auto to="create">
+                {checkPermission(user?.permissions, [PERMISSIONS.CREATE_ROLES]) && <Button type="light" disabled={rolesIsLoading} auto to="create">
                     Создать
-                </Button>
+                </Button>}
             </div>
 
             <BlockDataWithPaggination
@@ -71,6 +75,8 @@ const Roles = () => {
                         data={data}
                         deleteRole={() => deleteRole(data.id)}
                         loading={roleIsLoading.includes(data.id)}
+                        edit={checkPermission(user?.permissions, [PERMISSIONS.UPDATE_ROLES])}
+                        remove={checkPermission(user?.permissions, [PERMISSIONS.DELETE_ROLES])}
                     />
                 )}
             </BlockDataWithPaggination>

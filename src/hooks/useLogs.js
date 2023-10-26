@@ -38,16 +38,16 @@ const useLogs = () => {
         }
     }
 
-    const getAllLogs = async (offset = 0, limit = 10) => {
+    const getAllLogs = async (offset = 0, limit = 10, userId = "", logTypeId = "") => {
         setError(false);
 
         if(!logs?.logs || logs?.logs?.length + 1 < offset + limit){
-            const response = await request(REQUEST_TYPE.ADMIN, `/log?offset=${logs?.logs?.length}&limit=${limit}`, HTTP_METHODS.GET, true);
+            const response = await request(REQUEST_TYPE.ADMIN, `/log?offset=${logs?.logs?.length}&limit=${limit}&userId=${userId}&logTypeId=${logTypeId}`, HTTP_METHODS.GET, true);
 
             if(requestDataIsError(response)){
                 setError(true);
 
-                return errorController(response, () => getAllLogs(logs?.logs?.length, limit));
+                return errorController(response, () => getAllLogs(logs?.logs?.length, limit, userId, logTypeId));
             }
             
             dispatch(setLogs(response.data));

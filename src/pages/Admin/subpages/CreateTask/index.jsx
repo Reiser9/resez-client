@@ -1,10 +1,15 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Checkbox } from 'antd';
+import { useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
 import styles from './index.module.css';
 
 import { convertHtmlToEditorBlocks, getHtmlInEditor } from '../../../../utils/getHtmlInEditor';
+
+import { PERMISSIONS } from '../../../../consts/PERMISSIONS';
+import { checkPermission } from '../../../../utils/checkPermission';
 
 import useTest from '../../../../hooks/useTest';
 
@@ -20,6 +25,7 @@ const CreateTask = ({
 }) => {
     const [subject, setSubject] = React.useState();
     const [subjectName, setSubjectName] = React.useState("");
+    const [isVerified, setIsVerified] = React.useState(false);
     const [theme, setTheme] = React.useState();
     const [subTheme, setSubTheme] = React.useState();
     const [answer, setAnswer] = React.useState("");
@@ -43,25 +49,21 @@ const CreateTask = ({
         createTask, getTaskById, updateTask} = useTest();
     const navigate = useNavigate();
     const {id} = useParams();
+    const {user} = useSelector(state => state.user);
 
-    const createTaskHandler = async () => {
+    const taskHandler = async () => {
         const taskData = await taskRef.current.save();
         const taskContent = getHtmlInEditor(taskData.blocks);
 
         const solutionData = await solutionRef.current.save();
         const solutionContent = getHtmlInEditor(solutionData.blocks);
 
-        createTask(subTheme, taskContent, solutionContent, answer, () => navigate("../test"));
-    }
-
-    const updateTaskHandler = async () => {
-        const taskData = await taskRef.current.save();
-        const taskContent = getHtmlInEditor(taskData.blocks);
-
-        const solutionData = await solutionRef.current.save();
-        const solutionContent = getHtmlInEditor(solutionData.blocks);
-
-        updateTask(id, subTheme, taskContent, solutionContent, answer, () => navigate("../test"));
+        if(edit){
+            updateTask(id, subTheme, taskContent, solutionContent, answer, isVerified, () => navigate("../test"));
+        }
+        else{
+            createTask(subTheme, taskContent, solutionContent, answer, isVerified, () => navigate("../test"));
+        }
     }
 
     const subjectsDropdown = (open) => {
@@ -214,13 +216,9 @@ const CreateTask = ({
     return (
         <CreatePageDefault
             title={`${edit ? "Редактирование" : "Создание"} задания`}
-            button={subTheme && (edit
-                ? <Button type="light" auto onClick={updateTaskHandler} loading={isLoading}>
-                    Сохранить
-                </Button>
-                : <Button type="light" auto onClick={createTaskHandler} loading={isLoading}>
-                    Создать
-                </Button>)}
+            button={subTheme && <Button type="light" auto onClick={taskHandler} loading={isLoading}>
+                    {edit ? "Сохранить" : "Создать"}
+                </Button>}
         >
             <div className={base.formMedium}>
                 {edit
@@ -291,6 +289,10 @@ const CreateTask = ({
                 />}
 
                 {(subTheme || edit) && <>
+                    {checkPermission(user?.permissions, [PERMISSIONS.VERIFY_TASKS]) && <Checkbox checked={isVerified} onChange={e => setIsVerified(e.target.checked)}>
+                        Задание проверено
+                    </Checkbox>}
+
                     <Editor placeholder="Задание" ref={taskRef} id="taskEditor" />
 
                     <Editor placeholder="Решение" ref={solutionRef} id="answerEditor" />

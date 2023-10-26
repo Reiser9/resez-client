@@ -17,10 +17,8 @@ const Settings = () => {
 
     return (
         <div className={base.baseWrapperGap16}>
-            <p className={typography.h3}>Настройки</p>
-
             <div className={styles.settingsItem}>
-                <p className={styles.settingsItemTitle}>Основные</p>
+                <p className={typography.h3}>Основные</p>
 
                 <div className={styles.settingsItemContent}>
                     <SettingsItem

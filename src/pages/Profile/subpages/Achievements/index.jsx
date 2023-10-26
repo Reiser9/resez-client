@@ -9,15 +9,16 @@ import PageIsBuild from '../../../../components/PageIsBuild';
 
 const Achievements = () => {
     return (
-        <div className={base.baseWrapperGap16}>
-            {/* <div className={base.titleInner}>
-                <p className={typography.h3}>Достижения (3)</p>
+        // <div className={base.baseWrapperGap16}>
+        //     {/* <div className={base.titleInner}>
+        //         <p className={typography.h3}>Достижения (3)</p>
 
-                <ReloadButton />
-            </div> */}
+        //         <ReloadButton />
+        //     </div> */}
 
-            <PageIsBuild />
-        </div>
+            
+        // </div>
+        <PageIsBuild />
     )
 }
 

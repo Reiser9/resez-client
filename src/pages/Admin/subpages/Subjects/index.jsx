@@ -18,13 +18,34 @@ import SubjectItemSkeleton from '../../../../components/Skeleton/SubjectItem';
 import NotContent from '../../../../components/NotContent';
 
 const Subjects = () => {
+    const [subjectsElements, setSubjectsElements] = React.useState([]);
+    const [isManySubjects, setIsManySubjects] = React.useState(false);
+
     const {subjectIsLoading, error, loadSubjects, removeSubject} = useTest();
     const {subjectsIsLoading, subjects} = useSelector(state => state.admin);
     const {user} = useSelector(state => state.user);
 
+    const showAllSubjects = () => {
+        setSubjectsElements(subjects?.subjects);
+        setIsManySubjects(false);
+    }
+
+    const hideSubjects = () => {
+        const subjectsHide = subjects?.subjects?.slice(0, 3);
+        setSubjectsElements(subjectsHide);
+
+        if(subjects?.subjects?.length > 3){
+            setIsManySubjects(true);
+        }
+    }
+
     React.useEffect(() => {
         loadSubjects();
     }, []);
+
+    React.useEffect(() => {
+        hideSubjects();
+    }, [subjects]);
 
     return (
         <div className={base.baseWrapperGap16}>
@@ -35,7 +56,7 @@ const Subjects = () => {
                     <ReloadButton loading={subjectsIsLoading} onClick={() => loadSubjects(true)} />
                 </div>
 
-                {checkPermission(user?.permissions, [PERMISSIONS.CREATE_SUBJECTS]) && <Button type="light" auto to="subject/create" disabled={subjectsIsLoading}>
+                {checkPermission(user?.permissions, [PERMISSIONS.CREATE_SUBJECTS]) && <Button type="light" small auto to="subject/create" disabled={subjectsIsLoading}>
                     Создать
                 </Button>}
             </div>
@@ -45,17 +66,27 @@ const Subjects = () => {
                 {[...Array(3)].map((_, id) => <SubjectItemSkeleton key={id} />)}
             </div>
             : error ? <NotContent text="Ошибка при загрузке предметов" icon={<Cross />} danger />
-            : subjects.subjects?.length > 0 ? <div className={base.contentItems}>
-                {subjects.subjects?.map(data =>
-                    <SubjectItem
-                        key={data.id}
-                        data={data}
-                        deleteSubject={() => removeSubject(data.id)}
-                        loading={subjectIsLoading.includes(data.id)}
-                        edit={checkPermission(user?.permissions, [PERMISSIONS.UPDATE_SUBJECTS])}
-                        remove={checkPermission(user?.permissions, [PERMISSIONS.DELETE_SUBJECTS])}
-                    />
-                )}
+            : subjectsElements?.length > 0 ? <div className={`${base.baseWrapperGap16} ${base.aic}`}>
+                <div className={base.contentItems}>
+                    {subjectsElements?.map(data =>
+                        <SubjectItem
+                            key={data.id}
+                            data={data}
+                            deleteSubject={() => removeSubject(data.id)}
+                            loading={subjectIsLoading.includes(data.id)}
+                            edit={checkPermission(user?.permissions, [PERMISSIONS.UPDATE_SUBJECTS])}
+                            remove={checkPermission(user?.permissions, [PERMISSIONS.DELETE_SUBJECTS])}
+                        />
+                    )}
+                </div>
+
+                {subjects?.subjects?.length > 3 && (isManySubjects
+                ? <Button type="light" auto onClick={showAllSubjects}>
+                    Показать все
+                </Button>
+                : <Button type="light" auto onClick={hideSubjects}>
+                    Скрыть
+                </Button>)}
             </div>
             : <NotContent text="Предметов не найдено" />}
         </div>

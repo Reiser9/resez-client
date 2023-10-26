@@ -39,3 +39,11 @@
 .taskItemDate{
     color: var(--textGrey);
 }
+
+.taskVerified{
+    width: 20px;
+}
+
+.taskVerified path{
+    stroke: var(--main);
+}

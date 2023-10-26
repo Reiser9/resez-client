@@ -60,6 +60,10 @@ const useWarn = () => {
     const warnTask = async (targetId, description, successCallback = () => {}) => {
         setError(false);
 
+        if(!description){
+            return alertNotify("Предупреждение", "Описание проблемы не может быть пустым", "warn");
+        }
+
         setIsLoading(true);
 
         const response = await request(REQUEST_TYPE.EMPTY, "/complaint/task", HTTP_METHODS.POST, true, {
@@ -75,8 +79,12 @@ const useWarn = () => {
             return errorController(response, () => warnTask(targetId, description, successCallback));
         }
 
-        // Кол-во жалоб на день
-        alertNotify("Успешно", "Жалоба отправлена", "success");
+        let message = `Жалоба отправлена. На сегодня осталось жалоб: ${response?.data?.complaintsRemaining || 0}`;
+        if(response?.data?.complaintsRemaining === 0){
+            message = "Жалоба отправлена. Вы исчерпали лимит жалоб на сегодня";
+        }
+
+        alertNotify("Успешно", message, "success");
         successCallback();
     }
 

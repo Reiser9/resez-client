@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { addStyles } from "react-mathquill";
 
 import useAuth from '../../../hooks/useAuth';
 import useCheckConnection from '../../../hooks/useCheckConnection';
@@ -10,6 +11,8 @@ import Preloader from '../../Preloader';
 import ServerNotAvailable from '../../../pages/ServerNotAvailable';
 import Ban from '../../../pages/Ban';
 import NoConnection from '../../../pages/NoConnection';
+
+addStyles();
 
 const InitialWrapper = ({children}) => {
     const {appIsLoading, connection} = useSelector(state => state.app);

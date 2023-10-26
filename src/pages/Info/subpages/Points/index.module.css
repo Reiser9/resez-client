@@ -56,3 +56,9 @@
         gap: 16px;
     }
 }
+@media (max-width: 998px) {
+    .pointContent{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
