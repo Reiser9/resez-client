@@ -6,6 +6,7 @@ export const requestDataIsError = (data) => {
         data?.status === 401 ||
         data?.status === 403 ||
         data?.status === 404 ||
+        data?.status === 413 ||
         data?.status === 429 ||
         data?.status === 500 ||
         data === APP_STATUSES.SERVER_NOT_AVAILABLE ||

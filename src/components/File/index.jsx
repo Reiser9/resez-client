@@ -26,6 +26,10 @@ const File = ({
 
     const fileMenuRef = React.useRef(null);
 
+    const closeFileMenu = () => {
+        setFileMenu(false);
+    }
+
     const onInputChange = (e) => {
         if(!e.target.files[0]){
             return;
@@ -49,10 +53,6 @@ const File = ({
                 closeFileMenu();
             });
         };
-    }
-
-    const closeFileMenu = () => {
-        setFileMenu(false);
     }
 
     const deleteCallbackHandler = () => {
