@@ -83,17 +83,19 @@ const CardCollectionView = () => {
                             Настройки
                         </MenuLink>
 
-                        <MenuLink onClick={() => navigate("edit")}>
-                            <Edit />
+                        {userId === authorId && <>
+                            <MenuLink onClick={() => navigate("edit")}>
+                                <Edit />
 
-                            Редактировать
-                        </MenuLink>
+                                Редактировать
+                            </MenuLink>
 
-                        <MenuLink danger onClick={() => setDeleteCollectionModal(true)}>
-                            <Delete />
+                            <MenuLink danger onClick={() => setDeleteCollectionModal(true)}>
+                                <Delete />
 
-                            Удалить
-                        </MenuLink>
+                                Удалить
+                            </MenuLink>
+                        </>}
                     </HoverMenu>
                 </div>
             </div>

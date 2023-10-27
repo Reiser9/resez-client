@@ -22,6 +22,7 @@ import CardLink from '../../../../components/CardLink';
 import TestQuestionItem from '../../../../components/TestQuestionItem';
 import Preloader from '../../../../components/Preloader';
 import ConfirmModal from '../../../../components/Modal/ConfirmModal';
+import NotContent from '../../../../components/NotContent';
 
 const TestView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
@@ -127,20 +128,22 @@ const TestView = () => {
                 </div>
 
                 <div className={base.contentItems}>
-                    <CardLink title="Решать" to="test">
+                    <CardLink title="Решать" to="test" disabled={tasks?.length <= 0}>
                         <TypesVariantStart />
                     </CardLink>
                 </div>
 
                 <div className={base.baseWrapperGap12}>
-                    <p className={typography.h4}>Вопросы ({tasksCount})</p>
+                    <p className={typography.h4}>Задания ({tasksCount})</p>
 
-                    <div className={base.contentItems}>
+                    {tasks?.length > 0
+                    ? <div className={base.contentItems}>
                         {tasks?.map(data => <TestQuestionItem
                             key={data.id}
                             data={data}
                         />)}
                     </div>
+                    : <NotContent text="Заданий не найдено" />}
                 </div>
             </div>
 

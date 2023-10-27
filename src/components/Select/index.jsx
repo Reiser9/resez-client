@@ -15,12 +15,16 @@ const Select = ({
     notContentText = "Ничего не найдено",
     loading = false,
     showSearch = false,
+    clear = false,
     ...props
 }) => {
     return (
         <SelectAnt
             showSearch={showSearch}
             placeholder={placeholder}
+            allowClear={clear ? {
+                clearIcon: <Cross width="16" />
+            } : false}
             className={`${styles.select}${className ? ` ${className}` : ""}`}
             suffixIcon={<ArrowBottom width="16" />}
             notFoundContent={loading ? <Preloader small className={styles.loader} /> : <NotContent text={notContentText} />}

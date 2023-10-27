@@ -9,6 +9,7 @@ const CreateTableItem = ({
     red,
     green,
     id,
+    isPoint = false,
     callbackRed = () => {},
     callbackGreen = () => {},
     onChange = () => {}
@@ -17,7 +18,7 @@ const CreateTableItem = ({
 
     return (
         <div className={`${styles.subjectPointsItem}${(red !== null && red >= id) ? ` ${styles.error}` : ""}${(green !== null && green <= id) ? ` ${styles.success}` : ""}`}>
-            <p className={styles.subjectPointsValue}>{primaryScore}</p>
+            <p className={styles.subjectPointsValue}>{isPoint ? primaryScore + 1 : primaryScore}</p>
 
             <div className={styles.subjectPointsActions}>
                 <button className={`${styles.subjectPointsAction} ${styles.top}${red === id ? ` ${styles.show}` : ""}`} onClick={callbackRed}>

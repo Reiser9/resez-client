@@ -1054,8 +1054,16 @@ export const Mute = ({...props}) => {
 
 export const Plus = ({...props}) => {
     return(
-        <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="var(--text)">
+        <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1" stroke="var(--text)">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+    )
+}
+
+export const Minus = ({...props}) => {
+    return(
+        <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1" stroke="var(--text)">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
         </svg>
     )
 }

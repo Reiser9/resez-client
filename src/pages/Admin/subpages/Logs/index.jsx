@@ -81,6 +81,11 @@ const Logs = () => {
         setLogsFilter(false);
     }
 
+    const applyFilters = () => {
+        loadLogs(0, 10, user, log, true);
+        setLogsFilter(false);
+    }
+
     React.useEffect(() => {
         loadLogs(0, 10);
     }, []);
@@ -96,12 +101,6 @@ const Logs = () => {
             clearTimeout(searchUsersRef.current);
         }
     }, [userSearchValue]);
-
-    React.useEffect(() => {
-        if(user || log){
-            loadLogs(0, 10, user, log, true);
-        }
-    }, [user, log]);
 
     return (
         <>
@@ -152,6 +151,7 @@ const Logs = () => {
                     onChange={value => setUser(value)}
                     filterOption={false}
                     value={user}
+                    clear
                     options={userOptions.map(data => {
                         return {
                             label: data.nickname,
@@ -167,6 +167,7 @@ const Logs = () => {
                     onDropdownVisibleChange={dropdownLogTypes}
                     onChange={value => setLog(value)}
                     value={log}
+                    clear
                     options={typeOptions.map(data => {
                         return {
                             label: data.type,
@@ -175,8 +176,12 @@ const Logs = () => {
                     })}
                 />
 
-                <Button onClick={resetFilter}>
-                    Сбросить фильтры
+                <Button onClick={resetFilter} type="empty">
+                    Сбросить
+                </Button>
+
+                <Button onClick={applyFilters}>
+                    Применить фильтры
                 </Button>
             </Modal>
         </>

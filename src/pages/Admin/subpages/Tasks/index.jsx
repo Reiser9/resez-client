@@ -55,7 +55,7 @@ const Subjects = () => {
 
     const loadMoreTasks = async () => {
         setTasksMoreLoading(true);
-        await getAllTasks(tasks?.tasks?.length, 5, subject, "", "", verify, user);
+        await getAllTasks(tasks?.tasks?.length, 5, subject, theme, subTheme, verify, user);
         setTasksMoreLoading(false);
     }
 
@@ -171,7 +171,7 @@ const Subjects = () => {
     }
 
     const applyFilters = () => {
-        loadTasks(0, 5, subject, "", "", verify, user, true);
+        loadTasks(0, 5, subject, theme, subTheme, verify, user, true);
         setTasksFilter(false);
     }
 
@@ -255,9 +255,9 @@ const Subjects = () => {
                             deleteTask={() => removeTask(data.id)}
                             verifyTask={() => verifyTask(data.id)}
                             loading={taskIsLoading.includes(data.id)}
-                            edit={checkPermission(user?.permissions, [PERMISSIONS.UPDATE_TASKS])}
-                            remove={checkPermission(user?.permissions, [PERMISSIONS.DELETE_TASKS])}
-                            verify={checkPermission(user?.permissions, [PERMISSIONS.VERIFY_TASKS])}
+                            edit={checkPermission(currentUser?.permissions, [PERMISSIONS.UPDATE_TASKS])}
+                            remove={checkPermission(currentUser?.permissions, [PERMISSIONS.DELETE_TASKS])}
+                            verify={checkPermission(currentUser?.permissions, [PERMISSIONS.VERIFY_TASKS])}
                         />
                     )}
                 </BlockDataWithPaggination>
@@ -274,6 +274,7 @@ const Subjects = () => {
                         setSubject(value);
                         setSubjectsFilter(subjects);
                     }}
+                    clear
                     options={subjectsFilter?.map(data => {
                         return {
                             label: data.subject,
@@ -295,6 +296,7 @@ const Subjects = () => {
                         setTheme(value);
                         setThemesFilter(themes);
                     }}
+                    clear
                     options={themesFilter?.map(data => {
                         return {
                             label: `${data.number}. ${data.theme}`,
@@ -316,6 +318,7 @@ const Subjects = () => {
                         setSubTheme(value);
                         setSubThemesFilter(subThemes);
                     }}
+                    clear
                     options={subThemesFilter?.map(data => {
                         return {
                             label: data.subTheme,
@@ -331,6 +334,7 @@ const Subjects = () => {
                     placeholder="Проверенные"
                     onChange={value => setVerify(value)}
                     value={verify}
+                    clear
                     options={[
                         {
                             label: "Да",
@@ -353,7 +357,7 @@ const Subjects = () => {
                     onChange={value => setUser(value)}
                     filterOption={false}
                     value={user}
-                    allowClear
+                    clear
                     options={userOptions.map(data => {
                         return {
                             label: data.nickname,

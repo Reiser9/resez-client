@@ -25,6 +25,7 @@ import Table from '../../components/Table';
 import TableItem from '../../components/Table/TableItem';
 import ConfirmModal from '../../components/Modal/ConfirmModal';
 import InfoSidebar from '../../components/InfoSidebar';
+import NotContent from '../../components/NotContent';
 
 const Test = () => {
     const [confirmRestart, setConfirmRestart] = React.useState(false);
@@ -43,22 +44,22 @@ const Test = () => {
     const {tasksWithDetailedAnswerResult, tasksWithoutDetailedAnswerResult, totalPrimaryScore, maxPrimaryScore, totalSecondaryScore} = result || {};
     const {remainingTime, elapsedTime, elapsed, isPaused, pauseResume, restartTimer} = useTimer(durationMinutes, () => {});
 
-    // React.useEffect(() => {
-    //     const handleBeforeUnload = (e) => {
-    //         e.preventDefault();
-    //         e.returnValue = '';
+    React.useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            e.preventDefault();
+            e.returnValue = '';
 
-    //         // Логика сохранения данных
+            // Логика сохранения данных
 
-    //         return '';
-    //     }
+            return '';
+        }
     
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('beforeunload', handleBeforeUnload);
     
-    //     return () => {
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     };
-    // }, []);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
 
     const setAnswerHandler = (id, value) => {
         setTasksAnswer(prev => {
@@ -164,7 +165,12 @@ const Test = () => {
             }
         });
 
-        setTasksAnswer(currentTasks);
+        if(currentTasks.length <= 0){
+            navigate("/tests", {replace: true});
+        }
+        else{
+            setTasksAnswer(currentTasks);
+        }
     }
 
     React.useEffect(() => {

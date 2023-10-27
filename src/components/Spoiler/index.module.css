@@ -17,6 +17,10 @@
     background: var(--input);
 }
 
+.white{
+    background: var(--white);
+}
+
 .spoilerButton svg{
     width: 20px;
 }

@@ -90,13 +90,12 @@ const CreateSubject = ({edit = false}) => {
     }
 
     const tableHandler = () => {
-        let empty = false;
+        let empty = false, incorrectValue = false;
 
         let updatedScores = elements.map(data => {
             const {primaryScore, secondaryScore} = data || {};
             const isGreen = primaryScore - 1 >= green;
             const isRed = primaryScore - 1 <= red;
-            debugger;
 
             if(!secondaryScore){
                 empty = true;
@@ -112,6 +111,29 @@ const CreateSubject = ({edit = false}) => {
 
         if(empty){
             return alertNotify("Предупреждение", "Таблица должна быть полностью заполненной", "warn");
+        }
+
+        if(isPoint){
+            updatedScores = updatedScores.map(data => {
+                const {primaryScore, secondaryScore, isGreen, isRed} = data || {};
+                const score = secondaryScore.split("-");
+                
+                if(score.length !== 2){
+                    incorrectValue = true;
+                }
+
+                return {
+                    isGreen,
+                    isRed,
+                    grade: primaryScore + 1,
+                    minScore: score[0],
+                    maxScore: score[1]
+                }
+            });
+        }
+
+        if(incorrectValue){
+            return alertNotify("Ошибка", "Баллы введены некорректно, пример ввода: 1-2", "error");
         }
 
         if(edit){
@@ -239,39 +261,66 @@ const CreateSubject = ({edit = false}) => {
 
         let redId = -9999, greenId = 9999, newCurrentTable = [];
 
-        currentTable.forEach(element => {
-            if(element.isRed && redId < element.primaryScore){
-                redId = element.primaryScore - 1;
-            }
+        if(isPoint){
+            currentTable.forEach(element => {
+                if(element.isRed && redId < element.grade - 2){
+                    redId = element.grade - 2;
+                }
+    
+                if(element.isGreen && greenId > element.grade - 2){
+                    greenId = element.grade - 2;
+                }
+            });
 
-            if(element.isGreen && greenId > element.primaryScore){
-                greenId = element.primaryScore - 1;
-            }
-        });
-
-        if(primaryCount >= currentTable.length){
-            // Стало больше баллов
-            newCurrentTable = [...Array(primaryCount)].map((_, id) => {
+            newCurrentTable = [...Array(4)].map((_, id) => {
                 return {
                     id,
                     primaryScore: id + 1,
                     isRed: false,
                     isGreen: false,
-                    secondaryScore: currentTable.length > id ? currentTable[id]?.secondaryScore : ""
+                    secondaryScore: currentTable[id]?.minScore !== "undefined" ? `${currentTable[id]?.minScore || 0}-${currentTable[id]?.maxScore || 0}` : ""
                 }
             });
         }
         else{
-            // Стало меньше баллов
-            newCurrentTable = [...Array(primaryCount)].map((_, id) => {
-                return {
-                    id,
-                    primaryScore: id + 1,
-                    isRed: false,
-                    isGreen: false,
-                    secondaryScore: currentTable[id]?.secondaryScore
+            currentTable.forEach(element => {
+                if(element.primaryScore === ""){
+                    return;
+                }
+
+                if(element.isRed && redId < element.primaryScore){
+                    redId = element.primaryScore - 1;
+                }
+    
+                if(element.isGreen && greenId > element.primaryScore){
+                    greenId = element.primaryScore - 1;
                 }
             });
+
+            if(primaryCount >= currentTable.length){
+                // Стало больше баллов
+                newCurrentTable = [...Array(primaryCount)].map((_, id) => {
+                    return {
+                        id,
+                        primaryScore: id + 1,
+                        isRed: false,
+                        isGreen: false,
+                        secondaryScore: currentTable.length > id ? currentTable[id]?.secondaryScore : ""
+                    }
+                });
+            }
+            else{
+                // Стало меньше баллов
+                newCurrentTable = [...Array(primaryCount)].map((_, id) => {
+                    return {
+                        id,
+                        primaryScore: id + 1,
+                        isRed: false,
+                        isGreen: false,
+                        secondaryScore: currentTable[id]?.secondaryScore
+                    }
+                });
+            }
         }
 
         setRed(redId);
@@ -319,7 +368,7 @@ const CreateSubject = ({edit = false}) => {
     const fillEmptyTableCell = (count) => {
         let newElements = [];
 
-        [...Array(count)].map((_, id) => {
+        [...Array(isPoint ? 4 : count)].map((_, id) => {
             newElements = [...newElements, {
                 id,
                 primaryScore: id + 1,
@@ -514,12 +563,13 @@ const CreateSubject = ({edit = false}) => {
                 {tableByIdIsLoading
                 ? <Preloader page />
                 : step === 1 && <Table>
+                    {isPoint && <p className={styles.subjectsPointsValue}>Количество первичных баллов: {primaryCount}</p>}
                     <div className={styles.subjectPointsItem}>
-                        <p className={styles.subjectPointsHead}>Первичный балл</p>
+                        <p className={styles.subjectPointsHead}>{isPoint ? "Оценка" : "Первичный балл"}</p>
 
                         <div className={styles.subjectPointsActions}></div>
 
-                        <p className={styles.subjectPointsHead}>Вторичный балл</p>
+                        <p className={styles.subjectPointsHead}>{isPoint ? "Баллы" : "Вторичный балл"}</p>
                     </div>
 
                     {elements?.map((data, id) => <CreateTableItem
@@ -531,6 +581,7 @@ const CreateSubject = ({edit = false}) => {
                         callbackRed={() => setRedHandler(id)}
                         callbackGreen={() => setGreenHandler(id)}
                         onChange={handleChangeInput}
+                        isPoint={isPoint}
                     />)}
                 </Table>}
             </div>

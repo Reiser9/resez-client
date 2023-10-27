@@ -58,7 +58,7 @@ const TaskItem = ({
                             <p className={styles.taskTheme}>{subTheme}</p>
                         </Link>
 
-                        {(edit || remove) && <HoverMenu
+                        {(edit || remove || verify) && <HoverMenu
                             button={
                                 <IconButton type="light" small onClick={() => setActionMenu(prev => !prev)}>
                                     <DotsHorizontal />

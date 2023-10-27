@@ -11,18 +11,22 @@ import CreatePageDefault from '../../../../components/CreatePageDefault';
 import Button from '../../../../components/Button';
 import Select from '../../../../components/Select';
 import AuthWrapper from '../../../../components/Wrapper/AuthWrapper';
+import GenerateTestItem from '../../../../components/GenerateTestItem';
 
 const CreateTest = ({
     edit = false
 }) => {
     const [subject, setSubject] = React.useState();
-    const [generateVariant, setGenerateVariant] = React.useState(true); //Поменять на false
+    const [generateVariant, setGenerateVariant] = React.useState(false);
     const [isPrivate, setIsPrivate] = React.useState(false);
+    const [tasks, setTasks] = React.useState([]);
+    const [subjectTasks, setSubjectTasks] = React.useState([]);
 
     const [subjects, setSubjects] = React.useState([]);
     const [subjectsIsLoading, setSubjectsIsLoading] = React.useState(false);
+    const [tasksIsLoading, setTasksIsLoading] = React.useState(false); //Для подгрузки заданий
 
-    const {isLoading, getShortSubjects, createTest} = useTest();
+    const {isLoading, getShortSubjects, createTest, createCustomTest, getTasksBySubject} = useTest();
     const navigate = useNavigate();
 
     const subjectsDropdown = (open) => {
@@ -45,7 +49,69 @@ const CreateTest = ({
                 navigate("../my");
             });
         }
+        else{
+            createCustomTest(subject, isPrivate, subjectTasks, () => {
+                navigate("../my");
+            });
+        }
     }
+
+    const getTasksHandler = async () => {
+        setTasksIsLoading(true);
+        const tasks = await getTasksBySubject(subject, () => navigate("/tests", {replace: true}), true);
+        setTasksIsLoading(false);
+
+        const formatedTasks = tasks.map(data => {
+            return {
+                id: data.id,
+                count: 0,
+                subThemes: []
+            }
+        });
+
+        setTasks(tasks);
+        setSubjectTasks(formatedTasks);
+    }
+
+    const setSubThemesHandler = (taskId, subThemeId) => {
+        setSubjectTasks(prev => prev.map(data => {
+            if(data.id === taskId){
+                let currentSubThemes = [...data.subThemes];
+                if(data.subThemes.includes(subThemeId)){
+                    currentSubThemes = currentSubThemes.filter(elem => elem !== subThemeId);
+                }
+                else{
+                    currentSubThemes = [...currentSubThemes, subThemeId];
+                }
+
+                return{
+                    ...data,
+                    subThemes: currentSubThemes
+                }
+            }
+
+            return data;
+        }));
+    }
+
+    const setCountTasksHandler = (taskId, count) => {
+        setSubjectTasks(prev => prev.map(data => {
+            if(data.id === taskId){
+                return{
+                    ...data,
+                    count
+                }
+            }
+
+            return data;
+        }));
+    }
+
+    React.useEffect(() => {
+        if(subject){
+            getTasksHandler();
+        }
+    }, [subject]);
 
     return (
         <AuthWrapper>
@@ -75,13 +141,24 @@ const CreateTest = ({
                         })}
                     />
 
-                    <Checkbox disabled checked={generateVariant} onChange={e => setGenerateVariant(e.target.checked)}>
-                        Сгенерировать вариант ЕГЭ
-                    </Checkbox>
+                    {subject && <>
+                        <Checkbox checked={generateVariant} onChange={e => setGenerateVariant(e.target.checked)}>
+                            Сгенерировать вариант ЕГЭ
+                        </Checkbox>
 
-                    <Checkbox checked={isPrivate} onChange={e => setIsPrivate(e.target.checked)}>
-                        Скрыть от других пользователей
-                    </Checkbox>
+                        <Checkbox checked={isPrivate} onChange={e => setIsPrivate(e.target.checked)}>
+                            Скрыть от других пользователей
+                        </Checkbox>
+
+                        {!generateVariant && <div className={styles.generateForm}>
+                            {tasks?.map(data => <GenerateTestItem
+                                key={data.id}
+                                data={data}
+                                setSubThemes={setSubThemesHandler}
+                                setCountTasks={setCountTasksHandler}
+                            />)}
+                        </div>}
+                    </>}
                 </div>
             </CreatePageDefault>
         </AuthWrapper>

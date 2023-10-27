@@ -44,7 +44,7 @@ const useTimer = (countdownSeconds, onTimerEnd) => {
         if(countdownSeconds){
             setRemainingTime(countdownSeconds * 60);
         }
-    }, countdownSeconds);
+    }, [countdownSeconds]);
 
     const restartTimer = () => {
         setIsRestart(true);

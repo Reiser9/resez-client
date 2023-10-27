@@ -70,12 +70,12 @@ const Points = () => {
                     {tableInfo?.scoreConversion?.length > 0 && <div className={styles.pointWrapper}>
                         <Spoiler title="Перевод баллов">
                             <Table>
-                                <TableItem head text="Первичный балл" value="Вторичный балл" />
+                                <TableItem head text={tableInfo?.isMark ? "Оценка" : `Первичный балл`} value={tableInfo?.isMark ? "Балл" : `Вторичный балл`} />
 
                                 {tableInfo?.scoreConversion?.map(data => <TableItem
                                     key={data.id}
-                                    text={data.primaryScore}
-                                    value={data.secondaryScore}
+                                    text={data.primaryScore ? data.primaryScore : data.grade}
+                                    value={data.secondaryScore ? data.secondaryScore : `${data.minScore}-${data.maxScore}`}
                                     status={data.isGreen ? "success" : data.isRed ? "error" : ""}
                                 />)}
                             </Table>

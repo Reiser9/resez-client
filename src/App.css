@@ -339,6 +339,17 @@ input::placeholder{
     fill: var(--textGrey)!important;
 }
 
+.ant-select .ant-select-clear{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background: var(--input)!important;
+    margin-top: 0;
+    transform: translateY(-50%);
+}
+
 /* Custom datepicker antd */
 .ant-picker-dropdown .ant-picker-cell, .ant-picker-dropdown .ant-picker-header button{
     cursor: default!important;

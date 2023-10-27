@@ -385,7 +385,7 @@ const useTest = () => {
         return response.data.task;
     }
 
-    const getTasksBySubject = async (id, errorCallback = () => {}) => {
+    const getTasksBySubject = async (id, errorCallback = () => {}, generateTest = false) => {
         setError(false);
 
         dispatch(setTaskCatalogIsLoading(true));
@@ -396,6 +396,10 @@ const useTest = () => {
 
         if(requestDataIsError(response)){
             return errorController(response, () => {}, "", errorCallback);
+        }
+
+        if(generateTest){
+            return response.data.subjectTasks;
         }
 
         dispatch(initTaskCatalog(response.data.subjectTasks));
@@ -476,6 +480,30 @@ const useTest = () => {
 
         if(requestDataIsError(response)){
             return errorController(response, () => createTest(subjectId, isPrivate, successCallback));
+        }
+
+        dispatch(addNewTest(response.data.test));
+        alertNotify("Успешно", "Тест создан", "success");
+        successCallback();
+    }
+
+    const createCustomTest = async (subjectId, isPrivate, subjectTasks, successCallback = () => {}) => {
+        if(!subjectId){
+            return alertNotify("Предупреждение", "Сначала нужно выбрать предмет", "warn");
+        }
+
+        setIsLoading(true);
+
+        const response = await request(REQUEST_TYPE.TEST, "/generate-custom", HTTP_METHODS.POST, true, {
+            subjectId,
+            isPrivate,
+            subjectTasks
+        });
+
+        setIsLoading(false);
+
+        if(requestDataIsError(response)){
+            return errorController(response, () => createCustomTest(subjectId, isPrivate, subjectTasks, successCallback));
         }
 
         dispatch(addNewTest(response.data.test));
@@ -573,6 +601,7 @@ const useTest = () => {
         getTestById,
         getTests,
         createTest,
+        createCustomTest,
         removeTest,
         checkDetailedTasks,
         checkTest
