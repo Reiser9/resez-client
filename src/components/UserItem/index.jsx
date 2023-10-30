@@ -45,7 +45,7 @@ const UserItem = ({
             <div className={styles.userItem}>
                 <div className={styles.userInfoInner}>
                     <div className={styles.userAvatarInner}>
-                        {avatar && !isShowAvatars || userId === id
+                        {(avatar && !isShowAvatars || userId === id)
                         ? <img src={avatar} alt="avatar" className={styles.userAvatar} />
                         : nickname
                             ? <p className={styles.userAvatarName}>{nickname[0]}</p>
@@ -70,7 +70,7 @@ const UserItem = ({
                         {firstName && lastName && <p className={`${typography.text} ${styles.userInfoName}`}>{`${firstName} ${lastName}`}</p>}
 
                         {nickname && <Tooltip title="Скопировать">
-                            <p className={`${typography.text2} ${styles.userInfoNickname}`} onClick={() => copyTextWithNotify(nickname)}>{nickname}</p>
+                            <p className={`${typography.text2} ${styles.userInfoNickname}`} onClick={() => copyTextWithNotify(nickname, "Имя пользователя скопировано")}>{nickname}</p>
                         </Tooltip>}
                     </div>
                 </div>

@@ -28,3 +28,7 @@
 .spoilerShow svg{
     transform: rotate(180deg);
 }
+
+.spoilerText{
+    text-align: left;
+}

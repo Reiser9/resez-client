@@ -464,7 +464,7 @@ const useTest = () => {
         dispatch(initTest(response.data.test));
     }
 
-    const createTest = async (subjectId, isPrivate, successCallback = () => {}) => {
+    const createTest = async (subjectId, isPrivate, isOfficial, successCallback = () => {}) => {
         if(!subjectId){
             return alertNotify("Предупреждение", "Сначала нужно выбрать предмет", "warn");
         }
@@ -473,7 +473,8 @@ const useTest = () => {
 
         const response = await request(REQUEST_TYPE.TEST, "/generate-exam", HTTP_METHODS.POST, true, {
             subjectId,
-            isPrivate
+            isPrivate,
+            isOfficial
         });
 
         setIsLoading(false);

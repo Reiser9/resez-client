@@ -71,7 +71,7 @@ const GenerateTestItem = ({
 
             <Spoiler title={`${theme} (${totalCount})`} theme="white">
                 <div className={styles.generateFormSubThemes}>
-                    {subThemes?.map(data => <Checkbox key={data.id} onChange={() => chechedSubThemesHandler(data.id)}>
+                    {subThemes?.map(data => <Checkbox key={data.id} defaultChecked onChange={() => chechedSubThemesHandler(data.id)}>
                         {data.subTheme} ({data.tasksCount})
                     </Checkbox>)}
                 </div>

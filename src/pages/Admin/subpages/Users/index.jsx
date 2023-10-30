@@ -26,7 +26,7 @@ const Users = () => {
 
     const loadMoreUsers = async () => {
         setUsersMoreLoading(true);
-        await getAllUsers(users?.users?.length, 6);
+        await getAllUsers(users?.users?.length);
         setUsersMoreLoading(false);
     }
 

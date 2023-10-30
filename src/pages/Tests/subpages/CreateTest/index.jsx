@@ -1,9 +1,13 @@
 import React from 'react';
 import { Checkbox } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import base from '../../../../styles/base.module.css';
 import styles from './index.module.css';
+
+import {checkPermission} from '../../../../utils/checkPermission';
+import {PERMISSIONS} from '../../../../consts/PERMISSIONS';
 
 import useTest from '../../../../hooks/useTest';
 
@@ -18,6 +22,7 @@ const CreateTest = ({
 }) => {
     const [subject, setSubject] = React.useState();
     const [generateVariant, setGenerateVariant] = React.useState(false);
+    const [isOfficial, setIsOfficial] = React.useState(false);
     const [isPrivate, setIsPrivate] = React.useState(false);
     const [tasks, setTasks] = React.useState([]);
     const [subjectTasks, setSubjectTasks] = React.useState([]);
@@ -28,6 +33,7 @@ const CreateTest = ({
 
     const {isLoading, getShortSubjects, createTest, createCustomTest, getTasksBySubject} = useTest();
     const navigate = useNavigate();
+    const {user} = useSelector(state => state.user);
 
     const subjectsDropdown = (open) => {
         if(open && subjects.length === 0){
@@ -45,7 +51,7 @@ const CreateTest = ({
 
     const createTestHandler = () => {
         if(generateVariant){
-            createTest(subject, isPrivate, () => {
+            createTest(subject, isPrivate, isOfficial, () => {
                 navigate("../my");
             });
         }
@@ -62,10 +68,12 @@ const CreateTest = ({
         setTasksIsLoading(false);
 
         const formatedTasks = tasks.map(data => {
+            const subThemes = data.subThemes?.map(subTheme => subTheme.id);
+
             return {
                 id: data.id,
                 count: 0,
-                subThemes: []
+                subThemes
             }
         });
 
@@ -145,6 +153,10 @@ const CreateTest = ({
                         <Checkbox checked={generateVariant} onChange={e => setGenerateVariant(e.target.checked)}>
                             Сгенерировать вариант ЕГЭ
                         </Checkbox>
+
+                        {checkPermission(user?.permissions, [PERMISSIONS.THEMES]) && (generateVariant && <Checkbox checked={isOfficial} onChange={e => setIsOfficial(e.target.checked)}>
+                            Вариант от ResEz
+                        </Checkbox>)}
 
                         <Checkbox checked={isPrivate} onChange={e => setIsPrivate(e.target.checked)}>
                             Скрыть от других пользователей

@@ -32,7 +32,10 @@ const useTask = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => {}, "", errorCallback);
+            return errorController(response, () => {}, "", () => {
+                errorCallback();
+                alertNotify("Ошибка", response?.data?.message || "Заданий не найдено", "error");
+            });
         }
 
         dispatch(initTasks(response.data));
@@ -50,7 +53,10 @@ const useTask = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => {}, "", errorCallback);
+            return errorController(response, () => {}, "", () => {
+                errorCallback();
+                alertNotify("Ошибка", response?.data?.message || "Задание не найдено", "error");
+            });
         }
 
         dispatch(initTasks(response.data));

@@ -18,7 +18,7 @@ import SubjectItemSkeleton from '../../../../components/Skeleton/SubjectItem';
 import NotContent from '../../../../components/NotContent';
 
 const Subjects = () => {
-    const [subjectsElements, setSubjectsElements] = React.useState([]);
+    const [subjectElements, setSubjectElements] = React.useState([]);
     const [isManySubjects, setIsManySubjects] = React.useState(false);
 
     const {subjectIsLoading, error, loadSubjects, removeSubject} = useTest();
@@ -26,13 +26,13 @@ const Subjects = () => {
     const {user} = useSelector(state => state.user);
 
     const showAllSubjects = () => {
-        setSubjectsElements(subjects?.subjects);
+        setSubjectElements(subjects?.subjects);
         setIsManySubjects(false);
     }
 
     const hideSubjects = () => {
-        const subjectsHide = subjects?.subjects?.slice(0, 3);
-        setSubjectsElements(subjectsHide);
+        const threeSubjects = subjects?.subjects?.slice(0, 3);
+        setSubjectElements(threeSubjects);
 
         if(subjects?.subjects?.length > 3){
             setIsManySubjects(true);
@@ -66,9 +66,9 @@ const Subjects = () => {
                 {[...Array(3)].map((_, id) => <SubjectItemSkeleton key={id} />)}
             </div>
             : error ? <NotContent text="Ошибка при загрузке предметов" icon={<Cross />} danger />
-            : subjectsElements?.length > 0 ? <div className={`${base.baseWrapperGap16} ${base.aic}`}>
+            : subjectElements?.length > 0 ? <div className={`${base.baseWrapperGap16} ${base.aic}`}>
                 <div className={base.contentItems}>
-                    {subjectsElements?.map(data =>
+                    {subjectElements?.map(data =>
                         <SubjectItem
                             key={data.id}
                             data={data}

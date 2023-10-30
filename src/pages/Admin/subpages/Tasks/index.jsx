@@ -70,19 +70,6 @@ const Subjects = () => {
         });
     }
 
-    const getSubjects = async () => {
-        setSubjectsIsLoading(true);
-        const response = await getShortSubjects();
-        setSubjectsIsLoading(false);
-
-        if(!response){
-            return;
-        }
-
-        setSubjects(response);
-        setSubjectsFilter(response);
-    }
-
     const handleSearchSubject = (value) => {
         const filteredOptions = subjects.filter(subject =>
             subject.subject.toLowerCase().includes(value.toLowerCase())
@@ -120,6 +107,19 @@ const Subjects = () => {
         if(open && subjects.length === 0){
             getSubjects();
         }
+    }
+
+    const getSubjects = async () => {
+        setSubjectsIsLoading(true);
+        const response = await getShortSubjects();
+        setSubjectsIsLoading(false);
+
+        if(!response){
+            return;
+        }
+
+        setSubjects(response);
+        setSubjectsFilter(response);
     }
 
     const themeDropdown = (open) => {
@@ -171,8 +171,12 @@ const Subjects = () => {
     }
 
     const applyFilters = () => {
-        loadTasks(0, 5, subject, theme, subTheme, verify, user, true);
+        loadTasksHandler(true);
         setTasksFilter(false);
+    }
+
+    const loadTasksHandler = (reload = false) => {
+        loadTasks(0, 5, subject, theme, subTheme, verify, user, reload);
     }
 
     React.useEffect(() => {
@@ -188,7 +192,7 @@ const Subjects = () => {
     }, [userSearchValue]);
     
     React.useEffect(() => {
-        loadTasks(0, 5, subject, theme, subTheme, verify, user);
+        loadTasksHandler();
     }, []);
 
     React.useEffect(() => {
@@ -220,7 +224,7 @@ const Subjects = () => {
                     <div className={base.titleWrapper}>
                         <p className={typography.h3}>Задания {!tasksIsLoading && `(${tasks.totalCount || 0})`}</p>
 
-                        <ReloadButton loading={tasksIsLoading} onClick={() => loadTasks(0, 5, subject, theme, subTheme, verify, user, true)} />
+                        <ReloadButton loading={tasksIsLoading} onClick={() => loadTasksHandler(true)} />
                     </div>
 
                     <div className={base.titleWrapper}>

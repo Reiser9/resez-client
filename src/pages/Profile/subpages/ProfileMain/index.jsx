@@ -21,6 +21,7 @@ import MenuLink from '../../../../components/HoverMenu/MenuLink';
 
 const ProfileMain = () => {
     const [moreProfileMenu, setMoreProfileMenu] = React.useState(false);
+    const [confirmDeleteAvatar, setConfirmDeleteAvatar] = React.useState(false);
     const {user, profileData} = useSelector(state => state.user);
 
     const {copyTextWithNotify} = useUtils();
@@ -71,7 +72,7 @@ const ProfileMain = () => {
                         {firstName && lastName && <h1 className={typography.h3}>{firstName} {lastName}</h1>}
 
                         <Tooltip title="Скопировать" placement="bottom">
-                            <p className={`${typography.text2} ${styles.profileInfoNick}`} onClick={() => copyTextWithNotify(nickname, "Ник скопирован")}>{nickname}</p>
+                            <p className={`${typography.text2} ${styles.profileInfoNick}`} onClick={() => copyTextWithNotify(nickname, "Имя пользователя скопировано")}>{nickname}</p>
                         </Tooltip>
                     </div>
 

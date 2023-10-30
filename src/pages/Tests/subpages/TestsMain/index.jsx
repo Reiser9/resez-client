@@ -24,7 +24,7 @@ const TestMain = () => {
 
     const {isAuth} = useSelector(state => state.auth);
     const {taskCatalogIsLoading, taskCatalog} = useSelector(state => state.admin);
-    const {error, subjectIsLoading, getShortSubjects, getTasksBySubject} = useTest();
+    const {getShortSubjects, getTasksBySubject} = useTest();
 
     const navigate = useNavigate();
     const {subject} = useParams();
@@ -74,6 +74,16 @@ const TestMain = () => {
                     </Button>}
                 image={<TypesTest />}
             />
+
+            <div className={base.baseWrapperGap12}>
+                <p className={typography.h4}>Варианты от ResEz</p>
+
+                <div className={base.contentItems}>
+                    {false
+                    ? taskCatalog?.map(data => <CatalogItem key={data.id} data={data} />)
+                    : <NotContent text="Вариантов не найдено" />}
+                </div>
+            </div>
 
             {taskCatalogIsLoading || subjectsIsLoading
             ? <Preloader page />

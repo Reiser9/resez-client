@@ -150,7 +150,7 @@ const CreateTask = ({
 
     const getTaskHandler = async () => {
         const currentTask = await getTaskById(id);
-        const {subject, subjectTask, subTheme, task, solution, answer} = currentTask || {};
+        const {subject, subjectTask, subTheme, task, solution, answer, isVerified} = currentTask || {};
 
 
         await Promise.all([
@@ -160,6 +160,7 @@ const CreateTask = ({
         ]);
 
         setSubject(subject?.id);
+        setIsVerified(isVerified);
         setSubjectName(subject?.subject);
         setTheme(subjectTask?.id);
         setSubTheme(subTheme?.id);

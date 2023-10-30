@@ -66,7 +66,7 @@ const NotifyItem = ({data, loading = false, callback = () => {}}) => {
                 <div className={base.format}>
                     <CustomHtmlParser html={content} />
 
-                    {getNotifyType(type)?.name === "session" && <p className={typography.text}>
+                    {getNotifyType(type)?.name === "session" && <p className={`${typography.text} ${styles.notifySessionLink}`}>
                         <Link to="/profile/safe/sessions" className={styles.notifyItemLink}>Нажмите</Link>, чтобы посмотреть всю историю активности
                     </p>}
                 </div>

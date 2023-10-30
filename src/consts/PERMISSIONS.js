@@ -14,6 +14,7 @@ export const PERMISSIONS = {
     DELETE_THEMES: "Удаление тем",
     LOGS: "Логирование",
     TESTS: "Тесты",
+    CREATE_OFFICIAL_TESTS: 'Создание официальных тестов',
     SUBJECTS: "Предметы",
     CREATE_SUBJECTS: "Создание предметов",
     UPDATE_SUBJECTS: "Редактирование предметов",

@@ -19,7 +19,7 @@ const Spoiler = ({
     return (
         <div className={styles.spoilerWrapper}>
             <button className={`${styles.spoilerButton}${themes[theme] ? ` ${themes[theme]}` : ""}${isShow ? ` ${styles.spoilerShow}` : ""}`} onClick={() => setIsShow(prev => !prev)}>
-                {title}
+                <span className={styles.spoilerText}>{title}</span>
 
                 <ArrowBottom />
             </button>

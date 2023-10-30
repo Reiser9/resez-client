@@ -13,6 +13,7 @@ import { Pause, Play, Reload } from '../../components/Icons';
 import {formatMinutesToDuration} from '../../utils/formatMinutesToDuration';
 
 import useTest from '../../hooks/useTest';
+import useAlert from '../../hooks/useAlert';
 
 import TitleWrapper from '../../components/Wrapper/TitleWrapper';
 import WithSidebarWrapper from '../../components/Wrapper/WithSidebarWrapper';
@@ -39,9 +40,10 @@ const Test = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const {isLoading, testCheckIsLoading, getTestById, checkDetailedTasks, checkTest} = useTest();
+    const {alertNotify} = useAlert();
     const {test} = useSelector(state => state.test);
     const {tasks, durationMinutes, subject} = test || {};
-    const {tasksWithDetailedAnswerResult, tasksWithoutDetailedAnswerResult, totalPrimaryScore, maxPrimaryScore, totalSecondaryScore} = result || {};
+    const {isExam, tasksWithDetailedAnswerResult, tasksWithoutDetailedAnswerResult, totalPrimaryScore, maxPrimaryScore, totalSecondaryScore} = result || {};
     const {remainingTime, elapsedTime, elapsed, isPaused, pauseResume, restartTimer} = useTimer(durationMinutes, () => {});
 
     React.useEffect(() => {
@@ -49,7 +51,7 @@ const Test = () => {
             e.preventDefault();
             e.returnValue = '';
 
-            // Логика сохранения данных
+            // Логика сохранения данных(ДОДЕЛАТЬ)
 
             return '';
         }
@@ -97,6 +99,10 @@ const Test = () => {
     }
 
     const checkDetailedTasksHandler = async () => {
+        if(elapsed <= 0){
+            return alertNotify("Предупреждение", "Не так быстро, скорострел, подожди хотя бы пару секунд", "warn");
+        }
+
         if(!isPaused){
             pauseResume();
         }
@@ -233,7 +239,7 @@ const Test = () => {
 
                                         {step === 3 && <div className={`${base.baseWrapperGap20} ${base.aic}`}>
                                             <div className={`${base.baseWrapperGap4} ${base.aic}`}>
-                                                <p className={styles.testResultTitle}>Вы набрали <span>{totalSecondaryScore}</span> из <span>100</span> баллов</p>
+                                                {isExam && <p className={styles.testResultTitle}>Вы набрали <span>{totalSecondaryScore}</span> из <span>100</span> баллов</p>}
 
                                                 <p className={styles.testResultSubtitle}>Набрано первичных баллов: {totalPrimaryScore} из {maxPrimaryScore}</p>
 

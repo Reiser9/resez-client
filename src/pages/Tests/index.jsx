@@ -15,6 +15,7 @@ const TestsMain = React.lazy(() => import("./subpages/TestsMain"));
 const MyTests = React.lazy(() => import("./subpages/MyTests"));
 const CreateTest = React.lazy(() => import("./subpages/CreateTest"));
 const TestView = React.lazy(() => import("./subpages/TestView"));
+const Recommended = React.lazy(() => import("./subpages/Recommended"));
 
 const Tests = () => {
     return (
@@ -28,6 +29,8 @@ const Tests = () => {
                             <Route path="/my" element={withSuspense(<MyTests />)} />
                             <Route path="/my/create" element={withSuspense(<CreateTest />)} />
                             <Route path="/exam/:id" element={withSuspense(<TestView />)} />
+                            <Route path="/recommended" element={withSuspense(<Recommended />)} />
+                            <Route path="/recommended/:subject" element={withSuspense(<Recommended />)} />
                             <Route path="*" element={<Navigate to={""} replace />} />
                         </Routes>
                     </div>
@@ -35,6 +38,7 @@ const Tests = () => {
                     <InnerSidebar>
                         <SidebarLink text="Главная" to="subject" />
                         <SidebarLink text="Мои тесты" to="my" />
+                        <SidebarLink text="Варианты от ResEz" to="recommended" />
                     </InnerSidebar>
                 </div>
             </WithSidebarWrapper>

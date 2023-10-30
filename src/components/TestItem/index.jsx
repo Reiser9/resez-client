@@ -42,13 +42,10 @@ const TestItem = ({
                             value={actionMenu}
                             setValue={setActionMenu}
                         >
-                            <MenuLink disabled>
-                                <Edit />
-
-                                Редактировать
-                            </MenuLink>
-
-                            <MenuLink danger onClick={() => setConfirmDelete(true)}>
+                            <MenuLink danger onClick={() => {
+                                setConfirmDelete(true);
+                                setActionMenu(false);
+                            }}>
                                 <Delete />
 
                                 Удалить
