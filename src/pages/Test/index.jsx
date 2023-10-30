@@ -246,7 +246,7 @@ const Test = () => {
                                                 <p className={styles.testResultSubtitle}>Затрачено времени: {elapsedTime}</p>
                                             </div>
 
-                                            <Button to="/tests/my" type="light" auto>
+                                            <Button to="/tests/recommended" type="light" auto>
                                                 Решать другие тесты
                                             </Button>
 

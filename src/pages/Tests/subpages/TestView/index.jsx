@@ -10,9 +10,11 @@ import styles from './index.module.css';
 import useUtils from '../../../../hooks/useUtils';
 import useTest from '../../../../hooks/useTest';
 
-import { Date, Delete, DotsHorizontal, Edit, Lock, Settings, TypesVariantStart } from '../../../../components/Icons';
+import { Date, Delete, DotsHorizontal, Lock, Settings, TypesVariantStart } from '../../../../components/Icons';
 
+import {PERMISSIONS} from '../../../../consts/PERMISSIONS';
 import { formatDate } from '../../../../utils/formatDate';
+import { checkPermission } from '../../../../utils/checkPermission';
 
 import BackButton from '../../../../components/BackButton';
 import HoverMenu from '../../../../components/HoverMenu';
@@ -23,6 +25,7 @@ import TestQuestionItem from '../../../../components/TestQuestionItem';
 import Preloader from '../../../../components/Preloader';
 import ConfirmModal from '../../../../components/Modal/ConfirmModal';
 import NotContent from '../../../../components/NotContent';
+import Button from '../../../../components/Button';
 
 const TestView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
@@ -34,6 +37,7 @@ const TestView = () => {
     const {isLoading, getTestById, removeTest} = useTest();
     const {test} = useSelector(state => state.test);
     const {user: userData} = useSelector(state => state.user);
+    const {isAuth} = useSelector(state => state.auth);
     const {settings, id: userId} = userData || {};
     const {isShowAvatars} = settings || {};
 
@@ -71,6 +75,18 @@ const TestView = () => {
                                     <Lock />
                                 </div>
                             </Tooltip>}
+
+                            {isOfficial && <Tooltip title="Тест разработан командой ResEz">
+                                <div className={base.tagElement}>
+                                    ResEz
+                                </div>
+                            </Tooltip>}
+
+                            {isExam && <Tooltip title="Вариант ЕГЭ">
+                                <div className={base.tagElement}>
+                                    ЕГЭ
+                                </div>
+                            </Tooltip>}
                         </div>
 
                         <div className={styles.testTags}>
@@ -89,17 +105,15 @@ const TestView = () => {
                                     Настройки
                                 </MenuLink>
 
-                                <MenuLink disabled>
-                                    <Edit />
-
-                                    Редактировать
-                                </MenuLink>
-
-                                <MenuLink danger onClick={() => setConfirmDelete(true)}>
+                                {(checkPermission(userData?.permissions, PERMISSIONS.DELETE_TESTS) || userId === authorId)
+                                && <MenuLink danger onClick={() => {
+                                    setConfirmDelete(true);
+                                    setActionMenu(false);
+                                }}>
                                     <Delete />
 
                                     Удалить
-                                </MenuLink>
+                                </MenuLink>}
                             </HoverMenu>
                         </div>
                     </div>
@@ -127,10 +141,20 @@ const TestView = () => {
                     </div>
                 </div>
 
-                <div className={base.contentItems}>
-                    <CardLink title="Решать" to="test" disabled={tasks?.length <= 0}>
-                        <TypesVariantStart />
-                    </CardLink>
+                <div className={base.baseWrapperGap12}>
+                    {!isAuth && <div className={base.titleInner}>
+                        <p className={`${typography.text} ${base.warningText}`}>Авторизуйтесь, чтобы сохранить результат прорешивания варианта</p>
+
+                        <Button type="light" small auto to="/login">
+                            Авторизация
+                        </Button>
+                    </div>}
+
+                    <div className={base.contentItems}>
+                        <CardLink title="Решать" to="test" disabled={tasks?.length <= 0}>
+                            <TypesVariantStart />
+                        </CardLink>
+                    </div>
                 </div>
 
                 <div className={base.baseWrapperGap12}>
@@ -147,12 +171,12 @@ const TestView = () => {
                 </div>
             </div>
 
-            <ConfirmModal
+            {(checkPermission(userData?.permissions, PERMISSIONS.DELETE_TESTS) || userId === authorId) && <ConfirmModal
                 value={confirmDelete}
                 setValue={setConfirmDelete}
                 text="Вы действительно хотите удалить тест?"
                 callback={() => removeTest(testId, () => navigate("/tests", {replace: true}))}
-            />
+            />}
         </>
     )
 }

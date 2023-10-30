@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { HTTP_METHODS, REQUEST_TYPE } from '../consts/HTTP';
 
@@ -21,6 +22,7 @@ const useTraining = () => {
     const {errorController} = useError();
     const {alertNotify} = useNotify();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {collections} = useSelector(state => state.training);
 
     const loadCollections = async (offset = 0, limit = 5, reload = false) => {

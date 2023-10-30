@@ -21,6 +21,7 @@ import TextPoint from '../../../../components/TextPoint';
 import Preloader from '../../../../components/Preloader';
 import ConfirmModal from '../../../../components/Modal/ConfirmModal';
 import CardLink from '../../../../components/CardLink';
+import AuthWrapper from '../../../../components/Wrapper/AuthWrapper';
 
 const CardCollectionView = () => {
     const [actionMenu, setActionMenu] = React.useState(false);
@@ -51,123 +52,125 @@ const CardCollectionView = () => {
     }
 
     return (
-        <div className={base.baseWrapperGap16}>
-            <div className={styles.memoCollectionTitleInner}>
-                <BackButton />
+        <AuthWrapper>
+            <div className={base.baseWrapperGap16}>
+                <div className={styles.memoCollectionTitleInner}>
+                    <BackButton />
 
-                <div className={styles.memoCollectionTags}>
-                    <div className={base.tagElement}>
-                        Терминов: {pairsCount || 0}
+                    <div className={styles.memoCollectionTags}>
+                        <div className={base.tagElement}>
+                            Терминов: {pairsCount || 0}
+                        </div>
+
+                        {isPrivate && <Tooltip title="Скрыта">
+                            <div className={base.tagElementIcon}>
+                                <Lock />
+                            </div>    
+                        </Tooltip>}
                     </div>
 
-                    {isPrivate && <Tooltip title="Скрыта">
-                        <div className={base.tagElementIcon}>
-                            <Lock />
-                        </div>    
-                    </Tooltip>}
-                </div>
+                    <div className={styles.memoCollectionActions}>
+                        <HoverMenu
+                            value={actionMenu}
+                            setValue={setActionMenu}
+                            button={
+                                <IconButton type="light" small onClick={() => setActionMenu(prev => !prev)}>
+                                    <DotsHorizontal />
+                                </IconButton>
+                            }
+                        >
+                            <MenuLink onClick={() => navigate("settings")} disabled>
+                                <Settings />
 
-                <div className={styles.memoCollectionActions}>
-                    <HoverMenu
-                        value={actionMenu}
-                        setValue={setActionMenu}
-                        button={
-                            <IconButton type="light" small onClick={() => setActionMenu(prev => !prev)}>
-                                <DotsHorizontal />
-                            </IconButton>
-                        }
-                    >
-                        <MenuLink onClick={() => navigate("settings")} disabled>
-                            <Settings />
-
-                            Настройки
-                        </MenuLink>
-
-                        {userId === authorId && <>
-                            <MenuLink onClick={() => navigate("edit")}>
-                                <Edit />
-
-                                Редактировать
+                                Настройки
                             </MenuLink>
 
-                            <MenuLink danger onClick={() => setDeleteCollectionModal(true)}>
-                                <Delete />
+                            {userId === authorId && <>
+                                <MenuLink onClick={() => navigate("edit")}>
+                                    <Edit />
 
-                                Удалить
-                            </MenuLink>
-                        </>}
-                    </HoverMenu>
-                </div>
-            </div>
+                                    Редактировать
+                                </MenuLink>
 
-            <div className={styles.memoCollectionTextInner}>
-                {name && <p className={typography.h4}>{name}</p>}
+                                <MenuLink danger onClick={() => setDeleteCollectionModal(true)}>
+                                    <Delete />
 
-                {description && <p className={typography.text}>
-                    {description}
-                </p>}
-            </div>
-
-            <div className={base.titleInner}>
-                <div className={base.titleWrapper}>
-                    <div className={base.circle40}>
-                        {avatar && (!isShowAvatars || userId === authorId)
-                            ? <img src={avatar} alt="avatar" className={base.circleAvatar} />
-                            : nickname && nickname[0]}
+                                    Удалить
+                                </MenuLink>
+                            </>}
+                        </HoverMenu>
                     </div>
-
-                    <p className={typography.text}>{nickname}</p>
                 </div>
 
-                {date && <div className={styles.memoCollectionDateInner}>
-                    <Date />
+                <div className={styles.memoCollectionTextInner}>
+                    {name && <p className={typography.h4}>{name}</p>}
 
-                    {formatDate(date, "D MMMM YYYY")}
-                </div>}
-            </div>
+                    {description && <p className={typography.text}>
+                        {description}
+                    </p>}
+                </div>
 
-            <div className={`${base.contentItems} ${styles.memoCollectionTypes}`}>
-                <CardLink title="Карточки" to="cards">
-                    <TypesCards />
-                </CardLink>
-
-                <CardLink title="Тест" to="test" disabled>
-                    <TypesTest />
-                </CardLink>
-
-                <CardLink title="Заучивание" to="learn" disabled>
-                    <TypesLearn />
-                </CardLink>
-
-                <CardLink title="Подбор" to="selection" disabled>
-                    <TypesSelection />
-                </CardLink>
-            </div>
-
-            <div className={`${base.contentItems} ${styles.memoCollectionPairsInner}`}>
                 <div className={base.titleInner}>
-                    <p className={typography.h4}>Термины ({pairsCount || 0})</p>
+                    <div className={base.titleWrapper}>
+                        <div className={base.circle40}>
+                            {avatar && (!isShowAvatars || userId === authorId)
+                                ? <img src={avatar} alt="avatar" className={base.circleAvatar} />
+                                : nickname && nickname[0]}
+                        </div>
 
-                    <button className={styles.memoCollectionsShowAnswers} onClick={() => setShowAnswers(prev => !prev)}>
-                        {showAnswers ? "Скрыть ответы" : "Показать ответы"}
-                    </button>
+                        <p className={typography.text}>{nickname}</p>
+                    </div>
+
+                    {date && <div className={styles.memoCollectionDateInner}>
+                        <Date />
+
+                        {formatDate(date, "D MMMM YYYY")}
+                    </div>}
                 </div>
 
-                <div className={base.contentItems}>
-                    {QAPairs?.map(data => <div key={data.id} className={`${base.item3} ${styles.memoCollectionPair}`}>
-                        <TextPoint title="Вопрос" text={data.question} />
-                        <TextPoint blur={!showAnswers} title="Ответ" text={data.answer} />
-                    </div>)}
+                <div className={`${base.contentItems} ${styles.memoCollectionTypes}`}>
+                    <CardLink title="Карточки" to="cards">
+                        <TypesCards />
+                    </CardLink>
+
+                    <CardLink title="Тест" to="test" disabled>
+                        <TypesTest />
+                    </CardLink>
+
+                    <CardLink title="Заучивание" to="learn" disabled>
+                        <TypesLearn />
+                    </CardLink>
+
+                    <CardLink title="Подбор" to="selection" disabled>
+                        <TypesSelection />
+                    </CardLink>
                 </div>
+
+                <div className={`${base.contentItems} ${styles.memoCollectionPairsInner}`}>
+                    <div className={base.titleInner}>
+                        <p className={typography.h4}>Термины ({pairsCount || 0})</p>
+
+                        <button className={styles.memoCollectionsShowAnswers} onClick={() => setShowAnswers(prev => !prev)}>
+                            {showAnswers ? "Скрыть ответы" : "Показать ответы"}
+                        </button>
+                    </div>
+
+                    <div className={base.contentItems}>
+                        {QAPairs?.map(data => <div key={data.id} className={`${base.item3} ${styles.memoCollectionPair}`}>
+                            <TextPoint title="Вопрос" text={data.question} />
+                            <TextPoint blur={!showAnswers} title="Ответ" text={data.answer} />
+                        </div>)}
+                    </div>
+                </div>
+
+                <ConfirmModal
+                    value={deleteCollectionModal}
+                    setValue={setDeleteCollectionModal}
+                    text="Вы действительно хотите удалить коллекцию?"
+                    callback={() => deleteCollection(id, () => navigate("../memo"))}
+                />
             </div>
-
-            <ConfirmModal
-                value={deleteCollectionModal}
-                setValue={setDeleteCollectionModal}
-                text="Вы действительно хотите удалить коллекцию?"
-                callback={() => deleteCollection(id, () => navigate("../memo"))}
-            />
-        </div>
+        </AuthWrapper>
     )
 }
 

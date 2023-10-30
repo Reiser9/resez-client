@@ -3,7 +3,9 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
     testsIsLoading: false,
     tests: {},
-    test: {}
+    test: {},
+    testsRecommendedIsLoading: false,
+    testsRecommended: {}
 };
 
 export const testSlice = createSlice({
@@ -13,6 +15,9 @@ export const testSlice = createSlice({
         setTestsIsLoading: (state, action) => {
             state.testsIsLoading = action.payload
         },
+        setTestsRecommendedIsLoading: (state, action) => {
+            state.testsRecommendedIsLoading = action.payload
+        },
         initTests: (state, action) => {
             state.tests = action.payload
         },
@@ -20,6 +25,17 @@ export const testSlice = createSlice({
             const currentTests = state.tests.tests;
 
             state.tests = {
+                ...action.payload,
+                tests: currentTests ? [...currentTests, ...action.payload.tests] : [...action.payload.tests]
+            };
+        },
+        initTestsRecommended: (state, action) => {
+            state.testsRecommended = action.payload
+        },
+        setTestsRecommended: (state, action) => {
+            const currentTests = state.testsRecommended.tests;
+
+            state.testsRecommended = {
                 ...action.payload,
                 tests: currentTests ? [...currentTests, ...action.payload.tests] : [...action.payload.tests]
             };
@@ -49,10 +65,13 @@ export const testSlice = createSlice({
 });
 
 export const {
-    addNewTest,
     setTestsIsLoading,
+    setTestsRecommendedIsLoading,
     initTests,
     setTests,
+    initTestsRecommended,
+    setTestsRecommended,
+    addNewTest,
     deleteTest,
     initTest,
     setDataTests

@@ -19,7 +19,7 @@ import {
     initTaskCatalog,
     changeTask
 } from '../redux/slices/admin';
-import { addNewTest, deleteTest, initTest, initTests, setTests, setTestsIsLoading } from '../redux/slices/test';
+import { addNewTest, deleteTest, initTest, initTests, initTestsRecommended, setTests, setTestsIsLoading, setTestsRecommended, setTestsRecommendedIsLoading } from '../redux/slices/test';
 import { initTableScore, setTableIsLoading } from '../redux/slices/info';
 
 import useRequest from './useRequest';
@@ -41,7 +41,7 @@ const useTest = () => {
     const {errorController} = useError();
     const dispatch = useDispatch();
     const {subjects, tasks} = useSelector(state => state.admin);
-    const {tests} = useSelector(state => state.test);
+    const {tests, testsRecommended} = useSelector(state => state.test);
 
     // Предметы
     const loadSubjects = async (reload = false) => {
@@ -446,6 +446,46 @@ const useTest = () => {
         }
     }
 
+    const loadTestsOfficialBySubjectId = async (id, offset = 0, limit = 5, reload = false) => {
+        setError(false);
+
+        if(!testsRecommended.tests || reload){
+            dispatch(setTestsRecommendedIsLoading(true));
+
+            const response = await request(REQUEST_TYPE.SUBJECT, `/${id}/official-test?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET);
+
+            dispatch(setTestsRecommendedIsLoading(false));
+
+            if(requestDataIsError(response)){
+                setError(true);
+                
+                return errorController(response, () => {});
+            }
+
+            dispatch(initTestsRecommended(response.data));
+        }
+    }
+
+    const getTestsOfficialBySubjectId = async (id, offset = 0, limit = 5) => {
+        setError(false);
+
+        if(testsRecommended?.tests?.length === 0 || testsRecommended?.tests?.length < offset + limit){
+            setIsLoading(true);
+
+            const response = await request(REQUEST_TYPE.SUBJECT, `/${id}/official-test?offset=${offset}&limit=${limit}`, HTTP_METHODS.GET);
+
+            setIsLoading(false);
+
+            if(requestDataIsError(response)){
+                setError(true);
+
+                return errorController(response, () => {});
+            }
+
+            dispatch(setTestsRecommended(response.data));
+        }
+    }
+
     const getTestById = async (id, errorCallback = () => {}) => {
         setError(false);
 
@@ -458,7 +498,10 @@ const useTest = () => {
         if(requestDataIsError(response)){
             setError(true);
 
-            return errorController(response, () => getTestById(id, errorCallback), "Тест не найден", errorCallback);
+            return errorController(response, () => getTestById(id, errorCallback), "", () => {
+                errorCallback();
+                alertNotify("Ошибка", "Тест не найден", "error")
+            });
         }
 
         dispatch(initTest(response.data.test));
@@ -599,8 +642,10 @@ const useTest = () => {
         getTaskById,
         getTasksBySubject,
         loadTests,
-        getTestById,
         getTests,
+        loadTestsOfficialBySubjectId,
+        getTestsOfficialBySubjectId,
+        getTestById,
         createTest,
         createCustomTest,
         removeTest,

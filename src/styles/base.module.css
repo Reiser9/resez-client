@@ -224,6 +224,10 @@
     margin: 0 0 0.6rem 0;
 }
 
+.format ol{
+    padding-left: 1.8rem;
+}
+
 .format ul li{
     position: relative;
     padding-left: 1.4rem;
@@ -242,9 +246,7 @@
 }
 
 .format ol li{
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    list-style-type: decimal;
 }
 
 .format ol li input{
@@ -300,6 +302,10 @@
     background: var(--input);
     padding: 0.8rem;
     overflow-x: auto;
+}
+
+.format h1, .format h2, .format h3, .format h4, .format h5, .format h6{
+    width: 100%;
 }
 
 @media (max-width: 768px) {

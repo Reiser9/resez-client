@@ -6,6 +6,8 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
     padding: 1.6rem 0;
     -webkit-transition: .2s ease-in-out;
     transition: .2s ease-in-out;

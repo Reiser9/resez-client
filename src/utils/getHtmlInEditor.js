@@ -14,13 +14,13 @@ export const getHtmlInEditor = (blocks = []) => {
                 html += `<p>${block.data.text}</p>`;
                 break;
             case 'list':
-                html += `<ul>`;
+                html += `${block.data.style === "ordered" ? "<ol>" : "<ul>"}`;
 
                 block.data.items.forEach(item => {
                     html += `<li>${item}</li>`;
                 });
 
-                html += `</ul>`;
+                html += `${block.data.style === "ordered" ? "</ol>" : "</ul>"}`;
                 break;
             case 'table':
                 html += `<div class="tableContent"><table><thead><tr>`;

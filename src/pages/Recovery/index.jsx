@@ -47,7 +47,7 @@ const Recovery = () => {
                     </div>
 
                     <div className={`${auth.contentWrapper} ${base.baseWrapperGap12}`}>
-                        {step === 1 &&<Input mask="+7(999) 999 99-99" value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" onPaste="phone" />}
+                        {step === 1 && <Input mask="+7(999) 999 99-99" value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" onPaste="phone" />}
 
                         {step === 2 && <>
                             <Input mask="999999" value={code} setValue={setCode} placeholder="Код" />

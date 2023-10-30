@@ -38,13 +38,13 @@ const Register = () => {
                         <p className={`${typography.text} ${auth.contentInnerText}`}>Все поля обязательны к заполнению</p>
 
                         <div className={`${auth.contentWrapper} ${base.baseWrapperGap12}`}>
-                            <Input value={nickname} setValue={setNickname} placeholder="Имя пользователя" />
+                            <Input value={nickname} setValue={setNickname} placeholder="Никнейм" />
                             <Input value={phoneNumber} setValue={setPhoneNumber} placeholder="Номер телефона" mask="+7(999) 999 99-99" onPaste="phone" />
                             <Input value={password} setValue={setPassword} placeholder="Пароль" password />
                         </div>
 
                         <p className={`${typography.text2} ${styles.agreeLabel}`}>
-                            При регистрации вы соглашаетесь с <Link to="/rules">правилами проекта</Link> и <Link to="/oferta">публичной офертой</Link>
+                            При регистрации вы соглашаетесь с <Link to="/docs/rules">правилами проекта</Link> и <Link to="/docs/publicoffer">публичной офертой</Link>
                         </p>
 
                         <div className={auth.contentBottomInner}>

@@ -35,7 +35,7 @@ const Login = () => {
                         <p className={`${typography.text} ${auth.contentInnerText}`}>Все поля обязательны к заполнению</p>
 
                         <div className={`${auth.contentWrapper} ${base.baseWrapperGap12}`}>
-                            <Input value={nickname} setValue={setNickname} placeholder="Имя пользователя" />
+                            <Input value={nickname} setValue={setNickname} placeholder="Никнейм" />
                             <Input value={password} setValue={setPassword} placeholder="Пароль" password />
                         </div>
 

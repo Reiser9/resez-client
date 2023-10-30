@@ -19,7 +19,7 @@ import Button from '../Button';
 const TestItem = ({
     data,
     loading = false,
-    deleteCallback = () => {}
+    deleteCallback
 }) => {
     const [actionMenu, setActionMenu] = React.useState(false);
     const [confirmDelete, setConfirmDelete] = React.useState(false);
@@ -33,7 +33,7 @@ const TestItem = ({
                     <div className={styles.testItemTitleWrapper}>
                         {subject && <p className={styles.testItemName}>{subject}</p>}
 
-                        <HoverMenu
+                        {deleteCallback && <HoverMenu
                             button={
                                 <IconButton className={styles.testItemMore} type="light" small onClick={() => setActionMenu(prev => !prev)}>
                                     <DotsHorizontal />
@@ -50,7 +50,7 @@ const TestItem = ({
 
                                 Удалить
                             </MenuLink>
-                        </HoverMenu>
+                        </HoverMenu>}
                     </div>
 
                     <div className={styles.testItemInfo}>
@@ -124,12 +124,12 @@ const TestItem = ({
                 {loading && <LoaderForItem />}
             </div>
 
-            <ConfirmModal
+            {deleteCallback && <ConfirmModal
                 value={confirmDelete}
                 setValue={setConfirmDelete}
                 text="Вы действительно хотите удалить тест?"
                 callback={deleteCallback}
-            />
+            />}
         </>
     )
 }
