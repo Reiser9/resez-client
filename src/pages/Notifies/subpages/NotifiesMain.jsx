@@ -49,7 +49,7 @@ const NotifiesMain = ({unread = false}) => {
                     <ReloadButton loading={notifiesIsLoading} onClick={() => loadNotify(0, 6, unread)} />
                 </div>
 
-                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || user.unreadNotifiesCount === 0 || isLoading} auto type="light" onClick={() => readAllNotifies(0, 6, unread)}>
+                {notifies.totalCount !== 0 && <Button disabled={notifiesIsLoading || user?.unreadNotifiesCount === 0 || isLoading} auto type="light" onClick={() => readAllNotifies(0, 6, unread)}>
                     Прочитать все
                 </Button>}
             </div>

@@ -125,7 +125,7 @@ const TestView = () => {
                     <div className={base.titleInner}>
                         <div className={base.titleWrapper}>
                             <div className={base.circle40}>
-                                {avatar && !isShowAvatars || userId === authorId
+                                {avatar && (!isShowAvatars || userId === authorId)
                                 ? <img src={avatar} alt="avatar" className={base.circleAvatar} />
                                 : nickname ? nickname[0] : "No"}
                             </div>

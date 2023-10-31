@@ -38,7 +38,6 @@ const useNotify = () => {
             return errorController(response, () => loadNotify(offset, limit, unread));
         }
         
-        dispatch(setUreadNotifyCount(response.data.unreadNotifiesCount));
         dispatch(initNotifies(response.data));
     }
 
@@ -58,7 +57,6 @@ const useNotify = () => {
                 return errorController(response, () => getAllNotify(offset, limit, unread));
             }
 
-            dispatch(setUreadNotifyCount(response.data.unreadNotifiesCount));
             dispatch(setNotifies(response.data));
         }
     }
@@ -97,14 +95,14 @@ const useNotify = () => {
 
         alertNotify("Успешно", "Все сообщения прочитаны", "success");
 
+        dispatch(setUreadNotifyCount(0));
         if(unread){
             dispatch(initNotifies({
                 notifies: [],
                 totalCount: 0,
-                unreadNotifiesCount: 0,
-                isLast: true
+                isLast: true,
+                elementsCount: 0
             }));
-            dispatch(setUreadNotifyCount(0));
         }
         else{
             dispatch(initNotifies(response.data));

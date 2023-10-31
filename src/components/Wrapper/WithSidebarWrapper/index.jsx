@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import base from '../../../styles/base.module.css';
+import sidebar from '../../Sidebar/index.module.css';
 import styles from './index.module.css';
 
 import { Code, Console, Fire, Lifebuoy, Message, Store, Tests, Training, Vk } from '../../Icons';
@@ -42,11 +43,11 @@ const WithSidebarWrapper = ({container = "basic", children}) => {
                     {checkPermission(user?.permissions, [PERMISSIONS.CONFIG]) && <SidebarLink onClick={hideSidebar} text="Конфигурация" icon={<Console />} to="/config" />}
                 </div>
 
-                <div className={styles.sidebarFooter}>
+                <div className={sidebar.sidebarFooter}>
                     <Button type="light" disabled to="/support">
                         <Lifebuoy className={styles.sidebarFooterButtonIcon} />
 
-                        Обратная связь
+                        <span className={sidebar.sidebarFooterButtonText}>Обратная связь</span>
                     </Button>
 
                     <div className={styles.sidebarFooterSocials}>

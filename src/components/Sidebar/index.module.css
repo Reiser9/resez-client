@@ -17,6 +17,15 @@
     border-right: 1px solid var(--input);
 }
 
+.sidebarFooter{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0 1.2rem;
+}
+
 @media (max-width: 1500px) {
     .sidebar{
         max-width: 56px;
@@ -27,17 +36,34 @@
         z-index: 10;
         overflow-x: hidden;
     }
+
+    .sidebarFooter{
+        opacity: 0;
+        transition: .2s linear;
+        white-space: nowrap;
+        pointer-events: none;
+    }
 }
 
 @media (max-width: 1500px) and (any-hover: hover) {
     .sidebar:hover{
         max-width: 250px;
     }
+
+    .sidebar:hover .sidebarFooter{
+        opacity: 1;
+        pointer-events: all;
+    }
 }
 
 @media (max-width: 1500px) and (any-hover: none) {
     .sidebar.active{
         max-width: 260px;
+    }
+
+    .sidebar.active .sidebarFooter{
+        opacity: 1;
+        pointer-events: all;
     }
 }
 

@@ -10,10 +10,10 @@ const Sidebar = ({children}) => {
 
     const dispatch = useDispatch();
 
-    const sidevarRef = React.useRef(null);
+    const sidebarRef = React.useRef(null);
 
     const outsideSidebarClick = (e) => {
-        if(sidevarRef.current && !sidevarRef.current.contains(e.target)){
+        if(sidebarRef.current && !sidebarRef.current.contains(e.target)){
             dispatch(setSidebarShow(false));
         }
     }
@@ -27,7 +27,7 @@ const Sidebar = ({children}) => {
     }, []);
 
     return (
-        <aside className={`${styles.sidebar}${sidebarShow ? ` ${styles.active}` : ""}`} ref={sidevarRef}>
+        <aside className={`${styles.sidebar}${sidebarShow ? ` ${styles.active}` : ""}`} ref={sidebarRef}>
             {children}
         </aside>
     )
