@@ -1,20 +1,20 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import base from '../../../../styles/base.module.css';
-import typography from '../../../../styles/typography.module.css';
-import styles from './index.module.css';
+import base from "../../../../styles/base.module.css";
+import typography from "../../../../styles/typography.module.css";
+import styles from "./index.module.css";
 
-import { Stats } from '../../../../components/Icons';
+import { Stats } from "../../../../components/Icons";
 
-import {socket} from '../../../../utils/socket';
-import {formatDate} from '../../../../utils/formatDate';
+import { socket } from "../../../../utils/socket";
+import { formatDate } from "../../../../utils/formatDate";
 
-import { setAdminStats } from '../../../../redux/slices/admin';
-import { Tooltip } from 'antd';
+import { setAdminStats } from "../../../../redux/slices/admin";
+import { Tooltip } from "antd";
 
 const AdminMain = () => {
-    const {adminStats} = useSelector(state => state.admin);
+    const { adminStats } = useSelector((state) => state.admin);
     const dispatch = useDispatch();
 
     React.useEffect(() => {
@@ -25,11 +25,21 @@ const AdminMain = () => {
 
         return () => {
             socket.off("stats");
-        }
+        };
     }, []);
 
-    const {accountsCount, blockedAccountsCount, adminsCount, totalOnline, authUsersOnline,
-        maxTotalOnline, maxOnlinePerDay, maxOnlinePerDayDate, maxTotalOnlineDate, uniqueUsersCountPerDay} = adminStats || {};
+    const {
+        accountsCount,
+        blockedAccountsCount,
+        adminsCount,
+        totalOnline,
+        authUsersOnline,
+        maxTotalOnline,
+        maxOnlinePerDay,
+        maxOnlinePerDayDate,
+        maxTotalOnlineDate,
+        uniqueUsersCountPerDay,
+    } = adminStats || {};
 
     return (
         <div className={base.baseWrapperGap16}>
@@ -39,7 +49,9 @@ const AdminMain = () => {
                 <div className={styles.adminStatsContent}>
                     <div className={styles.adminStatsItems}>
                         <div className={styles.adminStatsItem}>
-                            <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
+                            <div
+                                className={`${styles.adminStatsNumberInner} ${styles.success}`}
+                            >
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
@@ -47,13 +59,17 @@ const AdminMain = () => {
                                 </p>
                             </div>
 
-                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                            <p
+                                className={`${typography.text2} ${styles.adminStatsItemText}`}
+                            >
                                 Общий онлайн
                             </p>
                         </div>
 
                         <div className={styles.adminStatsItem}>
-                            <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
+                            <div
+                                className={`${styles.adminStatsNumberInner} ${styles.success}`}
+                            >
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
@@ -61,29 +77,45 @@ const AdminMain = () => {
                                 </p>
                             </div>
 
-                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                            <p
+                                className={`${typography.text2} ${styles.adminStatsItemText}`}
+                            >
                                 Онлайн авторизованных
                             </p>
                         </div>
 
-                        <Tooltip title={maxOnlinePerDayDate ? formatDate(maxOnlinePerDayDate) : "Неизвестно"}>
+                        <Tooltip
+                            title={
+                                maxOnlinePerDayDate
+                                    ? formatDate(maxOnlinePerDayDate)
+                                    : "Неизвестно"
+                            }
+                        >
                             <div className={styles.adminStatsItem}>
-                                <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
-                                    <div className={styles.adminStatsCircle}></div>
+                                <div
+                                    className={`${styles.adminStatsNumberInner} ${styles.success}`}
+                                >
+                                    <div
+                                        className={styles.adminStatsCircle}
+                                    ></div>
 
                                     <p className={styles.adminStatsNumber}>
                                         {maxOnlinePerDay || 0}
                                     </p>
                                 </div>
 
-                                <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                                <p
+                                    className={`${typography.text2} ${styles.adminStatsItemText}`}
+                                >
                                     Максимальный онлайн за день
                                 </p>
                             </div>
                         </Tooltip>
 
                         <div className={styles.adminStatsItem}>
-                            <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
+                            <div
+                                className={`${styles.adminStatsNumberInner} ${styles.success}`}
+                            >
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
@@ -91,29 +123,48 @@ const AdminMain = () => {
                                 </p>
                             </div>
 
-                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                            <p
+                                className={`${typography.text2} ${styles.adminStatsItemText}`}
+                            >
                                 Количество уникальных пользователей за день
                             </p>
                         </div>
 
-                        <Tooltip title={maxTotalOnlineDate ? formatDate(maxTotalOnlineDate, "D MMMM YYYY в HH:mm") : "Неизвестно"}>
+                        <Tooltip
+                            title={
+                                maxTotalOnlineDate
+                                    ? formatDate(
+                                          maxTotalOnlineDate,
+                                          "D MMMM YYYY в HH:mm"
+                                      )
+                                    : "Неизвестно"
+                            }
+                        >
                             <div className={styles.adminStatsItem}>
-                                <div className={`${styles.adminStatsNumberInner} ${styles.success}`}>
-                                    <div className={styles.adminStatsCircle}></div>
+                                <div
+                                    className={`${styles.adminStatsNumberInner} ${styles.success}`}
+                                >
+                                    <div
+                                        className={styles.adminStatsCircle}
+                                    ></div>
 
                                     <p className={styles.adminStatsNumber}>
                                         {maxTotalOnline || 0}
                                     </p>
                                 </div>
 
-                                <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                                <p
+                                    className={`${typography.text2} ${styles.adminStatsItemText}`}
+                                >
                                     Максимальный онлайн
                                 </p>
                             </div>
                         </Tooltip>
 
                         <div className={styles.adminStatsItem}>
-                            <div className={`${styles.adminStatsNumberInner} ${styles.info}`}>
+                            <div
+                                className={`${styles.adminStatsNumberInner} ${styles.info}`}
+                            >
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
@@ -121,13 +172,17 @@ const AdminMain = () => {
                                 </p>
                             </div>
 
-                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                            <p
+                                className={`${typography.text2} ${styles.adminStatsItemText}`}
+                            >
                                 Зарегистрировано аккаунтов
                             </p>
                         </div>
 
                         <div className={styles.adminStatsItem}>
-                            <div className={`${styles.adminStatsNumberInner} ${styles.error}`}>
+                            <div
+                                className={`${styles.adminStatsNumberInner} ${styles.error}`}
+                            >
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
@@ -135,13 +190,17 @@ const AdminMain = () => {
                                 </p>
                             </div>
 
-                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                            <p
+                                className={`${typography.text2} ${styles.adminStatsItemText}`}
+                            >
                                 Заблокировано аккаунтов
                             </p>
                         </div>
 
                         <div className={styles.adminStatsItem}>
-                            <div className={`${styles.adminStatsNumberInner} ${styles.warn}`}>
+                            <div
+                                className={`${styles.adminStatsNumberInner} ${styles.warn}`}
+                            >
                                 <div className={styles.adminStatsCircle}></div>
 
                                 <p className={styles.adminStatsNumber}>
@@ -149,7 +208,9 @@ const AdminMain = () => {
                                 </p>
                             </div>
 
-                            <p className={`${typography.text2} ${styles.adminStatsItemText}`}>
+                            <p
+                                className={`${typography.text2} ${styles.adminStatsItemText}`}
+                            >
                                 Администраторов
                             </p>
                         </div>
@@ -159,11 +220,9 @@ const AdminMain = () => {
                         <Stats />
                     </div>
                 </div>
-
-                
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default AdminMain;

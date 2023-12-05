@@ -45,7 +45,7 @@ const UserItem = ({
             <div className={styles.userItem}>
                 <div className={styles.userInfoInner}>
                     <div className={styles.userAvatarInner}>
-                        {(avatar && !isShowAvatars || userId === id)
+                        {(avatar && (!isShowAvatars || userId === id))
                         ? <img src={avatar} alt="avatar" className={styles.userAvatar} />
                         : nickname
                             ? <p className={styles.userAvatarName}>{nickname[0]}</p>
@@ -110,16 +110,16 @@ const UserItem = ({
                     </div>
 
                     <div className={styles.userItemButtons}>
-                        <Button type="light">
+                        {/* <Button type="light">
                             Подробнее
-                        </Button>
+                        </Button> */}
 
                         {!isBlocked && (notify || block) && <>
-                            {notify && <Tooltip title="Уведомление">
+                            {/* {notify && <Tooltip title="Уведомление">
                                 <IconButton type="light" className={styles.userItemButtonIcons}>
                                     <Notify />
                                 </IconButton>
-                            </Tooltip>}
+                            </Tooltip>} */}
 
                             {block && <Tooltip title="Заблокировать">
                                 <IconButton type="danger" className={styles.userItemButtonIcons} onClick={() => setConfirmBlock(true)}>

@@ -1,9 +1,9 @@
-import React from 'react';
-import { useSwipeable } from 'react-swipeable';
+import React from "react";
+import { useSwipeable } from "react-swipeable";
 
-import styles from './index.module.css';
+import styles from "./index.module.css";
 
-import CardPart from './CardPart';
+import CardPart from "./CardPart";
 
 const offsetTranslateCard = 125;
 
@@ -29,60 +29,66 @@ const Card = ({
         const handleBeforeUnload = () => {
             speechSynthesis.cancel();
         };
-      
+
         window.addEventListener("beforeunload", handleBeforeUnload);
 
         return () => {
             handleBeforeUnload();
             window.removeEventListener("beforeunload", handleBeforeUnload);
-        }
+        };
     }, []);
 
     const clearCard = () => {
         setPosition({
             x: 0,
             y: 0,
-            rotate: 0
+            rotate: 0,
         });
 
         setIsDragging(false);
         setCorrect(0);
         setWrong(0);
-    }
+    };
 
     const handlers = useSwipeable({
         onSwipeStart: () => {
             setIsDragging(true);
         },
         onSwiping: (data) => {
-            const {deltaX, deltaY} = data;
+            const { deltaX, deltaY } = data;
 
             setPosition({
                 x: deltaX,
                 y: deltaY,
-                rotate: deltaX / 18
+                rotate: deltaX / 18,
             });
 
             setIsSwipingInClick(true);
 
-            if(deltaX > 0){
-                setCorrect(deltaX > offsetTranslateCard ? 1 : deltaX / offsetTranslateCard);
+            if (deltaX > 0) {
+                setCorrect(
+                    deltaX > offsetTranslateCard
+                        ? 1
+                        : deltaX / offsetTranslateCard
+                );
                 setWrong(0);
-            }
-            else{
-                setWrong(deltaX < -offsetTranslateCard ? 1 : -deltaX / offsetTranslateCard);
+            } else {
+                setWrong(
+                    deltaX < -offsetTranslateCard
+                        ? 1
+                        : -deltaX / offsetTranslateCard
+                );
                 setCorrect(0);
             }
         },
         onSwiped: (data) => {
-            const {deltaX} = data;
+            const { deltaX } = data;
 
-            if(deltaX > offsetTranslateCard){
+            if (deltaX > offsetTranslateCard) {
                 correctCallback();
                 setPositive(true);
                 speechSynthesis.cancel();
-            }
-            else if(deltaX < -offsetTranslateCard){
+            } else if (deltaX < -offsetTranslateCard) {
                 wrongCallback();
                 setPositive(false);
                 speechSynthesis.cancel();
@@ -98,7 +104,7 @@ const Card = ({
             clearCard();
         },
         preventScrollOnSwipe: true,
-        trackMouse: true
+        trackMouse: true,
     });
 
     const myRef = React.useRef();
@@ -107,42 +113,61 @@ const Card = ({
         handlers.ref(el);
 
         myRef.current = el;
-    }
+    };
 
-    const {question, answer} = data;
+    const { question, answer } = data;
 
     return (
         <div
-            className={`${styles.card}${active ? ` ${styles.active}` : ""}${prev ? positive ? ` ${styles.swipeRight}` : ` ${styles.swipeLeft}` : ""}${!isDragging ? ` ${styles.cardTransition}` : ""}${rotate ? ` ${styles.rotate}` : ""}`}
+            className={`${styles.card}${active ? ` ${styles.active}` : ""}${
+                prev
+                    ? positive
+                        ? ` ${styles.swipeRight}`
+                        : ` ${styles.swipeLeft}`
+                    : ""
+            }${!isDragging ? ` ${styles.cardTransition}` : ""}${
+                rotate ? ` ${styles.rotate}` : ""
+            }`}
             ref={refPassthrough}
             style={{
                 position: "absolute",
                 left: position.x,
                 top: position.y,
-                transform: `rotate(${position.rotate}deg) perspective(600px)${rotate ? " rotateY(180deg)" : ""}`,
+                transform: `rotate(${position.rotate}deg) perspective(600px)${
+                    rotate ? " rotateY(180deg)" : ""
+                }`,
                 userSelect: "none",
-                cursor: "grab"
+                cursor: "grab",
             }}
             onClick={() => {
-                    if(!isSwipingInClick){
-                        setRotate(prev => !prev)
-                    }
+                if (!isSwipingInClick) {
+                    setRotate((prev) => !prev);
                 }
-            }
+            }}
             {...handlers}
         >
             <CardPart text={question} className={styles.front} />
             <CardPart text={answer} className={styles.back} />
 
-            <div className={`${styles.verdict} ${styles.wrong}${!isDragging ? ` ${styles.cardTransition}` : ""}`} style={{opacity: wrong}}>
+            <div
+                className={`${styles.verdict} ${styles.wrong}${
+                    !isDragging ? ` ${styles.cardTransition}` : ""
+                }`}
+                style={{ opacity: wrong }}
+            >
                 {wrongText}
             </div>
 
-            <div className={`${styles.verdict} ${styles.correct}${!isDragging ? ` ${styles.cardTransition}` : ""}`} style={{opacity: correct}}>
+            <div
+                className={`${styles.verdict} ${styles.correct}${
+                    !isDragging ? ` ${styles.cardTransition}` : ""
+                }`}
+                style={{ opacity: correct }}
+            >
                 {correctText}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Card;

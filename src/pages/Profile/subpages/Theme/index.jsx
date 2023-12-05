@@ -9,13 +9,13 @@ import ChangeMode from './ChangeMode';
 const Theme = () => {
     return (
         <>
-            <div className={profile.contentBlock}>
+            {/* <div className={profile.contentBlock}>
                 <p className={typography.h3}>
                     Основной цвет
                 </p>
 
                 <ChangeTheme />
-            </div>
+            </div> */}
             
             <div className={profile.contentBlock}>
                 <p className={typography.h3}>

@@ -62,10 +62,19 @@ export class CustomMath {
         this.wrapper.appendChild(mathEditor);
     
         const math = ReactDOM.createRoot(mathEditor);
+        let isLeavingEvent = false;
         math.render(<EditableMathField
             latex={this.formula}
             onChange={(mathField) => {
                 this.formula = mathField.latex();
+            }}
+            onKeyDown={(e) => {
+                if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", "Backspace"].includes(e.key) && !isLeavingEvent) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                isLeavingEvent = false;
             }}
             config={{
                 autoCommands: 'pi int ni supset subset theta sigma omega sqrt sum prod alpha beta gamma rho neq',
@@ -78,6 +87,14 @@ export class CustomMath {
                 maxDepth: 10,
                 substituteTextarea: function() {
                     return document.createElement('textarea');
+                },
+                handlers: {
+                    upOutOf() {
+                        isLeavingEvent = true;
+                    },
+                    downOutOf() {
+                        isLeavingEvent = true;
+                    },
                 },
             }}
         />);

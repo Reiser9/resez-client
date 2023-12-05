@@ -32,8 +32,8 @@ const Profile = () => {
                                 <Route path="data" element={withSuspense(<Data />)} />
                                 <Route path="safe" element={withSuspense(<Safe />)} />
                                 <Route path="safe/sessions" element={withSuspense(<Sessions />)} />
-                                <Route path="achievements" element={withSuspense(<Achievements />)} />
-                                <Route path="settings" element={withSuspense(<Settings />)} />
+                                {/* <Route path="achievements" element={withSuspense(<Achievements />)} />
+                                <Route path="settings" element={withSuspense(<Settings />)} /> */}
                                 <Route path="*" element={<Navigate to={""} replace />} />
                             </Routes>
                         </div>
@@ -43,8 +43,8 @@ const Profile = () => {
                             <SidebarLink text="Внешний вид" to="theme" />
                             <SidebarLink text="Личные данные" to="data" />
                             <SidebarLink text="Безопасность" to="safe" />
-                            <SidebarLink text="Достижения" to="achievements" />
-                            <SidebarLink text="Настройки" to="settings" />
+                            {/* <SidebarLink text="Достижения" to="achievements" /> */}
+                            {/* <SidebarLink text="Настройки" to="settings" /> */}
                         </InnerSidebar>
                     </div>
                 </WithSidebarWrapper>

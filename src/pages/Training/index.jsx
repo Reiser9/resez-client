@@ -38,7 +38,7 @@ const Training = () => {
                     <InnerSidebar>
                         <SidebarLink text="Главная" to="" end />
                         <SidebarLink text="Тренировка памяти" to="memo" />
-                        <SidebarLink text="Битва знатоков" to="battle" disabled />
+                        {/* <SidebarLink text="Битва знатоков" to="battle" disabled /> */}
                     </InnerSidebar>
                 </div>
             </WithSidebarWrapper>

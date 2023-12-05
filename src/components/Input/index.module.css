@@ -1,4 +1,4 @@
-.inputWrapper{
+.inputWrapper {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -6,13 +6,13 @@
     gap: 4px;
 }
 
-.inputInner{
+.inputInner {
     width: 100%;
     position: relative;
     display: flex;
 }
 
-.input{
+.input {
     width: 100%;
     border: 1px solid var(--input);
     background: var(--input);
@@ -22,32 +22,32 @@
 }
 
 @media (max-width: 440px) {
-    .input{
+    .input {
         min-height: 40px;
         font-size: 1.5rem;
     }
 }
 
-.textarea{
+.textarea {
     resize: none;
     height: 120px;
     outline: none;
 }
 
-.disabled{
+.disabled {
     opacity: 0.6;
     pointer-events: none;
 }
 
-.input:focus{
+.input:focus {
     border: 1px solid var(--main);
 }
 
-.password{
+.password {
     padding: 1rem 4.5rem 1rem 1.6rem;
 }
 
-.inputShow{
+.inputShow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -62,13 +62,13 @@
     justify-content: center;
 }
 
-.inputShow svg{
+.inputShow svg {
     flex-shrink: 0;
     width: 100%;
     max-width: 24px;
 }
 
-.inputTitleWrapper{
+.inputTitleWrapper {
     width: 100%;
     display: flex;
     align-items: center;
@@ -77,11 +77,11 @@
     flex-wrap: wrap;
 }
 
-.limitText{
+.limitText {
     color: var(--textGrey);
     margin-left: auto;
 }
 
-.limit{
+.limit {
     color: var(--error);
 }

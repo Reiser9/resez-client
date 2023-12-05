@@ -1,6 +1,6 @@
 import React from "react";
 
-import typography from '../../styles/typography.module.css';
+import typography from "../../styles/typography.module.css";
 import styles from "./index.module.css";
 
 import { Practice, Study, Theme, Messager } from "../../components/Icons";
@@ -34,7 +34,9 @@ const Main = () => {
                 </div>
 
                 <div className={styles.benefits}>
-                    <h3 className={`${typography.h1} ${styles.benefitsTitle}`}>Что крутого у нас есть?</h3>
+                    <h3 className={`${typography.h1} ${styles.benefitsTitle}`}>
+                        Что крутого у нас есть?
+                    </h3>
 
                     <div className={styles.benefitsContent}>
                         <Block

@@ -32,7 +32,7 @@ const LogItem = ({data}) => {
 
                     <div className={styles.logsItemUserInner}>
                         <div className={styles.logsItemUserImgInner}>
-                            {avatar && !isShowAvatars || userId === authorId
+                            {avatar && (!isShowAvatars || userId === authorId)
                             ? <img className={styles.logsItemUserImg} src={avatar} alt="avatar" />
                             :<p className={styles.logsItemUserLetter}>{nickname[0]}</p>}
                         </div>

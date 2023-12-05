@@ -20,7 +20,7 @@ const InfoMain = () => {
 
             <div className={base.contentItems}>
                 <LinkBlock to="points" title="Баллы ЕГЭ" text="Информация по баллам к каждому предмету" />
-                <LinkBlock to="analysis" title="Разбор заданий" text="Шпаргалки и объяснения каждого из заданий ЕГЭ" disabled />
+                {/* <LinkBlock to="analysis" title="Разбор заданий" text="Шпаргалки и объяснения каждого из заданий ЕГЭ" disabled /> */}
             </div>
         </div>
     )

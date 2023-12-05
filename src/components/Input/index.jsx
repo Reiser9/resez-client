@@ -1,12 +1,12 @@
 import React from "react";
 import InputMask from "react-input-mask";
 
-import typography from '../../styles/typography.module.css';
+import typography from "../../styles/typography.module.css";
 import styles from "./index.module.css";
 
-import {Eye, Blind} from '../Icons';
+import { Eye, Blind } from "../Icons";
 
-import {cleanPhoneNumber} from '../../utils/formatPhone';
+import { cleanPhoneNumber } from "../../utils/formatPhone";
 
 const Input = ({
     type = "input",
@@ -28,82 +28,122 @@ const Input = ({
     const [typeInput, setTypeInput] = React.useState("text");
 
     const pasteHandler = () => {
-        switch(onPaste) {
+        switch (onPaste) {
             case "phone":
                 return (e) => {
                     e.preventDefault();
                     let pastedText = e.clipboardData.getData("text");
-                    
+
                     pastedText = cleanPhoneNumber(pastedText);
 
                     setValue("+7" + pastedText);
 
                     setTimeout(() => {
                         const inputElement = e.target;
-                        inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+                        inputElement.setSelectionRange(
+                            inputElement.value.length,
+                            inputElement.value.length
+                        );
                     }, 0);
-                }
+                };
             default:
-                return () => {}
+                return () => {};
         }
-    }
+    };
 
     React.useEffect(() => {
-        if(!show && password){
+        if (!show && password) {
             setTypeInput("password");
-        }
-        else{
+        } else {
             setTypeInput("text");
         }
     }, [show, password]);
 
     // Отрефакторить(?)
     return (
-        <div className={`${styles.inputWrapper}${wrapperClass ? ` ${wrapperClass}` : ""}`}>
-            {(title || trackLength) && <div className={styles.inputTitleWrapper}>
-                {title && <p className={typography.text3}>{title}</p>}
-                {trackLength && <p className={`${typography.text3} ${styles.limitText} ${value?.length >= lengthLimit ? ` ${styles.limit}` : ""}`}>{value?.length}{lengthLimit ? ` / ${lengthLimit}` : ""}</p>}
-            </div>}
+        <div
+            className={`${styles.inputWrapper}${
+                wrapperClass ? ` ${wrapperClass}` : ""
+            }`}
+        >
+            {(title || trackLength) && (
+                <div className={styles.inputTitleWrapper}>
+                    {title && <p className={typography.text3}>{title}</p>}
+                    {trackLength && (
+                        <p
+                            className={`${typography.text3} ${
+                                styles.limitText
+                            } ${
+                                value?.length >= lengthLimit
+                                    ? ` ${styles.limit}`
+                                    : ""
+                            }`}
+                        >
+                            {value?.length}
+                            {lengthLimit ? ` / ${lengthLimit}` : ""}
+                        </p>
+                    )}
+                </div>
+            )}
 
             <div className={styles.inputInner}>
-                {type === "input"
-                    ? disabled
-                    ? <InputMask
-                        maskChar={""}
-                        className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""} ${styles.disabled}`}
+                {type === "input" ? (
+                    disabled ? (
+                        <InputMask
+                            maskChar={""}
+                            className={`${styles.input}${
+                                password ? ` ${styles.password}` : ""
+                            }${className ? ` ${className}` : ""} ${
+                                styles.disabled
+                            }`}
+                            placeholder={placeholder}
+                            type={typeInput}
+                            {...props}
+                        />
+                    ) : (
+                        <InputMask
+                            maskChar={""}
+                            className={`${styles.input}${
+                                password ? ` ${styles.password}` : ""
+                            }${className ? ` ${className}` : ""}`}
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                            maxLength={lengthLimit}
+                            placeholder={placeholder}
+                            type={typeInput}
+                            onPaste={pasteHandler()}
+                            {...props}
+                        />
+                    )
+                ) : disabled ? (
+                    <textarea
                         placeholder={placeholder}
-                        type={typeInput}
-                        {...props}
-                    />
-                    : <InputMask
-                        maskChar={""}
-                        className={`${styles.input}${password ? ` ${styles.password}` : ""}${className ? ` ${className}` : ""}`}
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        maxLength={lengthLimit}
-                        placeholder={placeholder}
-                        type={typeInput}
-                        onPaste={pasteHandler()}
-                        {...props}
-                    />
-                    : disabled
-                    ? <textarea
-                        placeholder={placeholder}
-                        className={`${styles.input} ${styles.textarea}${className ? ` ${className}` : ""} ${styles.disabled}`}
+                        className={`${styles.input} ${styles.textarea}${
+                            className ? ` ${className}` : ""
+                        } ${styles.disabled}`}
                         {...props}
                     ></textarea>
-                    : <textarea
+                ) : (
+                    <textarea
                         value={value}
                         placeholder={placeholder}
-                        onChange={e => setValue(e.target.value)}
-                        className={`${styles.input} ${styles.textarea}${className ? ` ${className}` : ""}`}
+                        onChange={(e) => setValue(e.target.value)}
+                        className={`${styles.input} ${styles.textarea}${
+                            className ? ` ${className}` : ""
+                        }`}
                         maxLength={lengthLimit}
                         {...props}
-                    ></textarea>}
+                    ></textarea>
+                )}
 
-                {password && <div className={styles.inputShow} onClick={() => setShow(prev => !prev)}>
-                    {show ? <Blind /> : <Eye />}
-                </div>}
+                {password && (
+                    <div
+                        className={styles.inputShow}
+                        onClick={() => setShow((prev) => !prev)}
+                    >
+                        {show ? <Blind /> : <Eye />}
+                    </div>
+                )}
 
                 {children}
             </div>

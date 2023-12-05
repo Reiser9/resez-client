@@ -1,4 +1,4 @@
-.sidebar{
+.sidebar {
     width: 100%;
     max-width: 280px;
     flex-shrink: 0;
@@ -9,15 +9,15 @@
     justify-content: space-between;
     gap: 40px;
     padding: 1.6rem 0;
-    -webkit-transition: .2s ease-in-out;
-    transition: .2s ease-in-out;
+    -webkit-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
     transition-property: transform, max-width;
-    transition-delay: .1s;
+    transition-delay: 0.1s;
     overflow-y: auto;
     border-right: 1px solid var(--input);
 }
 
-.sidebarFooter{
+.sidebarFooter {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -27,7 +27,7 @@
 }
 
 @media (max-width: 1500px) {
-    .sidebar{
+    .sidebar {
         max-width: 56px;
         position: absolute;
         top: -1px;
@@ -37,46 +37,47 @@
         overflow-x: hidden;
     }
 
-    .sidebarFooter{
+    .sidebarFooter {
         opacity: 0;
-        transition: .2s linear;
+        transition: 0.2s linear;
         white-space: nowrap;
         pointer-events: none;
     }
 }
 
 @media (max-width: 1500px) and (any-hover: hover) {
-    .sidebar:hover{
+    .sidebar:hover {
         max-width: 250px;
     }
 
-    .sidebar:hover .sidebarFooter{
+    .sidebar:hover .sidebarFooter {
         opacity: 1;
         pointer-events: all;
     }
 }
 
 @media (max-width: 1500px) and (any-hover: none) {
-    .sidebar.active{
+    .sidebar.active {
         max-width: 260px;
     }
 
-    .sidebar.active .sidebarFooter{
+    .sidebar.active .sidebarFooter {
         opacity: 1;
         pointer-events: all;
     }
 }
 
 @media (max-width: 480px) {
-    .sidebar, .sidebar:hover{
+    .sidebar,
+    .sidebar:hover {
         max-width: 100%;
     }
 
-    .sidebar{
+    .sidebar {
         transform: translateX(-110%);
     }
 
-    .sidebar.active{
+    .sidebar.active {
         max-width: 100%;
         transform: translateX(0);
     }
